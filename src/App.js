@@ -11,28 +11,31 @@ import {
   NavBar,
   TeacherSignUp,
   StudentSignUp,
-} from './components'
+} from './components';
 
-import { getUserType } from './utils'
+import { getUserType } from './utils';
 
-import config from './config'
+import { firebaseConfig } from './config';
 
-initializeApp(config)
+initializeApp(firebaseConfig)
 
 function App() {
-  const provider = new GoogleAuthProvider();
 
+  // Firebase & Auth-Related Vars
+  const provider = new GoogleAuthProvider();
+  const db = getFirestore();
   const auth = getAuth();
   auth.languageCode = 'en';
 
-  const [user, setUser] = useState(auth.currentUser)
-  const [userType, setUserTypeState] = useState()
+  // State
+  const [user, setUser] = useState(auth.currentUser);
+  const [userType, setUserTypeState] = useState();
 
+  // Hook to set user once logged in
+  // Used to be in handleSignIn, but React wasn't re-rendering
   auth.onAuthStateChanged((response) => {
     setUser(response)
-  })
-
-  const db = getFirestore();
+  });
 
   const handleSignIn = () => {
     signInWithPopup(auth, provider)
@@ -53,7 +56,8 @@ function App() {
       }))
   }
 
-  const findUserType = async (db, user) => {
+  // Get user type & update state
+  const updateUserTypeState = async (db, user) => {
     await getUserType(db, user)
       .then(userDoc => {
         if (userDoc) {
@@ -68,11 +72,13 @@ function App() {
       })
   }
 
+  // Hook to update user type state when user is updated
   useEffect(() => {
-    console.log("Updating user type")
-    findUserType(db, user)
-  }, [db, user])
+    updateUserTypeState(db, user)
+  }, [db, user]);
 
+
+  // Sign In Page
   if (!user) {
     return (
       <div className="App">
@@ -87,11 +93,17 @@ function App() {
           </button>
         </div>
       </div>
-    )
+    );
+
+    // User Type Selection
   } else if (user && userType === 'unset') {
     return (
-      <UserTypeSelect db={db} user={user} />
-    )
+      <div className="App">
+        <UserTypeSelect db={db} user={user} />
+      </div>
+    );
+    
+    // Main App
   } else if (user && userType !== 'unset') {
     return (
       <div className="App">
@@ -113,7 +125,6 @@ function App() {
     return <div />
   }
 }
-
 
 
 export default App;
