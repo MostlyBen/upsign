@@ -34,3 +34,51 @@ body {
      vertically in the p div */
   padding-bottom: 6px;
 }
+
+.session-selector {
+  padding: 0 1rem;
+}
+
+.session-card {
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.session-card:active {
+  transform: scale(0.95);
+}
+
+.session-card h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.session-card h2 {
+  font-size: 1.25rem;
+  margin: 0.5rem 0;
+  font-weight: 400;
+  color: dimgray;
+}
+
+.session-card .capacity {
+  position: absolute;
+  text-align: right;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+.session-card-content.is-full {
+  opacity: 0.5;
+}
+
+.session-card-content.is-enrolled.is-full {
+  opacity: 1;
+}
+
+.session-card.is-enrolled {
+  border: 4px solid #4db6ac;
+  box-shadow: 3px 3px 6px #757575, inset 2px 2px 4px #bdbdbd;
+}

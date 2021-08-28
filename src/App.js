@@ -110,7 +110,7 @@ function App() {
   
           <div className="main-content">
             {userType === 'teacher' ? <TeacherSignUp db={db} user={user} /> : null}
-            {userType === 'student' ? <StudentSignUp db={db} /> : null}
+            {userType === 'student' ? <StudentSignUp db={db} user={user} /> : null}
           </div>
         </div>
       </div>
