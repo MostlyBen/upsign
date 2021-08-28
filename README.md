@@ -1,6 +1,6 @@
 # What is UpSign?
 
-> UpSign is a an app that allows teachers to create classes and students to sign up for them.
+UpSign is a an app that allows teachers to create classes and students to sign up for them.
 
 ## Some Background
 
@@ -56,12 +56,19 @@ npm run
 
 ### Deploying to the Internet
 This app has been configured for deployment on the Google App Engine.
+
 *Feel free to deploy anywhere else, if you know how.*
 
+
+
 First, you'll need to [create a Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+
 You'll also need to [install Google Cloud SDK](https://cloud.google.com/sdk/docs/install).
+
 Then, open a command prompt and navigate to the project's main directory.
+
 [Initialize the Google Cloud SDK](https://cloud.google.com/sdk/docs/initializing). (You may need to restart your computer if you just installed Google Cloud SDK)
+
 Once initialized, run the following commands:
 ```
 npm run-script build
