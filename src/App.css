@@ -130,7 +130,7 @@ body {
 
 .student-name {
   padding-left: 0.65rem;
-  line-height: 2.5rem;
+  margin: 1rem 0 0 0;
 }
 
 .student-name-empty {
