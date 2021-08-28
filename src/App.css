@@ -82,3 +82,19 @@ body {
   border: 4px solid #4db6ac;
   box-shadow: 3px 3px 6px #757575, inset 2px 2px 4px #bdbdbd;
 }
+
+.student-list-btn {
+  color: grey;
+  cursor: pointer;
+  user-select: none;
+}
+
+.student-name {
+  padding-left: 0.65rem;
+  line-height: 2.5rem;
+}
+
+.student-name-empty {
+  color: grey;
+  user-select: none;
+}

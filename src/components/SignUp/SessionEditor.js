@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { doc, setDoc } from "@firebase/firestore"
 
@@ -9,6 +9,7 @@ const SessionEditor = (props) => {
   const [title, setTitle] = useState(session.title ?? "")
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
+  const [listShown, setListShown] = useState(false)
 
   const handleChangeTitle = (e) => {
     setTitle(e.target.value)
@@ -32,6 +33,10 @@ const SessionEditor = (props) => {
     let payload = session
     payload['capacity'] = e.target.value
     setDoc(doc(db, "sessions", session.id), payload)
+  }
+
+  const handleStudentListBtn = () => {
+    setListShown(!listShown)
   }
 
   return (
@@ -78,6 +83,26 @@ const SessionEditor = (props) => {
           />
         </div>
       </div>
+
+      {/* Student Enrollment */}
+      <div className="student-list-holder">
+        <div className="student-list-btn" onClick={handleStudentListBtn}>
+          { capacity > 0
+            ? listShown
+              ? '- Hide Enrolled Students'
+              : '+ Show Enrolled Students'
+            : null}
+        </div>
+
+        <div className="student-list" style={{display: listShown ? 'block' : 'none'}}>
+          { Array.isArray(session.enrollment)
+            ? session.enrollment.length === 0
+              ? <div className="student-name student-name-empty">No Students</div>
+              : session.enrollment.map(s => <div className="student-name" key={`${s.name}-${session.id}`}>{s.name}</div>)
+            : null }
+        </div>
+      </div>
+
     </div>
   )
 }
