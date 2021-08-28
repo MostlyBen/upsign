@@ -26,7 +26,7 @@ const TeacherSignUp = (props) => {
       <h3>
         <div>Hey there, <b>{user.displayName.split(' ')[0]}</b></div>
       </h3>
-      <blockquote className="teacher-message">
+      <blockquote className="top-message">
         <p>Please fill in every session you want to hold this Friday.</p>
         <p>Include any Prep hours as a session with no Room and 0 Capacity.</p>
       </blockquote>

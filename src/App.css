@@ -21,14 +21,14 @@ body {
   margin: 0 0 1rem 0 !important;
 }
 
-.teacher-message {
+.top-message {
   font-size: 1.15rem;
-  line-height: 1.15rem;
+  line-height: 1.5rem;
   margin: 1.4rem 0 2rem 0;
-  padding: 0.5rem 2.75rem;
+  padding: 0.25rem 2.75rem;
 }
 
-.teacher-message p {
+.top-message p {
   margin: 0.75rem 0;
   /* Quick fix because text was not centered 
      vertically in the p div */
