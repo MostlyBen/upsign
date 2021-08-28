@@ -58,8 +58,7 @@ npm run
 This app has been configured for deployment on the Google App Engine.
 
 *Feel free to deploy anywhere else, if you know how.*
-
-
+<br></br>
 
 First, you'll need to [create a Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
 
