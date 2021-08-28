@@ -80,7 +80,7 @@ function App() {
   if (!user) {
     return (
       <div className="App">
-        <div className="container" style={{marginTop: "33vh", maxWidth: "60vw", display: "table", margin: "auto", textAlign: "center"}}>
+        <div className="container" style={{marginTop: "33vh", maxWidth: "60vw", display: "table", textAlign: "center"}}>
           <div>
             <h3>Please Log In</h3>
             <button
