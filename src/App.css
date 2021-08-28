@@ -20,3 +20,18 @@ body {
   font-size: 3.5rem;
   margin: 0 0 1rem 0 !important;
 }
+
+.teacher-message {
+  font-size: 1.15rem;
+  line-height: 1.15rem;
+  background: #fafafa;
+  margin: 1.4rem 0 2rem 0;
+  padding: 0.5rem 2.75rem;
+}
+
+.teacher-message p {
+  margin: 0.75rem 0;
+  /* Quick fix because text was not centered 
+     vertically in the p div */
+  padding-bottom: 6px;
+}

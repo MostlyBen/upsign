@@ -21,10 +21,20 @@ const TeacherSignUp = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log("sessions:", sessions)
   return (
     <div>
-      { Array.isArray(sessions) ? sessions.map(s => <SessionEditor key={s.id} session={s} db={props.db} />) : null }
+      <h3>
+        <div>Hey there, <b>{user.displayName.split(' ')[0]}</b></div>
+      </h3>
+      <blockquote className="teacher-message">
+        <p>Please fill in every session you want to hold this Friday.</p>
+        <p>Include any Prep hours as a session with no Room and 0 Capacity.</p>
+      </blockquote>
+      <hr style={{margin: "1rem 0 3rem 0"}} />
+
+      <div className="teacher-sessions">
+        { Array.isArray(sessions) ? sessions.map(s => <SessionEditor key={s.id} session={s} db={props.db} />) : null }
+      </div>
     </div>
   )
 }
