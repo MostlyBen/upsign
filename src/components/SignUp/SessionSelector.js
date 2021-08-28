@@ -9,7 +9,9 @@ const SessionCard = (props) => {
   const [ isEnrolled, setIsEnrolled ] = useState(false)
 
   const handleClick = () => {
-    enrollStudent(props.db, session, props.user)
+    if (!isFull) {
+      enrollStudent(props.db, session, props.user)
+    }
   }
 
   useEffect(() => {
