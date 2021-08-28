@@ -62,10 +62,8 @@ function App() {
       .then(userDoc => {
         if (userDoc) {
           if (userDoc.exists()) {
-            console.log("User has a role")
             setUserTypeState(userDoc.data().type)
           } else {
-            console.log("User does not have a role")
             setUserTypeState("unset")
           }
         }
@@ -109,10 +107,6 @@ function App() {
       <div className="App">
         <NavBar user={user} />
         <div className="container" >
-  
-          <h3 style={{textAlign: "center"}}>
-            <div>Hey there, <b>{user.displayName.split(' ')[0]}</b></div>
-          </h3>
   
           <div className="main-content">
             {userType === 'teacher' ? <TeacherSignUp db={db} user={user} /> : null}
