@@ -80,15 +80,17 @@ function App() {
   if (!user) {
     return (
       <div className="App">
-        <div className="container">
-          <h3 style={{textAlign: "center"}}>Please Log In</h3>
-          <button
-            className='waves-effect waves-light btn-large'
-            onClick={() => handleSignIn()}
-            style={{display: "table", margin: "auto"}}
-          >
-            Sign in with Google
-          </button>
+        <div className="container" style={{marginTop: "33vh", maxWidth: "60vw", display: "table", margin: "auto", textAlign: "center"}}>
+          <div>
+            <h3>Please Log In</h3>
+            <button
+              className='login-with-google-btn'
+              onClick={() => handleSignIn()}
+              style={{display: "table", margin: "auto"}}
+            >
+              Sign in with Google
+            </button>
+          </div>
         </div>
       </div>
     );
