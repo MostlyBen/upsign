@@ -7,10 +7,13 @@ import { initializeApp } from '@firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from '@firebase/auth';
 
 import {
+  TeacherRouter,
+  StudentRouter,
+} from './routers'
+
+import {
   UserTypeSelect,
   NavBar,
-  TeacherSignUp,
-  StudentSignUp,
 } from './components';
 
 import { getUserType } from './utils';
@@ -109,10 +112,9 @@ function App() {
       <div className="App">
         <NavBar user={user} />
         <div className="container" >
-  
           <div className="main-content">
-            {userType === 'teacher' ? <TeacherSignUp db={db} user={user} /> : null}
-            {userType === 'student' ? <StudentSignUp db={db} user={user} /> : null}
+            {userType === 'teacher' ? <TeacherRouter db={db} user={user} /> : null}
+            {userType === 'student' ? <StudentRouter db={db} user={user} /> : null}
           </div>
         </div>
       </div>
