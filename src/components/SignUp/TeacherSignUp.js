@@ -7,7 +7,7 @@ const TeacherSignUp = (props) => {
   const db = props.db;
   const user = props.user;
 
-  const [sessions, setSessions] = useState([])
+  const [sessions, setSessions] = useState()
 
   const handleLoadSessions = async () => {
     await getTeacherSessions(db, user)
@@ -20,6 +20,18 @@ const TeacherSignUp = (props) => {
     handleLoadSessions()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  if (!sessions) {
+    return (
+      <div className="progress">
+        <div className="indeterminate" />
+      </div>
+    )
+  }
+
+  if (sessions.length === 0) {
+    window.location.reload()
+  }
 
   return (
     <div>
