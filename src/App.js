@@ -95,7 +95,7 @@ function App() {
       </div>
     );
 
-    // User Type Selection
+  // User Type Selection
   } else if (user && userType === 'unset') {
     return (
       <div className="App">
@@ -103,7 +103,7 @@ function App() {
       </div>
     );
     
-    // Main App
+  // Main App
   } else if (user && userType !== 'unset') {
     return (
       <div className="App">
