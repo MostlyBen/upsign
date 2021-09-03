@@ -11,16 +11,9 @@ body {
   margin-left: 1rem;
 }
 
-.session-select-header {
-  display: flex;
-  flex-grow: 1;
-  user-select: none;
-}
-
 .pagination {
   display: flex;
   justify-content: space-between;
-  width: 100%;
 }
 
 .disabled {
