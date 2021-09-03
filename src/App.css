@@ -11,6 +11,10 @@ body {
   margin-left: 1rem;
 }
 
+.chevron {
+  user-select: none;
+}
+
 .disabled {
   pointer-events: none;
 }
