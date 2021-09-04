@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import { doc, setDoc } from "@firebase/firestore"
 
-const EnrollmentRow = ({db, session, enrollment}) => {
+const EnrollmentRow = ({ db, session, enrollment }) => {
   const [attendance, setAttendance] = useState(enrollment.attendance ?? '')
 
   const handleCheck = (value) => {
