@@ -4,6 +4,29 @@ import { doc, setDoc } from "@firebase/firestore"
 
 const EnrollmentRow = ({ db, session, enrollment }) => {
   const [attendance, setAttendance] = useState(enrollment.attendance ?? '')
+  const [showRemove, setShowRemove] = useState(0)
+
+  const handleMouseEnter = () => {
+    setShowRemove(1)
+  }
+
+  const handleMouseLeave = () => {
+    setShowRemove(0)
+  }
+
+  const handleRemoveStudent = (uid, name) => {
+    if (window.confirm(`Are you sure you want to remove ${name} from this workshop?`)) {
+      const payload = session
+
+      let e = session.enrollment.filter(obj => {
+        return obj.uid !== uid
+      })
+
+      payload['enrollment'] = e
+
+      setDoc(doc(db, "sessions", session.id), {...payload})
+    }
+  }
 
   const handleCheck = (value) => {
     value = ( value === attendance ? '' : value )
@@ -26,10 +49,19 @@ const EnrollmentRow = ({ db, session, enrollment }) => {
     <tr
       className="student-name"
       key={`${enrollment.name}-${session.id}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <td
         style={{padding: "0 0 0 1.5rem", textAlign: "left"}}
-      >{enrollment.name}</td>
+      >
+        {enrollment.name}
+        <span
+          className="material-icons icon-button-offset"
+          onClick={() => handleRemoveStudent(enrollment.uid, enrollment.name)}
+          style={{ opacity: showRemove }}
+        >close</span>
+      </td>
 
       {/* Present */}
       <td

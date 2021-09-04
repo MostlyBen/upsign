@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { collection, query, where, onSnapshot } from "@firebase/firestore"
 
 import { getTeacherSessions } from "../../utils";
 import SessionEditor from "./SessionEditor";
@@ -20,6 +21,18 @@ const TeacherSignUp = (props) => {
     handleLoadSessions()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    const q = query(collection(db, "sessions"), where("teacher", "==", user.displayName));
+    onSnapshot(q, async (querySnapshot) => {
+      await getTeacherSessions(db, user).then(
+        s => {
+          setSessions(s)
+        }
+      )
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db])
 
   if (!sessions) {
     return (
