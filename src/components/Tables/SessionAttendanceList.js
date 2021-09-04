@@ -1,0 +1,122 @@
+import { useState } from "react"
+
+import { doc, setDoc } from "@firebase/firestore"
+
+const EnrollmentRow = ({db, session, enrollment}) => {
+  const [attendance, setAttendance] = useState(enrollment.attendance ?? '')
+
+  const handleCheck = (value) => {
+    value = ( value === attendance ? '' : value )
+
+    setAttendance(value)
+
+    enrollment['attendance'] = value
+    let payload = session
+    for (var i in payload.enrollment.length) {
+      if (payload.enrollment[i].uid === enrollment.uid) {
+        payload.enrollment[i] = enrollment
+        break
+      }
+    }
+
+    setDoc(doc(db, "sessions", session.id), {...payload})
+  }
+
+  return (
+    <tr
+      className="student-name"
+      key={`${enrollment.name}-${session.id}`}
+    >
+      <td
+        style={{padding: "0 0 0 1.5rem", textAlign: "left"}}
+      >{enrollment.name}</td>
+
+      {/* Present */}
+      <td
+        style={{padding: "0"}}
+      >
+        <label style={{lineHeight: "0", textAlign: "center"}}>
+          <input
+            type="checkbox"
+            className="filled-in"
+            id={`present-check-${enrollment.uid}`}
+            checked={attendance === "present" ? "checked" : ""}
+            onChange={() => handleCheck("present")}
+          />
+          <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
+        </label>
+      </td>
+
+      {/* Tardy */}
+      <td
+        style={{padding: "0"}}
+      >
+        <label style={{lineHeight: "0"}}>
+          <input
+            type="checkbox"
+            className="filled-in"
+            id={`tardy-check-${enrollment.uid}`}
+            checked={attendance === "tardy" ? "checked" : ""}
+            onChange={() => handleCheck("tardy")}
+          />
+          <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
+        </label>
+      </td>
+
+      {/* Absent */}
+      <td
+        style={{padding: "0"}}
+      >
+        <label style={{lineHeight: "0"}}>
+          <input
+            type="checkbox"
+            className="filled-in"
+            id={`absent-check-${enrollment.uid}`}
+            checked={attendance === "absent" ? "checked" : ""}
+            onChange={() => handleCheck("absent")}
+          />
+          <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
+        </label>
+      </td>
+      
+    </tr>
+  )
+}
+
+const SessionAttendanceList = ({ db, session }) => {
+
+  return (
+    <table className="student-list striped centered">
+      <thead>
+        <tr>
+          <th style={{textAlign: "left", padding: "0 0 0 1.5rem"}}>Name</th>
+          <th>Present</th>
+          <th>Tardy</th>
+          <th>Absent</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        { Array.isArray(session.enrollment)
+          ? session.enrollment.length === 0
+            ? <tr>
+                <td className="student-name student-name-empty">No Students</td>
+                <td />
+                <td />
+                <td />
+              </tr>
+            : session.enrollment.map(e => (
+              <EnrollmentRow db={db} session={session} enrollment={e} key={`row-${e.uid}`} />
+            ))
+          : <tr>
+              <td className="student-name student-name-empty">No Students</td>
+              <td />
+              <td />
+              <td />
+            </tr> }
+        </tbody>
+    </table>
+  )
+}
+
+export default SessionAttendanceList

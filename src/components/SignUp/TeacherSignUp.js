@@ -35,7 +35,7 @@ const TeacherSignUp = (props) => {
 
   return (
     <div>
-      <h3 style={{marginTop: "3rem"}}>
+      <h3 style={{marginTop: "3rem", userSelect: "none"}}>
         <div>Hey there, <b>{user.displayName.split(' ')[0]}</b></div>
       </h3>
       <blockquote className="top-message">

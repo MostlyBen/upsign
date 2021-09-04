@@ -8,6 +8,8 @@ import StudentSignUp from './SignUp/StudentSignUp'
 import TeacherSignUp from './SignUp/TeacherSignUp'
 // Dashboards
 import AllSessionOverview from './Dashboard/AllSessionOverview'
+// Tables
+import SessionAttendanceList from './Tables/SessionAttendanceList'
 
 export {
   NavBar,
@@ -19,4 +21,6 @@ export {
   TeacherSignUp,
 
   AllSessionOverview,
+
+  SessionAttendanceList,
 }

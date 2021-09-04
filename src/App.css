@@ -60,12 +60,23 @@ body {
 .session-card {
   padding: 1.5rem 1.5rem 1rem 1.5rem;
   border-radius: 1rem;
+}
+
+.selectable-card:active {
+  transform: scale(0.95);
   cursor: pointer;
   user-select: none;
 }
 
-.session-card:active {
-  transform: scale(0.95);
+.teacher-card {
+  padding-bottom: 1.5rem;
+}
+
+.teacher-card-h1 {
+  font-size: 2.5rem;
+  margin: 1rem 0 2rem 0;
+  text-align: center;
+  user-select: none;
 }
 
 .session-card h1 {
@@ -74,17 +85,31 @@ body {
   font-weight: 500;
 }
 
+.mimic-card-h1 {
+  font-size: 1.5rem !important;
+  margin: 0 !important;
+  font-weight: 500 !important;
+}
+
 .session-card h2 {
   font-size: 1.25rem;
   margin: 0.5rem 0;
   font-weight: 400;
-  color: dimgray;
+  color: #212121;
+}
+
+.mimic-card-h2 {
+  font-size: 1.25rem;
+  margin: 0.5rem 0;
+  font-weight: 400;
+  color: #212121;
+  border: none !important;
 }
 
 .session-card .capacity {
   position: absolute;
   text-align: right;
-  bottom: 1.5rem;
+  bottom: 1rem;
   right: 1.5rem;
 }
 
@@ -107,10 +132,14 @@ body {
   user-select: none;
 }
 
-.student-name {
-  padding-left: 0.65rem;
-  margin: 1rem 0 0 0;
+.session-info-card {
+  padding-right: 1.5rem;
 }
+
+
+/* .student-name {
+  user-select: none;
+} */
 
 .student-name-empty {
   color: grey;

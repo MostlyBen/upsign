@@ -2,6 +2,8 @@ import { useState } from "react"
 
 import { doc, setDoc } from "@firebase/firestore"
 
+import { SessionAttendanceList } from '../'
+
 const SessionEditor = (props) => {
   const db = props.db
   const session = props.session
@@ -9,7 +11,6 @@ const SessionEditor = (props) => {
   const [title, setTitle] = useState(session.title ?? "")
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
-  const [listShown, setListShown] = useState(false)
 
   const handleChangeTitle = (e) => {
     setTitle(e.target.value)
@@ -31,78 +32,79 @@ const SessionEditor = (props) => {
     setCapacity(e.target.value)
 
     let payload = session
-    payload['capacity'] = e.target.value
+    payload['capacity'] = Number(e.target.value)
     setDoc(doc(db, "sessions", session.id), payload)
   }
 
-  const handleStudentListBtn = () => {
-    setListShown(!listShown)
-  }
-
   return (
-    <div className="row card">
-      <div className=" valign-wrapper">
-        <div className="col card-number">
-          <h3>{session.session}</h3>
-        </div>
-        <div className="col s11">
-          {/* Title */}
-          <label htmlFor={`session-title-${session.id}`}>Title</label>
-          <input
-            id={`session-title-${session.id}`}
-            type="text" className="validate"
-            value={title}
-            onChange={handleChangeTitle}
-            autoComplete="off"
-          />
-        </div>
-      </div>
+    <div>
+      <h4>Session {session.session}</h4>
+      <hr style={{marginBottom: "1rem"}} />
+      <div className="row card session-card is-enrolled teacher-card">
 
-      <div className="row">
-        {/* Room */}
-        <div className="col s6">
-          <label htmlFor={`session-title-${session.id}`}>Room</label>
-          <input
-            id={`session-room-${session.id}`}
-            type="text" className="validate"
-            value={room}
-            onChange={handleChangeRoom}
-            autoComplete="off"
-          />
-        </div>
+        {/* Session Info */}
+        <div className="col s12 m6">
+          <div className="teacher-card-h1">
+            Session Info
+          </div>
 
-      {/* Capacity */}
-      <div className="col s6">
-        <label htmlFor={`session-title-${session.id}`}>Capacity</label>
-          <input
-            id={`session-capacity-${session.id}`}
-            type="number" className="validate"
-            value={capacity}
-            onChange={handleChangeCapacity}
-            autoComplete="off"
-          />
-        </div>
-      </div>
+          <div className="col s12">
+            {/* Title */}
+            <input
+              className="mimic-card-h1"
+              id={`session-title-${session.id}`}
+              type="text"
+              value={title}
+              onChange={handleChangeTitle}
+              autoComplete="off"
+            />
+          </div>
 
-      {/* Student Enrollment */}
-      <div className="student-list-holder">
-        <div className="student-list-btn" onClick={handleStudentListBtn}>
-          { capacity > 0
-            ? listShown
-              ? '- Hide Enrolled Students'
-              : '+ Show Enrolled Students'
+          {/* Teacher */}
+          <div className="col s12">
+            <h2>{session.teacher}</h2>
+          </div>
+
+          {/* Room */}
+          <div className="col s6">
+            <label htmlFor={`session-title-${session.id}`}>Room</label>
+            <input
+              className="mimic-card-h2"
+              id={`session-room-${session.id}`}
+              type="text"
+              value={room}
+              onChange={handleChangeRoom}
+              autoComplete="off"
+            />
+          </div>
+
+          {/* Capacity */}
+          <div className="col s6">
+            <label htmlFor={`session-title-${session.id}`}>Capacity</label>
+              <input
+                className="mimic-card-h2"
+                id={`session-capacity-${session.id}`}
+                type="number"
+                value={capacity}
+                onChange={handleChangeCapacity}
+                autoComplete="off"
+              />
+            </div>
+          </div>
+
+        {/* Student Enrollment */}
+        <div className="col s12 m6">
+          <div className="session-student-list-card">
+            <div className="teacher-card-h1">
+              Student List
+            </div>
+            { Number(capacity) !== 0
+            ? <SessionAttendanceList db={db} session={session} />
             : null}
-        </div>
 
-        <div className="student-list" style={{display: listShown ? 'block' : 'none'}}>
-          { Array.isArray(session.enrollment)
-            ? session.enrollment.length === 0
-              ? <div className="student-name student-name-empty">No Students</div>
-              : session.enrollment.map(s => <div className="student-name" key={`${s.name}-${session.id}`}>{s.name}</div>)
-            : null }
+          </div>
         </div>
       </div>
-
     </div>
   )
 }
