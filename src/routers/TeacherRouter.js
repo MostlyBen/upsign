@@ -1,23 +1,19 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import { TeacherSignUp } from '../components';
+import { TeacherSignUp, AllSessionOverview } from '../components';
 
-const TestComponent = () => {
-  return (
-    <div>Test Component</div>
-  )
-}
 
 const TeacherRouter = ({ db, user }) => {
 
   return (
-    <Router>
       <Switch>
-        <Route path="/test" render={() => ( <TestComponent /> )} />
-        
-        <Route path="/" render={() => ( <TeacherSignUp db={db} user={user} /> )} />
+        <Route path="/overview/:session?"
+          render={(matchProps) => ( <AllSessionOverview {...matchProps} /> )}
+        />
+        <Route path="/"
+          render={() => ( <TeacherSignUp db={db} user={user} /> )}
+        />
       </Switch>
-    </Router>
   )
 }
 
