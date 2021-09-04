@@ -1,6 +1,7 @@
 import './App.css';
 
 import { useState, useEffect } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import { getFirestore } from '@firebase/firestore';
 import { initializeApp } from '@firebase/app';
@@ -110,13 +111,15 @@ function App() {
   } else if (user && userType !== 'unset') {
     return (
       <div className="App">
-        <NavBar user={user} />
-        <div className="container" >
-          <div className="main-content">
-            {userType === 'teacher' ? <TeacherRouter db={db} user={user} /> : null}
-            {userType === 'student' ? <StudentRouter db={db} user={user} /> : null}
+        <Router>
+        <NavBar user={user} userType={userType} />
+          <div className="container" >
+            <div className="main-content">
+              {userType === 'teacher' ? <TeacherRouter db={db} user={user} /> : null}
+              {userType === 'student' ? <StudentRouter db={db} user={user} /> : null}
+            </div>
           </div>
-        </div>
+        </Router>
       </div>
     );
   } else {
