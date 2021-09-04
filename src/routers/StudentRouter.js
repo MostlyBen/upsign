@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import { StudentSignUp } from '../components';
 
@@ -11,13 +11,11 @@ const TestComponent = () => {
 const TeacherRouter = ({ db, user }) => {
 
   return (
-    <Router>
       <Switch>
         <Route path="/test" render={() => ( <TestComponent /> )} />
         
         <Route path="/" render={() => ( <StudentSignUp db={db} user={user} /> )} />
       </Switch>
-    </Router>
   )
 }
 
