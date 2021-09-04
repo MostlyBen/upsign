@@ -24,9 +24,9 @@ const TeacherSignUp = (props) => {
 
   useEffect(() => {
     const q = query(collection(db, "sessions"), where("teacher", "==", user.displayName));
-    onSnapshot(q, async (querySnapshot) => {
-      await getTeacherSessions(db, user).then(
-        s => {
+    onSnapshot(q, async () => {
+      await getTeacherSessions(db, user)
+        .then( s => {
           setSessions(s)
         }
       )
