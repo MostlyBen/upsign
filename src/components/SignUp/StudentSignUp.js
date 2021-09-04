@@ -62,7 +62,7 @@ const StudentSignUp = (props) => {
   if (Array.isArray(sessions)) {
     return (
       <div>
-        <h3>
+        <h3 style={{marginTop: '3rem'}}>
           <div>Hey there, <b>{user.displayName.split(' ')[0]}</b></div>
         </h3>
         <blockquote className="top-message">
