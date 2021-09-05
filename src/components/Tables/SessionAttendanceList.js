@@ -59,7 +59,7 @@ const EnrollmentRow = ({ db, session, enrollment }) => {
         <span
           className="material-icons icon-button-offset"
           onClick={() => handleRemoveStudent(enrollment.uid, enrollment.name)}
-          style={{ opacity: showRemove }}
+          style={{ opacity: showRemove, userSelect: 'none' }}
         >close</span>
       </td>
 
