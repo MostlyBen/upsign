@@ -67,6 +67,7 @@ const SessionEditor = (props) => {
 
           {/* Room */}
           <div className="col s6">
+
             <label htmlFor={`session-title-${session.id}`}>Room</label>
             <input
               className="mimic-card-h2"
@@ -75,6 +76,7 @@ const SessionEditor = (props) => {
               value={room}
               onChange={handleChangeRoom}
               autoComplete="off"
+              placeholder="Room"
             />
           </div>
 
@@ -88,6 +90,7 @@ const SessionEditor = (props) => {
                 value={capacity}
                 onChange={handleChangeCapacity}
                 autoComplete="off"
+                placeholder="Capacity"
               />
             </div>
           </div>
