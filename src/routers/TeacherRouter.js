@@ -8,7 +8,7 @@ const TeacherRouter = ({ db, user }) => {
   return (
       <Switch>
         <Route path="/overview/:session?"
-          render={(matchProps) => ( <AllSessionOverview {...matchProps} /> )}
+          render={(matchProps) => ( <AllSessionOverview db={db} {...matchProps} /> )}
         />
         <Route path="/"
           render={() => ( <TeacherSignUp db={db} user={user} /> )}

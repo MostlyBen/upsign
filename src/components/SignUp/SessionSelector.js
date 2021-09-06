@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import enrollStudent from "../../utils/sessions/enrollStudent"
+import { enrollStudent } from "../../utils"
 
 const SessionCard = (props) => {
   const session = props.session
@@ -45,9 +45,9 @@ const SessionCard = (props) => {
         <div className={`session-card-content ${isFull ? 'is-full' : ''} ${isEnrolled ? 'is-enrolled' : ''}`}>
           {/* Title */}
           <h1>{session.title}</h1>
-          <hr />
-          <h2>{session.teacher}</h2>
-          <h2>{session.room}</h2>
+          <hr style={{ margin: '1rem 0' }} />
+          <h2>{session.teacher ?? 'No Teacher'}</h2>
+          <h2>{session.room ?? 'No Room'}</h2>
           <h2 className="capacity">
             {Array.isArray(session.enrollment) ? session.enrollment.length : 0}/{session.capacity}
           </h2>

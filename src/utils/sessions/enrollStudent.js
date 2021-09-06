@@ -2,9 +2,10 @@ import { collection, query, where, getDoc, getDocs, doc, setDoc } from "@firebas
 
 const unenrollFromHour = async (db, user, hour) => {
   const userObject = {
-    name: user.displayName,
+    name: user.displayName ?? user.name,
     uid: user.uid,
   }
+
 
   const sessionRef = collection(db, "sessions")
   const q = query(sessionRef, where("enrollment", "array-contains", userObject), where("session", "==", hour))
@@ -27,7 +28,7 @@ const unenrollFromHour = async (db, user, hour) => {
   })
 }
 
-const enrollStudent = async (db, session, user) => {
+const enrollStudent = async (db, session, user, preventUnenroll = false) => {
   const docRef = doc(db, "sessions", session.id)
   const docSnap = await getDoc(docRef)
 
@@ -37,6 +38,7 @@ const enrollStudent = async (db, session, user) => {
 
     let tempEnrollment = []
     let alreadyEnrolled = false
+
     // If anyone's enrolled yet
     if (Array.isArray(sessionData.enrollment)) {
       tempEnrollment = sessionData.enrollment
@@ -49,10 +51,10 @@ const enrollStudent = async (db, session, user) => {
       }
     }
 
-    if (!alreadyEnrolled) {
+    if (!alreadyEnrolled || preventUnenroll) {
       tempEnrollment.push({
         uid: user.uid,
-        name: user.displayName,
+        name: user.displayName ?? user.name,
       })
     }
 
