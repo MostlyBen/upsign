@@ -39,6 +39,7 @@ You can get all of the information for this by...
 - Clicking the gear icon in the top left
 - Clicking "Project Settings"
 - Scrolling down until you find the "SDK setup and configuration" section
+- (You may need to create an app first by clicking the "</>" icon)
 
 ### Installing and Running Locally
 Once you have a Firestore database and config.js file created, you just need to install the required modules and run the app.
