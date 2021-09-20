@@ -4,6 +4,23 @@ import { collection, query, where, onSnapshot } from "@firebase/firestore"
 import SessionSelector from './SessionSelector'
 import { getHourSessions } from "../../utils";
 
+
+const TopMessage = ({ user }) => {
+  return (
+    <div>
+      <h3 style={{marginTop: '3rem'}}>
+        <div>Hey there, {user ? <b>{user.displayName.split(' ')[0]}</b> : ''}</div>
+      </h3>
+      <blockquote className="top-message">
+        <p>Please sign up for the sessions you want below.</p>
+        <p>Just click on what you want. Your choices are automatically saved 😊</p>
+      </blockquote>
+      <hr style={{margin: "1rem 0 3rem 0"}} />
+    </div>
+  )
+}
+
+
 const StudentSignUp = (props) => {
   const db = props.db;
   const user = props.user;
@@ -53,8 +70,12 @@ const StudentSignUp = (props) => {
 
   if (sessions.length === 0) {
     return (
-      <div className="progress">
-        <div className="indeterminate"></div>
+      <div>
+        <TopMessage user={user} />
+        
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
       </div>
     )
   }
@@ -62,14 +83,7 @@ const StudentSignUp = (props) => {
   if (Array.isArray(sessions)) {
     return (
       <div>
-        <h3 style={{marginTop: '3rem'}}>
-          <div>Hey there, <b>{user.displayName.split(' ')[0]}</b></div>
-        </h3>
-        <blockquote className="top-message">
-          <p>Please sign up for the sessions you want below.</p>
-          <p>Just click on what you want. Your choices are automatically saved 😊</p>
-        </blockquote>
-        <hr style={{margin: "1rem 0 3rem 0"}} />
+        <TopMessage user={user} />
 
         { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} /> ) }
       </div>
