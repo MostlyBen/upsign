@@ -62,10 +62,6 @@ const TeacherSignUp = (props) => {
     )
   }
 
-  if (sessions.length === 0) {
-    window.location.reload()
-  }
-
   return (
     <div>
       <TopMessage user={user} />
