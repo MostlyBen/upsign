@@ -5,7 +5,7 @@ import { query, collection, where, onSnapshot } from "@firebase/firestore"
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import { getHourSessions, enrollStudent } from "../../utils"
+import { getHourSessions, enrollStudent, getUnsignedStudents } from "../../utils"
 
 const SessionSelector = ({selected}) => {
   const hours = ['1', '2', '3', '4', '5', '6', '7']
@@ -52,6 +52,30 @@ const StudentName = ({ enrollment, currentSession }) => {
   >
     {enrollment.name}
   </div>
+  )
+}
+
+const UnsignedStudents = (props) => {
+
+  return (
+    <div className="col s12 m6 l4">
+      <div className={`card session-card is-enrolled`}>
+          {/* Title & Info */}
+          <h1>Unsigned Students</h1>
+          <hr style={{ margin: '1rem 0' }} />
+
+          {/* Student List */}
+          <div className="student-list">
+            {Array.isArray(props.students)
+            ? props.students.map(e => {
+              return (
+                <StudentName key={`student-list-${e.name}`} enrollment={e} currentSession={{}} />
+              )
+            })
+            : <div />}
+          </div>
+      </div>
+    </div>
   )
 }
 
@@ -104,10 +128,13 @@ const SessionCard = ({ db, session }) => {
 const AllSessionOverview = (props) => {
   const hour = props.match.params.session
   const [sessions, setSessions] = useState([])
+  const [unsignedStudents, setUnsignedStudents] = useState([])
 
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, Number(hour))
+    const u = await getUnsignedStudents(db, Number(hour))
     setSessions(s)
+    setUnsignedStudents(u)
   }
 
   useEffect(() => {
@@ -140,6 +167,7 @@ const AllSessionOverview = (props) => {
 
       <DndProvider backend={HTML5Backend}>
         <div className="row">
+          <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
           {sessions.map(s => {
             return <SessionCard key={`session-${s.title}`} db={props.db} session={s} hour={hour} />
           })}

@@ -120,6 +120,12 @@ body {
   bottom: 2.8rem;
 }
 
+.session-card .capacity-overview-unsigned {
+  position: relative;
+  display: inline-block;
+  font-weight: 500;
+}
+
 .session-card-content.is-full {
   opacity: 0.5;
 }

@@ -1,6 +1,6 @@
 import { collection, query, where, getDoc, getDocs, doc, setDoc } from "@firebase/firestore"
 
-const unenrollFromHour = async (db, user, hour) => {
+export const unenrollFromHour = async (db, user, hour) => {
   const userObject = {
     name: user.displayName ?? user.name,
     uid: user.uid,
