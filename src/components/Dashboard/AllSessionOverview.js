@@ -32,7 +32,7 @@ const SessionSelector = ({selected}) => {
   )
 }
 
-const StudentName = ({ hour, enrollment, currentSession }) => {
+const StudentName = ({ enrollment, currentSession }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'student',
     item: {
@@ -89,7 +89,7 @@ const SessionCard = ({ db, hour, session }) => {
               {Array.isArray(session.enrollment)
               ? session.enrollment.map(e => {
                 return (
-                  <StudentName key={`student-list-${e.name}`} hour={hour} enrollment={e} currentSession={session} />
+                  <StudentName key={`student-list-${e.name}`} enrollment={e} currentSession={session} />
                 )
               })
               : <div />}
