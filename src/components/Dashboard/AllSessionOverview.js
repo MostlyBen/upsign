@@ -55,7 +55,7 @@ const StudentName = ({ enrollment, currentSession }) => {
   )
 }
 
-const SessionCard = ({ db, hour, session }) => {
+const SessionCard = ({ db, session }) => {
   const [monitor, drop] = useDrop(() => ({
     accept: 'student',
     drop: () => {
