@@ -116,6 +116,9 @@ const EnrollmentRow = ({ db, session, enrollment }) => {
 }
 
 const SessionAttendanceList = ({ db, session }) => {
+  if (Array.isArray(session.enrollment)) {
+    session.enrollment.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
+  }
 
   return (
     <table className="student-list striped centered">

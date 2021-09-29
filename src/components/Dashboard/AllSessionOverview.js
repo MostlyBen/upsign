@@ -95,7 +95,9 @@ const SessionCard = ({ db, session }) => {
     collect: monitor => (monitor),
   }))
 
-
+  if (Array.isArray(session.enrollment)) {
+    session.enrollment.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
+  }
 
   return (
     <div className="col s12 m6 l4">
