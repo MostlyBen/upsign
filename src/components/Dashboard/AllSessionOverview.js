@@ -51,7 +51,7 @@ const StudentName = ({ enrollment, currentSession }) => {
     style={{ opacity: isDragging ? 0.25 : 1, cursor: 'move', marginBottom: '0.5rem' }}
   >
     {enrollment.name} {enrollment.attendance
-    ? <span style={{color: "dimgrey", margin: "0 0 0 0.5rem"}}>|<span style={{margin: "0 0 0 0.75rem",
+    ? <span style={{color: "dimgrey", margin: "0 0 0 0.5rem"}}>|<span style={{margin: "0 0 0 0.75rem", fontWeight: "500",
         color: enrollment.attendance === "present" ? "#009688" : enrollment.attendance === "tardy" ? "#f9a825" : "#d32f2f"}}>
         {enrollment.attendance.charAt(0).toUpperCase() + enrollment.attendance.slice(1)}</span>
       </span>
