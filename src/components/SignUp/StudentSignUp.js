@@ -59,6 +59,7 @@ const StudentSignUp = (props) => {
             })
           }
         })
+        hourSessions.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
         let tempSessions = sessions
         tempSessions[index] = hourSessions
         setSessions([...tempSessions])
