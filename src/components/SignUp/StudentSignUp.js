@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
 
 import SessionSelector from './SessionSelector'
-import { getHourSessions } from "../../utils";
+// import { getHourSessions } from "../../utils";
 
 
 const TopMessage = ({ user }) => {
@@ -27,19 +27,6 @@ const StudentSignUp = (props) => {
 
   const [sessions, setSessions] = useState([])
 
-  const initialLoadSessions = async () => {
-    let s = []
-    for ( var i = 0; i < 7; i++ ) {
-      s[i] = await getHourSessions(db, i+1)
-    }
-    setSessions(s)
-  }
-
-  // Initial load
-  useEffect(() => {
-    initialLoadSessions()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   // Initialize the update listeners
   useEffect(() => {
