@@ -13,7 +13,7 @@ const TopMessage = ({ user }) => {
       </h3>
       <blockquote className="top-message">
         <p>Please fill in every session you want to hold this Friday.</p>
-        <p>Include any Prep hours as a session with no Room and 0 Capacity.</p>
+        <p>For prep hours, just leave the title of the session blank.</p>
       </blockquote>
       <hr style={{margin: "1rem 0 3rem 0"}} />
     </div>
