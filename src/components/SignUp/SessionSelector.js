@@ -1,12 +1,45 @@
 import { useState, useEffect } from "react"
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
 import { enrollStudent } from "../../utils"
+import { act } from "react-dom/test-utils";
 
 const SessionCard = (props) => {
+  // The session card decides whether or not display should be done depending on
+  // whether or not student signups are active
+  // This should probably happen sooner so less data is loaded, but this was a quick fix
   const session = props.session
 
   const [ isFull, setIsFull ] = useState(false)
   const [ isEnrolled, setIsEnrolled ] = useState(false)
+  const [ signupAllowed, setSignupAllowed] = useState(false)
+
+  const signupAllowedRef = doc(props.db, "config", "student_signup")
+  const getSignupAllowed = async () => {
+    getDoc(signupAllowedRef).then(signupAllowedSetting => {
+      if (signupAllowedSetting.exists()) {
+        const active = signupAllowedSetting.data().active
+        console.log("signups are", active)
+        if (typeof active === "boolean") {
+          setSignupAllowed(active)
+        }
+      }
+    })
+  }
+
+  useEffect(() => {
+    getSignupAllowed()
+    const unsubscribe = onSnapshot(signupAllowedRef, (doc) => {
+      console.log("permission change")
+      const active = doc.data().active
+      if (typeof active === "boolean") {
+        setSignupAllowed(active)
+      }
+    })
+
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleClick = () => {
     if (!isFull) {
@@ -36,6 +69,10 @@ const SessionCard = (props) => {
 
 
   if (session.capacity === '0') {
+    return <div />
+  }
+
+  if (!signupAllowed && !isEnrolled) {
     return <div />
   }
 
