@@ -2,7 +2,6 @@ import { useState, useEffect } from "react"
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
 import { enrollStudent } from "../../utils"
-import { act } from "react-dom/test-utils";
 
 const SessionCard = (props) => {
   // The session card decides whether or not display should be done depending on
