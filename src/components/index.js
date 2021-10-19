@@ -8,6 +8,7 @@ import StudentSignUp from './SignUp/StudentSignUp'
 import TeacherSignUp from './SignUp/TeacherSignUp'
 // Dashboards
 import AllSessionOverview from './Dashboard/AllSessionOverview'
+import Config from './Dashboard/Config'
 // Tables
 import SessionAttendanceList from './Tables/SessionAttendanceList'
 
@@ -21,6 +22,7 @@ export {
   TeacherSignUp,
 
   AllSessionOverview,
+  Config,
 
   SessionAttendanceList,
 }

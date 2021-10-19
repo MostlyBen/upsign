@@ -171,6 +171,44 @@ body {
 }
 
 
+
+/* Menus & Stuff */
+.menu-selector {
+  text-align: center;
+}
+
+.menu-btn {
+  background-color: #fafafa;
+  color: #757575;
+  box-shadow: none;
+  display: block;
+  text-transform: uppercase;
+
+  padding: 0.5rem 0 0.5rem 0;
+}
+
+.menu-btn.active {
+  color: #212121;
+  font-weight: bold;
+}
+
+.menu-card h1 {
+  font-size: 2rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.switches {
+  margin-top: 2rem;
+}
+
+.toggle-switch {
+  margin: 1rem 0;
+  font-size: medium;
+  color: #424242;
+}
+
+
 .login-with-google-btn {
   transition: background-color .3s, box-shadow .3s;
     

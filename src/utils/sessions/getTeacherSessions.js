@@ -17,6 +17,7 @@ const createMissingTeacherSessions = (db, user, currentSessions) => {
         teacher_id: user.uid,
         session: i+1,
         capacity: 30,
+        enrollment: [],
       })
     }
   }
