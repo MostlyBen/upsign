@@ -140,19 +140,24 @@ const AllSessionOverview = (props) => {
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, Number(hour))
     const u = await getUnsignedStudents(db, Number(hour))
-    setSessions(s)
-    setUnsignedStudents(u)
+    if (s.length > 0) {
+      if (Number(s[0].session) === Number(hour)) {
+        s.sort( (a, b) => (a.teacher > b.teacher) ? 1 : -1 )
+        setSessions(s)
+        setUnsignedStudents(u)
+      }
+    }
   }
 
   useEffect(() => {
-    // Initial load
-    loadSessions(props.db, hour)
-
-    // Set up snapshot
+    // Set up snapshot & load sessions
+    console.log("Adding listener for hour", hour)
     const q = query(collection(props.db, "sessions"), where("session", "==", Number(hour)));
-    onSnapshot(q, () => {
+    const unsubscribe = onSnapshot(q, () => {
       loadSessions(props.db)
     })
+
+    return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.db, hour])
 
@@ -181,7 +186,7 @@ const AllSessionOverview = (props) => {
         <div className="row">
           <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
           {sessions.map(s => {
-            return <SessionCard key={`session-${s.title}`} db={props.db} session={s} hour={hour} />
+            return <SessionCard key={`session-${s.id}`} db={props.db} session={s} hour={hour} />
           })}
         </div>
       </DndProvider>
