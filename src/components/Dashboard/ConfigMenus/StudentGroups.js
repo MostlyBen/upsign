@@ -86,7 +86,7 @@ const StudentGroups = (props) => {
   
   return (
     <div>
-      <h1>Student Groups</h1>
+      <h1>Student Groups (Work in Progress...)</h1>
       
       {/* <!-- Dropdown Trigger --> */}
       <div
