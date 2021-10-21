@@ -12,24 +12,36 @@ const SessionCard = (props) => {
   const [ isFull, setIsFull ] = useState(false)
   const [ isEnrolled, setIsEnrolled ] = useState(false)
   const [ signupAllowed, setSignupAllowed] = useState(false)
+  const [ userDoc, setUserDoc ] = useState({})
 
   const signupAllowedRef = doc(props.db, "config", "student_signup")
   const getSignupAllowed = async () => {
     getDoc(signupAllowedRef).then(signupAllowedSetting => {
       if (signupAllowedSetting.exists()) {
         const active = signupAllowedSetting.data().active
-        console.log("signups are", active)
         if (typeof active === "boolean") {
           setSignupAllowed(active)
         }
       }
     })
   }
+  
+
+  const getUserDoc = async () => {
+    const userRef = doc(props.db, "users", props.user.uid)
+    getDoc(userRef)
+      .then(userSnap => {
+        if (userSnap.exists()) {
+          setUserDoc(userSnap.data())
+        }
+      })
+  }
 
   useEffect(() => {
     getSignupAllowed()
+    getUserDoc()
+
     const unsubscribe = onSnapshot(signupAllowedRef, (doc) => {
-      console.log("permission change")
       const active = doc.data().active
       if (typeof active === "boolean") {
         setSignupAllowed(active)
@@ -66,12 +78,34 @@ const SessionCard = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
+  const getIsFiltered = () => {
+    console.log("user groups", userDoc.groups)
+    if (session.restricted_to !== undefined) {
+      // Returns true if the session should be filtered out
+      if (Array.isArray(userDoc.groups)) {
+        if (userDoc.groups.includes(session.restricted_to)) {
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return true
+      }
+    } else {
+      return false
+    }
+  }
+
 
   if (session.capacity === '0') {
     return <div />
   }
 
   if (!signupAllowed && !isEnrolled) {
+    return <div />
+  }
+
+  if (getIsFiltered()) {
     return <div />
   }
 

@@ -110,6 +110,7 @@ const StudentGroups = (props) => {
               href="#!"
               className={option === selectedGroup ? "bold" : ""}
               onClick={() => setSelectedGroup(option)}
+              key={`dropdown-item-${option}`}
             >
               {option}
             </a></li>)

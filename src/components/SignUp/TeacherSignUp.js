@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
+import M from "materialize-css";
 
 import { getTeacherSessions } from "../../utils";
 import SessionEditor from "./SessionEditor";
@@ -37,6 +38,11 @@ const TeacherSignUp = (props) => {
     handleLoadSessions()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    M.AutoInit()
+
+  }, [sessions])
 
   useEffect(() => {
     const q = query(collection(db, "sessions"), where("teacher", "==", user.displayName));

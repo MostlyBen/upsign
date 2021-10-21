@@ -1,6 +1,5 @@
-import { useState } from "react"
-
-import { doc, setDoc } from "@firebase/firestore"
+import { useState, useEffect } from "react"
+import { doc, getDoc, setDoc, updateDoc } from "@firebase/firestore"
 
 import { SessionAttendanceList } from '../'
 
@@ -11,6 +10,28 @@ const SessionEditor = (props) => {
   const [title, setTitle] = useState(session.title ?? "")
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
+  const [groupOptions, setGroupOptions] = useState([])
+
+  const groupRef = doc(props.db, "config", "student_groups")
+
+  const getGroups = async () => {
+    getDoc(groupRef)
+      .then(groupSnap => {
+        if (groupSnap.exists()) {
+          const groupList = groupSnap.data().groups
+
+          if (Array.isArray(groupList)) {
+            setGroupOptions(groupList)
+          }
+        }
+      })
+  }
+
+  useEffect(() => {
+    getGroups()
+    // M.AutoInit()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleChangeTitle = (e) => {
     setTitle(e.target.value)
@@ -34,6 +55,13 @@ const SessionEditor = (props) => {
     let payload = session
     payload['capacity'] = Number(e.target.value)
     setDoc(doc(db, "sessions", session.id), payload)
+  }
+
+  const handleRestrict = async (group) => {
+    // let payload = session
+    // payload['restricted_to'] = group
+    // console.log("Payload:", payload)
+    updateDoc(doc(db, "sessions", session.id), {restricted_to: group});
   }
 
   return (
@@ -93,6 +121,47 @@ const SessionEditor = (props) => {
                 autoComplete="off"
                 placeholder="Capacity"
               />
+            </div>
+
+            {/* Restrict */}
+            <div>
+              {/* <!-- Dropdown Trigger --> */}
+              <div
+                className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
+                data-target={`option-dropdown-${session.id}`}
+              >
+                {session.restricted_to
+                  ? session.restricted_to.length > 0 ? session.restricted_to : "Select Group"
+                  : "Select Group"}
+                <span
+                  className="material-icons"
+                  style={{position: "relative", top: "0.45rem", margin: "0 0 -0.5rem 0.25rem"}}
+                >
+                  expand_more
+                </span>
+              </div>
+
+              {/* <!-- Dropdown Structure --> */}
+              <ul id={`option-dropdown-${session.id}`} className='dropdown-content'>
+                {groupOptions.map(option => {
+                  return (
+                    <li><a
+                      href="#!"
+                      onClick={() => handleRestrict(option)}
+                      key={`dropdown-item-${option}`}
+                    >
+                      {option}
+                    </a></li>)
+                })}
+
+                <li><a
+                  href="#!"
+                  onClick={() => handleRestrict("")}
+                >
+                  Anyone
+                </a></li>
+              </ul>
+
             </div>
           </div>
 
