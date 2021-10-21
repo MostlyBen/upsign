@@ -2,6 +2,20 @@ body {
   background-color: #fafafa;
 }
 
+.bold {
+  font-weight: 750;
+}
+
+.group-dropdown {
+  text-transform: none;
+  width: 100%;
+  margin-top: 1rem;
+  height: 3rem;
+  padding-top: 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
 .navbar-link {
   color: dimgray;
   font-size: 1.5rem;

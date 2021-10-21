@@ -7,6 +7,7 @@ import setUserType from "./user/setUserType";
 import enrollStudent from "./sessions/enrollStudent";
 import { unenrollFromHour } from "./sessions/enrollStudent";
 import getUnsignedStudents from "./sessions/getUnsignedStudents";
+import getAllStudents from "./sessions/getAllStudents";
 
 export {
   getTeacherSessions,
@@ -18,4 +19,5 @@ export {
   enrollStudent,
   unenrollFromHour,
   getUnsignedStudents,
+  getAllStudents,
 }
