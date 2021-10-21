@@ -142,7 +142,7 @@ const AllSessionOverview = (props) => {
     const u = await getUnsignedStudents(db, Number(hour))
     if (s.length > 0) {
       if (Number(s[0].session) === Number(hour)) {
-        s.sort( (a, b) => (a.teacher > b.teacher) ? 1 : -1 )
+        s.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
         setSessions(s)
         setUnsignedStudents(u)
       }
