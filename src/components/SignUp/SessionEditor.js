@@ -57,6 +57,7 @@ const SessionEditor = (props) => {
               value={title}
               onChange={handleChangeTitle}
               autoComplete="off"
+              placeholder="Session Title"
             />
           </div>
 
@@ -76,7 +77,7 @@ const SessionEditor = (props) => {
               value={room}
               onChange={handleChangeRoom}
               autoComplete="off"
-              placeholder="Room"
+              placeholder="No Room"
             />
           </div>
 
