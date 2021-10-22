@@ -53,7 +53,7 @@ const SessionCard = (props) => {
   }, [])
 
   const handleClick = () => {
-    if (Number(session.enrollment.length) < Number(session.capacity)) {
+    if (Number(session.enrollment.length) < Number(session.capacity) && signupAllowed) {
       enrollStudent(props.db, session, props.user)
     }
   }
@@ -61,7 +61,7 @@ const SessionCard = (props) => {
   useEffect(() => {
     setIsEnrolled(false)
     if (Array.isArray(session.enrollment)) {
-      if (Number(session.enrollment.length) === Number(session.capacity)) {
+      if (Number(session.enrollment.length) >= Number(session.capacity)) {
         setIsFull(true)
       } else {
         setIsFull(false)
@@ -81,7 +81,7 @@ const SessionCard = (props) => {
   const getIsFiltered = () => {
     if (session.restricted_to !== undefined) {
       // Returns true if the session should be filtered out
-      if (Array.isArray(userDoc.groups && session.restricted_to.length > 0)) {
+      if (Array.isArray(userDoc.groups)) {
         if (userDoc.groups.includes(session.restricted_to)) {
           return false
         } else {
