@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
 import { Link, Redirect } from "react-router-dom"
-import { query, collection, where, onSnapshot } from "@firebase/firestore"
+import { query, collection, where, onSnapshot, doc, getDoc } from "@firebase/firestore"
 
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import M from 'materialize-css';
 
 import { getHourSessions, enrollStudent, getUnsignedStudents } from "../../utils"
 
@@ -136,6 +138,8 @@ const AllSessionOverview = (props) => {
   const hour = props.match.params.session
   const [sessions, setSessions] = useState([])
   const [unsignedStudents, setUnsignedStudents] = useState([])
+  const [groupOptions, setGroupOptions] = useState([])
+  const [groupFilter, setGroupFilter] = useState('All Sessions')
 
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, Number(hour))
@@ -149,9 +153,26 @@ const AllSessionOverview = (props) => {
     }
   }
 
+  const groupRef = doc(props.db, "config", "student_groups")
+
+  const getGroups = async () => {
+    getDoc(groupRef)
+      .then(groupSnap => {
+        if (groupSnap.exists()) {
+          const groupList = groupSnap.data().groups
+
+          if (Array.isArray(groupList)) {
+            setGroupOptions(groupList)
+          }
+        }
+      })
+  }
+
   useEffect(() => {
+    // Get list of student groups for filter
+    getGroups();
+
     // Set up snapshot & load sessions
-    console.log("Adding listener for hour", hour)
     const q = query(collection(props.db, "sessions"), where("session", "==", Number(hour)));
     const unsubscribe = onSnapshot(q, () => {
       loadSessions(props.db)
@@ -166,6 +187,9 @@ const AllSessionOverview = (props) => {
     setUnsignedStudents([])
   }, [hour])
 
+  useEffect(() => {
+    M.AutoInit()
+  }, [groupOptions])
 
   if (!hour) {
     return <Redirect to="/overview/1" />
@@ -180,12 +204,48 @@ const AllSessionOverview = (props) => {
         />
       </div>
 
-      <hr style={{ margin: "1.445rem 0" }} />
+      <hr />
+      {/* <!-- Dropdown Trigger --> */}
+      <div
+        className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
+        data-target={`filter-dropdown`}
+        style={{paddingTop: '0.25rem', margin: '0.5rem 0 1.5rem 0.5rem'}}
+      >
+        {groupFilter}
+        <span
+          className="material-icons"
+          style={{position: "relative", top: "0.45rem", margin: "0 0 -0.5rem 0.25rem"}}
+        >
+          expand_more
+        </span>
+      </div>
+
+      {/* <!-- Dropdown Structure --> */}
+      <ul id={`filter-dropdown`} className='dropdown-content'>
+        {groupOptions.map(option => {
+          return (
+            <li><a
+              href="#!"
+              onClick={() => setGroupFilter(option)}
+              key={`dropdown-item-${option}`}
+            >
+              {option}
+            </a></li>)
+        })}
+
+        <li><a
+          href="#!"
+          onClick={() => setGroupFilter('All Sessions')}
+        >
+          All Sessions
+        </a></li>
+      </ul>
 
       <DndProvider backend={HTML5Backend}>
         <div className="row">
           <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
-          {sessions.map(s => {
+          {sessions.filter(s => groupFilter === 'All Sessions' || s.restricted_to === groupFilter).map(s => {
+            console.log("s:", s)
             return <SessionCard key={`session-${s.id}`} db={props.db} session={s} hour={hour} />
           })}
         </div>
