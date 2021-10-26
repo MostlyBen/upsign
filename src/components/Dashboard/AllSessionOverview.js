@@ -205,6 +205,7 @@ const AllSessionOverview = (props) => {
       </div>
 
       <hr />
+      
       {/* <!-- Dropdown Trigger --> */}
       <div
         className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
