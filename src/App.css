@@ -6,6 +6,7 @@ body {
   height: calc(100vh - 56px) !important;
   overflow-y: auto;
   position: absolute;
+  width: 100%;
   top: 56px;
 }
 @media only screen and (min-width: 601px) {
