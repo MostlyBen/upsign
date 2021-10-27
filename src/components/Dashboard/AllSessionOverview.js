@@ -246,7 +246,6 @@ const AllSessionOverview = (props) => {
         <div className="row">
           <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
           {sessions.filter(s => groupFilter === 'All Sessions' || s.restricted_to === groupFilter).map(s => {
-            console.log("s:", s)
             return <SessionCard key={`session-${s.id}`} db={props.db} session={s} hour={hour} />
           })}
         </div>
