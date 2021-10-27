@@ -114,7 +114,7 @@ function App() {
         <Router>
         <NavBar user={user} userType={userType} />
           <div className="body-container">
-            <div className="container" >
+            <div className="container">
               <div className="main-content">
                 {userType === 'teacher' ? <TeacherRouter db={db} user={user} /> : null}
                 {userType === 'student' ? <StudentRouter db={db} user={user} /> : null}
