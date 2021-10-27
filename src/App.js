@@ -113,10 +113,12 @@ function App() {
       <div className="App">
         <Router>
         <NavBar user={user} userType={userType} />
-          <div className="container" >
-            <div className="main-content">
-              {userType === 'teacher' ? <TeacherRouter db={db} user={user} /> : null}
-              {userType === 'student' ? <StudentRouter db={db} user={user} /> : null}
+          <div className="body-container">
+            <div className="container" >
+              <div className="main-content">
+                {userType === 'teacher' ? <TeacherRouter db={db} user={user} /> : null}
+                {userType === 'student' ? <StudentRouter db={db} user={user} /> : null}
+              </div>
             </div>
           </div>
         </Router>
