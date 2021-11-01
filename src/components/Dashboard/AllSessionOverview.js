@@ -99,11 +99,16 @@ const SessionCard = ({ db, session, filter }) => {
     if ( filter !== 'All Sessions' ) {
       const s = []
       for ( var i = 0; i < session.enrollment.length; i++ ) {
-        if (Array.isArray(allStudentRef[session.enrollment[i].uid].groups)) {
-          if ( allStudentRef[session.enrollment[i].uid].groups.includes(filter) ) {
-            s.push(session.enrollment[i])
+        try {
+          if (Array.isArray(allStudentRef[session.enrollment[i].uid].groups)) {
+            if ( allStudentRef[session.enrollment[i].uid].groups.includes(filter) ) {
+              s.push(session.enrollment[i])
+            }
           }
+        } catch (err) {
+          // console.log(err)
         }
+
       }
       setFilteredEnrollment(s)
     } else {
