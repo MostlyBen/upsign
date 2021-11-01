@@ -176,7 +176,10 @@ const AllSessionOverview = (props) => {
 
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, Number(hour))
-    const u = await getUnsignedStudents(db, Number(hour))
+    const u = groupFilter === 'All Sessions'
+      ? await getUnsignedStudents(db, Number(hour))
+      : await getUnsignedStudents(db, Number(hour), groupFilter)
+
     if (s.length > 0) {
       if (Number(s[0].session) === Number(hour)) {
         s.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
@@ -213,7 +216,7 @@ const AllSessionOverview = (props) => {
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.db, hour])
+  }, [props.db, hour, groupFilter])
 
   useEffect(() => {
     setSessions([])

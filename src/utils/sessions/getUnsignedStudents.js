@@ -1,6 +1,6 @@
 import { collection, query, where, getDocs } from "@firebase/firestore"
 
-const getUnsignedStudents = async (db, hour) => {
+const getUnsignedStudents = async (db, hour, groupFilter = 'none') => {
   const sessionQuery = query(collection(db, "sessions"), where("session", "==", Number(hour)), where("capacity", "!=", 0));
   const hourSessions = await getDocs(sessionQuery)
     .then(querySnapshot => {
@@ -27,6 +27,7 @@ const getUnsignedStudents = async (db, hour) => {
           s.push({
             uid: doc.id,
             name: doc.data().name,
+            groups: doc.data().groups,
           })
         }
       });
@@ -54,7 +55,17 @@ const getUnsignedStudents = async (db, hour) => {
     }
 
     if (!signed) {
-      unsignedStudents.push(student)
+      if (groupFilter === 'none') {
+        unsignedStudents.push(student)
+      } else {
+        console.log('student', student)
+        console.log('filter', groupFilter)
+        if (Array.isArray(student.groups)) {
+          if (student.groups.includes(groupFilter)) {
+            unsignedStudents.push(student)
+          }
+        }
+      }
     }
   });
 
