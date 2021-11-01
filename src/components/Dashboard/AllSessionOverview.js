@@ -106,6 +106,8 @@ const SessionCard = ({ db, session, filter }) => {
         }
       }
       setFilteredEnrollment(s)
+    } else {
+      setFilteredEnrollment(session.enrollment)
     }
   }, [filter, allStudentRef, session])
 
