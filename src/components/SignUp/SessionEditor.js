@@ -145,10 +145,10 @@ const SessionEditor = (props) => {
               <ul id={`option-dropdown-${session.id}`} className='dropdown-content'>
                 {groupOptions.map(option => {
                   return (
-                    <li><a
+                    <li key={`dropdown-item-${option}`}><a
                       href="#!"
                       onClick={() => handleRestrict(option)}
-                      key={`dropdown-item-${option}`}
+                      key={`dropdown-link-${option}`}
                     >
                       {option}
                     </a></li>)
