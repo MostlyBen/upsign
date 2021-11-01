@@ -1,20 +1,32 @@
 import { collection, query, where, getDocs } from "@firebase/firestore"
 
-const getAllStudents = async (db) => {
+const getAllStudents = async (db, asDictionary = false) => {
   const studentQuery = query(collection(db, "users"), where("type", "==", "student"));
   const allStudents = await getDocs(studentQuery)
     .then(querySnapshot => {
-      const s = []
-      querySnapshot.forEach((doc) => {
-        if (doc.data()) {
-          s.push({
-            uid: doc.id,
-            ...doc.data(),
-          })
-        }
-      });
+      if (!asDictionary) {
+        const s = []
+        querySnapshot.forEach((doc) => {
+          if (doc.data()) {
+            s.push({
+              uid: doc.id,
+              ...doc.data(),
+            })
+          }
+        });
+  
+        return s
+      } else {
+        const s = {}
+        querySnapshot.forEach((doc) => {
+          if (doc.data()) {
+            s[doc.id] = doc.data()
+          }
+        })
+        
+        return s
+      }
 
-      return s
     });
 
   return allStudents

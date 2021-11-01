@@ -7,7 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import M from 'materialize-css';
 
-import { getHourSessions, enrollStudent, getUnsignedStudents } from "../../utils"
+import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents } from "../../utils"
 
 const SessionSelector = ({selected}) => {
   const hours = ['1', '2', '3', '4', '5', '6', '7']
@@ -86,7 +86,30 @@ const UnsignedStudents = (props) => {
   )
 }
 
-const SessionCard = ({ db, session }) => {
+const SessionCard = ({ db, session, filter }) => {
+  const [filteredEnrollment, setFilteredEnrollment] = useState(session.enrollment)
+  const [allStudentRef, setAllStudentRef] = useState()
+
+  useEffect(() => {
+    getAllStudents(db, true).then(r => { setAllStudentRef(r) })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if ( filter !== 'All Sessions' ) {
+      const s = []
+      for ( var i = 0; i < session.enrollment.length; i++ ) {
+        if (Array.isArray(allStudentRef[session.enrollment[i].uid].groups)) {
+          if ( allStudentRef[session.enrollment[i].uid].groups.includes(filter) ) {
+            s.push(session.enrollment[i])
+          }
+        }
+      }
+      setFilteredEnrollment(s)
+    }
+  }, [filter, allStudentRef, session])
+
+
   const [monitor, drop] = useDrop(() => ({
     accept: 'student',
     drop: () => {
@@ -97,12 +120,20 @@ const SessionCard = ({ db, session }) => {
     collect: monitor => (monitor),
   }))
 
-  if (Array.isArray(session.enrollment)) {
+  if ( Array.isArray(session.enrollment) ) {
     session.enrollment.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
   }
 
+
   return (
-    <div className="col s12 m6 l4">
+    <div
+      className="col s12 m6 l4"
+      style={{display: `${filter !== 'All Sessions' && Array.isArray(filteredEnrollment)
+        ? filteredEnrollment.length > 0
+          ? ''
+          : 'none'
+        : ''}`}}
+    >
       <div className={`card session-card`} ref={drop}>
           {/* Title & Info */}
           <h1>{session.title}</h1>
@@ -120,7 +151,7 @@ const SessionCard = ({ db, session }) => {
             </h2>
             <div>
               {Array.isArray(session.enrollment)
-              ? session.enrollment.map(e => {
+              ? filteredEnrollment.map(e => {
                 return (
                   <StudentName key={`student-list-${e.name}`} enrollment={e} currentSession={session} />
                 )
@@ -225,10 +256,10 @@ const AllSessionOverview = (props) => {
       <ul id={`filter-dropdown`} className='dropdown-content'>
         {groupOptions.map(option => {
           return (
-            <li><a
+            <li key={`dropdown-item-${option}`}><a
               href="#!"
               onClick={() => setGroupFilter(option)}
-              key={`dropdown-item-${option}`}
+              key={`dropdown-link-${option}`}
             >
               {option}
             </a></li>)
@@ -245,8 +276,8 @@ const AllSessionOverview = (props) => {
       <DndProvider backend={HTML5Backend}>
         <div className="row">
           <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
-          {sessions.filter(s => groupFilter === 'All Sessions' || s.restricted_to === groupFilter).map(s => {
-            return <SessionCard key={`session-${s.id}`} db={props.db} session={s} hour={hour} />
+          {sessions.map(s => {
+            return <SessionCard key={`session-${s.id}`} db={props.db} session={s} hour={hour} filter={groupFilter} />
           })}
         </div>
       </DndProvider>
