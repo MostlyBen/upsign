@@ -58,8 +58,6 @@ const getUnsignedStudents = async (db, hour, groupFilter = 'none') => {
       if (groupFilter === 'none') {
         unsignedStudents.push(student)
       } else {
-        console.log('student', student)
-        console.log('filter', groupFilter)
         if (Array.isArray(student.groups)) {
           if (student.groups.includes(groupFilter)) {
             unsignedStudents.push(student)
