@@ -66,116 +66,111 @@ const SessionEditor = (props) => {
 
   return (
     <div>
-      <h4>Session {session.session}</h4>
-      <hr style={{marginBottom: "1rem"}} />
-      <div className="row card session-card is-enrolled teacher-card">
+      {/* Session Info */}
+      <div className="col s12 m6">
+        <div className="teacher-card-h1">
+          Session Info
+        </div>
 
-        {/* Session Info */}
-        <div className="col s12 m6">
-          <div className="teacher-card-h1">
-            Session Info
-          </div>
+        <div className="col s12">
+          {/* Title */}
+          <input
+            className="mimic-card-h1"
+            id={`session-title-${session.id}`}
+            type="text"
+            value={title}
+            onChange={handleChangeTitle}
+            autoComplete="off"
+            placeholder="Session Title"
+          />
+        </div>
 
-          <div className="col s12">
-            {/* Title */}
-            <input
-              className="mimic-card-h1"
-              id={`session-title-${session.id}`}
-              type="text"
-              value={title}
-              onChange={handleChangeTitle}
-              autoComplete="off"
-              placeholder="Session Title"
-            />
-          </div>
+        {/* Teacher */}
+        <div className="col s12">
+          <h2>{session.teacher}</h2>
+        </div>
 
-          {/* Teacher */}
-          <div className="col s12">
-            <h2>{session.teacher}</h2>
-          </div>
+        {/* Room */}
+        <div className="col s6">
 
-          {/* Room */}
-          <div className="col s6">
+          <label htmlFor={`session-title-${session.id}`}>Room</label>
+          <input
+            className="mimic-card-h2"
+            id={`session-room-${session.id}`}
+            type="text"
+            value={room}
+            onChange={handleChangeRoom}
+            autoComplete="off"
+            placeholder="No Room"
+          />
+        </div>
 
-            <label htmlFor={`session-title-${session.id}`}>Room</label>
+        {/* Capacity */}
+        <div className="col s6">
+          <label htmlFor={`session-title-${session.id}`}>Capacity</label>
             <input
               className="mimic-card-h2"
-              id={`session-room-${session.id}`}
-              type="text"
-              value={room}
-              onChange={handleChangeRoom}
+              id={`session-capacity-${session.id}`}
+              type="number"
+              value={capacity}
+              onChange={handleChangeCapacity}
               autoComplete="off"
-              placeholder="No Room"
+              placeholder="Capacity"
             />
           </div>
 
-          {/* Capacity */}
-          <div className="col s6">
-            <label htmlFor={`session-title-${session.id}`}>Capacity</label>
-              <input
-                className="mimic-card-h2"
-                id={`session-capacity-${session.id}`}
-                type="number"
-                value={capacity}
-                onChange={handleChangeCapacity}
-                autoComplete="off"
-                placeholder="Capacity"
-              />
-            </div>
-
-            {/* Restrict */}
-            <div>
-              {/* <!-- Dropdown Trigger --> */}
-              <div
-                className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
-                data-target={`option-dropdown-${session.id}`}
+          {/* Restrict */}
+          <div>
+            {/* <!-- Dropdown Trigger --> */}
+            <div
+              className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
+              data-target={`option-dropdown-${session.id}`}
+            >
+              {session.restricted_to
+                ? session.restricted_to.length > 0 ? session.restricted_to : "Select Group"
+                : "Select Group"}
+              <span
+                className="material-icons"
+                style={{position: "relative", top: "0.45rem", margin: "0 0 -0.5rem 0.25rem"}}
               >
-                {session.restricted_to
-                  ? session.restricted_to.length > 0 ? session.restricted_to : "Select Group"
-                  : "Select Group"}
-                <span
-                  className="material-icons"
-                  style={{position: "relative", top: "0.45rem", margin: "0 0 -0.5rem 0.25rem"}}
-                >
-                  expand_more
-                </span>
-              </div>
-
-              {/* <!-- Dropdown Structure --> */}
-              <ul id={`option-dropdown-${session.id}`} className='dropdown-content'>
-                {groupOptions.map(option => {
-                  return (
-                    <li key={`dropdown-item-${option}`}><a
-                      href="#!"
-                      onClick={() => handleRestrict(option)}
-                      key={`dropdown-link-${option}`}
-                    >
-                      {option}
-                    </a></li>)
-                })}
-
-                <li><a
-                  href="#!"
-                  onClick={() => handleRestrict("")}
-                >
-                  Anyone
-                </a></li>
-              </ul>
-
+                expand_more
+              </span>
             </div>
-          </div>
 
-        {/* Student Enrollment */}
-        <div className="col s12 m6">
-          <div className="session-student-list-card">
-            <div className="teacher-card-h1">
-              Student List
-            </div>
-            { Number(capacity) !== 0
-            ? <SessionAttendanceList db={db} session={session} />
-            : null}
+            {/* <!-- Dropdown Structure --> */}
+            <ul id={`option-dropdown-${session.id}`} className='dropdown-content'>
+              {groupOptions.map(option => {
+                return (
+                  <li key={`dropdown-item-${option}`}><a
+                    href="#!"
+                    onClick={() => handleRestrict(option)}
+                    key={`dropdown-link-${option}`}
+                  >
+                    {option}
+                  </a></li>)
+              })}
+
+              <li><a
+                href="#!"
+                onClick={() => handleRestrict("")}
+              >
+                Anyone
+              </a></li>
+            </ul>
 
           </div>
+        </div>
+
+      {/* Student Enrollment */}
+      <div className="col s12 m6">
+        <div className="session-student-list-card">
+          <div className="teacher-card-h1">
+            Student List
+          </div>
+          { Number(capacity) !== 0
+          ? <SessionAttendanceList db={db} session={session} />
+          : null}
+
         </div>
       </div>
     </div>

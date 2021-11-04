@@ -73,7 +73,15 @@ const TeacherSignUp = (props) => {
       <TopMessage user={user} />
 
       <div className="teacher-sessions">
-        { Array.isArray(sessions) ? sessions.map(s => <SessionEditor key={s.id} session={s} db={props.db} />) : null }
+        { Array.isArray(sessions) ? sessions.map(s =>
+          <div>
+            <h4>Session {s.session}</h4>
+            <hr style={{marginBottom: "1rem"}} />
+            <div className="row card session-card is-enrolled teacher-card">
+              <SessionEditor key={s.id} session={s} db={props.db} />
+            </div>
+          </div>
+        ) : null }
       </div>
     </div>
   )
