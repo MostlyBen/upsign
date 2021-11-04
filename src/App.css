@@ -44,6 +44,22 @@ body {
   justify-content: space-between;
 }
 
+.open-session-div {
+  cursor: pointer;
+  color: grey;
+  width: 100%;
+  text-align: right;
+  height: 0;
+}
+
+.open-session {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
 .disabled {
   pointer-events: none;
 }

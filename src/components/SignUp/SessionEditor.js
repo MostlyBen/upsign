@@ -3,6 +3,8 @@ import { doc, getDoc, setDoc, updateDoc } from "@firebase/firestore"
 
 import { SessionAttendanceList } from '../'
 
+import M from 'materialize-css'
+
 const SessionEditor = (props) => {
   const db = props.db
   const session = props.session
@@ -33,6 +35,11 @@ const SessionEditor = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    M.Dropdown.init(elems, {});
+  }, [groupOptions])
+
   const handleChangeTitle = (e) => {
     setTitle(e.target.value)
 
@@ -58,10 +65,8 @@ const SessionEditor = (props) => {
   }
 
   const handleRestrict = async (group) => {
-    // let payload = session
-    // payload['restricted_to'] = group
-    // console.log("Payload:", payload)
     updateDoc(doc(db, "sessions", session.id), {restricted_to: group});
+    session.restricted_to = group;
   }
 
   return (

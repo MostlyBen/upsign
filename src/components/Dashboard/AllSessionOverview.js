@@ -8,6 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import M from 'materialize-css';
 
 import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents } from "../../utils"
+import SessionEditor from "../SignUp/SessionEditor"
 
 const SessionSelector = ({selected}) => {
   const hours = ['1', '2', '3', '4', '5', '6', '7']
@@ -86,9 +87,10 @@ const UnsignedStudents = (props) => {
   )
 }
 
-const SessionCard = ({ db, session, filter }) => {
+const SessionCard = ({ db, session, filter, setOpenSession }) => {
   const [filteredEnrollment, setFilteredEnrollment] = useState(session.enrollment)
   const [allStudentRef, setAllStudentRef] = useState()
+  const [showOpen, setShowOpen] = useState(false)
 
   useEffect(() => {
     getAllStudents(db, true).then(r => { setAllStudentRef(r) })
@@ -131,10 +133,11 @@ const SessionCard = ({ db, session, filter }) => {
     session.enrollment.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
   }
 
-
   return (
     <div
       className="col s12 m6 l4"
+      onMouseEnter={() => { setShowOpen(true) }}
+      onMouseLeave={() => { setShowOpen(false) }}
       style={{display: `${filter !== 'All Sessions' && Array.isArray(filteredEnrollment)
         ? filteredEnrollment.length > 0
           ? ''
@@ -142,8 +145,23 @@ const SessionCard = ({ db, session, filter }) => {
         : ''}`}}
     >
       <div className={`card session-card`} ref={drop}>
+        <div className={`open-session-div
+          ${ showOpen
+          ? ''
+          : 'hidden'
+          }`}
+        >
+            <span
+              data-target="modal1"
+              className="modal-trigger material-icons open-session"
+              onClick={() => setOpenSession(session)}
+            >
+              open_in_full
+            </span>
+          </div>
+
           {/* Title & Info */}
-          <h1>{session.title}</h1>
+          <h1 style={{paddingRight: showOpen ? '2rem' : ''}}>{session.title}</h1>
           <hr style={{ margin: '1rem 0' }} />
           <h2>{session.teacher}</h2>
           <h2>{session.room ?? 'No Room'}</h2>
@@ -178,6 +196,7 @@ const AllSessionOverview = (props) => {
   const [unsignedStudents, setUnsignedStudents] = useState([])
   const [groupOptions, setGroupOptions] = useState([])
   const [groupFilter, setGroupFilter] = useState('All Sessions')
+  const [openSession, setOpenSession] = useState({})
 
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, Number(hour))
@@ -238,6 +257,15 @@ const AllSessionOverview = (props) => {
 
   return (
     <div>
+      {/* Session Pop-Up */}
+      <div id="modal1" className="modal teacher-sessions session-card teacher-card">
+        <div className="modal-content row">
+          { Object.keys(openSession) !== 0
+            ? <SessionEditor key={openSession.id} session={openSession} db={props.db} />
+            : <div /> }
+        </div>
+      </div>
+
       <div style={{ marginTop: "3rem" }}>
         <h3 style={{ margin: "0 0 1rem 0", letterSpacing: "1px" }}>Session </h3>
         <SessionSelector
@@ -287,7 +315,7 @@ const AllSessionOverview = (props) => {
         <div className="row">
           <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
           {sessions.map(s => {
-            return <SessionCard key={`session-${s.id}`} db={props.db} session={s} hour={hour} filter={groupFilter} />
+            return <SessionCard key={`session-${s.id}`} db={props.db} session={s} hour={hour} filter={groupFilter} setOpenSession={setOpenSession} />
           })}
         </div>
       </DndProvider>
