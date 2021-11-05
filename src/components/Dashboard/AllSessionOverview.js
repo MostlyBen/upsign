@@ -138,11 +138,13 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
       className="col s12 m6 l4"
       onMouseEnter={() => { setShowOpen(true) }}
       onMouseLeave={() => { setShowOpen(false) }}
-      style={{display: `${filter !== 'All Sessions' && Array.isArray(filteredEnrollment)
+      style={{
+        display: `${filter !== 'All Sessions' && Array.isArray(filteredEnrollment)
         ? filteredEnrollment.length > 0
           ? ''
           : 'none'
-        : ''}`}}
+        : ''}`,
+      }}
     >
       <div className={`card session-card`} ref={drop}>
         <div className={`open-session-div
@@ -314,8 +316,16 @@ const AllSessionOverview = (props) => {
       <DndProvider backend={HTML5Backend}>
         <div className="row">
           <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
-          {sessions.map(s => {
-            return <SessionCard key={`session-${s.id}`} db={props.db} session={s} hour={hour} filter={groupFilter} setOpenSession={setOpenSession} />
+          {sessions.map( s => {
+            return <SessionCard
+                key={`session-${s.id}`}
+                id={`session-${s.id}`}
+                db={props.db}
+                session={s}
+                hour={hour}
+                filter={groupFilter}
+                setOpenSession={setOpenSession}
+              />
           })}
         </div>
       </DndProvider>
