@@ -66,7 +66,7 @@ const StudentName = ({ enrollment, currentSession }) => {
 const UnsignedStudents = (props) => {
 
   return (
-    <div className="col s12 m6 l4">
+    <div className="">
       <div className={`card session-card is-enrolled`}>
           {/* Title & Info */}
           <h1>Unsigned Students</h1>
@@ -135,7 +135,7 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
 
   return (
     <div
-      className="col s12 m6 l4"
+      className=""
       onMouseEnter={() => { setShowOpen(true) }}
       onMouseLeave={() => { setShowOpen(false) }}
       style={{
@@ -315,18 +315,20 @@ const AllSessionOverview = (props) => {
 
       <DndProvider backend={HTML5Backend}>
         <div className="row">
-          <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
-          {sessions.map( s => {
-            return <SessionCard
-                key={`session-${s.id}`}
-                id={`session-${s.id}`}
-                db={props.db}
-                session={s}
-                hour={hour}
-                filter={groupFilter}
-                setOpenSession={setOpenSession}
-              />
-          })}
+          <div className="col s12 cards-container">
+            <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
+            {sessions.map( s => {
+              return <SessionCard
+                  key={`session-${s.id}`}
+                  id={`session-${s.id}`}
+                  db={props.db}
+                  session={s}
+                  hour={hour}
+                  filter={groupFilter}
+                  setOpenSession={setOpenSession}
+                />
+            })}
+          </div>
         </div>
       </DndProvider>
 
