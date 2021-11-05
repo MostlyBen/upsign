@@ -163,7 +163,7 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
           </div>
 
           {/* Title & Info */}
-          <h1 style={{paddingRight: showOpen ? '2rem' : ''}}>{session.title}</h1>
+          <h1 style={{paddingRight: '2rem'}}>{session.title}</h1>
           <hr style={{ margin: '1rem 0' }} />
           <h2>{session.teacher}</h2>
           <h2>{session.room ?? 'No Room'}</h2>
