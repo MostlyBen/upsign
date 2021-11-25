@@ -79,7 +79,7 @@ const SessionCard = (props) => {
   }, [session])
 
   const getIsFiltered = () => {
-    if (session.restricted_to !== undefined) {
+    if (session.restricted_to !== undefined && session.restricted_to !== "") {
       // Returns true if the session should be filtered out
       if (Array.isArray(userDoc.groups)) {
         if (userDoc.groups.includes(session.restricted_to)) {
