@@ -1,31 +1,21 @@
 import { useState, useEffect } from "react";
 import { doc, collection, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
-import { getAllStudents } from "../../../utils"
+import { getAllStudents, getGroups } from "../../../utils"
 import M from "materialize-css";
 
 
-const StudentGroups = (props) => {
+const StudentGroups = ({ db }) => {
   const [groupOptions, setGroupOptions] = useState([])
   const [selectedGroup, setSelectedGroup] = useState("")
   const [allStudents, setAllStudents] = useState([])
 
-  const groupRef = doc(props.db, "config", "student_groups")
-
-  const getGroups = async () => {
-    getDoc(groupRef)
-      .then(groupSnap => {
-        if (groupSnap.exists()) {
-          const groupList = groupSnap.data().groups
-
-          if (Array.isArray(groupList)) {
-            setGroupOptions(groupList)
-          }
-        }
-      })
+  const updateGroupOptions = async () => {
+    const options = await getGroups(db)
+    setGroupOptions(options)
   }
 
   const getStudents = async () => {
-    getAllStudents(props.db).then(students => {
+    getAllStudents(db).then(students => {
       if (Array.isArray(students)) {
         students.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
         setAllStudents(students)
@@ -34,7 +24,7 @@ const StudentGroups = (props) => {
   }
 
   useEffect(() => {
-    getGroups()
+    updateGroupOptions()
     getStudents()
 
     // --------------- FOR LATER ---------------
@@ -43,7 +33,7 @@ const StudentGroups = (props) => {
     // instance.destroy()
     M.AutoInit()
 
-    const usersRef = collection(props.db, "users")
+    const usersRef = collection(db, "users")
 
     const unsubscribe = onSnapshot(usersRef, () => {
       getStudents()
@@ -60,7 +50,7 @@ const StudentGroups = (props) => {
   }, [groupOptions])
 
   const handleClickStudent = (student) => {
-    const studentRef = doc(props.db, "users", student.uid)
+    const studentRef = doc(db, "users", student.uid)
     getDoc(studentRef)
     .then(studentSnap => {
       if (studentSnap.exists()) {

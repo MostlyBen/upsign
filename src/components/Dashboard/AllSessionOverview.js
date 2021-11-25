@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react"
 import { Link, Redirect } from "react-router-dom"
-import { query, collection, where, onSnapshot, doc, getDoc } from "@firebase/firestore"
+import { query, collection, where, onSnapshot } from "@firebase/firestore"
 
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import M from 'materialize-css';
 
-import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents } from "../../utils"
+import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups } from "../../utils"
 import SessionEditor from "../SignUp/SessionEditor"
 
 const SessionSelector = ({selected}) => {
@@ -215,24 +215,14 @@ const AllSessionOverview = (props) => {
     }
   }
 
-  const groupRef = doc(props.db, "config", "student_groups")
-
-  const getGroups = async () => {
-    getDoc(groupRef)
-      .then(groupSnap => {
-        if (groupSnap.exists()) {
-          const groupList = groupSnap.data().groups
-
-          if (Array.isArray(groupList)) {
-            setGroupOptions(groupList)
-          }
-        }
-      })
+  const updateGroupOptions = async () => {
+    const options = await getGroups(props.db)
+    setGroupOptions(options)
   }
 
   useEffect(() => {
     // Get list of student groups for filter
-    getGroups();
+    updateGroupOptions()
 
     // Set up snapshot & load sessions
     const q = query(collection(props.db, "sessions"), where("session", "==", Number(hour)));

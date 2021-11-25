@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { getFirestore } from '@firebase/firestore';
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
-import { setUserType } from '../../utils';
+import { setUserType, getTeacherSignupAllowed } from '../../utils';
 
 const UserTypeSelect = (props) => {
   const [teacherAllowed, setTeacherAllowed] = useState(false)
@@ -10,20 +10,16 @@ const UserTypeSelect = (props) => {
   const db = getFirestore()
   const user = props.user
 
-  const teacherRegRef = doc(db, "config", "teacher_register")
   const getTeacherAllowed = async () => {
-    getDoc(teacherRegRef).then(teacherRegSetting => {
-      if (teacherRegSetting.exists()) {
-        const active = teacherRegSetting.data().active
-        if (typeof active === "boolean") {
-          setTeacherAllowed(active)
-        }
-      }
-    })
+    const teacherAllowed = await getTeacherSignupAllowed(db)
+    setTeacherAllowed(teacherAllowed)
+
   }
 
   useEffect(() => {
     getTeacherAllowed()
+    
+    const teacherRegRef = doc(db, "config", "teacher_register")
     const unsubscribe = onSnapshot(teacherRegRef, (doc) => {
       const active = doc.data().active
       if (typeof active === "boolean") {

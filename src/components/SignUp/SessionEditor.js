@@ -1,36 +1,27 @@
 import { useState, useEffect } from "react"
-import { doc, getDoc, setDoc, updateDoc } from "@firebase/firestore"
+import { doc, setDoc, updateDoc } from "@firebase/firestore"
 
 import { SessionAttendanceList } from '../'
 
+import { getGroups } from "../../utils"
+
 import M from 'materialize-css'
 
-const SessionEditor = (props) => {
-  const db = props.db
-  const session = props.session
+const SessionEditor = ({ db, session }) => {
 
   const [title, setTitle] = useState(session.title ?? "")
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [groupOptions, setGroupOptions] = useState([])
 
-  const groupRef = doc(props.db, "config", "student_groups")
 
-  const getGroups = async () => {
-    getDoc(groupRef)
-      .then(groupSnap => {
-        if (groupSnap.exists()) {
-          const groupList = groupSnap.data().groups
-
-          if (Array.isArray(groupList)) {
-            setGroupOptions(groupList)
-          }
-        }
-      })
+  const updateGroupOptions = async () => {
+    const options = await getGroups(db)
+    setGroupOptions(options)
   }
 
   useEffect(() => {
-    getGroups()
+    updateGroupOptions()
     // M.AutoInit()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

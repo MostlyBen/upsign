@@ -1,34 +1,26 @@
 import { useState, useEffect } from "react"
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
-import { enrollStudent } from "../../utils"
+import { enrollStudent, getSignupAllowed } from "../../utils"
 
-const SessionCard = (props) => {
+const SessionCard = ({ db, session, user }) => {
   // The session card decides whether or not display should be done depending on
   // whether or not student signups are active
   // This should probably happen sooner so less data is loaded, but this was a quick fix
-  const session = props.session
 
   const [ isFull, setIsFull ] = useState(false)
   const [ isEnrolled, setIsEnrolled ] = useState(false)
   const [ signupAllowed, setSignupAllowed] = useState(false)
   const [ userDoc, setUserDoc ] = useState({})
 
-  const signupAllowedRef = doc(props.db, "config", "student_signup")
-  const getSignupAllowed = async () => {
-    getDoc(signupAllowedRef).then(signupAllowedSetting => {
-      if (signupAllowedSetting.exists()) {
-        const active = signupAllowedSetting.data().active
-        if (typeof active === "boolean") {
-          setSignupAllowed(active)
-        }
-      }
-    })
+  const updateSignupAllowed = async () => {
+    const allowed = await getSignupAllowed(db)
+    setSignupAllowed(allowed)
   }
   
 
   const getUserDoc = async () => {
-    const userRef = doc(props.db, "users", props.user.uid)
+    const userRef = doc(db, "users", user.uid)
     getDoc(userRef)
       .then(userSnap => {
         if (userSnap.exists()) {
@@ -38,9 +30,10 @@ const SessionCard = (props) => {
   }
 
   useEffect(() => {
-    getSignupAllowed()
+    updateSignupAllowed()
     getUserDoc()
 
+    const signupAllowedRef = doc(db, "config", "student_signup")
     const unsubscribe = onSnapshot(signupAllowedRef, (doc) => {
       const active = doc.data().active
       if (typeof active === "boolean") {
@@ -54,7 +47,7 @@ const SessionCard = (props) => {
 
   const handleClick = () => {
     if (Number(session.enrollment.length) < Number(session.capacity) && signupAllowed) {
-      enrollStudent(props.db, session, props.user)
+      enrollStudent(db, session, user)
     }
   }
 
@@ -70,7 +63,7 @@ const SessionCard = (props) => {
   
     if (Array.isArray(session.enrollment)) {
       for (var i = 0; i < session.enrollment.length; i++) {
-        if (String(session.enrollment[i].uid) === String(props.user.uid)) {
+        if (String(session.enrollment[i].uid) === String(user.uid)) {
           setIsEnrolled(true)
         }
       }
@@ -126,15 +119,13 @@ const SessionCard = (props) => {
   )
 }
 
-const SessionSelector = (props) => {
-  const hourSessions = props.hourSessions
-  const hour = props.hour
+const SessionSelector = ({ db, user, hourSessions, hour }) => {
   
   return (
     <div className="session-selector row">
       <h4>Session {hour}</h4>
       <hr />
-      { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={props.user} db={props.db} /> ) }
+      { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} /> ) }
     </div>
   )
 }
