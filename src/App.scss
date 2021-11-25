@@ -189,7 +189,19 @@ body {
 	border: none !important;
 }
 
-.selectable-card {
+.selectable-card:not(.is-full) {
+	cursor: pointer;
+
+	&:active {
+		transform: scale(0.95);
+		cursor: pointer;
+		user-select: none;
+	}
+}
+
+.selectable-card.is-enrolled {
+	cursor: pointer;
+
 	&:active {
 		transform: scale(0.95);
 		cursor: pointer;
@@ -208,13 +220,14 @@ body {
 	user-select: none;
 }
 
-.session-card-content.is-full {
+.selectable-card.is-full:not(.is-enrolled) {
+	cursor: default;
+}
+
+.session-card-content.is-full:not(.is-enrolled) {
 	opacity: 0.5;
 }
 
-.session-card-content.is-enrolled.is-full {
-	opacity: 1;
-}
 
 .session-card.is-enrolled {
 	border: 4px solid #4db6ac;

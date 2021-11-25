@@ -45,8 +45,10 @@ const SessionCard = ({ db, session, user }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleClick = () => {
+  const handleClick = (enrolled) => {
     if (Number(session.enrollment.length) < Number(session.capacity) && signupAllowed) {
+      enrollStudent(db, session, user)
+    } else if (signupAllowed && enrolled) {
       enrollStudent(db, session, user)
     }
   }
@@ -103,8 +105,8 @@ const SessionCard = ({ db, session, user }) => {
 
   return (
     <div className="col s12 m6 l4">
-      <div className={`card session-card selectable-card ${isEnrolled ? 'is-enrolled' : ''}`} onClick={handleClick}>
-        <div className={`session-card-content ${isFull ? 'is-full' : ''} ${isEnrolled ? 'is-enrolled' : ''}`}>
+      <div className={`card session-card selectable-card ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`} onClick={() => handleClick(isEnrolled)}>
+        <div className={`session-card-content ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`}>
           {/* Title */}
           <h1>{session.title}</h1>
           <hr style={{ margin: '1rem 0' }} />
