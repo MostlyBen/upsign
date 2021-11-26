@@ -9,6 +9,7 @@ import M from 'materialize-css';
 
 import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups } from "../../utils"
 import SessionEditor from "../SignUp/SessionEditor"
+import DatePicker from "../SignUp/DatePicker"
 
 const SessionSelector = ({selected}) => {
   const hours = ['1', '2', '3', '4', '5', '6', '7']
@@ -98,7 +99,7 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
   }, [])
 
   useEffect(() => {
-    if ( filter !== 'All Sessions' ) {
+    if ( filter !== 'All Students' ) {
       const s = []
       for ( var i = 0; i < session.enrollment.length; i++ ) {
         try {
@@ -139,7 +140,7 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
       onMouseEnter={() => { setShowOpen(true) }}
       onMouseLeave={() => { setShowOpen(false) }}
       style={{
-        display: `${filter !== 'All Sessions' && Array.isArray(filteredEnrollment)
+        display: `${filter !== 'All Students' && Array.isArray(filteredEnrollment)
         ? filteredEnrollment.length > 0
           ? ''
           : 'none'
@@ -197,12 +198,13 @@ const AllSessionOverview = ({ db, match }) => {
   const [sessions, setSessions] = useState([])
   const [unsignedStudents, setUnsignedStudents] = useState([])
   const [groupOptions, setGroupOptions] = useState([])
-  const [groupFilter, setGroupFilter] = useState('All Sessions')
+  const [groupFilter, setGroupFilter] = useState('All Students')
   const [openSession, setOpenSession] = useState({})
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, Number(hour))
-    const u = groupFilter === 'All Sessions'
+    const u = groupFilter === 'All Students'
       ? await getUnsignedStudents(db, Number(hour))
       : await getUnsignedStudents(db, Number(hour), groupFilter)
 
@@ -267,22 +269,34 @@ const AllSessionOverview = ({ db, match }) => {
 
       <hr />
       
-      {/* <!-- Dropdown Trigger --> */}
-      <div
-        className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
-        data-target={`filter-dropdown`}
-        style={{paddingTop: '0.25rem', margin: '0.5rem 0 1.5rem 0.5rem'}}
-      >
-        {groupFilter}
-        <span
-          className="material-icons"
-          style={{position: "relative", top: "0.45rem", margin: "0 0 -0.5rem 0.25rem"}}
-        >
-          expand_more
-        </span>
+      <div className="row">
+        {/* Date Picker */}
+        <div className="col s12 m6">
+          <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+        </div>
+        
+        {/* Group Dropdown Trigger */}
+        <div className='col s12 m6'>
+          <div
+            className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
+            data-target={`filter-dropdown`}
+            style={{paddingTop: '0.25rem', margin: '0.5rem 0 1.5rem 0'}}
+          >
+            {groupFilter}
+            <span
+              className="material-icons"
+              style={{position: "relative", top: "0.45rem", margin: "0 0 -0.5rem 0.25rem"}}
+            >
+              expand_more
+            </span>
+          </div>
+        </div>
+        
       </div>
 
-      {/* <!-- Dropdown Structure --> */}
+
+
+      {/* Group Dropdown Structure */}
       <ul id={`filter-dropdown`} className='dropdown-content'>
         {groupOptions.map(option => {
               return (
@@ -297,9 +311,9 @@ const AllSessionOverview = ({ db, match }) => {
 
         <li><a
           href="#!"
-          onClick={() => setGroupFilter('All Sessions')}
+          onClick={() => setGroupFilter('All Students')}
         >
-          All Sessions
+          All Students
         </a></li>
       </ul>
 
