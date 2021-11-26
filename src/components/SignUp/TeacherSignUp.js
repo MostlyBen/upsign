@@ -17,7 +17,7 @@ const TopMessage = ({ user }) => {
         <p>Please fill in every session you want to hold this Friday.</p>
         <p>For prep hours, just leave the title of the session blank.</p>
       </blockquote>
-      <hr style={{margin: "1rem 0 3rem 0"}} />
+      <hr style={{margin: "1rem 0 1rem 0"}} />
     </div>
   )
 }
