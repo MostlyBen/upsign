@@ -31,10 +31,6 @@ const StudentSignUp = (props) => {
   const [sessions, setSessions] = useState([])
   const [selectedDate, setSelectedDate] = useState(new Date())
 
-  useEffect(() => {
-    console.log(selectedDate.toDateString())
-  }, [selectedDate])
-
   // Initialize the update listeners
   useEffect(() => {
     for ( var j = 0; j < 7; j++ ) {
