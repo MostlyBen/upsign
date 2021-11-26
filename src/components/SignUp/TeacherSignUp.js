@@ -4,6 +4,7 @@ import M from "materialize-css";
 
 import { getTeacherSessions } from "../../utils";
 import SessionEditor from "./SessionEditor";
+import DatePicker from "./DatePicker";
 
 const TopMessage = ({ user }) => {
   
@@ -26,6 +27,7 @@ const TeacherSignUp = (props) => {
   const user = props.user;
 
   const [sessions, setSessions] = useState()
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   const handleLoadSessions = async () => {
     await getTeacherSessions(db, user)
@@ -71,10 +73,11 @@ const TeacherSignUp = (props) => {
   return (
     <div>
       <TopMessage user={user} />
+      <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
       <div className="teacher-sessions">
         { Array.isArray(sessions) ? sessions.map(s =>
-          <div>
+          <div key={s.id}>
             <h4>Session {s.session}</h4>
             <hr style={{marginBottom: "1rem"}} />
             <div className="row card session-card is-enrolled teacher-card">
