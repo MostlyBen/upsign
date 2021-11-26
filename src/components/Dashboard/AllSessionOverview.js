@@ -63,7 +63,7 @@ const StudentName = ({ enrollment, currentSession }) => {
   )
 }
 
-const UnsignedStudents = (props) => {
+const UnsignedStudents = ({ students }) => {
 
   return (
     <div className="">
@@ -74,8 +74,8 @@ const UnsignedStudents = (props) => {
 
           {/* Student List */}
           <div className="student-list">
-            {Array.isArray(props.students)
-            ? props.students.map(e => {
+            {Array.isArray(students)
+            ? students.map(e => {
               return (
                 <StudentName key={`student-list-${e.name}`} enrollment={e} currentSession={{}} />
               )
@@ -192,8 +192,8 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
 }
 
 
-const AllSessionOverview = (props) => {
-  const hour = props.match.params.session
+const AllSessionOverview = ({ db, match }) => {
+  const hour = match.params.session
   const [sessions, setSessions] = useState([])
   const [unsignedStudents, setUnsignedStudents] = useState([])
   const [groupOptions, setGroupOptions] = useState([])
@@ -216,7 +216,7 @@ const AllSessionOverview = (props) => {
   }
 
   const updateGroupOptions = async () => {
-    const options = await getGroups(props.db)
+    const options = await getGroups(db)
     setGroupOptions(options)
   }
 
@@ -225,14 +225,14 @@ const AllSessionOverview = (props) => {
     updateGroupOptions()
 
     // Set up snapshot & load sessions
-    const q = query(collection(props.db, "sessions"), where("session", "==", Number(hour)));
+    const q = query(collection(db, "sessions"), where("session", "==", Number(hour)));
     const unsubscribe = onSnapshot(q, () => {
-      loadSessions(props.db)
+      loadSessions(db)
     })
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.db, hour, groupFilter])
+  }, [db, hour, groupFilter])
 
   useEffect(() => {
     setSessions([])
@@ -253,7 +253,7 @@ const AllSessionOverview = (props) => {
       <div id="modal1" className="modal teacher-sessions session-card teacher-card">
         <div className="modal-content row">
           { Object.keys(openSession) !== 0
-            ? <SessionEditor key={openSession.id} session={openSession} db={props.db} />
+            ? <SessionEditor key={openSession.id} session={openSession} db={db} />
             : <div /> }
         </div>
       </div>
@@ -285,15 +285,15 @@ const AllSessionOverview = (props) => {
       {/* <!-- Dropdown Structure --> */}
       <ul id={`filter-dropdown`} className='dropdown-content'>
         {groupOptions.map(option => {
-          return (
-            <li key={`dropdown-item-${option}`}><a
-              href="#!"
-              onClick={() => setGroupFilter(option)}
-              key={`dropdown-link-${option}`}
-            >
-              {option}
-            </a></li>)
-        })}
+              return (
+                <li key={`dropdown-item-${option}`}><a
+                  href="#!"
+                  onClick={() => setGroupFilter(option)}
+                  key={`dropdown-link-${option}`}
+                >
+                  {option}
+                </a></li>)
+            })}
 
         <li><a
           href="#!"
@@ -311,7 +311,7 @@ const AllSessionOverview = (props) => {
               return <SessionCard
                   key={`session-${s.id}`}
                   id={`session-${s.id}`}
-                  db={props.db}
+                  db={db}
                   session={s}
                   hour={hour}
                   filter={groupFilter}
