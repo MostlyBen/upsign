@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
 
 import SessionSelector from './SessionSelector'
+import DatePicker from "./DatePicker";
 // import { getHourSessions } from "../../utils";
 
 
@@ -15,7 +16,9 @@ const TopMessage = ({ user }) => {
         <p>Please sign up for the sessions you want below.</p>
         <p>Just click on what you want. Your choices are automatically saved 😊</p>
       </blockquote>
-      <hr style={{margin: "1rem 0 3rem 0"}} />
+
+      <hr style={{margin: "1.5rem 0 1.5rem 0"}} />
+      
     </div>
   )
 }
@@ -26,7 +29,11 @@ const StudentSignUp = (props) => {
   const user = props.user;
 
   const [sessions, setSessions] = useState([])
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
+  useEffect(() => {
+    console.log(selectedDate.toDateString())
+  }, [selectedDate])
 
   // Initialize the update listeners
   useEffect(() => {
@@ -60,7 +67,6 @@ const StudentSignUp = (props) => {
     return (
       <div>
         <TopMessage user={user} />
-        
         <div className="progress">
           <div className="indeterminate"></div>
         </div>
@@ -72,6 +78,7 @@ const StudentSignUp = (props) => {
     return (
       <div>
         <TopMessage user={user} />
+        <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
         { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} /> ) }
       </div>
