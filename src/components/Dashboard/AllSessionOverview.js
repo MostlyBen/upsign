@@ -200,7 +200,7 @@ const AllSessionOverview = ({ db, match }) => {
   const [groupOptions, setGroupOptions] = useState([])
   const [groupFilter, setGroupFilter] = useState('All Students')
   const [openSession, setOpenSession] = useState({})
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  // const [selectedDate, setSelectedDate] = useState(new Date())
 
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, Number(hour))

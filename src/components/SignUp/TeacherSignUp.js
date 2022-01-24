@@ -27,7 +27,7 @@ const TeacherSignUp = (props) => {
   const user = props.user;
 
   const [sessions, setSessions] = useState()
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  // const [selectedDate, setSelectedDate] = useState(new Date())
 
   const handleLoadSessions = async () => {
     await getTeacherSessions(db, user)

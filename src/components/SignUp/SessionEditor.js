@@ -114,6 +114,17 @@ const SessionEditor = ({ db, session }) => {
               placeholder="Capacity"
             />
           </div>
+          <div style={{marginLeft: '0.5rem'}}>
+            <label>
+              <input
+                className="passport-checkbox"
+                id={`session-passport-${session.passport ?? false}`}
+                type="checkbox"
+                defaultChecked="checked"
+              />
+              <span>Requires Passport</span>
+            </label>
+          </div>
 
           {/* Restrict */}
           <div>
