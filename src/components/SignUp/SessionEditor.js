@@ -13,7 +13,7 @@ const SessionEditor = ({ db, session }) => {
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [groupOptions, setGroupOptions] = useState([])
-  const [passportRequired, setPassportRequired] = useState(session.passportRequired ?? false)
+  const [passportRequired, setPassportRequired] = useState(session.passport_required ?? false)
 
 
   const updateGroupOptions = async () => {
