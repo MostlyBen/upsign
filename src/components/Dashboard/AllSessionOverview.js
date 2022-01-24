@@ -9,7 +9,7 @@ import M from 'materialize-css';
 
 import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups } from "../../utils"
 import SessionEditor from "../SignUp/SessionEditor"
-import DatePicker from "../SignUp/DatePicker"
+// import DatePicker from "../SignUp/DatePicker"
 
 const SessionSelector = ({selected}) => {
   const hours = ['1', '2', '3', '4', '5', '6', '7']
@@ -271,12 +271,12 @@ const AllSessionOverview = ({ db, match }) => {
       
       <div className="row">
         {/* Date Picker */}
-        <div className="col s12 m6">
+        {/* <div className="col s12 m6">
           <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-        </div>
+        </div> */}
         
         {/* Group Dropdown Trigger */}
-        <div className='col s12 m6'>
+        <div className='col s12'>
           <div
             className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
             data-target={`filter-dropdown`}

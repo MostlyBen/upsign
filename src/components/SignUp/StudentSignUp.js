@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
 
 import SessionSelector from './SessionSelector'
-import DatePicker from "./DatePicker";
+// import DatePicker from "./DatePicker";
 // import { getHourSessions } from "../../utils";
 
 
@@ -74,7 +74,7 @@ const StudentSignUp = (props) => {
     return (
       <div>
         <TopMessage user={user} />
-        <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+        {/* <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} /> */}
 
         { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} /> ) }
       </div>

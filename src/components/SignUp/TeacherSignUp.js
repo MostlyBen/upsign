@@ -4,7 +4,7 @@ import M from "materialize-css";
 
 import { getTeacherSessions } from "../../utils";
 import SessionEditor from "./SessionEditor";
-import DatePicker from "./DatePicker";
+// import DatePicker from "./DatePicker";
 
 const TopMessage = ({ user }) => {
   
@@ -73,7 +73,7 @@ const TeacherSignUp = (props) => {
   return (
     <div>
       <TopMessage user={user} />
-      <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+      {/* <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} /> */}
 
       <div className="teacher-sessions">
         { Array.isArray(sessions) ? sessions.map(s =>
