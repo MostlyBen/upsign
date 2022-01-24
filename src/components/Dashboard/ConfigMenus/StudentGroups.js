@@ -96,17 +96,28 @@ const StudentGroups = ({ db }) => {
       <ul id='option-dropdown' className='dropdown-content'>
         {groupOptions.map(option => {
           return (
-            <li><a
+            <li key={`dropdown-item-${option}`}><a
               href="#!"
               className={option === selectedGroup ? "bold" : ""}
               onClick={() => setSelectedGroup(option)}
-              key={`dropdown-item-${option}`}
             >
               {option}
             </a></li>)
         })}
 
-        <li><a href="#!">Add Group +</a></li>
+        <li className="divider" key="divider-0" tabIndex="-1" />
+
+        <li key='dropdown-item-Has Passport'><a
+          href="#!"
+          className={"Has Passport" === selectedGroup ? "bold" : ""}
+          onClick={() => setSelectedGroup("Has Passport")}
+        >
+          Has Passport
+        </a></li>
+
+        <li className="divider" key="divider-1" tabIndex="-1" />
+
+        <li><a href="#!" key="add-group">Add Group +</a></li>
       </ul>
 
       {/* Student List */}
