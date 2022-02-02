@@ -13,7 +13,7 @@ const SessionEditor = ({ db, session }) => {
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [groupOptions, setGroupOptions] = useState([])
-  const [passportRequired, setPassportRequired] = useState(session.passport_required ?? false)
+  // const [passportRequired, setPassportRequired] = useState(session.passport_required ?? false)
 
 
   const updateGroupOptions = async () => {
@@ -56,11 +56,11 @@ const SessionEditor = ({ db, session }) => {
     setDoc(doc(db, "sessions", session.id), payload)
   }
 
-  const handleChangePassportRequired = async (e) => {
-    setPassportRequired(e.target.checked)
+  // const handleChangePassportRequired = async (e) => {
+  //   setPassportRequired(e.target.checked)
 
-    updateDoc(doc(db, "sessions", session.id), {passport_required: e.target.checked});
-  }
+  //   updateDoc(doc(db, "sessions", session.id), {passport_required: e.target.checked});
+  // }
 
   const handleRestrict = async (group) => {
     updateDoc(doc(db, "sessions", session.id), {restricted_to: group});
@@ -123,7 +123,7 @@ const SessionEditor = ({ db, session }) => {
           </div>
 
           {/* Passport */}
-          <div style={{paddingLeft: '1rem'}}>
+          {/* <div style={{paddingLeft: '1rem'}}>
             <label>
               <input
                 className="passport-checkbox"
@@ -134,7 +134,7 @@ const SessionEditor = ({ db, session }) => {
               />
               <span>Requires Passport</span>
             </label>
-          </div>
+          </div> */}
 
           {/* Restrict */}
           <div>

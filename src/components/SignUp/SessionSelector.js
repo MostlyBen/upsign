@@ -74,20 +74,19 @@ const SessionCard = ({ db, session, user }) => {
   }, [session])
 
   const getIsFiltered = () => {
-    let passportBlocking = true
+    // let passportBlocking = true
     let groupBlocking = true
-    console.log(session)
+    // console.log(session)
 
-    if (session.passport_required) {
-      console.log("Session is passport restricted")
-      if (Array.isArray(userDoc.groups)) {
-        if (userDoc.groups.includes("Has Passport")) {
-          passportBlocking = false
-        }
-      }
-    } else {
-      passportBlocking = false
-    }
+    // if (session.passport_required) {
+    //   if (Array.isArray(userDoc.groups)) {
+    //     if (userDoc.groups.includes("Has Passport")) {
+    //       passportBlocking = false
+    //     }
+    //   }
+    // } else {
+    //   passportBlocking = false
+    // }
 
     if (session.restricted_to !== undefined && session.restricted_to !== "") {
       if (Array.isArray(userDoc.groups)) {
@@ -99,10 +98,12 @@ const SessionCard = ({ db, session, user }) => {
       groupBlocking = false
     }
 
-    if (!passportBlocking && !groupBlocking) {
-      return false
-    }
-    return true
+    // if (!passportBlocking && !groupBlocking) {
+    //   return false
+    // }
+    // return true
+
+    return groupBlocking
   }
 
 
