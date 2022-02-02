@@ -156,6 +156,15 @@ const SessionEditor = ({ db, session }) => {
 
             {/* <!-- Dropdown Structure --> */}
             <ul id={`option-dropdown-${session.id}`} className='dropdown-content'>
+            <li><a
+                href="#!"
+                onClick={() => handleRestrict("")}
+              >
+                Anyone
+              </a></li>
+
+              <li className="divider" key="divider-1" tabIndex="-1" />
+
               {groupOptions.map(option => {
                 return (
                   <li key={`dropdown-item-${option}`}><a
@@ -166,13 +175,6 @@ const SessionEditor = ({ db, session }) => {
                     {option}
                   </a></li>)
               })}
-
-              <li><a
-                href="#!"
-                onClick={() => handleRestrict("")}
-              >
-                Anyone
-              </a></li>
             </ul>
 
           </div>

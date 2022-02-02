@@ -300,6 +300,15 @@ const AllSessionOverview = ({ db, match }) => {
 
       {/* Group Dropdown Structure */}
       <ul id={`filter-dropdown`} className='dropdown-content'>
+      <li><a
+          href="#!"
+          onClick={() => setGroupFilter('All Students')}
+        >
+          All Students
+        </a></li>
+        
+        <li className="divider" key="divider-1" tabIndex="-1" />
+
         {groupOptions.map(option => {
               return (
                 <li key={`dropdown-item-${option}`}><a
@@ -310,13 +319,6 @@ const AllSessionOverview = ({ db, match }) => {
                   {option}
                 </a></li>)
             })}
-
-        <li><a
-          href="#!"
-          onClick={() => setGroupFilter('All Students')}
-        >
-          All Students
-        </a></li>
       </ul>
 
       <DndProvider backend={HTML5Backend}>
