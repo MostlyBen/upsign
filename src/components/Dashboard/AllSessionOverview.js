@@ -94,6 +94,7 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
   const [showOpen, setShowOpen] = useState(false)
 
   useEffect(() => {
+    // This should probably happen on the page level, so it doesn't make this request for every card
     getAllStudents(db, true).then(r => { setAllStudentRef(r) })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -143,7 +144,7 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
         display: `${filter !== 'All Students' && Array.isArray(filteredEnrollment)
         ? filteredEnrollment.length > 0
           ? ''
-          : 'none'
+          : session.restricted_to === filter ? '' : 'none'
         : ''}`,
       }}
     >
