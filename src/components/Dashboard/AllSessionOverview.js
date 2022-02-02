@@ -144,6 +144,7 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
         display: `${filter !== 'All Students' && Array.isArray(filteredEnrollment)
         ? filteredEnrollment.length > 0
           ? ''
+          // FIX ME WHEN MULTIPLE FILTERS CAN BE SET
           : session.restricted_to === filter ? '' : 'none'
         : ''}`,
       }}
