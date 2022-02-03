@@ -138,10 +138,21 @@ const SessionCard = ({ db, session, user }) => {
 }
 
 const SessionSelector = ({ db, user, hourSessions, hour }) => {
+  // This is horrible. Do anything else.
+  const sessionTimes = {
+    1: '8:30 - 9:34',
+    2: '9:37 - 10:41',
+    3: '10:44 - 11:48 OR 11:09 - 12:13',
+    4: '12:16 - 1:20',
+    5: '1:23 - 2:27',
+  }
   
   return (
     <div className="session-selector row">
-      <h4>Session {hour}</h4>
+      {/* This is horrible. Do better. */}
+      <h4>Session {hour}
+        <span style={{color: 'gray'}}> {sessionTimes[hour] ? '('+sessionTimes[hour]+')': ''}</span>
+      </h4>
       <hr />
       { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} /> ) }
     </div>
