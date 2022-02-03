@@ -74,9 +74,13 @@ const SessionCard = ({ db, session, user }) => {
   }, [session])
 
   const getIsFiltered = () => {
+    // Make sure the session is shown if the student is enrolled
+    if (isEnrolled) {
+      return false
+    }
+
     // let passportBlocking = true
     let groupBlocking = true
-    // console.log(session)
 
     // if (session.passport_required) {
     //   if (Array.isArray(userDoc.groups)) {
