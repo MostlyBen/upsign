@@ -33,7 +33,7 @@ const StudentSignUp = (props) => {
 
   // Initialize the update listeners
   useEffect(() => {
-    for ( var j = 0; j < 7; j++ ) {
+    for ( var j = 0; j < 5; j++ ) {
       const index = j
       const hour = j + 1
 

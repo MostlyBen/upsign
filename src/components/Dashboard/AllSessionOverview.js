@@ -12,7 +12,7 @@ import SessionEditor from "../SignUp/SessionEditor"
 // import DatePicker from "../SignUp/DatePicker"
 
 const SessionSelector = ({selected}) => {
-  const hours = ['1', '2', '3', '4', '5', '6', '7']
+  const hours = ['1', '2', '3', '4', '5']
   const activeSelection = selected ?? '1'
 
   return (
