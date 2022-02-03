@@ -142,7 +142,7 @@ const SessionSelector = ({ db, user, hourSessions, hour }) => {
   const sessionTimes = {
     1: '8:30 - 9:34',
     2: '9:37 - 10:41',
-    3: '10:44 - 11:48 OR 11:09 - 12:13',
+    3: '10:44 - 11:48 or 11:09 - 12:13',
     4: '12:16 - 1:20',
     5: '1:23 - 2:27',
   }
