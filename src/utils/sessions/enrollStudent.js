@@ -8,7 +8,16 @@ export const unenrollFromHour = async (db, user, hour) => {
 
 
   const sessionRef = collection(db, "sessions")
-  const q = query(sessionRef, where("enrollment", "array-contains", userObject), where("session", "==", hour))
+  const q = query(sessionRef,
+    where("enrollment", "array-contains-any", [
+      userObject,
+      {attendance: 'absent', ...userObject},
+      {attendance: 'tardy', ...userObject},
+      {attendance: 'present', ...userObject},
+      {attendance: '', ...userObject},
+    ]),
+    where("session", "==", hour)
+    )
 
   const querySnapshot = await getDocs(q)
 
