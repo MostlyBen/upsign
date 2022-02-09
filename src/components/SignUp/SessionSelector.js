@@ -79,33 +79,29 @@ const SessionCard = ({ db, session, user }) => {
       return false
     }
 
-    // let passportBlocking = true
     let groupBlocking = true
 
-    // if (session.passport_required) {
-    //   if (Array.isArray(userDoc.groups)) {
-    //     if (userDoc.groups.includes("Has Passport")) {
-    //       passportBlocking = false
-    //     }
-    //   }
-    // } else {
-    //   passportBlocking = false
-    // }
-
-    if (session.restricted_to !== undefined && session.restricted_to !== "") {
-      if (Array.isArray(userDoc.groups)) {
-        if (userDoc.groups.includes(session.restricted_to)) {
-          groupBlocking = false
+    if (Array.isArray(session.restricted_to)) {
+      for (var i = 0; i <= session.restricted_to.length+1; i++) {
+        if (Array.isArray(userDoc.groups)) {
+          if (userDoc.groups.includes(session.restricted_to[i])) {
+            groupBlocking = false
+          }
         }
       }
     } else {
-      groupBlocking = false
-    }
 
-    // if (!passportBlocking && !groupBlocking) {
-    //   return false
-    // }
-    // return true
+      if (session.restricted_to !== undefined && session.restricted_to !== "") {
+        if (Array.isArray(userDoc.groups)) {
+          if (userDoc.groups.includes(session.restricted_to)) {
+            groupBlocking = false
+          }
+        }
+      } else {
+        groupBlocking = false
+      }
+      
+    }
 
     return groupBlocking
   }
