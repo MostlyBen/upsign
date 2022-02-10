@@ -102,19 +102,25 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
   useEffect(() => {
     if ( filter !== 'All Students' ) {
       const s = []
-      for ( var i = 0; i < session.enrollment.length; i++ ) {
-        try {
-          if (Array.isArray(allStudentRef[session.enrollment[i].uid].groups)) {
-            if ( allStudentRef[session.enrollment[i].uid].groups.includes(filter) ) {
-              s.push(session.enrollment[i])
-            }
-          }
-        } catch (err) {
-          // console.log(err)
-        }
 
+      if ( Array.isArray(session.enrollment) ) {
+
+        for ( var i = 0; i < session.enrollment.length; i++ ) {
+          try {
+            if (Array.isArray(allStudentRef[session.enrollment[i].uid].groups)) {
+              if ( allStudentRef[session.enrollment[i].uid].groups.includes(filter) ) {
+                s.push(session.enrollment[i])
+              }
+            }
+          } catch (err) {
+            // console.log(err)
+          }
+        }
+        
       }
+
       setFilteredEnrollment(s)
+
     } else {
       setFilteredEnrollment(session.enrollment)
     }
