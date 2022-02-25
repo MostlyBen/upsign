@@ -32,7 +32,6 @@ const TopMessage = ({ user }) => {
 const StudentSignUp = (props) => {
   const db = props.db;
   const user = props.user;
-  console.log(user)
 
   const [sessions, setSessions] = useState([])
   // const [selectedDate, setSelectedDate] = useState(new Date())
