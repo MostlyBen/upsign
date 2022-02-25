@@ -2,7 +2,7 @@ import { collection, query, where, getDoc, getDocs, doc, setDoc } from "@firebas
 
 export const unenrollFromHour = async (db, user, hour) => {
   const userObject = {
-    name: user.displayName ?? user.name,
+    name: user.nickname ?? user.displayName ?? user.name,
     uid: user.uid,
   }
 
@@ -63,7 +63,7 @@ const enrollStudent = async (db, session, user, preventUnenroll = false) => {
     if (!alreadyEnrolled || preventUnenroll) {
       tempEnrollment.push({
         uid: user.uid,
-        name: user.displayName ?? user.name,
+        name: user.nickname ?? user.displayName ?? user.name,
       })
     }
 

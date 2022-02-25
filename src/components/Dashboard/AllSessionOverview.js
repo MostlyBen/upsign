@@ -54,7 +54,7 @@ const StudentName = ({ enrollment, currentSession }) => {
     key={`enrollment-${enrollment.uid}`}
     style={{ opacity: isDragging ? 0.25 : 1, cursor: 'move', marginBottom: '0.5rem' }}
   >
-    {enrollment.name} {enrollment.attendance
+    {enrollment.nickname ?? enrollment.name} {enrollment.attendance
     ? <span style={{color: "dimgrey", margin: "0 0 0 0.5rem"}}>|<span style={{margin: "0 0 0 0.75rem", fontWeight: "500",
         color: enrollment.attendance === "present" ? "#009688" : enrollment.attendance === "tardy" ? "#f9a825" : "#d32f2f"}}>
         {enrollment.attendance.charAt(0).toUpperCase() + enrollment.attendance.slice(1)}</span>
@@ -78,7 +78,7 @@ const UnsignedStudents = ({ students }) => {
             {Array.isArray(students)
             ? students.map(e => {
               return (
-                <StudentName key={`student-list-${e.name}`} enrollment={e} currentSession={{}} />
+                <StudentName key={`student-list-${e.nickname ?? e.name}`} enrollment={e} currentSession={{}} />
               )
             })
             : <div />}
@@ -189,7 +189,7 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
               {Array.isArray(session.enrollment)
               ? filteredEnrollment.map(e => {
                 return (
-                  <StudentName key={`student-list-${e.name}`} enrollment={e} currentSession={session} />
+                  <StudentName key={`student-list-${e.nickname ?? e.name}`} enrollment={e} currentSession={session} />
                 )
               })
               : <div />}
