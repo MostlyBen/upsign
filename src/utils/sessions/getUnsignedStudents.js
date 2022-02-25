@@ -28,6 +28,7 @@ const getUnsignedStudents = async (db, hour, groupFilter = 'none') => {
             uid: doc.id,
             name: doc.data().name,
             groups: doc.data().groups,
+            nickname: doc.data().nickname,
           })
         }
       });
