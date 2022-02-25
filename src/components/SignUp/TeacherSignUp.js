@@ -11,7 +11,12 @@ const TopMessage = ({ user }) => {
   return (
     <div>
       <h3 style={{marginTop: "3rem", userSelect: "none"}}>
-        <div>Hey there{user ? <b>, {user.displayName.split(' ')[0]}</b> : ''}</div>
+        <div>Hey there, {user
+            ? user.nickname
+              ? <b>{user.nickname.split(' ')[0]}</b>
+              : <b>{user.displayName.split(' ')[0]}</b>
+            : ''}
+        </div>
       </h3>
       <blockquote className="top-message">
         <p>Please fill in every session you want to hold this Friday.</p>

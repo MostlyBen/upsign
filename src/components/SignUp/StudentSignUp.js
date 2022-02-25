@@ -10,7 +10,12 @@ const TopMessage = ({ user }) => {
   return (
     <div>
       <h3 style={{marginTop: '3rem'}}>
-        <div>Hey there, {user ? <b>{user.displayName.split(' ')[0]}</b> : ''}</div>
+        <div>Hey there, {user
+            ? user.nickname
+              ? <b>{user.nickname.split(' ')[0]}</b>
+              : <b>{user.displayName.split(' ')[0]}</b>
+            : ''}
+        </div>
       </h3>
       <blockquote className="top-message">
         <p>Please sign up for the sessions you want below.</p>
@@ -27,6 +32,7 @@ const TopMessage = ({ user }) => {
 const StudentSignUp = (props) => {
   const db = props.db;
   const user = props.user;
+  console.log(user)
 
   const [sessions, setSessions] = useState([])
   // const [selectedDate, setSelectedDate] = useState(new Date())
