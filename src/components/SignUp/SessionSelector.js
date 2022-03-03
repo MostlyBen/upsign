@@ -120,7 +120,7 @@ const SessionCard = ({ db, session, user }) => {
   }
 
   return (
-    <div className="col s12 m6 l4">
+    <div>
       <div className={`card session-card selectable-card ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`} onClick={() => handleClick(isEnrolled)}>
         <div className={`session-card-content ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`}>
           {/* Title */}
@@ -154,7 +154,9 @@ const SessionSelector = ({ db, user, hourSessions, hour }) => {
         <span style={{color: 'gray'}}> {sessionTimes[hour] ? '('+sessionTimes[hour]+')': ''}</span>
       </h4>
       <hr />
-      { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} /> ) }
+      <div className="cards-container">
+        { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} /> ) }
+      </div>
     </div>
   )
 }
