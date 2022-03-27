@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react'
 import { getFirestore } from '@firebase/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
+import { getAuth } from "@firebase/auth";
 
-import { setUserType, getTeacherSignupAllowed } from '../../utils';
+import {
+  setUserType,
+  getTeacherSignupAllowed,
+  allowStudentRegister,
+} from '../../utils';
 
 const UserTypeSelect = (props) => {
   const [teacherAllowed, setTeacherAllowed] = useState(false)
@@ -32,9 +37,17 @@ const UserTypeSelect = (props) => {
   }, [])
 
   const setType = async (type) => {
-    await setUserType(db, user, type).then(() => {
+    const allow = await allowStudentRegister(db, user.email)
+
+    if (allow) {
+      await setUserType(db, user, type).then(() => {
+        window.location.reload()
+      })
+    } else {
+      getAuth().signOut()
+      window.alert(`Please log in with the correct account`)
       window.location.reload()
-    })
+    }
   }
 
   return (
