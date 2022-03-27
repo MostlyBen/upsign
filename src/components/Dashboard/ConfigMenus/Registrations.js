@@ -56,7 +56,7 @@ const Registrations = (props) => {
   return (
     <div className="menu-card">
       <h1>
-        SignUp Settings
+        Registration Settings
       </h1>
 
       {loading
