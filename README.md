@@ -41,6 +41,21 @@ You can get all of the information for this by...
 - Scrolling down until you find the "SDK setup and configuration" section
 - (You may need to create an app first by clicking the "</>" icon)
 
+### Configuring the Database
+There are a few documents that need to be in the Firestore database, but are not yet automatically created. Here's what you will need to do:
+
+- Start a collection called "config"
+- Add a document with the id "student_signup"
+  - Give the document one field called "active" with a boolean value of true
+- Add a document with the id "teacher_register"
+  - Give the document one field called "active" with a boolean value of true
+- Add a document with the id "teacher_edit"
+  - Give the document one field called "active" with a boolean value of true
+- Add a document called "student_groups"
+  - Give the document a field called "groups" with an empty array
+
+
+
 ### Installing and Running Locally
 Once you have a Firestore database and config.js file created, you just need to install the required modules and run the app.
 
