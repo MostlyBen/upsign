@@ -17,7 +17,7 @@ You will need...
 [Firebase has a great quickstart guide for this.](https://firebase.google.com/docs/firestore/quickstart)
 Just follow the "Create a Cloud Firestore database" section.
 ### Saving your Configuration
-Create a file called `config.json` in the `src` directory.
+Create a file called `config.js` in the `src` directory.
 
 Put this code in it:
 ```

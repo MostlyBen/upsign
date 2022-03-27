@@ -28,6 +28,7 @@ const getUnsignedStudents = async (db, hour, groupFilter = 'none') => {
             uid: doc.id,
             name: doc.data().name,
             groups: doc.data().groups,
+            nickname: doc.data().nickname,
           })
         }
       });
@@ -67,9 +68,8 @@ const getUnsignedStudents = async (db, hour, groupFilter = 'none') => {
     }
   });
 
-  unsignedStudents.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
+  unsignedStudents.sort((a, b) => (( a.nickname ?? a.name ) > ( b.nickname ?? b.name )) ? 1 : -1 )
   return unsignedStudents
-
 }
 
 export default getUnsignedStudents

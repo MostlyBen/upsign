@@ -74,34 +74,34 @@ const SessionCard = ({ db, session, user }) => {
   }, [session])
 
   const getIsFiltered = () => {
-    // let passportBlocking = true
+    // Make sure the session is shown if the student is enrolled
+    if (isEnrolled) {
+      return false
+    }
+
     let groupBlocking = true
-    // console.log(session)
 
-    // if (session.passport_required) {
-    //   if (Array.isArray(userDoc.groups)) {
-    //     if (userDoc.groups.includes("Has Passport")) {
-    //       passportBlocking = false
-    //     }
-    //   }
-    // } else {
-    //   passportBlocking = false
-    // }
-
-    if (session.restricted_to !== undefined && session.restricted_to !== "") {
-      if (Array.isArray(userDoc.groups)) {
-        if (userDoc.groups.includes(session.restricted_to)) {
-          groupBlocking = false
+    if (Array.isArray(session.restricted_to)) {
+      for (var i = 0; i <= session.restricted_to.length+1; i++) {
+        if (Array.isArray(userDoc.groups)) {
+          if (userDoc.groups.includes(session.restricted_to[i])) {
+            groupBlocking = false
+          }
         }
       }
     } else {
-      groupBlocking = false
-    }
 
-    // if (!passportBlocking && !groupBlocking) {
-    //   return false
-    // }
-    // return true
+      if (session.restricted_to !== undefined && session.restricted_to !== "") {
+        if (Array.isArray(userDoc.groups)) {
+          if (userDoc.groups.includes(session.restricted_to)) {
+            groupBlocking = false
+          }
+        }
+      } else {
+        groupBlocking = false
+      }
+      
+    }
 
     return groupBlocking
   }
@@ -120,7 +120,7 @@ const SessionCard = ({ db, session, user }) => {
   }
 
   return (
-    <div className="col s12 m6 l4">
+    <div>
       <div className={`card session-card selectable-card ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`} onClick={() => handleClick(isEnrolled)}>
         <div className={`session-card-content ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`}>
           {/* Title */}
@@ -138,12 +138,25 @@ const SessionCard = ({ db, session, user }) => {
 }
 
 const SessionSelector = ({ db, user, hourSessions, hour }) => {
+  // This is horrible. Do anything else.
+  const sessionTimes = {
+    1: '8:30 - 9:34',
+    2: '9:37 - 10:41',
+    3: '10:44 - 11:48 or 11:09 - 12:13',
+    4: '12:16 - 1:20',
+    5: '1:23 - 2:27',
+  }
   
   return (
     <div className="session-selector row">
-      <h4>Session {hour}</h4>
+      {/* This is horrible. Do better. */}
+      <h4>Session {hour}
+        <span style={{color: 'gray'}}> {sessionTimes[hour] ? '('+sessionTimes[hour]+')': ''}</span>
+      </h4>
       <hr />
-      { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} /> ) }
+      <div className="cards-container">
+        { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} /> ) }
+      </div>
     </div>
   )
 }

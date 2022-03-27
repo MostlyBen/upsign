@@ -10,7 +10,12 @@ const TopMessage = ({ user }) => {
   return (
     <div>
       <h3 style={{marginTop: '3rem'}}>
-        <div>Hey there, {user ? <b>{user.displayName.split(' ')[0]}</b> : ''}</div>
+        <div>Hey there, {user
+            ? user.nickname
+              ? <b>{user.nickname.split(' ')[0]}</b>
+              : <b>{user.displayName.split(' ')[0]}</b>
+            : ''}
+        </div>
       </h3>
       <blockquote className="top-message">
         <p>Please sign up for the sessions you want below.</p>
@@ -33,7 +38,7 @@ const StudentSignUp = (props) => {
 
   // Initialize the update listeners
   useEffect(() => {
-    for ( var j = 0; j < 7; j++ ) {
+    for ( var j = 0; j < 5; j++ ) {
       const index = j
       const hour = j + 1
 

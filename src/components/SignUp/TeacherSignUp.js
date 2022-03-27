@@ -11,7 +11,12 @@ const TopMessage = ({ user }) => {
   return (
     <div>
       <h3 style={{marginTop: "3rem", userSelect: "none"}}>
-        <div>Hey there{user ? <b>, {user.displayName.split(' ')[0]}</b> : ''}</div>
+        <div>Hey there, {user
+            ? user.nickname
+              ? <b>{user.nickname.split(' ')[0]}</b>
+              : <b>{user.displayName.split(' ')[0]}</b>
+            : ''}
+        </div>
       </h3>
       <blockquote className="top-message">
         <p>Please fill in every session you want to hold this Friday.</p>
@@ -58,6 +63,14 @@ const TeacherSignUp = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db])
 
+  const sessionTimes = {
+    1: '8:30 - 9:34',
+    2: '9:37 - 10:41',
+    3: '10:44 - 11:48 or 11:09 - 12:13',
+    4: '12:16 - 1:20',
+    5: '1:23 - 2:27',
+  }
+
   if (!sessions) {
     return (
       <div>
@@ -78,7 +91,10 @@ const TeacherSignUp = (props) => {
       <div className="teacher-sessions">
         { Array.isArray(sessions) ? sessions.map(s =>
           <div key={s.id}>
-            <h4>Session {s.session}</h4>
+            {/* This is horrible. Do better. */}
+            <h4>Session {s.session} 
+              <span style={{color: 'gray'}}> {sessionTimes[s.session] ? '('+sessionTimes[s.session]+')': ''}</span>
+            </h4>
             <hr style={{marginBottom: "1rem"}} />
             <div className="row card session-card is-enrolled teacher-card">
               <SessionEditor key={s.id} session={s} db={props.db} />

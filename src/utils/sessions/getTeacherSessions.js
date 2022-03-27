@@ -3,7 +3,7 @@ import { collection, query, where, getDocs, doc, setDoc } from "@firebase/firest
 const createMissingTeacherSessions = (db, user, currentSessions) => {
   const sessionRef = collection(db, "sessions")
 
-  for (var i = 0; i < 7; i++) {
+  for (var i = 0; i < 5; i++) {
     var found = false;
     for (var j = 0; j < currentSessions.length; j++) {
       if (Number(currentSessions[j].session) === Number(i+1)) {
@@ -41,7 +41,7 @@ const getTeacherSessions = async (db, user) => {
     })
     .then(s => {
       s.sort((a, b) => (a.session > b.session) ? 1: -1 )
-      if (s.length < 7) {
+      if (s.length < 5) {
         createMissingTeacherSessions(db, user, s)
       }
       return s 

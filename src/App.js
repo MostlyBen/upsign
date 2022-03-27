@@ -34,6 +34,7 @@ function App() {
   // State
   const [user, setUser] = useState(auth.currentUser);
   const [userType, setUserTypeState] = useState();
+  const [userNickname, setUserNickname] = useState(false)
 
   // Hook to set user once logged in
   // Used to be in handleSignIn, but React wasn't re-rendering
@@ -66,7 +67,14 @@ function App() {
       .then(userDoc => {
         if (userDoc) {
           if (userDoc.exists()) {
-            setUserTypeState(userDoc.data().type)
+            const data = userDoc.data()
+            setUserTypeState(data.type)
+
+            /* Check for a nickname */
+            if (data.hasOwnProperty('nickname')) {
+              setUserNickname(data.nickname)
+            }
+            
           } else {
             setUserTypeState("unset")
           }
@@ -109,6 +117,12 @@ function App() {
     
   // Main App
   } else if (user && userType !== 'unset') {
+    /* Update the user object if a nickname was found */
+    let u = user
+    if (userNickname) {
+      u = {nickname: userNickname, ...user}
+    }
+
     return (
       <div className="App">
         <Router>
@@ -116,8 +130,8 @@ function App() {
           <div className="body-container">
             <div className="container">
               <div className="main-content">
-                {userType === 'teacher' ? <TeacherRouter db={db} user={user} /> : null}
-                {userType === 'student' ? <StudentRouter db={db} user={user} /> : null}
+                {userType === 'teacher' ? <TeacherRouter db={db} user={u} /> : null}
+                {userType === 'student' ? <StudentRouter db={db} user={u} /> : null}
               </div>
             </div>
           </div>
