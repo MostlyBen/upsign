@@ -1,6 +1,6 @@
 import { Link, Redirect } from "react-router-dom";
 import { useState, useEffect } from "react"
-import { Signups, StudentGroups } from './ConfigMenus'
+import { Signups, StudentGroups, Registrations } from './ConfigMenus'
 
 const Config = (props) => {
   const [menu, setMenu] = useState(props.match.params.menu ?? 'signups') // Signups switch not working, for some reason
@@ -16,6 +16,7 @@ const Config = (props) => {
   const menuObject = {
     signups: <Signups db={props.db} />,
     groups: <StudentGroups db={props.db} />,
+    registrations: <Registrations db={props.db} />,
   }
   
   return (
@@ -25,8 +26,12 @@ const Config = (props) => {
           SignUps
         </Link>
 
-        <Link to="/config/groups" className={`menu-btn ${menu === 'groups' ? 'active' : ''}`}>
+        <Link to="/config/groups" className={`menu-btn waves-effect ${menu === 'groups' ? 'active' : ''}`}>
           Student Groups
+        </Link>
+
+        <Link to="/config/registrations" className={`menu-btn waves-effect ${menu === 'registrations' ? 'active' : ''}`}>
+          Registrations
         </Link>
       </div>
       <div className="col s12 m8 l9 card menu-card" style={{height: '75vh', padding: '3rem'}}>
