@@ -3,7 +3,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 const allowStudentRegister = async (db, email) => {
   // Get the config for domain restrictions
   const domResRef = doc(db, "config", "domain_restriction")
-  getDoc(domResRef).then(domResDoc => {
+  const allow = getDoc(domResRef).then(domResDoc => {
     // Create variable to return
     let allow = true
 
@@ -30,8 +30,11 @@ const allowStudentRegister = async (db, email) => {
       })
     }
 
+    console.log('returning...', allow)
     return allow
   })
+
+  return allow
 }
 
 export default allowStudentRegister
