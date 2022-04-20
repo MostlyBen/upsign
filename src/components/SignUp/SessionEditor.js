@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { doc, setDoc, updateDoc } from "@firebase/firestore"
+import { doc, updateDoc } from "@firebase/firestore"
 
 import { SessionAttendanceList } from '../'
 
