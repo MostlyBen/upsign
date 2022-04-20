@@ -13,7 +13,6 @@ const SessionEditor = ({ db, session }) => {
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [groupOptions, setGroupOptions] = useState([])
-  // const [passportRequired, setPassportRequired] = useState(session.passport_required ?? false)
 
 
   const updateGroupOptions = async () => {
@@ -33,27 +32,27 @@ const SessionEditor = ({ db, session }) => {
   }, [groupOptions])
 
   const handleChangeTitle = (e) => {
-    setTitle(e.target.value)
+    setTitle(e.target.value);
 
-    let payload = session
-    payload['title'] = e.target.value
-    setDoc(doc(db, "sessions", session.id), payload)
+    var title = String(e.target.value);
+    updateDoc(doc(db, "sessions", session.id), {title: title});
+    session.title = title;
   }
 
   const handleChangeRoom = (e) => {
     setRoom(e.target.value)
 
-    let payload = session
-    payload['room'] = e.target.value
-    setDoc(doc(db, "sessions", session.id), payload)
+    var room = String(e.target.value);
+    updateDoc(doc(db, "sessions", session.id), {room: room});
+    session.room = room;
   }
 
   const handleChangeCapacity = (e) => {
     setCapacity(e.target.value)
 
-    let payload = session
-    payload['capacity'] = Number(e.target.value)
-    setDoc(doc(db, "sessions", session.id), payload)
+    var capacity = String(e.target.value);
+    updateDoc(doc(db, "sessions", session.id), {capacity: capacity});
+    session.capacity = capacity;
   }
 
   const handleRestrict = async (group) => {
