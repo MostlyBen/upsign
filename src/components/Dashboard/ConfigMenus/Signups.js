@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { doc, collection, getDoc, setDoc } from "firebase/firestore";
+import { LoadingBar } from "../../";
 
 const Signups = (props) => {
   const [loading, setLoading] = useState(true)
@@ -51,13 +52,7 @@ const Signups = (props) => {
   }
 
   if (loading) {
-    return (
-      <div>
-        <div className="progress">
-          <div className="indeterminate"></div>
-        </div>
-      </div>
-    )
+    return <LoadingBar />
   }
 
   return (
@@ -67,7 +62,7 @@ const Signups = (props) => {
       </h1>
 
       {loading
-        ? <div className="progress indeterminate" />
+        ? <LoadingBar />
         : <div />
       }
       <div className="switches">
