@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react"
-import { doc, updateDoc } from "@firebase/firestore"
+import {
+  doc,
+  updateDoc,
+  query,
+  collection,
+  where,
+  onSnapshot,
+ } from "@firebase/firestore"
+
 
 import { SessionAttendanceList } from '../'
 
@@ -20,17 +28,40 @@ const SessionEditor = ({ db, session }) => {
     setGroupOptions(options)
   }
 
+  /* INITIAL LOAD */
   useEffect(() => {
     updateGroupOptions()
     // M.AutoInit()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  /* SUBSCRIBE TO UPDATES */
+  useEffect(() => {
+    // Set up snapshot & load sessions
+    const q = query(collection(db, "sessions"), where("id", "==", session.id));
+    const unsubscribe = onSnapshot(q, querySnapshot => {
+      querySnapshot.forEach( d => {
+        var updatedSession = d.data();
+
+        setTitle(updatedSession.title);
+        setRoom(updatedSession.room);
+        setCapacity(updatedSession.capacity);
+        session.restricted_to = updatedSession.restricted_to;
+      })
+    })
+
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db])
+
+  /* INITIALIZE THE GROUP-SELECT DROPDOWN */
   useEffect(() => {
     var elems = document.querySelectorAll('.dropdown-trigger');
     M.Dropdown.init(elems, {});
   }, [groupOptions])
 
+
+  /* CHANGE HANDLERS */
   const handleChangeTitle = (e) => {
     setTitle(e.target.value);
 
