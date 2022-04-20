@@ -6,6 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { getFirestore } from '@firebase/firestore';
 import { initializeApp } from '@firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from '@firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth'
 
 import {
   TeacherRouter,
@@ -30,17 +31,13 @@ function App() {
   const db = getFirestore();
   const auth = getAuth();
   auth.languageCode = 'en';
+  const [user, loading] = useAuthState(auth)
+
 
   // State
-  const [user, setUser] = useState(auth.currentUser);
   const [userType, setUserTypeState] = useState();
   const [userNickname, setUserNickname] = useState(false)
-
-  // Hook to set user once logged in
-  // Used to be in handleSignIn, but React wasn't re-rendering
-  auth.onAuthStateChanged((response) => {
-    setUser(response)
-  });
+  const [loadingNickname, setLoadingNickname] = useState(true)
 
   const handleSignIn = () => {
     signInWithPopup(auth, provider)
@@ -75,21 +72,29 @@ function App() {
               setUserNickname(data.nickname)
             }
             
+            return true
           } else {
             setUserTypeState("unset")
+            return true
           }
+        }
+      }).then ( complete => {
+        if (complete) {
+          setLoadingNickname(false)
         }
       })
   }
 
   // Hook to update user type state when user is updated
   useEffect(() => {
-    updateUserTypeState(db, user)
-  }, [db, user]);
+    if (auth.currentUser) {
+      updateUserTypeState(db, user)
+    }
+  }, [db, auth, user]);
 
 
   // Sign In Page
-  if (!user) {
+  if (!auth.currentUser && !loading) {
     return (
       <div className="App">
         <div className="container" style={{marginTop: "33vh", maxWidth: "60vw", display: "table", textAlign: "center"}}>
@@ -108,7 +113,7 @@ function App() {
     );
 
   // User Type Selection
-  } else if (user && userType === 'unset') {
+  } else if (auth.currentUser && userType === 'unset' && !loading) {
     return (
       <div className="App">
         <UserTypeSelect db={db} user={user} />
@@ -116,7 +121,7 @@ function App() {
     );
     
   // Main App
-  } else if (user && userType !== 'unset') {
+  } else if (auth.currentUser && userType !== 'unset' && !loading && !loadingNickname) {
     /* Update the user object if a nickname was found */
     let u = user
     if (userNickname) {
@@ -139,7 +144,17 @@ function App() {
       </div>
     );
   } else {
-    return <div />
+    return (
+      <div className="progress grey lighten-5" style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        height: '100%',
+        width: '100%',
+      }}>
+          <div className="indeterminate grey lighten-3"></div>
+      </div>
+    )
   }
 }
 
