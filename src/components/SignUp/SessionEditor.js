@@ -122,20 +122,6 @@ const SessionEditor = ({ db, session }) => {
             />
           </div>
 
-          {/* Passport */}
-          {/* <div style={{paddingLeft: '1rem'}}>
-            <label>
-              <input
-                className="passport-checkbox"
-                id={`session-passport-${session.id}`}
-                type="checkbox"
-                checked={passportRequired ? "checked" : ""}
-                onChange={handleChangePassportRequired}
-              />
-              <span>Requires Passport</span>
-            </label>
-          </div> */}
-
           {/* Restrict */}
           <div>
             {/* <!-- Dropdown Trigger --> */}
