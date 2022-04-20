@@ -56,12 +56,6 @@ const SessionEditor = ({ db, session }) => {
     setDoc(doc(db, "sessions", session.id), payload)
   }
 
-  // const handleChangePassportRequired = async (e) => {
-  //   setPassportRequired(e.target.checked)
-
-  //   updateDoc(doc(db, "sessions", session.id), {passport_required: e.target.checked});
-  // }
-
   const handleRestrict = async (group) => {
     updateDoc(doc(db, "sessions", session.id), {restricted_to: group});
     session.restricted_to = group;
