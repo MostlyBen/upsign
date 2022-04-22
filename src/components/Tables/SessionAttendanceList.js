@@ -34,7 +34,11 @@ const EnrollmentRow = ({ db, session, enrollment }) => {
     setAttendance(value)
 
     enrollment['attendance'] = value
+
     let payload = session
+    // Should construct a session object instead
+    payload['restricted_to'] = payload.restricted_to ?? ''
+
     for (var i in payload.enrollment.length) {
       if (payload.enrollment[i].uid === enrollment.uid) {
         payload.enrollment[i] = enrollment
