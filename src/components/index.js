@@ -6,6 +6,8 @@ import SignOut from './auth/SignOut'
 // Main SignUp Pages
 import StudentSignUp from './SignUp/StudentSignUp'
 import TeacherSignUp from './SignUp/TeacherSignUp'
+// Small Bits
+import LoadingBar from './SmallBits/LoadingBar'
 // Dashboards
 import AllSessionOverview from './Dashboard/AllSessionOverview'
 import Config from './Dashboard/Config'
@@ -20,6 +22,8 @@ export {
   
   StudentSignUp,
   TeacherSignUp,
+
+  LoadingBar,
 
   AllSessionOverview,
   Config,

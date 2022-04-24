@@ -46,7 +46,7 @@ const UserTypeSelect = (props) => {
     } else {
       getAuth().signOut()
       window.alert(`Please log in with the correct account`)
-      window.location.reload()
+      // window.location.reload()
     }
   }
 
@@ -57,7 +57,7 @@ const UserTypeSelect = (props) => {
       <button
         className="waves-effect waves-light btn-large"
         style={{marginRight: "3rem"}}
-        onClick={() => setType("student")}
+        onClick={async () => await setType("student")}
       >
         Student
       </button>

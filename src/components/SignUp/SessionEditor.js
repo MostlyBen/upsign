@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react"
-import { doc, setDoc, updateDoc } from "@firebase/firestore"
+import {
+  doc,
+  updateDoc,
+  query,
+  collection,
+  where,
+  onSnapshot,
+ } from "@firebase/firestore"
+
 
 import { SessionAttendanceList } from '../'
 
@@ -13,7 +21,6 @@ const SessionEditor = ({ db, session }) => {
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [groupOptions, setGroupOptions] = useState([])
-  // const [passportRequired, setPassportRequired] = useState(session.passport_required ?? false)
 
 
   const updateGroupOptions = async () => {
@@ -21,46 +28,65 @@ const SessionEditor = ({ db, session }) => {
     setGroupOptions(options)
   }
 
+  /* INITIAL LOAD */
   useEffect(() => {
     updateGroupOptions()
     // M.AutoInit()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  /* SUBSCRIBE TO UPDATES */
+  useEffect(() => {
+    // Set up snapshot & load sessions
+    if (session.id) {
+      const q = query(collection(db, "sessions"), where("id", "==", session.id));
+      const unsubscribe = onSnapshot(q, querySnapshot => {
+        querySnapshot.forEach( d => {
+          var updatedSession = d.data();
+
+          setTitle(updatedSession.title);
+          setRoom(updatedSession.room);
+          setCapacity(updatedSession.capacity);
+          session.restricted_to = updatedSession.restricted_to;
+        })
+      })
+
+      return () => unsubscribe()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db])
+
+  /* INITIALIZE THE GROUP-SELECT DROPDOWN */
   useEffect(() => {
     var elems = document.querySelectorAll('.dropdown-trigger');
     M.Dropdown.init(elems, {});
   }, [groupOptions])
 
-  const handleChangeTitle = (e) => {
-    setTitle(e.target.value)
 
-    let payload = session
-    payload['title'] = e.target.value
-    setDoc(doc(db, "sessions", session.id), payload)
+  /* CHANGE HANDLERS */
+  const handleChangeTitle = (e) => {
+    setTitle(e.target.value);
+
+    var title = String(e.target.value);
+    updateDoc(doc(db, "sessions", session.id), {title: title});
+    session.title = title;
   }
 
   const handleChangeRoom = (e) => {
     setRoom(e.target.value)
 
-    let payload = session
-    payload['room'] = e.target.value
-    setDoc(doc(db, "sessions", session.id), payload)
+    var room = String(e.target.value);
+    updateDoc(doc(db, "sessions", session.id), {room: room});
+    session.room = room;
   }
 
   const handleChangeCapacity = (e) => {
     setCapacity(e.target.value)
 
-    let payload = session
-    payload['capacity'] = Number(e.target.value)
-    setDoc(doc(db, "sessions", session.id), payload)
+    var capacity = String(e.target.value);
+    updateDoc(doc(db, "sessions", session.id), {capacity: capacity});
+    session.capacity = capacity;
   }
-
-  // const handleChangePassportRequired = async (e) => {
-  //   setPassportRequired(e.target.checked)
-
-  //   updateDoc(doc(db, "sessions", session.id), {passport_required: e.target.checked});
-  // }
 
   const handleRestrict = async (group) => {
     updateDoc(doc(db, "sessions", session.id), {restricted_to: group});
@@ -121,20 +147,6 @@ const SessionEditor = ({ db, session }) => {
               placeholder="Capacity"
             />
           </div>
-
-          {/* Passport */}
-          {/* <div style={{paddingLeft: '1rem'}}>
-            <label>
-              <input
-                className="passport-checkbox"
-                id={`session-passport-${session.id}`}
-                type="checkbox"
-                checked={passportRequired ? "checked" : ""}
-                onChange={handleChangePassportRequired}
-              />
-              <span>Requires Passport</span>
-            </label>
-          </div> */}
 
           {/* Restrict */}
           <div>

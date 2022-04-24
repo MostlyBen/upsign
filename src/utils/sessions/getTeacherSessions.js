@@ -11,9 +11,10 @@ const createMissingTeacherSessions = (db, user, currentSessions) => {
         break;
       }
     }
+
     if (!found) {
       setDoc(doc(sessionRef), {
-        teacher: user.displayName,
+        teacher: user.nickname ?? user.displayName,
         teacher_id: user.uid,
         session: i+1,
         capacity: 30,

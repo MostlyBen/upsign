@@ -4,6 +4,7 @@ import M from "materialize-css";
 
 import { getTeacherSessions } from "../../utils";
 import SessionEditor from "./SessionEditor";
+import { LoadingBar } from "../";
 // import DatePicker from "./DatePicker";
 
 const TopMessage = ({ user }) => {
@@ -76,9 +77,7 @@ const TeacherSignUp = (props) => {
       <div>
         <TopMessage user={user} />
         
-        <div className="progress">
-          <div className="indeterminate" />
-        </div>
+        <LoadingBar />
       </div>
     )
   }

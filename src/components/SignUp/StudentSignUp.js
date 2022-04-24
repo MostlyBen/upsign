@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
 
 import SessionSelector from './SessionSelector'
+import { LoadingBar } from "../";
 // import DatePicker from "./DatePicker";
 // import { getHourSessions } from "../../utils";
 
@@ -68,9 +69,7 @@ const StudentSignUp = (props) => {
     return (
       <div>
         <TopMessage user={user} />
-        <div className="progress">
-          <div className="indeterminate"></div>
-        </div>
+        <LoadingBar />
       </div>
     )
   }
