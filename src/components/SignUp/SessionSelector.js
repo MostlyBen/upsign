@@ -140,11 +140,11 @@ const SessionCard = ({ db, session, user }) => {
 const SessionSelector = ({ db, user, hourSessions, hour }) => {
   // This is horrible. Do anything else.
   const sessionTimes = {
-    1: '8:30 - 9:34',
-    2: '9:37 - 10:41',
-    3: '10:44 - 11:48 or 11:09 - 12:13',
-    4: '12:16 - 1:20',
-    5: '1:23 - 2:27',
+    1: '8:30 - 9:35',
+    2: '9:45 - 10:50',
+    3: '11:00 - 12:05 // 11:20 - 12:25',
+    4: '12:35 - 1:40',
+    5: '1:50 - 2:55',
   }
   
   return (
