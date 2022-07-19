@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import { doc, updateDoc } from "@firebase/firestore"
 
-const EnrollmentRow = ({ db, session, enrollment }) => {
+const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const [attendance, setAttendance] = useState(enrollment.attendance ?? '')
   const [showRemove, setShowRemove] = useState(0)
 
@@ -24,7 +24,7 @@ const EnrollmentRow = ({ db, session, enrollment }) => {
 
       payload['enrollment'] = e
 
-      updateDoc(doc(db, "sessions", session.id), { enrollment: payload.enrollment })
+      updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), { enrollment: payload.enrollment })
     }
   }
 
@@ -46,7 +46,7 @@ const EnrollmentRow = ({ db, session, enrollment }) => {
       }
     }
 
-    updateDoc(doc(db, "sessions", session.id), { enrollment: payload.enrollment ?? [] })
+    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), { enrollment: payload.enrollment ?? [] })
   }
 
   return (
@@ -119,7 +119,7 @@ const EnrollmentRow = ({ db, session, enrollment }) => {
   )
 }
 
-const SessionAttendanceList = ({ db, session }) => {
+const SessionAttendanceList = ({ db, date, session }) => {
   if (Array.isArray(session.enrollment)) {
     session.enrollment.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
   }
@@ -145,7 +145,7 @@ const SessionAttendanceList = ({ db, session }) => {
                 <td />
               </tr>
             : session.enrollment.map(e => (
-              <EnrollmentRow db={db} session={session} enrollment={e} key={`row-${e.uid}`} />
+              <EnrollmentRow db={db} date={date} session={session} enrollment={e} key={`row-${e.uid}`} />
             ))
           : <tr>
               <td className="student-name student-name-empty">No Students</td>

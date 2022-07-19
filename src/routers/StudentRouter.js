@@ -7,7 +7,6 @@ const StudentRouter = ({ db, user }) => {
 
   return (
       <Switch>
-        
         <Route path="/" render={() => ( <StudentSignUp db={db} user={user} /> )} />
       </Switch>
   )

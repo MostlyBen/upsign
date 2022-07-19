@@ -1,8 +1,8 @@
 import { collection, query, where, getDocs } from "@firebase/firestore"
 
-const getHourSessions = async (db, hour) => {
+const getHourSessions = async (db, date, hour) => {
 
-  const q = query(collection(db, "sessions"), where("session", "==", hour), where("capacity", "!=", 0));
+  const q = query(collection(db, "sessions", String(date.getFullYear()), String(date.toDateString())), where("session", "==", hour)/*, where("capacity", "!=", 0)*/);
   const sessions = await getDocs(q)
     .then(querySnapshot => {
       const s = []

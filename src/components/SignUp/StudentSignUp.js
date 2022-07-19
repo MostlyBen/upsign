@@ -3,7 +3,7 @@ import { collection, query, where, onSnapshot } from "@firebase/firestore"
 
 import SessionSelector from './SessionSelector'
 import { LoadingBar } from "../";
-// import DatePicker from "./DatePicker";
+import DatePicker from "./DatePicker";
 // import { getHourSessions } from "../../utils";
 
 
@@ -35,7 +35,19 @@ const StudentSignUp = (props) => {
   const user = props.user;
 
   const [sessions, setSessions] = useState([])
-  // const [selectedDate, setSelectedDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState(new Date())
+
+    // Select upcoming Friday
+    useEffect(() => {
+      const dateCopy = new Date(new Date().getTime())
+      const nextFriday = new Date(
+        dateCopy.setDate(
+          dateCopy.getDate() + ((7 - dateCopy.getDay() + 5) % 7 || 7)
+        )
+      )
+  
+      setSelectedDate(nextFriday)
+    }, [])
 
   // Initialize the update listeners
   useEffect(() => {
@@ -43,7 +55,7 @@ const StudentSignUp = (props) => {
       const index = j
       const hour = j + 1
 
-      const q = query(collection(db, "sessions"), where("session", "==", hour));
+      const q = query(collection(db, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("session", "==", hour));
       onSnapshot(q, (querySnapshot) => {
         
         let hourSessions = [];
@@ -62,7 +74,7 @@ const StudentSignUp = (props) => {
       })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db])
+  }, [db, selectedDate])
 
 
   if (sessions.length === 0) {
@@ -78,9 +90,9 @@ const StudentSignUp = (props) => {
     return (
       <div>
         <TopMessage user={user} />
-        {/* <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} /> */}
+        <DatePicker selectedDate={selectedDate} handleSelectDate={setSelectedDate} />
 
-        { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} /> ) }
+        { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} date={selectedDate} /> ) }
       </div>
     )
   }

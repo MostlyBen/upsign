@@ -15,7 +15,7 @@ import { getGroups } from "../../utils"
 
 import M from 'materialize-css'
 
-const SessionEditor = ({ db, session }) => {
+const SessionEditor = ({ db, session, date }) => {
 
   const [title, setTitle] = useState(session.title ?? "")
   const [room, setRoom] = useState(session.room ?? "")
@@ -39,7 +39,7 @@ const SessionEditor = ({ db, session }) => {
   useEffect(() => {
     // Set up snapshot & load sessions
     if (session.id) {
-      const q = query(collection(db, "sessions"), where("id", "==", session.id));
+      const q = query(collection(db, "sessions", String(date.getFullYear()), String(date.toDateString())), where("id", "==", session.id));
       const unsubscribe = onSnapshot(q, querySnapshot => {
         querySnapshot.forEach( d => {
           var updatedSession = d.data();
@@ -68,7 +68,7 @@ const SessionEditor = ({ db, session }) => {
     setTitle(e.target.value);
 
     var title = String(e.target.value);
-    updateDoc(doc(db, "sessions", session.id), {title: title});
+    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {title: title});
     session.title = title;
   }
 
@@ -76,7 +76,7 @@ const SessionEditor = ({ db, session }) => {
     setRoom(e.target.value)
 
     var room = String(e.target.value);
-    updateDoc(doc(db, "sessions", session.id), {room: room});
+    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {room: room});
     session.room = room;
   }
 
@@ -84,12 +84,12 @@ const SessionEditor = ({ db, session }) => {
     setCapacity(e.target.value)
 
     var capacity = String(e.target.value);
-    updateDoc(doc(db, "sessions", session.id), {capacity: capacity});
+    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {capacity: capacity});
     session.capacity = capacity;
   }
 
   const handleRestrict = async (group) => {
-    updateDoc(doc(db, "sessions", session.id), {restricted_to: group});
+    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {restricted_to: group});
     session.restricted_to = group;
   }
 
@@ -199,7 +199,7 @@ const SessionEditor = ({ db, session }) => {
             Student List
           </div>
           { Number(capacity) !== 0
-          ? <SessionAttendanceList db={db} session={session} />
+          ? <SessionAttendanceList db={db} date={date} session={session} />
           : null}
 
         </div>

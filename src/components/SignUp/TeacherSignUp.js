@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
-import M from "materialize-css";
 
 import { getTeacherSessions } from "../../utils";
 import SessionEditor from "./SessionEditor";
 import { LoadingBar } from "../";
-// import DatePicker from "./DatePicker";
+import DatePicker from "./DatePicker";
 
 const TopMessage = ({ user }) => {
   
@@ -33,36 +32,47 @@ const TeacherSignUp = (props) => {
   const user = props.user;
 
   const [sessions, setSessions] = useState()
-  // const [selectedDate, setSelectedDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   const handleLoadSessions = async () => {
-    await getTeacherSessions(db, user)
+    await getTeacherSessions(db, selectedDate, user)
       .then(s => {
         setSessions(s)
       })
   }
 
+  const handleSelectDate = (date) => {
+    setSelectedDate(date)
+  }
+
   useEffect(() => {
+    // Select upcoming Friday
+    const dateCopy = new Date(new Date().getTime())
+    const nextFriday = new Date(
+      dateCopy.setDate(
+        dateCopy.getDate() + ((7 - dateCopy.getDay() + 5) % 7 || 7)
+      )
+    )
+
+    setSelectedDate(nextFriday)
+
+    // Load teacher sessions
     handleLoadSessions()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    M.AutoInit()
-
-  }, [sessions])
 
   useEffect(() => {
-    const q = query(collection(db, "sessions"), where("teacher", "==", user.displayName));
+    const q = query(collection(db, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("teacher", "==", user.displayName));
     onSnapshot(q, async () => {
-      await getTeacherSessions(db, user)
+      await getTeacherSessions(db, selectedDate, user)
         .then( s => {
           setSessions(s)
         }
       )
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db])
+  }, [db, selectedDate])
 
   const sessionTimes = {
     1: '8:30 - 9:35',
@@ -85,7 +95,7 @@ const TeacherSignUp = (props) => {
   return (
     <div>
       <TopMessage user={user} />
-      {/* <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} /> */}
+      <DatePicker selectedDate={selectedDate} handleSelectDate={handleSelectDate} />
 
       <div className="teacher-sessions">
         { Array.isArray(sessions) ? sessions.map(s =>
@@ -96,7 +106,7 @@ const TeacherSignUp = (props) => {
             </h4>
             <hr style={{marginBottom: "1rem"}} />
             <div className="row card session-card is-enrolled teacher-card">
-              <SessionEditor key={s.id} session={s} db={props.db} />
+              <SessionEditor key={s.id} session={s} db={props.db} date={selectedDate} />
             </div>
           </div>
         ) : null }

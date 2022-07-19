@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link, Redirect } from "react-router-dom"
-import { query, collection, where, onSnapshot } from "@firebase/firestore"
+import { query, collection, onSnapshot } from "@firebase/firestore"
 
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -9,7 +9,7 @@ import M from 'materialize-css';
 
 import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups } from "../../utils"
 import SessionEditor from "../SignUp/SessionEditor"
-// import DatePicker from "../SignUp/DatePicker"
+import DatePicker from "../SignUp/DatePicker"
 
 const SessionSelector = ({selected}) => {
   const hours = ['1', '2', '3', '4', '5']
@@ -88,7 +88,7 @@ const UnsignedStudents = ({ students }) => {
   )
 }
 
-const SessionCard = ({ db, session, filter, setOpenSession }) => {
+const SessionCard = ({ db, date, session, filter, setOpenSession }) => {
   const [filteredEnrollment, setFilteredEnrollment] = useState(session.enrollment)
   const [allStudentRef, setAllStudentRef] = useState()
   const [showOpen, setShowOpen] = useState(false)
@@ -132,7 +132,7 @@ const SessionCard = ({ db, session, filter, setOpenSession }) => {
     drop: () => {
       const user = monitor.getItem().enrollment
 
-      enrollStudent(db, session, user, true)
+      enrollStudent(db, date, session, user, true)
     },
     collect: monitor => (monitor),
   }))
@@ -208,13 +208,13 @@ const AllSessionOverview = ({ db, match }) => {
   const [groupOptions, setGroupOptions] = useState([])
   const [groupFilter, setGroupFilter] = useState('All Students')
   const [openSession, setOpenSession] = useState({})
-  // const [selectedDate, setSelectedDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   const loadSessions = async (db) => {
-    const s = await getHourSessions(db, Number(hour))
+    const s = await getHourSessions(db, selectedDate, Number(hour))
     const u = groupFilter === 'All Students'
-      ? await getUnsignedStudents(db, Number(hour))
-      : await getUnsignedStudents(db, Number(hour), groupFilter)
+      ? await getUnsignedStudents(db, selectedDate, Number(hour))
+      : await getUnsignedStudents(db, selectedDate, Number(hour), groupFilter)
 
     if (s.length > 0) {
       if (Number(s[0].session) === Number(hour)) {
@@ -230,19 +230,36 @@ const AllSessionOverview = ({ db, match }) => {
     setGroupOptions(options)
   }
 
+  const handleSelectDate = (date) => {
+    setSelectedDate(date)
+  }
+
+  // Select upcoming Friday
   useEffect(() => {
+    const dateCopy = new Date(new Date().getTime())
+    const nextFriday = new Date(
+      dateCopy.setDate(
+        dateCopy.getDate() + ((7 - dateCopy.getDay() + 5) % 7 || 7)
+      )
+    )
+
+    setSelectedDate(nextFriday)
+  }, [])
+
+  useEffect(() => {
+    setSessions([])
     // Get list of student groups for filter
     updateGroupOptions()
 
     // Set up snapshot & load sessions
-    const q = query(collection(db, "sessions"), where("session", "==", Number(hour)));
+    const q = query(collection(db, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString()))/*, where("session", "==", Number(hour))*/);
     const unsubscribe = onSnapshot(q, () => {
       loadSessions(db)
     })
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, hour, groupFilter])
+  }, [db, selectedDate, hour, groupFilter])
 
   useEffect(() => {
     setSessions([])
@@ -250,7 +267,9 @@ const AllSessionOverview = ({ db, match }) => {
   }, [hour])
 
   useEffect(() => {
-    M.AutoInit()
+    var modals = document.querySelectorAll('.modal')
+    // eslint-disable-next-line no-unused-vars
+    var instances = M.Modal.init(modals, {})
   }, [groupOptions])
 
   if (!hour) {
@@ -263,7 +282,7 @@ const AllSessionOverview = ({ db, match }) => {
       <div id="modal1" className="modal teacher-sessions session-card teacher-card">
         <div className="modal-content row">
           { Object.keys(openSession) !== 0
-            ? <SessionEditor key={openSession.id} session={openSession} db={db} />
+            ? <SessionEditor key={openSession.id} session={openSession} db={db} date={selectedDate} />
             : <div /> }
         </div>
       </div>
@@ -278,13 +297,10 @@ const AllSessionOverview = ({ db, match }) => {
       <hr />
       
       <div className="row">
-        {/* Date Picker */}
-        {/* <div className="col s12 m6">
-          <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-        </div> */}
+
         
         {/* Group Dropdown Trigger */}
-        <div className='col s12'>
+        <div className='col s12 m6'>
           <div
             className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
             data-target={`filter-dropdown`}
@@ -298,6 +314,11 @@ const AllSessionOverview = ({ db, match }) => {
               expand_more
             </span>
           </div>
+        </div>
+
+        {/* Date Picker */}
+        <div className="col s12 m6">
+          <DatePicker selectedDate={selectedDate} handleSelectDate={handleSelectDate} />
         </div>
         
       </div>
@@ -330,12 +351,15 @@ const AllSessionOverview = ({ db, match }) => {
       <DndProvider backend={HTML5Backend}>
         <div className="row">
           <div className="col s12 cards-container">
-            <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
+            {sessions.length > 0
+              ? <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
+              : <div></div>}
             {sessions.map( s => {
               return <SessionCard
                   key={`session-${s.id}`}
                   id={`session-${s.id}`}
                   db={db}
+                  date={selectedDate}
                   session={s}
                   hour={hour}
                   filter={groupFilter}

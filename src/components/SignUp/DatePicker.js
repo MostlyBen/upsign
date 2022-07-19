@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import M from "materialize-css"
 
-const DatePicker = ({ selectedDate, setSelectedDate, events }) => {
+const DatePicker = ({ selectedDate, handleSelectDate, events }) => {
   useEffect(() => {
     const datepicker = document.querySelector('.datepicker')
     M.Datepicker.init(datepicker, {
@@ -11,12 +11,12 @@ const DatePicker = ({ selectedDate, setSelectedDate, events }) => {
       defaultDate: selectedDate,
       setDefaultDate: true,
       // events: events,
-      onSelect: setSelectedDate,
+      onSelect: handleSelectDate,
     })
-  })
+  }, [selectedDate, handleSelectDate])
 
   return (
-    <input type="text" className="datepicker btn white" />
+    <input className="datepicker btn white" />
   )
 }
 

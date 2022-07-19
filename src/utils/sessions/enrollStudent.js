@@ -1,13 +1,13 @@
 import { collection, query, where, getDoc, getDocs, doc, setDoc } from "@firebase/firestore"
 
-export const unenrollFromHour = async (db, user, hour) => {
+export const unenrollFromHour = async (db, date, user, hour) => {
   const userObject = {
     name: user.nickname ?? user.displayName ?? user.name,
     uid: user.uid,
   }
 
 
-  const sessionRef = collection(db, "sessions")
+  const sessionRef = collection(db, "sessions", String(date.getFullYear()), String(date.toDateString()))
   const q = query(sessionRef,
     where("enrollment", "array-contains-any", [
       userObject,
@@ -28,7 +28,7 @@ export const unenrollFromHour = async (db, user, hour) => {
       for (var i = 0; i < docObject.enrollment.length; i++) {
         if (String(docObject.enrollment[i].uid) === String(user.uid)) {
           docObject.enrollment.splice(i, 1)
-          setDoc(doc(db, "sessions", res.id), {
+          setDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), res.id), {
             ...docObject
           })
         }
@@ -37,12 +37,12 @@ export const unenrollFromHour = async (db, user, hour) => {
   })
 }
 
-const enrollStudent = async (db, session, user, preventUnenroll = false) => {
-  const docRef = doc(db, "sessions", session.id)
+const enrollStudent = async (db, date, session, user, preventUnenroll = false) => {
+  const docRef = doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id)
   const docSnap = await getDoc(docRef)
 
   if (docSnap.exists()) {
-    await unenrollFromHour(db, user, session.session)
+    await unenrollFromHour(db, date, user, session.session)
     const sessionData = docSnap.data()
 
     let tempEnrollment = []
@@ -68,7 +68,8 @@ const enrollStudent = async (db, session, user, preventUnenroll = false) => {
     }
 
     // Update the doc in the database
-    setDoc(doc(db, "sessions", session.id), {
+    // SHOULD PROBABLY SWITCH TO UPDATEDOC
+    setDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {
       enrollment: tempEnrollment,
       ...sessionData
     })

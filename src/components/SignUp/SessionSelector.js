@@ -3,7 +3,7 @@ import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
 import { enrollStudent, getSignupAllowed } from "../../utils"
 
-const SessionCard = ({ db, session, user }) => {
+const SessionCard = ({ db, date, session, user }) => {
   // The session card decides whether or not display should be done depending on
   // whether or not student signups are active
   // This should probably happen sooner so less data is loaded, but this was a quick fix
@@ -47,9 +47,9 @@ const SessionCard = ({ db, session, user }) => {
 
   const handleClick = (enrolled) => {
     if (Number(session.enrollment.length) < Number(session.capacity) && signupAllowed) {
-      enrollStudent(db, session, user)
+      enrollStudent(db, date, session, user)
     } else if (signupAllowed && enrolled) {
-      enrollStudent(db, session, user)
+      enrollStudent(db, date, session, user)
     }
   }
 
@@ -137,7 +137,7 @@ const SessionCard = ({ db, session, user }) => {
   )
 }
 
-const SessionSelector = ({ db, user, hourSessions, hour }) => {
+const SessionSelector = ({ db, date, user, hourSessions, hour }) => {
   // This is horrible. Do anything else.
   const sessionTimes = {
     1: '8:30 - 9:35',
@@ -155,7 +155,7 @@ const SessionSelector = ({ db, user, hourSessions, hour }) => {
       </h4>
       <hr />
       <div className="cards-container">
-        { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} /> ) }
+        { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} date={date} /> ) }
       </div>
     </div>
   )
