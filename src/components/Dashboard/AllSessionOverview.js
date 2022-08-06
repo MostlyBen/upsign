@@ -8,6 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import M from 'materialize-css';
 
 import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups } from "../../utils"
+import { schoolId } from "../../config"
 import SessionEditor from "../SignUp/SessionEditor"
 import DatePicker from "../SignUp/DatePicker"
 
@@ -54,6 +55,7 @@ const StudentName = ({ enrollment, currentSession }) => {
     key={`enrollment-${enrollment.uid}`}
     style={{ opacity: isDragging ? 0.25 : 1, cursor: 'move', marginBottom: '0.5rem' }}
   >
+    {/* <span className="material-icons">lock</span> */}
     {enrollment.nickname ?? enrollment.name} {enrollment.attendance
     ? <span style={{color: "dimgrey", margin: "0 0 0 0.5rem"}}>|<span style={{margin: "0 0 0 0.75rem", fontWeight: "500",
         color: enrollment.attendance === "present" ? "#009688" : enrollment.attendance === "tardy" ? "#f9a825" : "#d32f2f"}}>
@@ -252,7 +254,7 @@ const AllSessionOverview = ({ db, match }) => {
     updateGroupOptions()
 
     // Set up snapshot & load sessions
-    const q = query(collection(db, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString()))/*, where("session", "==", Number(hour))*/);
+    const q = query(collection(db, "schools", schoolId, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString()))/*, where("session", "==", Number(hour))*/);
     const unsubscribe = onSnapshot(q, () => {
       loadSessions(db)
     })

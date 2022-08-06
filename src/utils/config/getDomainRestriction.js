@@ -1,9 +1,10 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { schoolId } from "../../config";
 
 const getDomainRestriction = async (db) => {
   // Get the config for domain restrictions
   console.log("Getting domain restriction...")
-  const domResRef = doc(db, "config", "domain_restriction")
+  const domResRef = doc(db, "schools", schoolId, "config", "domain_restriction")
   getDoc(domResRef).then(domResDoc => {
 
     if (domResDoc.exists()) {
@@ -15,7 +16,7 @@ const getDomainRestriction = async (db) => {
 
     } else {
       console.log("domResDoc doesn't exist!!!")
-      setDoc(doc(db, "config", "domain_restriction"), {
+      setDoc(doc(db, "schools", schoolId, "config", "domain_restriction"), {
         active: false,
         domain: ''
       })

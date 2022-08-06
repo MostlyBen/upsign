@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
 import { enrollStudent, getSignupAllowed } from "../../utils"
+import { schoolId } from "../../config";
 
 const SessionCard = ({ db, date, session, user }) => {
   // The session card decides whether or not display should be done depending on
@@ -20,7 +21,7 @@ const SessionCard = ({ db, date, session, user }) => {
   
 
   const getUserDoc = async () => {
-    const userRef = doc(db, "users", user.uid)
+    const userRef = doc(db, "schools", schoolId, "users", user.uid)
     getDoc(userRef)
       .then(userSnap => {
         if (userSnap.exists()) {
@@ -33,7 +34,7 @@ const SessionCard = ({ db, date, session, user }) => {
     updateSignupAllowed()
     getUserDoc()
 
-    const signupAllowedRef = doc(db, "config", "student_signup")
+    const signupAllowedRef = doc(db, "schools", schoolId, "config", "student_signup")
     const unsubscribe = onSnapshot(signupAllowedRef, (doc) => {
       const active = doc.data().active
       if (typeof active === "boolean") {

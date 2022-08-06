@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { doc, collection, getDoc, setDoc } from "firebase/firestore";
+import { schoolId } from "../../../config";
 import { LoadingBar } from "../../";
 
 const Signups = (props) => {
@@ -8,9 +9,9 @@ const Signups = (props) => {
   const [studentSign, setStudentSign] = useState(true)
   // const [teacherEdit, setTeacherEdit] = useState(true)
 
-  const configRef = collection(props.db, "config")
-  const teacherRegRef = doc(props.db, "config", "teacher_register")
-  const studentSignRef = doc(props.db, "config", "student_signup")
+  const configRef = collection(props.db, "schools", schoolId, "config")
+  const teacherRegRef = doc(props.db, "schools", schoolId, "config", "teacher_register")
+  const studentSignRef = doc(props.db, "schools", schoolId, "config", "student_signup")
 
   const get_settings = async () => {
     getDoc(teacherRegRef)

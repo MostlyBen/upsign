@@ -13,6 +13,8 @@ import { SessionAttendanceList } from '../'
 
 import { getGroups } from "../../utils"
 
+import { schoolId } from "../../config"
+
 import M from 'materialize-css'
 
 const SessionEditor = ({ db, session, date }) => {
@@ -39,7 +41,7 @@ const SessionEditor = ({ db, session, date }) => {
   useEffect(() => {
     // Set up snapshot & load sessions
     if (session.id) {
-      const q = query(collection(db, "sessions", String(date.getFullYear()), String(date.toDateString())), where("id", "==", session.id));
+      const q = query(collection(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString())), where("id", "==", session.id));
       const unsubscribe = onSnapshot(q, querySnapshot => {
         querySnapshot.forEach( d => {
           var updatedSession = d.data();
@@ -68,7 +70,7 @@ const SessionEditor = ({ db, session, date }) => {
     setTitle(e.target.value);
 
     var title = String(e.target.value);
-    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {title: title});
+    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {title: title});
     session.title = title;
   }
 
@@ -76,7 +78,7 @@ const SessionEditor = ({ db, session, date }) => {
     setRoom(e.target.value)
 
     var room = String(e.target.value);
-    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {room: room});
+    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {room: room});
     session.room = room;
   }
 
@@ -84,12 +86,12 @@ const SessionEditor = ({ db, session, date }) => {
     setCapacity(e.target.value)
 
     var capacity = String(e.target.value);
-    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {capacity: capacity});
+    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {capacity: capacity});
     session.capacity = capacity;
   }
 
   const handleRestrict = async (group) => {
-    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {restricted_to: group});
+    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {restricted_to: group});
     session.restricted_to = group;
   }
 

@@ -1,6 +1,6 @@
 import { useState } from "react"
-
 import { doc, updateDoc } from "@firebase/firestore"
+import { schoolId } from "../../config"
 
 const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const [attendance, setAttendance] = useState(enrollment.attendance ?? '')
@@ -24,7 +24,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
 
       payload['enrollment'] = e
 
-      updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), { enrollment: payload.enrollment })
+      updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), { enrollment: payload.enrollment })
     }
   }
 
@@ -46,7 +46,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
       }
     }
 
-    updateDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), { enrollment: payload.enrollment ?? [] })
+    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), { enrollment: payload.enrollment ?? [] })
   }
 
   return (

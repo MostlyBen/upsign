@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
+import { schoolId } from "../../config";
 
 import SessionSelector from './SessionSelector'
 import { LoadingBar } from "../";
@@ -55,7 +56,7 @@ const StudentSignUp = (props) => {
       const index = j
       const hour = j + 1
 
-      const q = query(collection(db, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("session", "==", hour));
+      const q = query(collection(db, "schools", schoolId, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("session", "==", hour));
       onSnapshot(q, (querySnapshot) => {
         
         let hourSessions = [];

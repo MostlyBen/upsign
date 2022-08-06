@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { getFirestore } from '@firebase/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
 import { getAuth } from "@firebase/auth";
+import { schoolId } from '../../config';
 
 import {
   setUserType,
@@ -24,7 +25,7 @@ const UserTypeSelect = (props) => {
   useEffect(() => {
     getTeacherAllowed()
     
-    const teacherRegRef = doc(db, "config", "teacher_register")
+    const teacherRegRef = doc(db, "schools", schoolId, "config", "teacher_register")
     const unsubscribe = onSnapshot(teacherRegRef, (doc) => {
       const active = doc.data().active
       if (typeof active === "boolean") {

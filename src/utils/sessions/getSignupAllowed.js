@@ -1,7 +1,8 @@
 import { doc, getDoc } from "firebase/firestore";
+import { schoolId } from "../../config";
 
 const getSignupAllowed = async (db) => {
-  const signupAllowedRef = doc(db, "config", "student_signup")
+  const signupAllowedRef = doc(db, "schools", schoolId, "config", "student_signup")
 
   getDoc(signupAllowedRef).then(signupAllowedSetting => {
     if (signupAllowedSetting.exists()) {

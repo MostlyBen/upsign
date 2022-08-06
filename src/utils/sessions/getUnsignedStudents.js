@@ -1,7 +1,8 @@
 import { collection, query, where, getDocs } from "@firebase/firestore"
+import { schoolId } from "../../config";
 
 const getUnsignedStudents = async (db, date, hour, groupFilter = 'none') => {
-  const sessionQuery = query(collection(db, "sessions", String(date.getFullYear()), String(date.toDateString())), where("session", "==", Number(hour))/*, where("capacity", "!=", 0)*/);
+  const sessionQuery = query(collection(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString())), where("session", "==", Number(hour))/*, where("capacity", "!=", 0)*/);
   const hourSessions = await getDocs(sessionQuery)
     .then(querySnapshot => {
       const s = []
@@ -18,7 +19,7 @@ const getUnsignedStudents = async (db, date, hour, groupFilter = 'none') => {
     })
 
 
-  const studentQuery = query(collection(db, "users"), where("type", "==", "student"));
+  const studentQuery = query(collection(db, "schools", schoolId, "users"), where("type", "==", "student"));
   const allStudents = await getDocs(studentQuery)
     .then(querySnapshot => {
       const s = []

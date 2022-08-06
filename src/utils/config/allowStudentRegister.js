@@ -1,8 +1,9 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { schoolId } from "../../config";
 
 const allowStudentRegister = async (db, email) => {
   // Get the config for domain restrictions
-  const domResRef = doc(db, "config", "domain_restriction")
+  const domResRef = doc(db, "schools", schoolId, "config", "domain_restriction")
   const allow = getDoc(domResRef).then(domResDoc => {
     // Create variable to return
     let allow = true
@@ -24,7 +25,7 @@ const allowStudentRegister = async (db, email) => {
 
     // Create the config doc if it doesn't exist
     } else {
-      setDoc(doc(db, "config", "domain_restriction"), {
+      setDoc(doc(db, "schools", schoolId, "config", "domain_restriction"), {
         active: false,
         domain: ''
       })

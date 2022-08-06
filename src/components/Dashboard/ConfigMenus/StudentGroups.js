@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { doc, collection, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { getAllStudents, getGroups } from "../../../utils"
+import { schoolId } from "../../../config";
 import M from "materialize-css";
 
 
@@ -33,7 +34,7 @@ const StudentGroups = ({ db }) => {
     // instance.destroy()
     M.AutoInit()
 
-    const usersRef = collection(db, "users")
+    const usersRef = collection(db, "schools", schoolId, "users")
 
     const unsubscribe = onSnapshot(usersRef, () => {
       getStudents()
@@ -50,7 +51,7 @@ const StudentGroups = ({ db }) => {
   }, [groupOptions])
 
   const handleClickStudent = (student) => {
-    const studentRef = doc(db, "users", student.uid)
+    const studentRef = doc(db, "schools", schoolId, "users", student.uid)
     getDoc(studentRef)
     .then(studentSnap => {
       if (studentSnap.exists()) {

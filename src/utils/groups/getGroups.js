@@ -1,7 +1,8 @@
 import { doc, getDoc } from "@firebase/firestore"
+import { schoolId } from "../../config"
 
 const getGroups = async (db) => {
-  const groupRef = doc(db, "config", "student_groups")
+  const groupRef = doc(db, "schools", schoolId, "config", "student_groups")
   const groupSnap = await getDoc(groupRef)
 
   if (groupSnap.exists()) {

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
 
 import { getTeacherSessions } from "../../utils";
+import { schoolId } from "../../config";
 import SessionEditor from "./SessionEditor";
 import { LoadingBar } from "../";
 import DatePicker from "./DatePicker";
@@ -63,7 +64,7 @@ const TeacherSignUp = (props) => {
 
 
   useEffect(() => {
-    const q = query(collection(db, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("teacher", "==", user.displayName));
+    const q = query(collection(db, "schools", schoolId, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("teacher", "==", user.displayName));
     onSnapshot(q, async () => {
       await getTeacherSessions(db, selectedDate, user)
         .then( s => {

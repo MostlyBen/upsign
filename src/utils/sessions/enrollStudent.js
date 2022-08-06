@@ -1,4 +1,5 @@
 import { collection, query, where, getDoc, getDocs, doc, setDoc } from "@firebase/firestore"
+import { schoolId } from "../../config"
 
 export const unenrollFromHour = async (db, date, user, hour) => {
   const userObject = {
@@ -7,7 +8,7 @@ export const unenrollFromHour = async (db, date, user, hour) => {
   }
 
 
-  const sessionRef = collection(db, "sessions", String(date.getFullYear()), String(date.toDateString()))
+  const sessionRef = collection(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()))
   const q = query(sessionRef,
     where("enrollment", "array-contains-any", [
       userObject,
@@ -28,7 +29,7 @@ export const unenrollFromHour = async (db, date, user, hour) => {
       for (var i = 0; i < docObject.enrollment.length; i++) {
         if (String(docObject.enrollment[i].uid) === String(user.uid)) {
           docObject.enrollment.splice(i, 1)
-          setDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), res.id), {
+          setDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), res.id), {
             ...docObject
           })
         }
@@ -38,7 +39,7 @@ export const unenrollFromHour = async (db, date, user, hour) => {
 }
 
 const enrollStudent = async (db, date, session, user, preventUnenroll = false) => {
-  const docRef = doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id)
+  const docRef = doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id)
   const docSnap = await getDoc(docRef)
 
   if (docSnap.exists()) {
@@ -69,7 +70,7 @@ const enrollStudent = async (db, date, session, user, preventUnenroll = false) =
 
     // Update the doc in the database
     // SHOULD PROBABLY SWITCH TO UPDATEDOC
-    setDoc(doc(db, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {
+    setDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {
       enrollment: tempEnrollment,
       ...sessionData
     })
