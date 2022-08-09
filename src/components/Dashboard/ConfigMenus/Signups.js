@@ -8,7 +8,7 @@ const Signups = (props) => {
   const [teacherReg, setTeacherReg] = useState(false)
   const [studentSign, setStudentSign] = useState(true)
   // const [teacherEdit, setTeacherEdit] = useState(true)
-  const schoolId = getSubdomain
+  const schoolId = getSubdomain()
 
   const configRef = collection(props.db, "schools", schoolId, "config")
   const teacherRegRef = doc(props.db, "schools", schoolId, "config", "teacher_register")
