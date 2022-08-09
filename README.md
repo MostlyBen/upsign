@@ -31,11 +31,8 @@ const firebaseConfig = {
   measurementId: "YOUR MEASUREMENT ID"
 }
 
-const schoolId = 'YOUR_SCHOOL_ID'
-
 export {
   firebaseConfig,
-  schoolId,
 }
 ```
 

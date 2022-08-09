@@ -1,8 +1,8 @@
 import { collection, query, where, getDocs } from "@firebase/firestore"
-import { schoolId } from "../../config";
+import { getSubdomain } from "../../utils";
 
 const getHourSessions = async (db, date, hour) => {
-
+  const schoolId = getSubdomain()
   const q = query(collection(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString())), where("session", "==", hour)/*, where("capacity", "!=", 0)*/);
   const sessions = await getDocs(q)
     .then(querySnapshot => {

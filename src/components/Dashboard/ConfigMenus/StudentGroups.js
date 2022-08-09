@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { doc, collection, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { getAllStudents, getGroups } from "../../../utils"
-import { schoolId } from "../../../config";
+import { getSubdomain } from '../../../utils';
 import M from "materialize-css";
 
 
@@ -9,6 +9,8 @@ const StudentGroups = ({ db }) => {
   const [groupOptions, setGroupOptions] = useState([])
   const [selectedGroup, setSelectedGroup] = useState("")
   const [allStudents, setAllStudents] = useState([])
+
+  const schoolId = getSubdomain()
 
   const updateGroupOptions = async () => {
     const options = await getGroups(db)

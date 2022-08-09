@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
 
-import { getTeacherSessions } from "../../utils";
-import { schoolId } from "../../config";
+import { getTeacherSessions, getSubdomain } from "../../utils";
 import SessionEditor from "./SessionEditor";
 import { LoadingBar } from "../";
 import DatePicker from "./DatePicker";
@@ -34,6 +33,8 @@ const TeacherSignUp = (props) => {
 
   const [sessions, setSessions] = useState()
   const [selectedDate, setSelectedDate] = useState(new Date())
+
+  const schoolId = getSubdomain()
 
   const handleLoadSessions = async () => {
     await getTeacherSessions(db, selectedDate, user)

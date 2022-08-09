@@ -40,6 +40,9 @@ function App() {
   const [userNickname, setUserNickname] = useState(false)
   const [loadingNickname, setLoadingNickname] = useState(true)
 
+  // Get the subdomain
+  
+
   const handleSignIn = () => {
     signInWithPopup(auth, provider)
       .then((result) => {

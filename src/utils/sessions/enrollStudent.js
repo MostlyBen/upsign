@@ -1,5 +1,5 @@
 import { collection, query, where, getDoc, getDocs, doc, setDoc } from "@firebase/firestore"
-import { schoolId } from "../../config"
+import { getSubdomain } from "../../utils";
 
 export const unenrollFromHour = async (db, date, user, hour) => {
   const userObject = {
@@ -7,6 +7,7 @@ export const unenrollFromHour = async (db, date, user, hour) => {
     uid: user.uid,
   }
 
+  const schoolId = getSubdomain()
 
   const sessionRef = collection(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()))
   const q = query(sessionRef,
@@ -39,6 +40,7 @@ export const unenrollFromHour = async (db, date, user, hour) => {
 }
 
 const enrollStudent = async (db, date, session, user, preventUnenroll = false) => {
+  const schoolId = getSubdomain()
   const docRef = doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id)
   const docSnap = await getDoc(docRef)
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "@firebase/firestore"
-import { schoolId } from "../../config";
+import { getSubdomain } from "../../utils";
 
 import SessionSelector from './SessionSelector'
 import { LoadingBar } from "../";
@@ -38,17 +38,19 @@ const StudentSignUp = (props) => {
   const [sessions, setSessions] = useState([])
   const [selectedDate, setSelectedDate] = useState(new Date())
 
-    // Select upcoming Friday
-    useEffect(() => {
-      const dateCopy = new Date(new Date().getTime())
-      const nextFriday = new Date(
-        dateCopy.setDate(
-          dateCopy.getDate() + ((7 - dateCopy.getDay() + 5) % 7 || 7)
-        )
+  const schoolId = getSubdomain()
+
+  // Select upcoming Friday
+  useEffect(() => {
+    const dateCopy = new Date(new Date().getTime())
+    const nextFriday = new Date(
+      dateCopy.setDate(
+        dateCopy.getDate() + ((7 - dateCopy.getDay() + 5) % 7 || 7)
       )
-  
-      setSelectedDate(nextFriday)
-    }, [])
+    )
+
+    setSelectedDate(nextFriday)
+  }, [])
 
   // Initialize the update listeners
   useEffect(() => {

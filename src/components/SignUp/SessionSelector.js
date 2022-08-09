@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react"
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
-import { enrollStudent, getSignupAllowed } from "../../utils"
-import { schoolId } from "../../config";
+import { enrollStudent, getSignupAllowed, getSubdomain } from "../../utils"
 
 const SessionCard = ({ db, date, session, user }) => {
   // The session card decides whether or not display should be done depending on
@@ -13,6 +12,8 @@ const SessionCard = ({ db, date, session, user }) => {
   const [ isEnrolled, setIsEnrolled ] = useState(false)
   const [ signupAllowed, setSignupAllowed] = useState(false)
   const [ userDoc, setUserDoc ] = useState({})
+
+  const schoolId = getSubdomain()
 
   const updateSignupAllowed = async () => {
     const allowed = await getSignupAllowed(db)

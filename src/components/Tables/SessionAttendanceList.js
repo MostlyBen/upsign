@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { doc, updateDoc } from "@firebase/firestore"
-import { schoolId } from "../../config"
+import { getSubdomain } from "../../utils"
 
 const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const [attendance, setAttendance] = useState(enrollment.attendance ?? '')
   const [showRemove, setShowRemove] = useState(0)
+
+  const schoolId = getSubdomain()
 
   const handleMouseEnter = () => {
     setShowRemove(1)

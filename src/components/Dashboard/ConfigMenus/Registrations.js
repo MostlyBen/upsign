@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { doc, collection, getDoc, setDoc } from "firebase/firestore";
-import { schoolId } from "../../../config";
+import { getSubdomain } from '../../../utils';
 import { LoadingBar } from "../../"
 
 const Registrations = (props) => {
@@ -8,6 +8,8 @@ const Registrations = (props) => {
   const [restrictDomain, setRestrictDomain] = useState(false)
   const [domain, setDomain] = useState('')
   // const [teacherEdit, setTeacherEdit] = useState(true)
+
+  const schoolId = getSubdomain()
 
   const configRef = collection(props.db, "schools", schoolId, "config")
   const restrictDomainRef = doc(props.db, "schools", schoolId, "config", "domain_restriction")

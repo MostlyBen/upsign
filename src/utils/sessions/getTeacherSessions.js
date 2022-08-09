@@ -1,7 +1,8 @@
 import { collection, query, where, getDocs, doc, setDoc } from "@firebase/firestore";
-import { schoolId } from "../../config";
+import { getSubdomain } from "../../utils";
 
 const createMissingTeacherSessions = (db, date, user, currentSessions) => {
+  const schoolId = getSubdomain()
   const sessionRef = collection(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()))
 
   for (var i = 0; i < 5; i++) {
@@ -27,7 +28,8 @@ const createMissingTeacherSessions = (db, date, user, currentSessions) => {
 
 const getTeacherSessions = async (db, date, user) => {
   const teacher_id = user.uid;
-
+  const schoolId = getSubdomain()
+  
   const q = query(collection(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString())), where("teacher_id", "==", teacher_id));
   const sessions = await getDocs(q)
     .then(querySnapshot => {

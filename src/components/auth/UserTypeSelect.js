@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { getFirestore } from '@firebase/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
 import { getAuth } from "@firebase/auth";
-import { schoolId } from '../../config';
+import { getSubdomain } from '../../utils';
 
 import {
   setUserType,
@@ -15,6 +15,7 @@ const UserTypeSelect = (props) => {
 
   const db = getFirestore()
   const user = props.user
+  const schoolId = getSubdomain()
 
   const getTeacherAllowed = async () => {
     const teacherAllowed = await getTeacherSignupAllowed(db)

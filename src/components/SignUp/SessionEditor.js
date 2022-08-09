@@ -11,9 +11,7 @@ import {
 
 import { SessionAttendanceList } from '../'
 
-import { getGroups } from "../../utils"
-
-import { schoolId } from "../../config"
+import { getGroups, getSubdomain } from "../../utils"
 
 import M from 'materialize-css'
 
@@ -23,6 +21,8 @@ const SessionEditor = ({ db, session, date }) => {
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [groupOptions, setGroupOptions] = useState([])
+
+  const schoolId = getSubdomain()
 
 
   const updateGroupOptions = async () => {

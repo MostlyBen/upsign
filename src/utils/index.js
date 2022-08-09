@@ -4,6 +4,8 @@ import getTeacherSignupAllowed from "./config/getTeacherSignupAllowed";
 
 import getGroups from "./groups/getGroups";
 
+import getSubdomain from "./info/getSubdomain";
+
 import getTeacherSessions from "./sessions/getTeacherSessions";
 import getHourSessions from "./sessions/getHourSessions";
 import getSignupAllowed from "./sessions/getSignupAllowed";
@@ -21,6 +23,8 @@ export {
   getTeacherSignupAllowed,
 
   getGroups,
+
+  getSubdomain,
 
   getTeacherSessions,
   getHourSessions,

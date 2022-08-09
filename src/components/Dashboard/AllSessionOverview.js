@@ -7,8 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import M from 'materialize-css';
 
-import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups } from "../../utils"
-import { schoolId } from "../../config"
+import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups, getSubdomain } from "../../utils"
 import SessionEditor from "../SignUp/SessionEditor"
 import DatePicker from "../SignUp/DatePicker"
 
@@ -211,6 +210,8 @@ const AllSessionOverview = ({ db, match }) => {
   const [groupFilter, setGroupFilter] = useState('All Students')
   const [openSession, setOpenSession] = useState({})
   const [selectedDate, setSelectedDate] = useState(new Date())
+
+  const schoolId = getSubdomain()
 
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, selectedDate, Number(hour))
