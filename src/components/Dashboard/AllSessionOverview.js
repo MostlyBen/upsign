@@ -1,18 +1,38 @@
 import { useState, useEffect } from "react"
 import { Link, Redirect } from "react-router-dom"
-import { query, collection, onSnapshot } from "@firebase/firestore"
+import { query, collection, onSnapshot, doc } from "@firebase/firestore"
 
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import M from 'materialize-css';
 
-import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups, getSubdomain } from "../../utils"
+import { getNumberSessions } from "../../services"
+import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups, getSubdomain, numberToArrayOfStrings } from "../../utils"
 import SessionEditor from "../SignUp/SessionEditor"
 import DatePicker from "../SignUp/DatePicker"
 
-const SessionSelector = ({selected}) => {
-  const hours = ['1', '2', '3', '4', '5']
+const HourSelector = ({ selected, schoolId, db }) => {
+  const [hours, setHours] = useState(['1'])
+
+  const updateHours = async (db) => {
+    const numberSessions = await getNumberSessions(db)
+    const newHours = numberToArrayOfStrings(numberSessions)
+    setHours(newHours)
+  }
+
+
+  useEffect(() => {
+    // Set up snapshot & load the number of hours
+    const d = doc(db, "schools", schoolId, "config", "sessions")
+    const unsubscribe = onSnapshot(d, () => {
+      updateHours(db)
+    })
+
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db])
+
   const activeSelection = selected ?? '1'
 
   return (
@@ -292,8 +312,10 @@ const AllSessionOverview = ({ db, match }) => {
 
       <div style={{ marginTop: "3rem" }}>
         <h3 style={{ margin: "0 0 1rem 0", letterSpacing: "1px" }}>Session </h3>
-        <SessionSelector
+        <HourSelector
           selected={hour}
+          schoolId={schoolId}
+          db={db}
         />
       </div>
 

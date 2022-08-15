@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { collection, query, where, onSnapshot } from "@firebase/firestore"
+import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
 import { getSubdomain } from "../../utils";
 
 import SessionSelector from './SessionSelector'
 import { LoadingBar } from "../";
 import DatePicker from "./DatePicker";
+import { getNumberSessions } from "../../services";
 // import { getHourSessions } from "../../utils";
 
 
@@ -37,10 +38,28 @@ const StudentSignUp = (props) => {
 
   const [sessions, setSessions] = useState([])
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const [numberSessions, setNumberSessions] = useState(1)
 
   const schoolId = getSubdomain()
 
+  const updateNumberSessions = async (db) => {
+    const newNumber = await getNumberSessions(db)
+    setNumberSessions(newNumber)
+  }
+
+  useEffect(() => {
+    // Set up snapshot & load the times of the sessions
+    const d = doc(db, "schools", schoolId ?? "museum", "config", "sessions")
+    const unsubscribe = onSnapshot(d, () => {
+      updateNumberSessions(db)
+    })
+
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db])
+
   // Select upcoming Friday
+  // NEEDS TO BE UPDATED SO DEFAULT DAY OF THE WEEK CAN BE SET AND TURNED ON/OFF
   useEffect(() => {
     const dateCopy = new Date(new Date().getTime())
     const nextFriday = new Date(
@@ -54,7 +73,7 @@ const StudentSignUp = (props) => {
 
   // Initialize the update listeners
   useEffect(() => {
-    for ( var j = 0; j < 5; j++ ) {
+    for ( var j = 0; j < numberSessions; j++ ) {
       const index = j
       const hour = j + 1
 
@@ -77,7 +96,7 @@ const StudentSignUp = (props) => {
       })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, selectedDate])
+  }, [db, selectedDate, numberSessions])
 
 
   if (sessions.length === 0) {
@@ -95,7 +114,7 @@ const StudentSignUp = (props) => {
         <TopMessage user={user} />
         <DatePicker selectedDate={selectedDate} handleSelectDate={setSelectedDate} />
 
-        { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} date={selectedDate} /> ) }
+        { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} date={selectedDate} schoolId={schoolId} /> ) }
       </div>
     )
   }

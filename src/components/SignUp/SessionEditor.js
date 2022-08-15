@@ -37,7 +37,7 @@ const SessionEditor = ({ db, session, date }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  /* SUBSCRIBE TO UPDATES */
+  /* SUBSCRIBE TO UPDATES FROM FIRESTORE */
   useEffect(() => {
     // Set up snapshot & load sessions
     if (session.id) {
@@ -46,9 +46,9 @@ const SessionEditor = ({ db, session, date }) => {
         querySnapshot.forEach( d => {
           var updatedSession = d.data();
 
-          setTitle(updatedSession.title);
-          setRoom(updatedSession.room);
-          setCapacity(updatedSession.capacity);
+          setTitle(updatedSession.title ?? '');
+          setRoom(updatedSession.room ?? '');
+          setCapacity(updatedSession.capacity ?? 30);
           session.restricted_to = updatedSession.restricted_to;
         })
       })
@@ -56,7 +56,7 @@ const SessionEditor = ({ db, session, date }) => {
       return () => unsubscribe()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db])
+  }, [db, session])
 
   /* INITIALIZE THE GROUP-SELECT DROPDOWN */
   useEffect(() => {

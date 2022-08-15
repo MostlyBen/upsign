@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { collection, query, where, onSnapshot } from "@firebase/firestore"
+import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
 
+import { getSessionTimes, getNumberSessions } from "../../services";
 import { getTeacherSessions, getSubdomain } from "../../utils";
 import SessionEditor from "./SessionEditor";
 import { LoadingBar } from "../";
@@ -32,7 +33,35 @@ const TeacherSignUp = (props) => {
   const user = props.user;
 
   const [sessions, setSessions] = useState()
+  // This is just needed to getTeacherSessions again if the number updates
+  // getTeacherSessions also creates sessions for the teacher
+  const [numberSessions, setNumberSessions] = useState(1)
   const [selectedDate, setSelectedDate] = useState(new Date())
+
+  const [sessionTimes, setSessionTimes] = useState([])
+
+  const updateSessionTimes = async (db) => {
+    const newTimes = await getSessionTimes(db)
+    setSessionTimes(newTimes)
+  }
+
+  const updateNumberSessions = async (db) => {
+    const newNumber = await getNumberSessions(db)
+    setNumberSessions(newNumber)
+  }
+
+  // Subscribe to updates for session number and times
+  useEffect(() => {
+    // Set up snapshot & load the times of the sessions
+    const d = doc(db, "schools", schoolId, "config", "sessions")
+    const unsubscribe = onSnapshot(d, () => {
+      updateSessionTimes(db)
+      updateNumberSessions(db)
+    })
+
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db])
 
   const schoolId = getSubdomain()
 
@@ -63,26 +92,20 @@ const TeacherSignUp = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
   useEffect(() => {
     const q = query(collection(db, "schools", schoolId, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("teacher", "==", user.displayName));
     onSnapshot(q, async () => {
       await getTeacherSessions(db, selectedDate, user)
         .then( s => {
+          console.log("Setting sessions to", s) // NOT CHANGING ON THE WEBPAGE. GRRRRR
           setSessions(s)
         }
       )
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, selectedDate])
+  }, [db, selectedDate, numberSessions])
 
-  const sessionTimes = {
-    1: '8:30 - 9:35',
-    2: '9:45 - 10:50',
-    3: '11:00 - 12:05 // 11:20 - 12:25',
-    4: '12:35 - 1:40',
-    5: '1:50 - 2:55',
-  }
+
 
   if (!sessions) {
     return (
@@ -104,7 +127,7 @@ const TeacherSignUp = (props) => {
           <div key={s.id}>
             {/* This is horrible. Do better. */}
             <h4>Session {s.session} 
-              <span style={{color: 'gray'}}> {sessionTimes[s.session] ? '('+sessionTimes[s.session]+')': ''}</span>
+              <span style={{color: 'gray'}}> {sessionTimes[s.session - 1] ? '('+sessionTimes[s.session - 1]+')': ''}</span>
             </h4>
             <hr style={{marginBottom: "1rem"}} />
             <div className="row card session-card is-enrolled teacher-card">

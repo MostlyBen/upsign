@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
+import { getSessionTimes } from "../../services";
 import { enrollStudent, getSignupAllowed, getSubdomain } from "../../utils"
 
 const SessionCard = ({ db, date, session, user }) => {
@@ -139,21 +140,30 @@ const SessionCard = ({ db, date, session, user }) => {
   )
 }
 
-const SessionSelector = ({ db, date, user, hourSessions, hour }) => {
-  // This is horrible. Do anything else.
-  const sessionTimes = {
-    1: '8:30 - 9:35',
-    2: '9:45 - 10:50',
-    3: '11:00 - 12:05 // 11:20 - 12:25',
-    4: '12:35 - 1:40',
-    5: '1:50 - 2:55',
+const SessionSelector = ({ db, date, user, hourSessions, hour, schoolId }) => {
+  const [sessionTimes, setSessionTimes] = useState([])
+
+  const updateSessionTimes = async (db) => {
+    const newTimes = await getSessionTimes(db)
+    setSessionTimes(newTimes)
   }
+
+  useEffect(() => {
+    // Set up snapshot & load the times of the sessions
+    const d = doc(db, "schools", schoolId ?? "museum", "config", "sessions")
+    const unsubscribe = onSnapshot(d, () => {
+      updateSessionTimes(db)
+    })
+
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db])
   
   return (
     <div className="session-selector row">
       {/* This is horrible. Do better. */}
       <h4>Session {hour}
-        <span style={{color: 'gray'}}> {sessionTimes[hour] ? '('+sessionTimes[hour]+')': ''}</span>
+        <span style={{color: 'gray'}}> {sessionTimes[hour - 1] ? '('+sessionTimes[hour - 1]+')': ''}</span>
       </h4>
       <hr />
       <div className="cards-container">
