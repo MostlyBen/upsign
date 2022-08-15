@@ -97,7 +97,6 @@ const TeacherSignUp = (props) => {
     onSnapshot(q, async () => {
       await getTeacherSessions(db, selectedDate, user)
         .then( s => {
-          console.log("Setting sessions to", s) // NOT CHANGING ON THE WEBPAGE. GRRRRR
           setSessions(s)
         }
       )
