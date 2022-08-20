@@ -5,6 +5,7 @@ import getTeacherSignupAllowed from "./config/getTeacherSignupAllowed";
 
 // Data
 import numberToArrayOfStrings from "./data/numberToArrayOfStrings";
+import getNextFriday from "./data/getNextFriday";
 
 // Groups
 import getGroups from "./groups/getGroups";
@@ -31,6 +32,7 @@ export {
   getTeacherSignupAllowed,
 
   numberToArrayOfStrings,
+  getNextFriday,
 
   getGroups,
 

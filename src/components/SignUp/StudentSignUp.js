@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
-import { getSubdomain } from "../../utils";
+import { getSubdomain, getNextFriday } from "../../utils";
 
 import SessionSelector from './SessionSelector'
 import { LoadingBar } from "../";
@@ -61,12 +61,7 @@ const StudentSignUp = (props) => {
   // Select upcoming Friday
   // NEEDS TO BE UPDATED SO DEFAULT DAY OF THE WEEK CAN BE SET AND TURNED ON/OFF
   useEffect(() => {
-    const dateCopy = new Date(new Date().getTime())
-    const nextFriday = new Date(
-      dateCopy.setDate(
-        dateCopy.getDate() + ((7 - dateCopy.getDay() + 5) % 7 || 7)
-      )
-    )
+    const nextFriday = getNextFriday()
 
     setSelectedDate(nextFriday)
   }, [])

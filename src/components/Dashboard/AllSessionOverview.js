@@ -8,7 +8,17 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import M from 'materialize-css';
 
 import { getNumberSessions } from "../../services"
-import { getHourSessions, enrollStudent, getUnsignedStudents, getAllStudents, getGroups, getSubdomain, numberToArrayOfStrings } from "../../utils"
+import { 
+  getHourSessions,
+  enrollStudent,
+  getUnsignedStudents,
+  getAllStudents,
+  getGroups,
+  getSubdomain,
+  numberToArrayOfStrings,
+  getNextFriday,
+} from "../../utils"
+
 import SessionEditor from "../SignUp/SessionEditor"
 import DatePicker from "../SignUp/DatePicker"
 
@@ -259,12 +269,7 @@ const AllSessionOverview = ({ db, match }) => {
 
   // Select upcoming Friday
   useEffect(() => {
-    const dateCopy = new Date(new Date().getTime())
-    const nextFriday = new Date(
-      dateCopy.setDate(
-        dateCopy.getDate() + ((7 - dateCopy.getDay() + 5) % 7 || 7)
-      )
-    )
+    const nextFriday = getNextFriday()
 
     setSelectedDate(nextFriday)
   }, [])

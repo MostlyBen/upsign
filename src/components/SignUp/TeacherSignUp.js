@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
 
 import { getSessionTimes, getNumberSessions } from "../../services";
-import { getTeacherSessions, getSubdomain } from "../../utils";
+import { getTeacherSessions, getSubdomain, getNextFriday } from "../../utils";
 import SessionEditor from "./SessionEditor";
 import { LoadingBar } from "../";
 import DatePicker from "./DatePicker";
@@ -78,12 +78,7 @@ const TeacherSignUp = (props) => {
 
   useEffect(() => {
     // Select upcoming Friday
-    const dateCopy = new Date(new Date().getTime())
-    const nextFriday = new Date(
-      dateCopy.setDate(
-        dateCopy.getDate() + ((7 - dateCopy.getDay() + 5) % 7 || 7)
-      )
-    )
+    const nextFriday = getNextFriday()
 
     setSelectedDate(nextFriday)
 
