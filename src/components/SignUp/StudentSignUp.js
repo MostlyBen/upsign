@@ -132,7 +132,9 @@ const StudentSignUp = (props) => {
     return (
       <div>
         <TopMessage user={user} />
-        <DatePicker selectedDate={selectedDate} handleSelectDate={setSelectedDate} />
+        <div className="sticky-container">
+          <DatePicker selectedDate={selectedDate} handleSelectDate={setSelectedDate} />
+        </div>
 
         { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} selectedDate={selectedDate} schoolId={schoolId} /> ) }
       </div>

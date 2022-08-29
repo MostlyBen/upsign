@@ -119,7 +119,9 @@ const TeacherSignUp = (props) => {
   return (
     <div>
       <TopMessage user={user} />
-      <DatePicker selectedDate={selectedDate} handleSelectDate={handleSelectDate} />
+      <div className="sticky-container">
+        <DatePicker selectedDate={selectedDate} handleSelectDate={handleSelectDate} />
+      </div>
 
       <div className="teacher-sessions">
         { Array.isArray(sessions) ? sessions.map(s =>

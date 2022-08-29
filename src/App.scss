@@ -260,6 +260,14 @@ body {
 							0 1px 5px 0 rgba(0, 0, 0, .20) !important
 }
 
+.sticky-container {
+	position: sticky;
+	top: -18px;
+	padding: 10px 0px;
+	z-index: 996;
+}
+
+
 .student-list-btn {
 	color: grey;
 	cursor: pointer;
