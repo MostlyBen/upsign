@@ -38,7 +38,6 @@ const TeacherSignUp = (props) => {
   // getTeacherSessions also creates sessions for the teacher
   const [numberSessions, setNumberSessions] = useState(1)
   const [selectedDate, setSelectedDate] = useState(new Date())
-
   const [sessionTimes, setSessionTimes] = useState([])
 
   const updateSessionTimes = async (db) => {
