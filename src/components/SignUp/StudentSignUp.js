@@ -84,9 +84,6 @@ const StudentSignUp = (props) => {
 
       
       onSnapshot(q, (querySnapshot) => {
-        console.log("Updating sessions")
-        console.log(querySnapshot.docChanges())
-
         let hourSessions = [];
         querySnapshot.forEach((doc) => {
           if (doc.data().title) {
@@ -100,8 +97,10 @@ const StudentSignUp = (props) => {
         let tempSessions = sessions
         tempSessions[index] = hourSessions
         setSessions([...tempSessions])
+        
       })
     }
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, selectedDate, numberSessions])
 
