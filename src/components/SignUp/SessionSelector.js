@@ -4,7 +4,7 @@ import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { getSessionTimes } from "../../services";
 import { enrollStudent, getSignupAllowed, getSubdomain } from "../../utils"
 
-const SessionCard = ({ db, date, session, user }) => {
+const SessionCard = ({ db, selectedDate, session, user }) => {
   // The session card decides whether or not display should be done depending on
   // whether or not student signups are active
   // This should probably happen sooner so less data is loaded, but this was a quick fix
@@ -51,9 +51,9 @@ const SessionCard = ({ db, date, session, user }) => {
 
   const handleClick = (enrolled) => {
     if (Number(session.enrollment.length) < Number(session.capacity) && signupAllowed) {
-      enrollStudent(db, date, session, user)
+      enrollStudent(db, selectedDate, session, user)
     } else if (signupAllowed && enrolled) {
-      enrollStudent(db, date, session, user)
+      enrollStudent(db, selectedDate, session, user)
     }
   }
 
@@ -141,11 +141,11 @@ const SessionCard = ({ db, date, session, user }) => {
   )
 }
 
-const SessionSelector = ({ db, date, user, hourSessions, hour, schoolId }) => {
+const SessionSelector = ({ db, selectedDate, user, hourSessions, hour, schoolId }) => {
   const [sessionTimes, setSessionTimes] = useState([])
 
   const updateSessionTimes = async (db) => {
-    const newTimes = await getSessionTimes(db)
+    const newTimes = await getSessionTimes(db, selectedDate)
     setSessionTimes(newTimes)
   }
 
@@ -158,7 +158,7 @@ const SessionSelector = ({ db, date, user, hourSessions, hour, schoolId }) => {
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db])
+  }, [db, selectedDate])
   
   return (
     <div className="session-selector row">
@@ -168,7 +168,7 @@ const SessionSelector = ({ db, date, user, hourSessions, hour, schoolId }) => {
       </h4>
       <hr />
       <div className="cards-container">
-        { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} date={date} /> ) }
+        { hourSessions.map (session => <SessionCard key={`session-card-${session.id}`} session={session} user={user} db={db} selectedDate={selectedDate} /> ) }
       </div>
     </div>
   )

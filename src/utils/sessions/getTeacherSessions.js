@@ -6,7 +6,7 @@ import { getSubdomain } from "../../utils";
 const getTeacherSessions = async (db, date, user) => {
   const teacher_id = user.uid;
   const schoolId = getSubdomain()
-  const numberSessions = await getNumberSessions(db)
+  const numberSessions = await getNumberSessions(db, date)
   let teacherSessions = []
 
   for (let i = 0; i < numberSessions; i++) {

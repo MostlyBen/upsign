@@ -42,10 +42,16 @@ const StudentSignUp = (props) => {
 
   const schoolId = getSubdomain()
 
-  const updateNumberSessions = async (db) => {
-    const newNumber = await getNumberSessions(db)
+  const updateNumberSessions = async (db, selectedDate) => {
+    const newNumber = await getNumberSessions(db, selectedDate)
     setNumberSessions(newNumber)
   }
+
+  // Update the number of sessions if the selected date changes
+  useEffect(() => {
+    updateNumberSessions(db, selectedDate)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate])
 
   useEffect(() => {
     // Set up snapshot & load the times of the sessions
@@ -128,7 +134,7 @@ const StudentSignUp = (props) => {
         <TopMessage user={user} />
         <DatePicker selectedDate={selectedDate} handleSelectDate={setSelectedDate} />
 
-        { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} date={selectedDate} schoolId={schoolId} /> ) }
+        { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} selectedDate={selectedDate} schoolId={schoolId} /> ) }
       </div>
     )
   }

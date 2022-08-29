@@ -1,13 +1,27 @@
 import { doc, getDoc, setDoc } from "@firebase/firestore"
 import { getSubdomain } from "../../utils"
 
-const getSessionTimes = async (db) => {
+const getSessionTimes = async (db, selectedDate=null) => {
   const schoolId = getSubdomain()
   const sessionsConfigRef = doc(db, "schools", schoolId, "config", "sessions")
   const sessionConfig = await getDoc(sessionsConfigRef)
 
   if (sessionConfig.exists()) {
-    return sessionConfig.data().times
+    let times =  sessionConfig.data().times
+    // Check if a date was given
+    if (selectedDate) {
+      // Reference the date's special config
+      const dateConfigRef = doc(db, "schools", schoolId, "config", "sessions", "special_days", String(selectedDate.toDateString()))
+      const dateConfig = await getDoc(dateConfigRef)
+
+      // Update times if the date has its own config
+      if ( dateConfig.exists() ) {
+        // Redundant check to make sure the doc has the times set
+        times = dateConfig.data().times ?? times
+      }
+    }
+
+    return times
 
   } else {
     // Create the config object if it doesn't exist

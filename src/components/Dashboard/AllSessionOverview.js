@@ -22,11 +22,11 @@ import {
 import SessionEditor from "../SignUp/SessionEditor"
 import DatePicker from "../SignUp/DatePicker"
 
-const HourSelector = ({ selected, schoolId, db }) => {
+const HourSelector = ({ selected, schoolId, db, selectedDate }) => {
   const [hours, setHours] = useState(['1'])
 
   const updateHours = async (db) => {
-    const numberSessions = await getNumberSessions(db)
+    const numberSessions = await getNumberSessions(db, selectedDate)
     const newHours = numberToArrayOfStrings(numberSessions)
     setHours(newHours)
   }
@@ -41,7 +41,7 @@ const HourSelector = ({ selected, schoolId, db }) => {
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db])
+  }, [db, selectedDate])
 
   const activeSelection = selected ?? '1'
 
@@ -321,6 +321,7 @@ const AllSessionOverview = ({ db, match }) => {
           selected={hour}
           schoolId={schoolId}
           db={db}
+          selectedDate={selectedDate}
         />
       </div>
 

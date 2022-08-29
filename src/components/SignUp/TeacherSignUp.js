@@ -42,12 +42,12 @@ const TeacherSignUp = (props) => {
   const [sessionTimes, setSessionTimes] = useState([])
 
   const updateSessionTimes = async (db) => {
-    const newTimes = await getSessionTimes(db)
+    const newTimes = await getSessionTimes(db, selectedDate)
     setSessionTimes(newTimes)
   }
 
   const updateNumberSessions = async (db) => {
-    const newNumber = await getNumberSessions(db)
+    const newNumber = await getNumberSessions(db, selectedDate)
     setNumberSessions(newNumber)
   }
 
@@ -62,11 +62,12 @@ const TeacherSignUp = (props) => {
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db])
+  }, [db, selectedDate])
 
   const schoolId = getSubdomain()
 
   const handleLoadSessions = async () => {
+    setSessions(null)
     await getTeacherSessions(db, selectedDate, user)
       .then(s => {
         setSessions(s)
@@ -74,6 +75,7 @@ const TeacherSignUp = (props) => {
   }
 
   const handleSelectDate = (date) => {
+    setSessions(null)
     setSelectedDate(date)
   }
 
@@ -122,7 +124,6 @@ const TeacherSignUp = (props) => {
       <div className="teacher-sessions">
         { Array.isArray(sessions) ? sessions.map(s =>
           <div key={s.id}>
-            {/* This is horrible. Do better. */}
             <h4>Session {s.session} 
               <span style={{color: 'gray'}}> {sessionTimes[s.session - 1] ? '('+sessionTimes[s.session - 1]+')': ''}</span>
             </h4>
