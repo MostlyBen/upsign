@@ -42,14 +42,16 @@ const StudentSignUp = (props) => {
 
   const schoolId = getSubdomain()
 
-  // Initialize the observer
-  // Checks when the DatePicker (".sticky-container") intersects with the navbar
-  observeTopIntersect()
-
   const updateNumberSessions = async (db, selectedDate) => {
     const newNumber = await getNumberSessions(db, selectedDate)
     setNumberSessions(newNumber)
   }
+
+  // Initialize the observer
+  // Checks when the DatePicker (".sticky-container") intersects with the navbar
+  useEffect(() => {
+    observeTopIntersect()
+  }, [sessions])
 
   // Update the number of sessions if the selected date changes
   useEffect(() => {

@@ -40,9 +40,7 @@ const TeacherSignUp = (props) => {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [sessionTimes, setSessionTimes] = useState([])
 
-  // Initialize the observer
-  // Checks when the DatePicker (".sticky-container") intersects with the navbar
-  observeTopIntersect()
+  const schoolId = getSubdomain()
 
   const updateSessionTimes = async (db) => {
     const newTimes = await getSessionTimes(db, selectedDate)
@@ -53,6 +51,12 @@ const TeacherSignUp = (props) => {
     const newNumber = await getNumberSessions(db, selectedDate)
     setNumberSessions(newNumber)
   }
+
+  // Initialize the observer
+  // Checks when the DatePicker (".sticky-container") intersects with the navbar
+  useEffect(() => {
+    observeTopIntersect()
+  }, [sessions])
 
   // Subscribe to updates for session number and times
   useEffect(() => {
@@ -67,7 +71,6 @@ const TeacherSignUp = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, selectedDate])
 
-  const schoolId = getSubdomain()
 
   const handleLoadSessions = async () => {
     setSessions(null)
