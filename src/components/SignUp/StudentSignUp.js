@@ -68,10 +68,6 @@ const StudentSignUp = (props) => {
 
   // Initialize the update listeners
   useEffect(() => {
-    for ( var j = 0; j < numberSessions; j++ ) {
-      const index = j
-      const hour = j + 1
-
       const q = query(
                       collection(db,
                                  "schools",
@@ -79,27 +75,39 @@ const StudentSignUp = (props) => {
                                  "sessions",
                                  String(selectedDate.getFullYear()),
                                  String(selectedDate.toDateString())),
-                      where("session", "==", hour)
+                      where("title", "!=", "")
                       );
 
       
-      onSnapshot(q, (querySnapshot) => {
-        let hourSessions = [];
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let allSessions = [];
         querySnapshot.forEach((doc) => {
           if (doc.data().title) {
-            hourSessions.push({
+            allSessions.push({
               id: doc.id,
               ...doc.data()
             })
           }
         })
-        hourSessions.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
-        let tempSessions = sessions
-        tempSessions[index] = hourSessions
-        setSessions([...tempSessions])
+        allSessions.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
+        // let tempSessions = sessions
+        // tempSessions[index] = hourSessions
+        let sortedSessions = []
+        for (let i = 0; i < numberSessions; i++) {
+          sortedSessions.push([])
+        }
+
+        allSessions.forEach((s) => {
+          const index = s.session - 1
+          sortedSessions[index].push(s)
+        })
+
+        setSessions([...sortedSessions])
         
       })
-    }
+
+      return () => unsubscribe()
+
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, selectedDate, numberSessions])
