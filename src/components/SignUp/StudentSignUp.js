@@ -72,9 +72,21 @@ const StudentSignUp = (props) => {
       const index = j
       const hour = j + 1
 
-      const q = query(collection(db, "schools", schoolId, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("session", "==", hour));
+      const q = query(
+                      collection(db,
+                                 "schools",
+                                 schoolId,
+                                 "sessions",
+                                 String(selectedDate.getFullYear()),
+                                 String(selectedDate.toDateString())),
+                      where("session", "==", hour)
+                      );
+
+      
       onSnapshot(q, (querySnapshot) => {
-        
+        console.log("Updating sessions")
+        console.log(querySnapshot.docChanges())
+
         let hourSessions = [];
         querySnapshot.forEach((doc) => {
           if (doc.data().title) {
