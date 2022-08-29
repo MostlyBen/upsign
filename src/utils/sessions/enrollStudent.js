@@ -72,6 +72,7 @@ const enrollStudent = async (db, date, session, user, preventUnenroll = false) =
 
     // Update the doc in the database
     // SHOULD PROBABLY SWITCH TO UPDATEDOC
+    // BUT updateDoc is slower...
     setDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {
       enrollment: tempEnrollment,
       ...sessionData
