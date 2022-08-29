@@ -32,6 +32,7 @@ const SessionCard = ({ db, date, session, user }) => {
       })
   }
 
+  // Subscribe to changes to whether or not signing up is allowed
   useEffect(() => {
     updateSignupAllowed()
     getUserDoc()
