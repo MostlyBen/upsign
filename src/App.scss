@@ -145,6 +145,7 @@ body {
 .session-card {
 	padding: 1.5rem 1.5rem 1rem 1.5rem;
 	border-radius: 1rem;
+	margin: 10px;
 	h1 {
 		font-size: 1.5rem;
 		margin: 0;
@@ -235,6 +236,7 @@ body {
 
 .session-card.is-enrolled {
 	border: 4px solid #4db6ac;
+	margin: 6px;
 	box-shadow: 3px 3px 6px #757575, inset 2px 2px 4px #bdbdbd;
 }
 
