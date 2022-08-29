@@ -4,6 +4,7 @@ import getDomainRestriction from './config/getDomainRestriction';
 import getTeacherSignupAllowed from "./config/getTeacherSignupAllowed";
 
 // Data
+import buildThresholdList from "./data/buildThresholdList";
 import numberToArrayOfStrings from "./data/numberToArrayOfStrings";
 import getNextFriday from "./data/getNextFriday";
 
@@ -12,6 +13,9 @@ import getGroups from "./groups/getGroups";
 
 // Info
 import getSubdomain from "./info/getSubdomain";
+
+// Rendering
+import observeTopIntersect from "./rendering/observeTopIntersect";
 
 // Sessions
 import getTeacherSessions from "./sessions/getTeacherSessions";
@@ -31,12 +35,15 @@ export {
   getDomainRestriction,
   getTeacherSignupAllowed,
 
+  buildThresholdList,
   numberToArrayOfStrings,
   getNextFriday,
 
   getGroups,
 
   getSubdomain,
+
+  observeTopIntersect,
 
   getTeacherSessions,
   getHourSessions,

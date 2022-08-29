@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
 
 import { getSessionTimes, getNumberSessions } from "../../services";
-import { getTeacherSessions, getSubdomain, getNextFriday } from "../../utils";
+import { buildThresholdList, observeTopIntersect, getTeacherSessions, getSubdomain, getNextFriday } from "../../utils";
 import SessionEditor from "./SessionEditor";
 import { LoadingBar } from "../";
 import DatePicker from "./DatePicker";
@@ -39,6 +39,10 @@ const TeacherSignUp = (props) => {
   const [numberSessions, setNumberSessions] = useState(1)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [sessionTimes, setSessionTimes] = useState([])
+
+  // Initialize the observer
+  // Checks when the DatePicker (".sticky-container") intersects with the navbar
+  observeTopIntersect()
 
   const updateSessionTimes = async (db) => {
     const newTimes = await getSessionTimes(db, selectedDate)
@@ -119,7 +123,9 @@ const TeacherSignUp = (props) => {
     <div>
       <TopMessage user={user} />
       <div className="sticky-container">
-        <DatePicker selectedDate={selectedDate} handleSelectDate={handleSelectDate} />
+        <div className="sticky-content">
+          <DatePicker selectedDate={selectedDate} handleSelectDate={handleSelectDate} />
+        </div>
       </div>
 
       <div className="teacher-sessions">

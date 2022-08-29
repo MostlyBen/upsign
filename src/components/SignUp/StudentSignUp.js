@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
-import { getSubdomain, getNextFriday } from "../../utils";
+import { observeTopIntersect, getSubdomain, getNextFriday } from "../../utils";
 
 import SessionSelector from './SessionSelector'
 import { LoadingBar } from "../";
@@ -41,6 +41,10 @@ const StudentSignUp = (props) => {
   const [numberSessions, setNumberSessions] = useState(1)
 
   const schoolId = getSubdomain()
+
+  // Initialize the observer
+  // Checks when the DatePicker (".sticky-container") intersects with the navbar
+  observeTopIntersect()
 
   const updateNumberSessions = async (db, selectedDate) => {
     const newNumber = await getNumberSessions(db, selectedDate)

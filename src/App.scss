@@ -249,9 +249,9 @@ body {
 	text-transform: none;
 	user-select: none;
 	width: 100%;
-	margin-top: 0.5rem !important;
+	margin-top: 0px;
 	height: 3rem;
-	padding-top: 0.25rem;
+	padding-top: 0px;
 	font-size: 1.25rem !important;
 	font-weight: 700;
 
@@ -263,9 +263,40 @@ body {
 .sticky-container {
 	position: -webkit-sticky; /* Safari */
 	position: sticky;
-	top: -18px;
-	padding: 10px 0px;
-	z-index: 996;
+	top: -1px;
+	z-index: 997;
+	border-top: 2px solid rgb(220, 220, 220);
+	transition: 0.25s;
+}
+
+.sticky-container.is-pinned {
+	padding-left: 0;
+	width: 100vw;
+	margin-left: -4.9vw;
+	transition: 0.25s;
+}
+@media only screen and (min-width: 601px) {
+	.sticky-container.is-pinned {
+		left: 0;
+		margin-top: 64px;
+		padding-left: 0;
+		width: 100vw;
+		margin-left: -7.4vw;
+	}
+}
+@media only screen and (min-width: 993px) {
+	.sticky-container.is-pinned {
+		padding-left: 0;
+		width: 100vw;
+		margin-left: -15vw;
+	}
+}
+@media only screen and (min-width: 1828px) {
+	.sticky-container.is-pinned {
+		padding-left: 0;
+		width: 100vw;
+		margin-left: calc((100vw - 1280px) * -0.5);
+	}
 }
 
 
