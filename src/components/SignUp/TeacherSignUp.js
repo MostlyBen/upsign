@@ -90,13 +90,15 @@ const TeacherSignUp = (props) => {
 
   useEffect(() => {
     const q = query(collection(db, "schools", schoolId, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("teacher", "==", user.displayName));
-    onSnapshot(q, async () => {
+    const unsubscribe = onSnapshot(q, async () => {
       await getTeacherSessions(db, selectedDate, user)
         .then( s => {
           setSessions(s)
         }
       )
     })
+
+    return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, selectedDate, numberSessions])
 
