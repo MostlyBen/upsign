@@ -48,7 +48,18 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
       }
     }
 
-    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), { enrollment: payload.enrollment ?? [] })
+    updateDoc(
+      doc(
+        db,
+        "schools",
+        schoolId,
+        "sessions",
+        String(date.getFullYear()),
+        String(date.toDateString()),
+        session.id),
+      { enrollment: payload.enrollment ?? [] }
+    );
+    
   }
 
   return (
