@@ -335,7 +335,6 @@ const AllSessionOverview = ({ db, match }) => {
           <div
             className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
             data-target={`filter-dropdown`}
-            style={{paddingTop: '0.25rem', margin: '0.5rem 0 1.5rem 0'}}
           >
             {groupFilter}
             <span
