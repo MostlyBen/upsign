@@ -3,7 +3,6 @@ import { doc, updateDoc } from "@firebase/firestore"
 import { getSubdomain } from "../../utils"
 
 const EnrollmentRow = ({ db, session, enrollment, date }) => {
-  const [attendance, setAttendance] = useState(enrollment.attendance ?? '')
   const [showRemove, setShowRemove] = useState(0)
 
   const schoolId = getSubdomain()
@@ -31,9 +30,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
   }
 
   const handleCheck = (value) => {
-    value = ( value === attendance ? '' : value )
-
-    setAttendance(value)
+    value = ( value === enrollment.attendance ? '' : value )
 
     enrollment['attendance'] = value
 
@@ -89,7 +86,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
             type="checkbox"
             className="filled-in"
             id={`present-check-${enrollment.uid}`}
-            checked={attendance === "present" ? "checked" : ""}
+            checked={enrollment.attendance === "present" ? "checked" : ""}
             onChange={() => handleCheck("present")}
           />
           <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
@@ -105,7 +102,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
             type="checkbox"
             className="filled-in"
             id={`tardy-check-${enrollment.uid}`}
-            checked={attendance === "tardy" ? "checked" : ""}
+            checked={enrollment.attendance === "tardy" ? "checked" : ""}
             onChange={() => handleCheck("tardy")}
           />
           <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
@@ -121,7 +118,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
             type="checkbox"
             className="filled-in"
             id={`absent-check-${enrollment.uid}`}
-            checked={attendance === "absent" ? "checked" : ""}
+            checked={enrollment.attendance === "absent" ? "checked" : ""}
             onChange={() => handleCheck("absent")}
           />
           <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
