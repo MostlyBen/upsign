@@ -1,11 +1,17 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { doc, updateDoc } from "@firebase/firestore"
 import { getSubdomain } from "../../utils"
 
+// This was dumb, but the enrollment variable is the student's entry in the
+// session's enrollment list.
 const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const [showRemove, setShowRemove] = useState(0)
 
   const schoolId = getSubdomain()
+
+  useEffect(() => {
+    document.getElementById(`present-check-${enrollment.uid}`).classList.remove('dim')
+  }, [enrollment])
 
   const handleMouseEnter = () => {
     setShowRemove(1)
@@ -31,6 +37,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
 
   const handleCheck = (value) => {
     value = ( value === enrollment.attendance ? '' : value )
+    document.getElementById(`present-check-${enrollment.uid}`).classList.add('dim')
 
     enrollment['attendance'] = value
 
@@ -62,6 +69,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
   return (
     <tr
       className="student-name"
+      id={`present-check-${enrollment.uid}`}
       key={`${enrollment.name}-${session.id}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -77,53 +85,53 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
         >close</span>
       </td>
 
-      {/* Present */}
-      <td
-        style={{padding: "0"}}
-      >
-        <label style={{lineHeight: "0", textAlign: "center"}}>
-          <input
-            type="checkbox"
-            className="filled-in"
-            id={`present-check-${enrollment.uid}`}
-            checked={enrollment.attendance === "present" ? "checked" : ""}
-            onChange={() => handleCheck("present")}
-          />
-          <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
-        </label>
-      </td>
+        {/* Present */}
+        <td
+          style={{padding: "0"}}
+        >
+          <label style={{lineHeight: "0", textAlign: "center"}}>
+            <input
+              type="checkbox"
+              className="filled-in"
+              id={`present-check-${enrollment.uid}`}
+              checked={enrollment.attendance === "present" ? "checked" : ""}
+              onChange={() => handleCheck("present")}
+            />
+            <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
+          </label>
+        </td>
 
-      {/* Tardy */}
-      <td
-        style={{padding: "0"}}
-      >
-        <label style={{lineHeight: "0"}}>
-          <input
-            type="checkbox"
-            className="filled-in"
-            id={`tardy-check-${enrollment.uid}`}
-            checked={enrollment.attendance === "tardy" ? "checked" : ""}
-            onChange={() => handleCheck("tardy")}
-          />
-          <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
-        </label>
-      </td>
+        {/* Tardy */}
+        <td
+          style={{padding: "0"}}
+        >
+          <label style={{lineHeight: "0"}}>
+            <input
+              type="checkbox"
+              className="filled-in"
+              id={`tardy-check-${enrollment.uid}`}
+              checked={enrollment.attendance === "tardy" ? "checked" : ""}
+              onChange={() => handleCheck("tardy")}
+            />
+            <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
+          </label>
+        </td>
 
-      {/* Absent */}
-      <td
-        style={{padding: "0"}}
-      >
-        <label style={{lineHeight: "0"}}>
-          <input
-            type="checkbox"
-            className="filled-in"
-            id={`absent-check-${enrollment.uid}`}
-            checked={enrollment.attendance === "absent" ? "checked" : ""}
-            onChange={() => handleCheck("absent")}
-          />
-          <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
-        </label>
-      </td>
+        {/* Absent */}
+        <td
+          style={{padding: "0"}}
+        >
+          <label style={{lineHeight: "0"}}>
+            <input
+              type="checkbox"
+              className="filled-in"
+              id={`absent-check-${enrollment.uid}`}
+              checked={enrollment.attendance === "absent" ? "checked" : ""}
+              onChange={() => handleCheck("absent")}
+            />
+            <span style={{ marginTop: "10px", paddingLeft: "1.445rem" }} />
+          </label>
+        </td>
       
     </tr>
   )
