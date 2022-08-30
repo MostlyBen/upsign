@@ -71,10 +71,16 @@ body {
 
 .total-capacity {
 	position: relative;
-	bottom: -0.3rem;
+	bottom: -0.2rem;
 	float: right;
 	font-size: 2rem;
 	color: grey;
+}
+
+.hour-selector {
+	border-top: 1px solid rgba(0, 0, 0, .25);
+	border-bottom: 1px solid rgba(0, 0, 0, .25);
+	margin-bottom: 1rem;
 }
 
 .group-dropdown {

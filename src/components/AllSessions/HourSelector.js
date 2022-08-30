@@ -31,7 +31,7 @@ const HourSelector = ({ selected, schoolId, db, selectedDate }) => {
   const activeSelection = selected ?? '1'
 
   return (
-    <div style={{ width: "100%" }}>
+    <div className="hour-selector" style={{ width: "100%" }}>
       <ul className="pagination" style={{ marginTop: "0", marginBottom: "0" }}>
 
         {hours.map(hour => {

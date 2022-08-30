@@ -114,7 +114,7 @@ const AllSessionOverview = ({ db, match }) => {
         />
       </div>
 
-      <hr />
+      {/* <hr /> */}
       
       <div className="row">
 
