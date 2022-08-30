@@ -11,7 +11,6 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
 
   // Un-dims the row when the update comes through
   useEffect(() => {
-    console.log("boom")
     const elem = document.getElementById(`enrollment-row-${enrollment.uid}`)
     if (elem) {
       elem.classList.remove('dim')
