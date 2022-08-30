@@ -9,8 +9,8 @@ import TeacherSignUp from './SignUp/TeacherSignUp'
 // Small Bits
 import LoadingBar from './SmallBits/LoadingBar'
 // Dashboards
-import AllSessionOverview from './Dashboard/AllSessionOverview'
-import Config from './Dashboard/Config'
+import AllSessionOverview from './AllSessions/AllSessionOverview'
+import Config from './Config/Config'
 // Tables
 import SessionAttendanceList from './Tables/SessionAttendanceList'
 

@@ -9,9 +9,15 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
 
   const schoolId = getSubdomain()
 
+  // Un-dims the row when the update comes through
   useEffect(() => {
-    document.getElementById(`present-check-${enrollment.uid}`).classList.remove('dim')
-  }, [enrollment])
+    console.log("boom")
+    const elem = document.getElementById(`enrollment-row-${enrollment.uid}`)
+    if (elem) {
+      elem.classList.remove('dim')
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enrollment.attendance])
 
   const handleMouseEnter = () => {
     setShowRemove(1)
@@ -37,7 +43,11 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
 
   const handleCheck = (value) => {
     value = ( value === enrollment.attendance ? '' : value )
-    document.getElementById(`present-check-${enrollment.uid}`).classList.add('dim')
+    // Dim the row (to be lightened on update from firestore)
+    const elem = document.getElementById(`enrollment-row-${enrollment.uid}`)
+    if (elem) {
+      elem.classList.add('dim')
+    }
 
     enrollment['attendance'] = value
 
@@ -69,7 +79,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
   return (
     <tr
       className="student-name"
-      id={`present-check-${enrollment.uid}`}
+      id={`enrollment-row-${enrollment.uid}`}
       key={`${enrollment.name}-${session.id}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
