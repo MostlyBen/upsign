@@ -27,6 +27,7 @@ const AllSessionOverview = ({ db, match }) => {
   const [groupOptions, setGroupOptions] = useState([])
   const [groupFilter, setGroupFilter] = useState('All Students')
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const [totalCapacity, setTotalCapacity] = useState(0)
 
   const schoolId = getSubdomain()
 
@@ -81,6 +82,14 @@ const AllSessionOverview = ({ db, match }) => {
     setUnsignedStudents([])
   }, [hour])
 
+  useEffect(() => {
+    let cap = 0
+    for (let i = 0; i < sessions.length; i++) {
+      cap = cap + Number(sessions[i].capacity)
+    }
+    setTotalCapacity(cap)
+  }, [sessions])
+
   if (!hour) {
     return <Redirect to="/overview/1" />
   }
@@ -88,7 +97,15 @@ const AllSessionOverview = ({ db, match }) => {
   return (
     <div>
       <div style={{ marginTop: "3rem" }}>
-        <h3 style={{ margin: "0 0 1rem 0", letterSpacing: "1px" }}>Session </h3>
+        <h3
+          className="all-sessions-heading"
+          >
+            Session
+            <span className="total-capacity">
+              Total Capacity: 
+              {` ${totalCapacity}`}
+            </span>
+        </h3>
         <HourSelector
           selected={hour}
           schoolId={schoolId}

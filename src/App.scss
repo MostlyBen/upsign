@@ -63,6 +63,20 @@ body {
 	opacity: 0.5;
 }
 
+.all-sessions-heading {
+	user-select: none;
+	margin: 0 0 1rem 0;
+	letter-spacing: 1px;
+}
+
+.total-capacity {
+	position: relative;
+	bottom: -0.3rem;
+	float: right;
+	font-size: 2rem;
+	color: grey;
+}
+
 .group-dropdown {
 	text-transform: none;
 	width: 100%;
