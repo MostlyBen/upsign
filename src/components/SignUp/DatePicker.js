@@ -3,16 +3,22 @@ import M from "materialize-css"
 
 const DatePicker = ({ selectedDate, handleSelectDate, events }) => {
   useEffect(() => {
-    const datepicker = document.querySelector('.datepicker')
-    M.Datepicker.init(datepicker, {
-      format: 'mmm dd, yyyy',
-      autoClose: true,
-      disableWeekends: true,
-      defaultDate: selectedDate,
-      setDefaultDate: true,
-      // events: events,
-      onSelect: handleSelectDate,
-    })
+    // Search to see if the modal already has been initialized
+    const datepickerModal = document.querySelector('.datepicker-modal')
+    // Initialize the datepicker if the modal doesn't exist
+    if (!datepickerModal) {
+      const datepicker = document.querySelector('.datepicker')
+      M.Datepicker.init(datepicker, {
+        format: 'mmm dd, yyyy',
+        autoClose: true,
+        disableWeekends: true,
+        defaultDate: selectedDate,
+        setDefaultDate: true,
+        // events: events,
+        onSelect: handleSelectDate,
+      })
+    }
+
   }, [selectedDate, handleSelectDate])
 
   return (
