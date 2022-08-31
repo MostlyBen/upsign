@@ -106,17 +106,18 @@ const StudentSignUp = (props) => {
             })
           }
         })
+
         allSessions.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
-        // let tempSessions = sessions
-        // tempSessions[index] = hourSessions
+
         let sortedSessions = []
-        for (let i = 0; i < numberSessions; i++) {
-          sortedSessions.push([])
-        }
 
         allSessions.forEach((s) => {
           const index = s.session - 1
-          sortedSessions[index].push(s)
+          if (Array.isArray(sortedSessions[index])) {
+            sortedSessions[index].push(s)
+          } else {
+            sortedSessions[index] = [s]
+          }
         })
 
         setSessions([...sortedSessions])
