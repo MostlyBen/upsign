@@ -79,7 +79,7 @@ const StudentGroups = ({ db }) => {
   
   return (
     <div>
-      <h1>Student Groups (Work in Progress...)</h1>
+      <h1 style={{marginBottom: "1rem"}}>Student Groups</h1>
       
       {/* <!-- Dropdown Trigger --> */}
       <div
@@ -107,8 +107,6 @@ const StudentGroups = ({ db }) => {
               {option}
             </a></li>)
         })}
-
-        <li><a href="#!" key="add-group">Add Group +</a></li>
       </ul>
 
       {/* Student List */}
