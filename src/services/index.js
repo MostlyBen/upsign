@@ -23,6 +23,7 @@ import getTeacherSessions from "./sessions/getTeacherSessions";
 import getUnsignedStudents from "./sessions/getUnsignedStudents";
 
 // User
+import getUser from "./user/getUser";
 import getUserType from "./user/getUserType";
 import setUserType from "./user/setUserType";
 
@@ -49,6 +50,7 @@ export {
   getTeacherSessions,
   getUnsignedStudents,
   // User
+  getUser,
   getUserType,
   setUserType,
 }

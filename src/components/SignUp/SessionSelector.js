@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 import {
   getSessionTimes,
   enrollStudent,
   getSignupAllowed,
+  getUser,
 } from "../../services"
 
 import {
@@ -29,20 +30,15 @@ const SessionCard = ({ db, selectedDate, session, user }) => {
   }
   
 
-  const getUserDoc = async () => {
-    const userRef = doc(db, "schools", schoolId, "users", user.uid)
-    getDoc(userRef)
-      .then(userSnap => {
-        if (userSnap.exists()) {
-          setUserDoc(userSnap.data())
-        }
-      })
+  const refreshUserDoc = async () => {
+    const res = await getUser(db, user.uid)
+    setUserDoc(res)
   }
 
   // Subscribe to changes to whether or not signing up is allowed
   useEffect(() => {
     updateSignupAllowed()
-    getUserDoc()
+    refreshUserDoc()
 
     const signupAllowedRef = doc(db, "schools", schoolId, "config", "student_signup")
     const unsubscribe = onSnapshot(signupAllowedRef, (doc) => {
