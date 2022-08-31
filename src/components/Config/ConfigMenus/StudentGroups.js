@@ -108,19 +108,6 @@ const StudentGroups = ({ db }) => {
             </a></li>)
         })}
 
-        {/********** Unused Has Passport Group **********/}
-        {/* <li className="divider" key="divider-0" tabIndex="-1" />
-
-        <li key='dropdown-item-Has Passport'><a
-          href="#!"
-          className={"Has Passport" === selectedGroup ? "bold" : ""}
-          onClick={() => setSelectedGroup("Has Passport")}
-        >
-          Has Passport
-        </a></li>
-
-        <li className="divider" key="divider-1" tabIndex="-1" /> */}
-
         <li><a href="#!" key="add-group">Add Group +</a></li>
       </ul>
 
