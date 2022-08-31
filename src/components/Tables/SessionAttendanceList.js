@@ -11,7 +11,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
 
   // Un-dims the row when the update comes through
   useEffect(() => {
-    const elem = document.getElementById(`enrollment-row-${enrollment.uid}`)
+    const elem = document.getElementById(`enrollment-row-${session.id}-${enrollment.uid}`)
     if (elem) {
       elem.classList.remove('dim')
     }
@@ -43,7 +43,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const handleCheck = (value) => {
     value = ( value === enrollment.attendance ? '' : value )
     // Dim the row (to be lightened on update from firestore)
-    const elem = document.getElementById(`enrollment-row-${enrollment.uid}`)
+    const elem = document.getElementById(`enrollment-row-${session.id}-${enrollment.uid}`)
     if (elem) {
       elem.classList.add('dim')
     }
@@ -78,7 +78,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
   return (
     <tr
       className="student-name"
-      id={`enrollment-row-${enrollment.uid}`}
+      id={`enrollment-row-${session.id}-${enrollment.uid}`}
       key={`${enrollment.name}-${session.id}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
