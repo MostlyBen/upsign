@@ -6,7 +6,7 @@ import { getSubdomain } from '../../utils';
 
 import {
   setUserType,
-  getTeacherSignupAllowed,
+  getTeacherRegisterAllowed,
   allowStudentRegister,
 } from '../../services';
 
@@ -18,7 +18,7 @@ const UserTypeSelect = (props) => {
   const schoolId = getSubdomain()
 
   const getTeacherAllowed = async () => {
-    const teacherAllowed = await getTeacherSignupAllowed(db)
+    const teacherAllowed = await getTeacherRegisterAllowed(db)
     setTeacherAllowed(teacherAllowed)
 
   }

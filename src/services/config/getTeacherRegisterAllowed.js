@@ -1,7 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { getSubdomain } from "../../utils";
 
-const getTeacherSignupAllowed = async (db) => {
+const getTeacherRegisterAllowed = async (db) => {
   const schoolId = getSubdomain()
   const teacherRegRef = doc(db, "schools", schoolId, "config", "teacher_register")
     getDoc(teacherRegRef).then(teacherRegSetting => {
@@ -16,4 +16,4 @@ const getTeacherSignupAllowed = async (db) => {
   })
 }
 
-export default getTeacherSignupAllowed
+export default getTeacherRegisterAllowed
