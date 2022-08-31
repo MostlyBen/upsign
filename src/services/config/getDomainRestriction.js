@@ -4,26 +4,18 @@ import { getSubdomain } from "../../utils";
 const getDomainRestriction = async (db) => {
   const schoolId = getSubdomain()
   // Get the config for domain restrictions
-  console.log("Getting domain restriction...")
   const domResRef = doc(db, "schools", schoolId, "config", "domain_restriction")
-  getDoc(domResRef).then(domResDoc => {
+  const domResDoc = await getDoc(domResRef)
+  if (domResDoc.exists()) {
+    const res = domResDoc.data()
+    return res
 
-    if (domResDoc.exists()) {
-      // Save the needed variables for easy reference
-      const domRes = domResDoc.data().domain
+  } else {
+    const defaultSettings = { active: false, domain: '' }
+    setDoc(domResRef, defaultSettings)
+    return defaultSettings
+  }
 
-      return domRes
-
-    } else {
-      console.log("domResDoc doesn't exist!!!")
-      setDoc(doc(db, "schools", schoolId, "config", "domain_restriction"), {
-        active: false,
-        domain: ''
-      })
-
-      return ''
-    }
-  })
 }
 
 export default getDomainRestriction

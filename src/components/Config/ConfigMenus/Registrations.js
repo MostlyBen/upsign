@@ -1,50 +1,38 @@
 import { useState, useEffect } from "react"
-import { doc, collection, getDoc, setDoc } from "firebase/firestore";
-import { getSubdomain } from '../../../utils';
+import { getDomainRestriction, setDomainRestriction } from "../../../services";
 import { LoadingBar } from "../../"
 
-const Registrations = (props) => {
+const Registrations = ({ db }) => {
   const [loading, setLoading] = useState(true)
   const [restrictDomain, setRestrictDomain] = useState(false)
   const [domain, setDomain] = useState('')
   // const [teacherEdit, setTeacherEdit] = useState(true)
 
-  const schoolId = getSubdomain()
-
-  const configRef = collection(props.db, "schools", schoolId, "config")
-  const restrictDomainRef = doc(props.db, "schools", schoolId, "config", "domain_restriction")
-
-  const get_settings = async () => {
-    getDoc(restrictDomainRef)
-      .then(restrictDomainSetting => {
-        if (restrictDomainSetting.exists()) {
-          const active = restrictDomainSetting.data().active
-          if (typeof active === "boolean") {
-            setRestrictDomain( active )
-            setDomain( restrictDomainSetting.data().domain )
-          }
-        }
+  const updateSettings = async (db) => {
+    await getDomainRestriction(db)
+      .then(r => {
+        setRestrictDomain( r.active )
+        setDomain( r.domain )
       })
       .then(() => {
         setLoading(false)
       })
+
   }
 
   useEffect(() => {
-    get_settings() // Should probably do this with an onSnapshot, too
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    updateSettings(db)
+  }, [db])
 
 
   const handleSwitchRestrictDomain = async () => {
-    await setDoc(doc(configRef, "domain_restriction"), {active: !restrictDomain, domain: domain});
     setRestrictDomain(!restrictDomain);
+    await setDomainRestriction(db, {active: !restrictDomain, domain: domain});
   }
 
   const handleUpdateDomain = async (e) => {
     setDomain(e.target.value)
-
-    await setDoc(doc(configRef, "domain_restriction"), {active: restrictDomain, domain: e.target.value})
+    await setDomainRestriction(db, {active: restrictDomain, domain: e.target.value})
   }
 
   if (loading) {

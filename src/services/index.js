@@ -5,6 +5,7 @@ import getNumberSessions from "./config/getNumberSessions";
 import getSessionTimes from "./config/getSessionTimes";
 import getSignupAllowed from "./config/getSignupAllowed";
 import getTeacherSignupAllowed from "./config/getTeacherSignupAllowed";
+import setDomainRestriction from "./config/setDomainRestriction";
 
 // Data
 import getNextFriday from "./data/getNextFriday";
@@ -32,6 +33,7 @@ export {
   getSessionTimes,
   getSignupAllowed,
   getTeacherSignupAllowed,
+  setDomainRestriction,
   // Data
   getNextFriday,
   // Groups
