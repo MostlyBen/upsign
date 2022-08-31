@@ -14,7 +14,7 @@ const Signups = (props) => {
   const teacherRegRef = doc(props.db, "schools", schoolId, "config", "teacher_register")
   const studentSignRef = doc(props.db, "schools", schoolId, "config", "student_signup")
 
-  const get_settings = async () => {
+  const updateSettings = async () => {
     getDoc(teacherRegRef)
       .then(teacherRegSetting => {
         if (teacherRegSetting.exists()) {
@@ -27,6 +27,7 @@ const Signups = (props) => {
       .then(() => {
         setLoading(false)
       })
+
     getDoc(studentSignRef)
       .then(studentSignSetting => {
         if (studentSignSetting.exists()) {
@@ -39,7 +40,7 @@ const Signups = (props) => {
   }
 
   useEffect(() => {
-    get_settings() // Should probably do this with an onSnapshot, too
+    updateSettings() // Should probably do this with an onSnapshot, too
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -72,7 +73,7 @@ const Signups = (props) => {
         <div className="switch toggle-switch">
           <label>
             <input type="checkbox" checked={!!teacherReg} onClick={handleSwitchTeacherReg} />
-            <span class="lever"></span>
+            <span className="lever"></span>
           </label>
           New users can register as teachers
         </div>
@@ -81,7 +82,7 @@ const Signups = (props) => {
         <div className="switch toggle-switch">
           <label>
             <input type="checkbox" checked={!!studentSign} onClick={handleSwitchStudentSign} />
-            <span class="lever"></span>
+            <span className="lever"></span>
           </label>
           Students can sign up
         </div>
