@@ -1,41 +1,29 @@
 import { useState, useEffect } from "react"
-import { doc, collection, getDoc, setDoc } from "firebase/firestore";
-import { getSubdomain } from '../../../utils';
+import {
+  getTeacherRegisterAllowed,
+  getSignupAllowed,
+  setTeacherRegisterAllowed,
+  setSignupAllowed,
+} from '../../../services'
 import { LoadingBar } from "../../";
 
-const Signups = (props) => {
+const Signups = ({ db }) => {
   const [loading, setLoading] = useState(true)
   const [teacherReg, setTeacherReg] = useState(false)
   const [studentSign, setStudentSign] = useState(true)
   // const [teacherEdit, setTeacherEdit] = useState(true)
-  const schoolId = getSubdomain()
-
-  const configRef = collection(props.db, "schools", schoolId, "config")
-  const teacherRegRef = doc(props.db, "schools", schoolId, "config", "teacher_register")
-  const studentSignRef = doc(props.db, "schools", schoolId, "config", "student_signup")
 
   const updateSettings = async () => {
-    getDoc(teacherRegRef)
-      .then(teacherRegSetting => {
-        if (teacherRegSetting.exists()) {
-          const active = teacherRegSetting.data().active
-          if (typeof active === "boolean") {
-            setTeacherReg( active )
-          }
-        }
+    getTeacherRegisterAllowed(db)
+      .then(teacherRegActive => {
+        setTeacherReg( teacherRegActive )
       })
       .then(() => {
         setLoading(false)
       })
-
-    getDoc(studentSignRef)
-      .then(studentSignSetting => {
-        if (studentSignSetting.exists()) {
-          const active = studentSignSetting.data().active
-          if (typeof active === "boolean") {
-            setStudentSign( active )
-          }
-        }
+    getSignupAllowed(db)
+      .then(studentSignActive => {
+        setStudentSign( studentSignActive )
       })
   }
 
@@ -45,12 +33,12 @@ const Signups = (props) => {
   }, [])
 
   const handleSwitchTeacherReg = async () => {
-    await setDoc(doc(configRef, "teacher_register"), {active: !teacherReg});
+    await setTeacherRegisterAllowed(db, {active: !teacherReg});
     setTeacherReg(!teacherReg);
   }
 
   const handleSwitchStudentSign = async () => {
-    await setDoc(doc(configRef, "student_signup"), {active: !studentSign});
+    await setSignupAllowed(db, {active: !studentSign});
     setStudentSign(!studentSign);
   }
 
