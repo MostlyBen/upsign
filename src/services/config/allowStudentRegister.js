@@ -4,6 +4,7 @@ import { getSubdomain } from "../../utils"
 const allowStudentRegister = async (db, email) => {
   const schoolId = getSubdomain()
   // Get the config for domain restrictions
+  // Should probably be from the getDomainRestriction
   const domResRef = doc(db, "schools", schoolId, "config", "domain_restriction")
   const allow = getDoc(domResRef).then(domResDoc => {
     // Create variable to return
