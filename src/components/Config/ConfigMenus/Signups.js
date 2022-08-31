@@ -86,14 +86,6 @@ const Signups = (props) => {
           Students can sign up
         </div>
 
-        {/* Teacher Edits */}
-        <div className="switch toggle-switch">
-          <label>
-            <input type="checkbox" />
-            <span class="lever"></span>
-          </label>
-          Teachers can edit sessions (NOT YET PROGRAMMED)
-        </div>
       </div>
     </div>
   )
