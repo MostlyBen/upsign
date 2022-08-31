@@ -13,8 +13,11 @@ import {
   getHourSessions,
   getUnsignedStudents,
   getGroups,
-  getSubdomain,
   getNextFriday,
+} from "../../services"
+
+import {
+  getSubdomain,
 } from "../../utils"
 
 import DatePicker from "../SignUp/DatePicker"

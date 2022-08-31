@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
-import { observeTopIntersect, getSubdomain, getNextFriday } from "../../utils";
+import {
+  getNumberSessions,
+  getNextFriday,
+} from "../../services";
+import {
+  observeTopIntersect,
+  getSubdomain,
+} from "../../utils";
 
 import SessionSelector from './SessionSelector'
 import { LoadingBar } from "../";
 import DatePicker from "./DatePicker";
-import { getNumberSessions } from "../../services";
-// import { getHourSessions } from "../../utils";
 
 
 const TopMessage = ({ user }) => {

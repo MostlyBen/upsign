@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
 
-import { getSessionTimes, getNumberSessions } from "../../services";
-import { observeTopIntersect, getTeacherSessions, getSubdomain, getNextFriday } from "../../utils";
+import {
+  getSessionTimes,
+  getNumberSessions,
+  getTeacherSessions,
+  getNextFriday,
+} from "../../services";
+import {
+  observeTopIntersect,
+  getSubdomain,
+} from "../../utils";
+
 import SessionEditor from "./SessionEditor";
 import { LoadingBar } from "../";
 import DatePicker from "./DatePicker";

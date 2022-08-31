@@ -11,7 +11,8 @@ import {
 
 import { SessionAttendanceList } from '../'
 
-import { getGroups, getSubdomain } from "../../utils"
+import { getGroups } from "../../services"
+import { getSubdomain } from "../../utils"
 
 import M from 'materialize-css'
 

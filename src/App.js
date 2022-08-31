@@ -19,7 +19,7 @@ import {
   LoadingBar,
 } from './components';
 
-import { getUserType } from './utils';
+import { getUserType } from './services';
 
 import { firebaseConfig } from './config';
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllStudents, enrollStudent } from "../../utils"
+import { getAllStudents, enrollStudent } from "../../services"
 import { useDrop } from 'react-dnd'
 
 import M from 'materialize-css';

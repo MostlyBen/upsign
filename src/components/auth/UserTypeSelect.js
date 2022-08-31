@@ -8,7 +8,7 @@ import {
   setUserType,
   getTeacherSignupAllowed,
   allowStudentRegister,
-} from '../../utils';
+} from '../../services';
 
 const UserTypeSelect = (props) => {
   const [teacherAllowed, setTeacherAllowed] = useState(false)

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { doc, collection, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
-import { getAllStudents, getGroups } from "../../../utils"
+import { getAllStudents, getGroups } from "../../../services"
 import { getSubdomain } from '../../../utils';
 import M from "materialize-css";
 

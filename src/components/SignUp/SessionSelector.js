@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react"
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
-import { getSessionTimes } from "../../services";
-import { enrollStudent, getSignupAllowed, getSubdomain } from "../../utils"
+import {
+  getSessionTimes,
+  enrollStudent,
+  getSignupAllowed,
+} from "../../services"
+
+import {
+  getSubdomain,
+} from "../../utils"
 
 const SessionCard = ({ db, selectedDate, session, user }) => {
   // The session card decides whether or not display should be done depending on
