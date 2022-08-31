@@ -1,11 +1,11 @@
 // Config
 import allowStudentRegister from "./config/allowStudentRegister";
-import getDomainRestriction from "./config/getDomainRestriction";
+import getDomainRestriction from "./config/domainRestriction/getDomainRestriction";
 import getNumberSessions from "./config/getNumberSessions";
 import getSessionTimes from "./config/getSessionTimes";
 import getSignupAllowed from "./config/getSignupAllowed";
 import getTeacherRegisterAllowed from "./config/getTeacherRegisterAllowed";
-import setDomainRestriction from "./config/setDomainRestriction";
+import setDomainRestriction from "./config/domainRestriction/setDomainRestriction";
 
 // Data
 import getNextFriday from "./data/getNextFriday";
