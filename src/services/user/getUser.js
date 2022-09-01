@@ -5,14 +5,13 @@ import { getSubdomain } from "../../utils"
     const schoolId = getSubdomain()
 
     const userRef = doc(db, "schools", schoolId, "users", uid)
-    getDoc(userRef)
-      .then(userSnap => {
-        if (userSnap.exists()) {
-          return userSnap.data()
-        } else {
-          throw new Error(`Could not find user ${uid}`)
-        }
-      })
+    const userSnap = await getDoc(userRef)
+    if (userSnap.exists()) {
+      const user = userSnap.data()
+      return user
+    } else {
+      throw new Error(`Could not find user ${uid}`)
+    }
   }
 
   export default getUserDoc

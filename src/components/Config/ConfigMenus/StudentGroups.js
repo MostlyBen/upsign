@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { doc, collection, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
-import { getAllStudents, getGroups } from "../../../services"
+import { collection,onSnapshot } from "firebase/firestore";
+import { getAllStudents, getGroups, getUser, updateUser } from "../../../services"
 import { getSubdomain } from '../../../utils';
 import M from "materialize-css";
 
@@ -52,13 +52,9 @@ const StudentGroups = ({ db }) => {
     }
   }, [groupOptions])
 
-  const handleClickStudent = (student) => {
-    const studentRef = doc(db, "schools", schoolId, "users", student.uid)
-    getDoc(studentRef)
-    .then(studentSnap => {
-      if (studentSnap.exists()) {
-        const studentDoc = studentSnap.data()
-
+  const handleClickStudent = async (student) => {
+    getUser(db, student.uid)
+      .then(studentDoc => {
         if (Array.isArray(studentDoc.groups)) {
           if (studentDoc.groups.includes(selectedGroup)) {
             let g = studentDoc.groups.filter(obj => {
@@ -68,13 +64,16 @@ const StudentGroups = ({ db }) => {
           } else {
             studentDoc.groups.push(selectedGroup)
           }
+        // Student had no groups
         } else {
           studentDoc.groups = [selectedGroup]
         }
 
-        updateDoc(studentRef, {groups: studentDoc.groups});
-      }
-    })
+        return studentDoc
+      }).then(studentDoc => {
+        updateUser(db, student.uid, { groups: studentDoc.groups })
+      })
+
   }
   
   return (

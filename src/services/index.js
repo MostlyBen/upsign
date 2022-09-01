@@ -26,6 +26,7 @@ import getUnsignedStudents from "./sessions/getUnsignedStudents";
 import getUser from "./user/getUser";
 import getUserType from "./user/getUserType";
 import setUserType from "./user/setUserType";
+import updateUser from "./user/updateUser";
 
 
 export {
@@ -53,4 +54,5 @@ export {
   getUser,
   getUserType,
   setUserType,
+  updateUser,
 }

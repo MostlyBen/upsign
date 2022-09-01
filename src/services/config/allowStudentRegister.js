@@ -33,7 +33,6 @@ const allowStudentRegister = async (db, email) => {
       })
     }
 
-    console.log('returning...', allow)
     return allow
   })
 
