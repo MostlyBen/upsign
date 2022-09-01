@@ -12,11 +12,15 @@ import setTeacherRegisterAllowed from "./config/teacherRegister/setTeacherRegist
 // Data
 import getNextFriday from "./data/getNextFriday";
 
+// Enrollment
+import enrollStudent from "./enrollment/enrollStudent";
+import getSessionEnrollments from "./enrollment/getSessionEnrollment";
+import unenrollFromHour from "./enrollment/unenrollFromHour";
+
 // Groups
 import getGroups from "./groups/getGroups";
 
 // Sessions
-import enrollStudent from "./sessions/enrollStudent";
 import getAllStudents from "./sessions/getAllStudents";
 import getHourSessions from "./sessions/getHourSessions";
 import getTeacherSessions from "./sessions/getTeacherSessions";
@@ -42,10 +46,13 @@ export {
   setTeacherRegisterAllowed,
   // Data
   getNextFriday,
+  // Enrollment
+  enrollStudent,
+  getSessionEnrollments,
+  unenrollFromHour,
   // Groups
   getGroups,
   // Sessions
-  enrollStudent,
   getAllStudents,
   getHourSessions,
   getTeacherSessions,
