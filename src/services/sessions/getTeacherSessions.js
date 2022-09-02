@@ -37,7 +37,6 @@ const getTeacherSessions = async (db, date, user, schoolId=null) => {
         teacher_id: user.uid,
         session: i + 1,
         capacity: 30,
-        enrollment: [],
       }
 
       await setDoc(sessionRef, docObject)
