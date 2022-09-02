@@ -7,8 +7,6 @@ import {
 } from "../../services"
 import { LittleLoadingBar } from "../"
 
-// This was dumb, but the "enrollment" variable is the student's entry in the
-// session's "enrollment" array.
 const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const [showRemove, setShowRemove] = useState(0)
 
