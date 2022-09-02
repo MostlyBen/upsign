@@ -13,7 +13,7 @@ import {
 } from "../../utils";
 
 import SessionEditor from "./SessionEditor";
-import { LoadingBar } from "../";
+import { LoadingBar, SettingsButton } from "../";
 import DatePicker from "./DatePicker";
 
 const TopMessage = ({ user }) => {
@@ -38,9 +38,7 @@ const TopMessage = ({ user }) => {
   )
 }
 
-const TeacherSignUp = (props) => {
-  const db = props.db;
-  const user = props.user;
+const TeacherSignUp = ({ db, user }) => {
 
   const [sessions, setSessions] = useState()
   // This is just needed to getTeacherSessions again if the number updates
@@ -148,8 +146,10 @@ const TeacherSignUp = (props) => {
             </h4>
             <hr style={{marginBottom: "1rem"}} />
             <div className="row card session-card is-enrolled teacher-card">
-              <SessionEditor key={s.id} session={s} db={props.db} date={selectedDate} />
+              <SessionEditor key={s.id} session={s} db={db} date={selectedDate} />
             </div>
+
+            <SettingsButton />
           </div>
         ) : null }
       </div>

@@ -315,6 +315,20 @@ body {
 	}
 }
 
+.settings-button-holder {
+	position: fixed;
+	right: 3.5rem;
+	bottom: 2.3rem;
+}
+
+.settings-button {
+	background-color: #fff !important;
+	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.10);
+}
+
+.settings-button-icon {
+	color: #9e9e9e !important;
+}
 
 .student-list-btn {
 	color: grey;

@@ -9,6 +9,7 @@ import TeacherSignUp from './SignUp/TeacherSignUp'
 // Small Bits
 import LittleLoadingBar from './SmallBits/LittleLoadingBar'
 import LoadingBar from './SmallBits/LoadingBar'
+import SettingsButton from './SmallBits/SettingsButton'
 // Dashboards
 import AllSessionOverview from './AllSessions/AllSessionOverview'
 import Config from './Config/Config'
@@ -26,6 +27,7 @@ export {
 
   LittleLoadingBar,
   LoadingBar,
+  SettingsButton,
 
   AllSessionOverview,
   Config,
