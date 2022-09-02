@@ -3,10 +3,11 @@ import { unenrollFromHour } from "../"
 import { getSubdomain } from "../../utils";
 
 
-const enrollStudent = async (db, date, session, user, preventUnenroll = false) => {
+const enrollStudent = async (db, date, session, user) => {
   const schoolId = getSubdomain()
-
-  await unenrollFromHour(db, date, user, session.session)
+  if (db) {
+    await unenrollFromHour(db, date, user, session.session)
+  }
 
   const enrRef = collection(
                             db,

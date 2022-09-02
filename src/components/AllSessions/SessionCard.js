@@ -58,7 +58,7 @@ const SessionCard = ({ db, date, session, filter }) => {
     accept: 'student',
     drop: () => {
       const user = monitor.getItem().enrollment
-      enrollStudent(db, date, session, user, true)
+      enrollStudent(db, date, session, user)
     },
     collect: monitor => (monitor),
   }))
