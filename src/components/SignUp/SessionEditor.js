@@ -201,9 +201,7 @@ const SessionEditor = ({ db, session, date }) => {
           <div className="teacher-card-h1">
             Student List
           </div>
-          { Number(capacity) !== 0
-          ? <SessionAttendanceList db={db} date={date} session={session} />
-          : null}
+          <SessionAttendanceList db={db} schoolId={schoolId} date={date} session={session} />
 
         </div>
       </div>

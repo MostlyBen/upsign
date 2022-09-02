@@ -1,8 +1,11 @@
 import { doc, setDoc } from "firebase/firestore";
 import { getSubdomain } from "../../../utils";
 
-const setTeacherRegisterAllowed = async (db, payload) => {
-  const schoolId = getSubdomain()
+const setTeacherRegisterAllowed = async (db, payload, schoolId=null) => {
+  if (schoolId === null) {
+    schoolId = getSubdomain()
+  }
+  
   const teacherRegRef = doc(db, "schools", schoolId, "config", "teacher_register")
 
   // Just in case I want to just send a boolean instead of a proper payload

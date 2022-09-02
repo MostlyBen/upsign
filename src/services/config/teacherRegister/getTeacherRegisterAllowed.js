@@ -1,8 +1,11 @@
 import { doc, getDoc } from "firebase/firestore";
 import { getSubdomain } from "../../../utils";
 
-const getTeacherRegisterAllowed = async (db) => {
-  const schoolId = getSubdomain()
+const getTeacherRegisterAllowed = async (db, schoolId=null) => {
+  if (schoolId === null) {
+    schoolId = getSubdomain()
+  }
+  
   const teacherRegRef = doc(db, "schools", schoolId, "config", "teacher_register")
     getDoc(teacherRegRef).then(teacherRegSetting => {
     if (teacherRegSetting.exists()) {

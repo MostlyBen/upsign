@@ -14,19 +14,23 @@ import getNextFriday from "./data/getNextFriday";
 
 // Enrollment
 import enrollStudent from "./enrollment/enrollStudent";
-import getSessionEnrollments from "./enrollment/getSessionEnrollment";
+import getHourEnrollments from "./enrollment/getHourEnrollments";
+import getSessionEnrollments from "./enrollment/getSessionEnrollments";
+import getStudentEnrollments from "./enrollment/getStudentEnrollments";
 import unenrollFromHour from "./enrollment/unenrollFromHour";
+import updateEnrollment from "./enrollment/updateEnrollment";
 
 // Groups
 import getGroups from "./groups/getGroups";
 
 // Sessions
-import getAllStudents from "./sessions/getAllStudents";
 import getHourSessions from "./sessions/getHourSessions";
 import getTeacherSessions from "./sessions/getTeacherSessions";
 import getUnsignedStudents from "./sessions/getUnsignedStudents";
+import unenrollFromSession from "./enrollment/unenrollFromSession";
 
 // User
+import getAllStudents from "./user/getAllStudents";
 import getUser from "./user/getUser";
 import getUserType from "./user/getUserType";
 import setUserType from "./user/setUserType";
@@ -48,8 +52,12 @@ export {
   getNextFriday,
   // Enrollment
   enrollStudent,
+  getHourEnrollments,
   getSessionEnrollments,
+  getStudentEnrollments,
   unenrollFromHour,
+  unenrollFromSession,
+  updateEnrollment,
   // Groups
   getGroups,
   // Sessions

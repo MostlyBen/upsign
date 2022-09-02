@@ -326,9 +326,12 @@ body {
 	padding-right: 1.5rem;
 }
 
+.student-name {
+	user-select: none;
+}
+
 .student-name-empty {
 	color: grey;
-	user-select: none;
 }
 
 .icon-button-offset {

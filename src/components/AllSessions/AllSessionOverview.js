@@ -10,6 +10,7 @@ import HourSelector from "./HourSelector"
 import UnsignedStudents from "./UnsignedStudents"
 
 import { 
+  getHourEnrollments,
   getHourSessions,
   getUnsignedStudents,
   getGroups,
@@ -18,6 +19,7 @@ import {
 
 import {
   getSubdomain,
+  mergeSessionEnrollment,
 } from "../../utils"
 
 import DatePicker from "../SignUp/DatePicker"
@@ -25,28 +27,40 @@ import DatePicker from "../SignUp/DatePicker"
 
 const AllSessionOverview = ({ db, match }) => {
   const hour = match.params.session
-  const [sessions, setSessions] = useState([])
-  const [unsignedStudents, setUnsignedStudents] = useState([])
-  const [groupOptions, setGroupOptions] = useState([])
-  const [groupFilter, setGroupFilter] = useState('All Students')
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const [totalCapacity, setTotalCapacity] = useState(0)
+  const [ sessions, setSessions ]                 = useState([])
+  const [ enrollments, setEnrollments ]           = useState([])
+  const [ sessionsWithEnr, setSessionsWithEnr ]   = useState([])
+  const [ unsignedStudents, setUnsignedStudents ] = useState([])
+  const [ groupOptions, setGroupOptions ]         = useState([])
+  const [ groupFilter, setGroupFilter ]           = useState('All Students')
+  const [ selectedDate, setSelectedDate ]         = useState(new Date())
+  const [ totalCapacity, setTotalCapacity ]       = useState(0)
 
   const schoolId = getSubdomain()
 
   const loadSessions = async (db) => {
+    updateUnsigned(db)
     const s = await getHourSessions(db, selectedDate, Number(hour))
+
+    if (s.length > 0) {
+      // Not sure why this check was here...
+      if (Number(s[0].session) === Number(hour)) {
+        s.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
+        setSessions( [...s] )
+      }
+    }
+  }
+
+  const updateUnsigned = async (db) => {
     const u = groupFilter === 'All Students'
       ? await getUnsignedStudents(db, selectedDate, Number(hour))
       : await getUnsignedStudents(db, selectedDate, Number(hour), groupFilter)
+      setUnsignedStudents( [...u] )
+  }
 
-    if (s.length > 0) {
-      if (Number(s[0].session) === Number(hour)) {
-        s.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
-        setSessions(s)
-        setUnsignedStudents(u)
-      }
-    }
+  const loadEnrollments = async (db) => {
+    const e = await getHourEnrollments(db, selectedDate, hour)
+    setEnrollments( [...e] )
   }
 
   const updateGroupOptions = async () => {
@@ -58,21 +72,31 @@ const AllSessionOverview = ({ db, match }) => {
     setSelectedDate(date)
   }
 
-  // Select upcoming Friday
+  // Select default day
   useEffect(() => {
     const nextFriday = getNextFriday()
-
     setSelectedDate(nextFriday)
-  }, [])
-
-  useEffect(() => {
-    setSessions([])
     // Get list of student groups for filter
     updateGroupOptions()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // SESSIONS: Load & subscribe to updates
+  useEffect(() => {
+    setSessions([])
     // Set up snapshot & load sessions
-    const q = query(collection(db, "schools", schoolId, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString()))/*, where("session", "==", Number(hour))*/);
-    const unsubscribe = onSnapshot(q, () => {
+    const sQuery = query(
+                collection(
+                  db,
+                  "schools",
+                  schoolId,
+                  "sessions",
+                  String(selectedDate.getFullYear()),
+                  String(selectedDate.toDateString())
+                  )
+                );
+    const unsubscribe = onSnapshot(sQuery, () => {
       loadSessions(db)
     })
 
@@ -80,8 +104,41 @@ const AllSessionOverview = ({ db, match }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, selectedDate, hour, groupFilter])
 
+  // ENROLLMENTS: Load & subscribe to updates
+  useEffect(() => {
+    setEnrollments([])
+    // Set up snapshot & load sessions
+    const eQuery = query(
+                collection(
+                  db,
+                  "schools",
+                  schoolId,
+                  "sessions",
+                  String(selectedDate.getFullYear()),
+                  `${String(selectedDate.toDateString())}-enrollments`
+                  )
+                );
+    const unsubscribe = onSnapshot(eQuery, () => {
+      loadEnrollments(db)
+      updateUnsigned(db)
+    })
+
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db, selectedDate, hour, groupFilter])
+
+  // Combine sessions & enrollments whenever one of them updates
+  useEffect(() => {
+    const newArray = mergeSessionEnrollment(sessions, enrollments)
+    // Doesn't re-render the cards if you just setSessionsWithEnr(newArray)
+    // So I changed loadSessions & loadEnrollments, too
+    setSessionsWithEnr( [...newArray] )
+  }, [sessions, enrollments])
+
+  // Reset state when hour is changed
   useEffect(() => {
     setSessions([])
+    setEnrollments([])
     setUnsignedStudents([])
   }, [hour])
 
@@ -173,10 +230,16 @@ const AllSessionOverview = ({ db, match }) => {
       <DndProvider backend={HTML5Backend}>
         <div className="row">
           <div className="col s12 cards-container">
-            {sessions.length > 0
-              ? <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
+            {sessionsWithEnr.length > 0
+              ? <UnsignedStudents
+                  key="unsigned-students"
+                  students={unsignedStudents}
+                  db={db}
+                  date={selectedDate}
+                  hour={hour}
+                />
               : <div></div>}
-            {sessions.map( s => {
+            {sessionsWithEnr.map( s => {
               return <SessionCard
                   key={`session-${s.id}`}
                   id={`session-${s.id}`}

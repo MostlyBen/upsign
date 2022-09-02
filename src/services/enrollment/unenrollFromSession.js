@@ -1,7 +1,7 @@
 import { collection, query, where, getDocs, deleteDoc } from "@firebase/firestore"
 import { getSubdomain } from "../../utils";
 
-export const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
+export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=null) => {
   if (schoolId === null) {
     schoolId = getSubdomain()
   }
@@ -16,17 +16,17 @@ export const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
                             `${String(date.toDateString())}-enrollments`)
   // Query for any docs for this user in this hour
   const q = query(enrRef,
-                  where("uid", "==", user.uid),
-                  where("session", "==", Number(hour))
+                  where("uid", "==", userId),
+                  where("session_id", "==", sessionId)
                   );
   // Get all docs that fit the query
-  const quSnapshot = await getDocs(q)
+  const qSnapshot = await getDocs(q)
 
   // Iterate through and delete any enrollment docs
-  quSnapshot.forEach(async (snap) => {
+  qSnapshot.forEach(async (snap) => {
     await deleteDoc(snap.ref)
   })
 
 }
 
-export default unenrollFromHour
+export default unenrollFromSession

@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
+import { onSnapshot, doc } from "@firebase/firestore"
 import {
   getNumberSessions,
   getNextFriday,
+  getSessionTimes,
+  getSignupAllowed,
+  getUser,
 } from "../../services";
 import {
   observeTopIntersect,
@@ -10,7 +13,6 @@ import {
 } from "../../utils";
 
 import SessionSelector from './SessionSelector'
-import { LoadingBar } from "../";
 import DatePicker from "./DatePicker";
 
 
@@ -41,9 +43,12 @@ const StudentSignUp = (props) => {
   const db = props.db;
   const user = props.user;
 
-  const [sessions, setSessions] = useState([])
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const [numberSessions, setNumberSessions] = useState(1)
+  const [ sessionArray, setSessionArray ]     = useState([])
+  const [ selectedDate, setSelectedDate ]     = useState(new Date())
+  const [ numberSessions, setNumberSessions ] = useState(1)
+  const [ sessionTimes, setSessionTimes ]     = useState([])
+  const [ signupAllowed, setSignupAllowed ]    = useState(false)
+  const [ userDoc, setUserDoc ]               = useState({})  
 
   const schoolId = getSubdomain()
 
@@ -52,110 +57,103 @@ const StudentSignUp = (props) => {
     setNumberSessions(newNumber)
   }
 
-  // Initialize the observer
-  // Checks when the DatePicker (".sticky-container") intersects with the navbar
+  const updateSessionTimes = async (db) => {
+    const newTimes = await getSessionTimes(db, selectedDate)
+    setSessionTimes(newTimes)
+  }
+
+  const updateSignupAllowed = async () => {
+    const allowed = await getSignupAllowed(db)
+    setSignupAllowed(allowed)
+  }
+
+  const refreshUserDoc = async () => {
+    const res = await getUser(db, user.uid)
+    setUserDoc({
+      uid: user.uid,
+      ...res
+    })
+  }
+
+  /* Initial Load */
   useEffect(() => {
+    // Select upcoming Friday
+    // NEEDS TO BE UPDATED SO DEFAULT DAY OF THE WEEK CAN BE SET AND TURNED ON/OFF
+    const nextFriday = getNextFriday()
+    setSelectedDate(nextFriday)
+
+    // Initialize the observer
+    // Checks when the DatePicker (".sticky-container") intersects with the navbar
     observeTopIntersect()
-  }, [sessions])
 
-  // Update the number of sessions if the selected date changes
-  useEffect(() => {
-    updateNumberSessions(db, selectedDate)
+    // Initially loads the user & whether or not they can sign up
+    updateSignupAllowed()
+    refreshUserDoc()
+
+    const signupAllowedRef = doc(db, "schools", schoolId, "config", "student_signup")
+    const unsubscribe = onSnapshot(signupAllowedRef, (doc) => {
+      const active = doc.data().active
+      if (typeof active === "boolean") {
+        setSignupAllowed(active)
+      }
+    })
+
+    return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDate])
+  }, [])
 
+  // Subscribe to user doc changes
   useEffect(() => {
-    // Set up snapshot & load the times of the sessions
-    const d = doc(db, "schools", schoolId ?? "museum", "config", "sessions")
-    const unsubscribe = onSnapshot(d, () => {
-      updateNumberSessions(db)
+    const userDocRef = doc(db, "schools", schoolId, "users", user.uid)
+    const unsubscribe = onSnapshot(userDocRef, () => {
+      refreshUserDoc()
     })
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db])
 
-  // Select upcoming Friday
-  // NEEDS TO BE UPDATED SO DEFAULT DAY OF THE WEEK CAN BE SET AND TURNED ON/OFF
+  // Update the number & times of sessions if the selected date changes
   useEffect(() => {
-    const nextFriday = getNextFriday()
+    // Set up snapshot & load the times of the sessions
+    const d = doc(db, "schools", schoolId ?? "museum", "config", "sessions")
+    const unsubscribe = onSnapshot(d, () => {
+      updateSessionTimes(db)
+      updateNumberSessions(db, selectedDate)
+    })
 
-    setSelectedDate(nextFriday)
-  }, [])
-
-  // Initialize the update listeners
-  useEffect(() => {
-      const q = query(
-                      collection(db,
-                                 "schools",
-                                 schoolId,
-                                 "sessions",
-                                 String(selectedDate.getFullYear()),
-                                 String(selectedDate.toDateString())),
-                      where("title", "!=", "")
-                      );
-
-      
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let allSessions = [];
-        querySnapshot.forEach((doc) => {
-          if (doc.data().title) {
-            allSessions.push({
-              id: doc.id,
-              ...doc.data()
-            })
-          }
-        })
-
-        allSessions.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
-
-        let sortedSessions = []
-
-        allSessions.forEach((s) => {
-          const index = s.session - 1
-          if (Array.isArray(sortedSessions[index])) {
-            sortedSessions[index].push(s)
-          } else {
-            sortedSessions[index] = [s]
-          }
-        })
-
-        setSessions([...sortedSessions])
-        
-      })
-
-      return () => unsubscribe()
-
-
+    return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, selectedDate, numberSessions])
+  }, [db, selectedDate])
 
+  // Update the number of hours to render when the number of sessions changes
+  useEffect(() => {
+    let newArr = []
+    for (let i = 0; i < numberSessions; i++) {
+      newArr.push(i)
+    }
+    setSessionArray(newArr)
 
-  if (sessions.length === 0) {
-    return (
-      <div>
-        <TopMessage user={user} />
-        <LoadingBar />
-      </div>
-    )
-  }
+  }, [numberSessions])
 
-  if (Array.isArray(sessions)) {
-    return (
-      <div>
-        <TopMessage user={user} />
-        <div className="sticky-container">
-          <DatePicker selectedDate={selectedDate} handleSelectDate={setSelectedDate} />
-        </div>
-
-        { sessions.map( (session, index) => <SessionSelector key={`session-${index}`} hourSessions={session} hour={index+1} user={user} db={db} selectedDate={selectedDate} schoolId={schoolId} /> ) }
-      </div>
-    )
-  }
 
   return (
     <div>
-      Uh oh! An error occured while trying to load your sessions.
+      <TopMessage user={user} />
+      <div className="sticky-container">
+        <DatePicker selectedDate={selectedDate} handleSelectDate={setSelectedDate} />
+      </div>
+
+      { sessionArray.map( (index) => <SessionSelector
+                                            key={`session-${index}`}
+                                            hour={index+1}
+                                            userDoc={userDoc}
+                                            db={db}
+                                            selectedDate={selectedDate}
+                                            sessionTime={sessionTimes[index]}
+                                            signupAllowed={signupAllowed}
+                                            schoolId={schoolId}
+                                          /> ) }
     </div>
   )
 

@@ -3,14 +3,18 @@ import { getNumberSessions } from "../../services";
 import { getSubdomain } from "../../utils";
 
 
-const getTeacherSessions = async (db, date, user) => {
+const getTeacherSessions = async (db, date, user, schoolId=null) => {
+  if (schoolId === null) {
+    schoolId = getSubdomain()
+  }
+  
   const teacher_id = user.uid;
-  const schoolId = getSubdomain()
   const numberSessions = await getNumberSessions(db, date)
   let teacherSessions = []
 
+  // Then, filter the array for each session
   for (let i = 0; i < numberSessions; i++) {
-    const docId = `${teacher_id}-session-${i+1}`
+    const sessionId = `${teacher_id}-session-${i+1}`
     const sessionRef = doc(
                             db,
                             "schools",
@@ -18,7 +22,7 @@ const getTeacherSessions = async (db, date, user) => {
                             "sessions",
                             String(date.getFullYear()),
                             String(date.toDateString()),
-                            docId)
+                            sessionId)
 
     const sessionDoc = await getDoc(sessionRef)
 
@@ -28,7 +32,7 @@ const getTeacherSessions = async (db, date, user) => {
 
     } else {
       const docObject = {
-        id: docId,
+        id: sessionId,
         teacher: user.nickname ?? user.displayName,
         teacher_id: user.uid,
         session: i + 1,
