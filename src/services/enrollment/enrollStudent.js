@@ -4,6 +4,10 @@ import { getSubdomain } from "../../utils";
 
 
 const enrollStudent = async (db, date, session, user) => {
+  if (!session || !user) {
+    console.log("Tried to enroll student without enough info")
+    return
+  }
   const schoolId = getSubdomain()
   if (db) {
     await unenrollFromHour(db, date, user, session.session)
