@@ -23,6 +23,7 @@ import {
 
 import DatePicker from "../SignUp/DatePicker"
 import LoadingBar from "../SmallBits/LoadingBar"
+import SettingsButton from "../SmallBits/SettingsButton"
 
 
 const AllSessionOverview = ({ db, match }) => {
@@ -248,7 +249,7 @@ const AllSessionOverview = ({ db, match }) => {
           </div>
         </div>
       </DndProvider>
-
+      <SettingsButton />
     </div>
   )
 }
