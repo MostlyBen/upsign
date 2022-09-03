@@ -22,6 +22,7 @@ import {
 } from "../../utils"
 
 import DatePicker from "../SignUp/DatePicker"
+import LoadingBar from "../SmallBits/LoadingBar"
 
 
 const AllSessionOverview = ({ db, match }) => {
@@ -75,6 +76,7 @@ const AllSessionOverview = ({ db, match }) => {
 
   // SESSIONS: Load & subscribe to updates
   useEffect(() => {
+    setLoading(true)
     setSessions([])
     // Set up snapshot & load sessions
     const sQuery = query(
@@ -89,6 +91,7 @@ const AllSessionOverview = ({ db, match }) => {
                 );
     const unsubscribe = onSnapshot(sQuery, () => {
       loadSessions(db)
+      setLoading(false)
     })
 
     return () => unsubscribe()
@@ -211,7 +214,11 @@ const AllSessionOverview = ({ db, match }) => {
                 </a></li>)
             })}
       </ul>
-
+      
+      {loading
+       ? <LoadingBar />
+       : <div />
+      }
       {/* --- BODY --- */}
       <DndProvider backend={HTML5Backend}>
         <div className="row">
@@ -222,6 +229,7 @@ const AllSessionOverview = ({ db, match }) => {
               schoolId={schoolId}
               date={selectedDate}
               hour={hour}
+              groupFilter={groupFilter}
             />
             {sessionsWithEnr.map( s => {
               return <SessionCard
