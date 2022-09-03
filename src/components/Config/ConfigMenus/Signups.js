@@ -14,17 +14,11 @@ const Signups = ({ db }) => {
   // const [teacherEdit, setTeacherEdit] = useState(true)
 
   const updateSettings = async () => {
-    getTeacherRegisterAllowed(db)
-      .then(teacherRegActive => {
-        setTeacherReg( teacherRegActive )
-      })
-      .then(() => {
-        setLoading(false)
-      })
-    getSignupAllowed(db)
-      .then(studentSignActive => {
-        setStudentSign( studentSignActive )
-      })
+    const teacherRegSetting = await getTeacherRegisterAllowed(db)
+    const studentSignupSetting = await getSignupAllowed(db)
+    setTeacherReg(teacherRegSetting)
+    setStudentSign(studentSignupSetting)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -60,7 +54,7 @@ const Signups = ({ db }) => {
         {/* Student SignUps */}
         <div className="switch toggle-switch">
           <label>
-            <input type="checkbox" checked={!!teacherReg} onClick={handleSwitchTeacherReg} />
+            <input type="checkbox" checked={!!teacherReg} readOnly={true} onClick={handleSwitchTeacherReg} />
             <span className="lever"></span>
           </label>
           New users can register as teachers
@@ -69,7 +63,7 @@ const Signups = ({ db }) => {
         {/* Student SignUps */}
         <div className="switch toggle-switch">
           <label>
-            <input type="checkbox" checked={!!studentSign} onClick={handleSwitchStudentSign} />
+            <input type="checkbox" checked={!!studentSign} readOnly={true} onClick={handleSwitchStudentSign} />
             <span className="lever"></span>
           </label>
           Students can sign up
