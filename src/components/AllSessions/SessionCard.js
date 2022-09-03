@@ -61,7 +61,7 @@ const SessionCard = ({ db, date, session, filter }) => {
       enrollStudent(db, date, session, user)
     },
     collect: monitor => (monitor),
-  }))
+  }), [db, date, session])
 
   if ( Array.isArray(session.enrollment) ) {
     session.enrollment.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
