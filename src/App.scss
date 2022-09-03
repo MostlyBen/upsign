@@ -26,20 +26,33 @@ $medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width 
   }
 }
 
+.hide {
+	display: none;
+}
+
 @media #{$small-and-down} {
   .cards-container {
     @include column-count(1);
   }
+	.hide-on-small, .show-on-med, .show-on-large {
+		display: none;
+	}
 }
 @media #{$medium-and-up} {
   .cards-container {
     @include column-count(2);
   }
+	.show-on-small, .show-on-large, .hide-on-med {
+		display: none;
+	}
 }
 @media #{$large-and-up} {
   .cards-container {
     @include column-count(3);
   }
+	.show-on-small, .hide-on-large, .hide-on-med-and-up {
+		display: none;
+	}
 }
 
 /* Menus & Stuff */
@@ -164,6 +177,13 @@ body {
 
 .session-selector {
 	padding: 0 1rem;
+}
+
+.session-time {
+	color: grey;
+	display: inline-block;
+	position: relative;
+	left: 1rem;
 }
 
 .session-card {
@@ -392,6 +412,11 @@ body {
 	margin: 1rem 0;
 	font-size: medium;
 	color: #424242;
+}
+
+.spinner-grey,
+.spinner-grey-only {
+	border-color: rgba(0, 0, 0, 0.13) !important;
 }
 
 .login-with-google-btn {

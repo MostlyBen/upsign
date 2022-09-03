@@ -101,8 +101,8 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
   if (loading) {
     return (
       <div className="session-selector row">
-      <h4>Session {hour}
-        <span style={{color: 'gray'}}> {sessionTime ? '('+sessionTime+')': ''}</span>
+      <h4 className="session-header">Session {hour}
+        <span className="session-time"> {sessionTime ? '('+sessionTime+')': ''}</span>
       </h4>
       <hr />
       <LittleLoadingBar />
@@ -113,7 +113,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
   return (
     <div className="session-selector row">
       <h4>Session {hour}
-        <span style={{color: 'gray'}}> {sessionTime ? '('+sessionTime+')': ''}</span>
+        <span className="session-time"> {sessionTime ? '('+sessionTime+')': ''}</span>
       </h4>
       <hr />
       <div className="cards-container">
