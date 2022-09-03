@@ -7,6 +7,7 @@ import SignOut from './auth/SignOut'
 import StudentSignUp from './SignUp/StudentSignUp'
 import TeacherSignUp from './SignUp/TeacherSignUp'
 // Small Bits
+import CircularLoading from './SmallBits/CircularLoading'
 import LittleLoadingBar from './SmallBits/LittleLoadingBar'
 import LoadingBar from './SmallBits/LoadingBar'
 import SettingsButton from './SmallBits/SettingsButton'
@@ -25,6 +26,7 @@ export {
   StudentSignUp,
   TeacherSignUp,
 
+  CircularLoading,
   LittleLoadingBar,
   LoadingBar,
   SettingsButton,
