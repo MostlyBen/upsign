@@ -8,6 +8,8 @@ import getTeacherRegisterAllowed from "./config/teacherRegister/getTeacherRegist
 import setDomainRestriction from "./config/domainRestriction/setDomainRestriction";
 import setSignupAllowed from "./config/signupAllowed/setSignupAllowed";
 import setTeacherRegisterAllowed from "./config/teacherRegister/setTeacherRegisterAllowed";
+import setNumberSessions from "./config/setNumberSessions";
+import setSessionTimes from "./config/setSessionTimes";
 
 // Data
 import getDefaultDay from "./data/getDefaultDay";
@@ -49,6 +51,8 @@ export {
   setDomainRestriction,
   setSignupAllowed,
   setTeacherRegisterAllowed,
+  setNumberSessions,
+  setSessionTimes,
   // Data
   getDefaultDay,
   getSchoolName,

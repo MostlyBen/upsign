@@ -402,6 +402,33 @@ body {
 		margin: 0;
 		font-weight: 500;
 	}
+	h2 {
+		font-size: 1.5rem;
+		margin: 1rem 0 0.5rem 0;
+		font-weight: 500;
+		color: #424242;
+	}
+}
+
+.table-input {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.first-menu-row {
+	padding-top: 0 !important;
+}
+.menu-row-odd {
+	padding-top: 1.5rem;
+}
+
+.menu-row-even {
+	background-color: #fafafa;
+	margin-top: 0;
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
+	border-top: 1px solid grey;
+	border-bottom: 1px solid grey;
 }
 
 .switches {
@@ -417,6 +444,12 @@ body {
 .spinner-grey,
 .spinner-grey-only {
 	border-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+.warning {
+	margin: 0.5rem 0;
+	padding: 0.5rem 1rem;
+	background-color: #fff176;
 }
 
 .login-with-google-btn {
