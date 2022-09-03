@@ -1,7 +1,11 @@
 import { collection, query, where, getDocs, deleteDoc } from "@firebase/firestore"
 import { getSubdomain } from "../../utils";
 
-export const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
+const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
+  if (!user.uid || !hour) {
+    return
+  }
+
   if (schoolId === null) {
     schoolId = getSubdomain()
   }
