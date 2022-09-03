@@ -5,6 +5,7 @@ import numberToArrayOfStrings from "./data/numberToArrayOfStrings";
 
 // Defaults
 import getDefaultSchoolInfo from "./defaults/getDefaultSchoolInfo";
+import getDefaultSessionsConfig from "./defaults/getDefaultSessionsConfig";
 
 // Info
 import getSubdomain from "./info/getSubdomain";
@@ -20,6 +21,7 @@ export {
   numberToArrayOfStrings,
   // Defaults
   getDefaultSchoolInfo,
+  getDefaultSessionsConfig,
   // Info
   getSubdomain,
   // Rendering
