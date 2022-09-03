@@ -12,7 +12,6 @@ import UnsignedStudents from "./UnsignedStudents"
 import { 
   getHourEnrollments,
   getHourSessions,
-  getUnsignedStudents,
   getGroups,
   getNextFriday,
 } from "../../services"
@@ -30,7 +29,6 @@ const AllSessionOverview = ({ db, match }) => {
   const [ sessions, setSessions ]                 = useState([])
   const [ enrollments, setEnrollments ]           = useState([])
   const [ sessionsWithEnr, setSessionsWithEnr ]   = useState([])
-  const [ unsignedStudents, setUnsignedStudents ] = useState([])
   const [ groupOptions, setGroupOptions ]         = useState([])
   const [ groupFilter, setGroupFilter ]           = useState('All Students')
   const [ selectedDate, setSelectedDate ]         = useState(new Date())
@@ -40,7 +38,6 @@ const AllSessionOverview = ({ db, match }) => {
   const schoolId = getSubdomain()
 
   const loadSessions = async (db) => {
-    updateUnsigned(db)
     const s = await getHourSessions(db, selectedDate, Number(hour))
 
     if (s.length > 0) {
@@ -50,13 +47,6 @@ const AllSessionOverview = ({ db, match }) => {
         setSessions( [...s] )
       }
     }
-  }
-
-  const updateUnsigned = async (db) => {
-    const u = groupFilter === 'All Students'
-      ? await getUnsignedStudents(db, selectedDate, Number(hour))
-      : await getUnsignedStudents(db, selectedDate, Number(hour), groupFilter)
-      setUnsignedStudents( [...u] )
   }
 
   const loadEnrollments = async (db) => {
@@ -121,7 +111,6 @@ const AllSessionOverview = ({ db, match }) => {
                 );
     const unsubscribe = onSnapshot(eQuery, () => {
       loadEnrollments(db)
-      updateUnsigned(db)
     })
 
     return () => unsubscribe()
@@ -140,7 +129,6 @@ const AllSessionOverview = ({ db, match }) => {
   useEffect(() => {
     setSessions([])
     setEnrollments([])
-    setUnsignedStudents([])
   }, [hour])
 
   useEffect(() => {
@@ -230,8 +218,8 @@ const AllSessionOverview = ({ db, match }) => {
           <div className="col s12 cards-container">
             <UnsignedStudents
               key="unsigned-students"
-              students={unsignedStudents}
               db={db}
+              schoolId={schoolId}
               date={selectedDate}
               hour={hour}
             />

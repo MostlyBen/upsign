@@ -2,10 +2,14 @@ import { collection, query, where, getDocs, deleteDoc } from "@firebase/firestor
 import { getSubdomain } from "../../utils";
 
 export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=null) => {
+  if (!sessionId || !userId) {
+    return
+  }
+
   if (schoolId === null) {
     schoolId = getSubdomain()
   }
-  
+
   // Reference the enrollments collection for the day
   const enrRef = collection(
                             db,
