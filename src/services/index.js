@@ -11,6 +11,7 @@ import setTeacherRegisterAllowed from "./config/teacherRegister/setTeacherRegist
 
 // Data
 import getDefaultDay from "./data/getDefaultDay";
+import getSchoolName from "./data/getSchoolName";
 
 // Enrollment
 import enrollStudent from "./enrollment/enrollStudent";
@@ -50,6 +51,7 @@ export {
   setTeacherRegisterAllowed,
   // Data
   getDefaultDay,
+  getSchoolName,
   // Enrollment
   enrollStudent,
   getHourEnrollments,
