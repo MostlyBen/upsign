@@ -24,14 +24,20 @@ const getUnsignedStudents = async (db, date, hour, groupFilter = 'none') => {
         const snapData = snap.data()
         // If no group filter, push the student in
         if (groupFilter === 'none') {
-          unsignedList.push(snapData)
+          unsignedList.push({
+            uid: snap.id,
+            ...snapData
+          })
         // If there IS a group filter...
         } else {
           // Make sure the student's doc has a groups property
           if (Array.isArray(snapData.groups)) {
             // Push the student if they're in the group
             if (snapData.groups.includes(groupFilter)) {
-              unsignedList.push(snapData)
+              unsignedList.push({
+                uid: snap.id,
+                ...snapData
+              })
             }
           }
         }
