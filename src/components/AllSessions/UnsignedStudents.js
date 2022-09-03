@@ -22,6 +22,12 @@ const UnsignedStudents = ({ db, schoolId, date, hour, groupFilter }) => {
       setLoading(false)
   }
 
+  useEffect(() => {
+    setLoading(true)
+    updateUnsigned(db)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupFilter])
+
   // ENROLLMENTS: Load & subscribe to updates
   useEffect(() => {
     setLoading(true)
@@ -52,7 +58,8 @@ const UnsignedStudents = ({ db, schoolId, date, hour, groupFilter }) => {
       unenrollFromSession(db, date, user.uid, user.session_id)
     },
     collect: monitor => (monitor),
-  }), [date])
+  // Update the drop function when the db or date updates
+  }), [db, date])
 
   return (
     <div className="">
