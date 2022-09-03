@@ -35,6 +35,7 @@ const AllSessionOverview = ({ db, match }) => {
   const [ groupFilter, setGroupFilter ]           = useState('All Students')
   const [ selectedDate, setSelectedDate ]         = useState(new Date())
   const [ totalCapacity, setTotalCapacity ]       = useState(0)
+  const [ loading, setLoading ]                   = useState(true)
 
   const schoolId = getSubdomain()
 
@@ -156,6 +157,7 @@ const AllSessionOverview = ({ db, match }) => {
 
   return (
     <div>
+      {/* --- HEADINGS --- */}
       <div style={{ marginTop: "3rem" }}>
         <h3
           className="all-sessions-heading"
@@ -174,11 +176,8 @@ const AllSessionOverview = ({ db, match }) => {
         />
       </div>
 
-      {/* <hr /> */}
-      
+      {/* --- BUTTONS --- */}
       <div className="row">
-
-        
         {/* Group Dropdown Trigger */}
         <div className='col s12 m6'>
           <div
@@ -201,8 +200,6 @@ const AllSessionOverview = ({ db, match }) => {
         </div>
         
       </div>
-
-
 
       {/* Group Dropdown Structure */}
       <ul id={`filter-dropdown`} className='dropdown-content'>
@@ -227,18 +224,17 @@ const AllSessionOverview = ({ db, match }) => {
             })}
       </ul>
 
+      {/* --- BODY --- */}
       <DndProvider backend={HTML5Backend}>
         <div className="row">
           <div className="col s12 cards-container">
-            {sessionsWithEnr.length > 0
-              ? <UnsignedStudents
-                  key="unsigned-students"
-                  students={unsignedStudents}
-                  db={db}
-                  date={selectedDate}
-                  hour={hour}
-                />
-              : <div></div>}
+            <UnsignedStudents
+              key="unsigned-students"
+              students={unsignedStudents}
+              db={db}
+              date={selectedDate}
+              hour={hour}
+            />
             {sessionsWithEnr.map( s => {
               return <SessionCard
                   key={`session-${s.id}`}
