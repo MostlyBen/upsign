@@ -3,6 +3,9 @@ import buildThresholdList from "./data/buildThresholdList";
 import mergeSessionEnrollment from "./data/mergeSessionEnrollment";
 import numberToArrayOfStrings from "./data/numberToArrayOfStrings";
 
+// Defaults
+import getDefaultSchoolInfo from "./defaults/getDefaultSchoolInfo";
+
 // Info
 import getSubdomain from "./info/getSubdomain";
 
@@ -15,6 +18,8 @@ export {
   buildThresholdList,
   mergeSessionEnrollment,
   numberToArrayOfStrings,
+  // Defaults
+  getDefaultSchoolInfo,
   // Info
   getSubdomain,
   // Rendering

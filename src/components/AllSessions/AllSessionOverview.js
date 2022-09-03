@@ -13,7 +13,7 @@ import {
   getHourEnrollments,
   getHourSessions,
   getGroups,
-  getNextFriday,
+  getDefaultDay,
 } from "../../services"
 
 import {
@@ -65,9 +65,12 @@ const AllSessionOverview = ({ db, match }) => {
   }
 
   // Select default day
+  const updateDefaultDay = async (db) => {
+    const defaultDay = await getDefaultDay(db)
+    setSelectedDate(defaultDay)
+  }
   useEffect(() => {
-    const nextFriday = getNextFriday()
-    setSelectedDate(nextFriday)
+    updateDefaultDay(db)
     // Get list of student groups for filter
     updateGroupOptions()
 

@@ -5,7 +5,7 @@ import {
   getSessionTimes,
   getNumberSessions,
   getTeacherSessions,
-  getNextFriday,
+  getDefaultDay,
 } from "../../services";
 import {
   observeTopIntersect,
@@ -92,11 +92,14 @@ const TeacherSignUp = ({ db, user }) => {
     setSelectedDate(date)
   }
 
-  useEffect(() => {
-    // Select upcoming Friday
-    const nextFriday = getNextFriday()
+  // Select default day
+  const updateDefaultDay = async (db) => {
+    const defaultDay = await getDefaultDay(db)
+    setSelectedDate(defaultDay)
+  }
 
-    setSelectedDate(nextFriday)
+  useEffect(() => {
+    updateDefaultDay(db)
 
     // Load teacher sessions
     handleLoadSessions()

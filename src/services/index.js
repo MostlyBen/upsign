@@ -10,7 +10,7 @@ import setSignupAllowed from "./config/signupAllowed/setSignupAllowed";
 import setTeacherRegisterAllowed from "./config/teacherRegister/setTeacherRegisterAllowed";
 
 // Data
-import getNextFriday from "./data/getNextFriday";
+import getDefaultDay from "./data/getDefaultDay";
 
 // Enrollment
 import enrollStudent from "./enrollment/enrollStudent";
@@ -49,7 +49,7 @@ export {
   setSignupAllowed,
   setTeacherRegisterAllowed,
   // Data
-  getNextFriday,
+  getDefaultDay,
   // Enrollment
   enrollStudent,
   getHourEnrollments,

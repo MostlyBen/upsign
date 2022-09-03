@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { onSnapshot, doc } from "@firebase/firestore"
 import {
   getNumberSessions,
-  getNextFriday,
+  getDefaultDay,
   getSessionTimes,
   getSignupAllowed,
   getUser,
@@ -75,12 +75,15 @@ const StudentSignUp = (props) => {
     })
   }
 
+  // Select default day
+  const updateDefaultDay = async (db) => {
+    const defaultDay = await getDefaultDay(db)
+    setSelectedDate(defaultDay)
+  }
+
   /* Initial Load */
   useEffect(() => {
-    // Select upcoming Friday
-    // NEEDS TO BE UPDATED SO DEFAULT DAY OF THE WEEK CAN BE SET AND TURNED ON/OFF
-    const nextFriday = getNextFriday()
-    setSelectedDate(nextFriday)
+    updateDefaultDay(db)
 
     // Initialize the observer
     // Checks when the DatePicker (".sticky-container") intersects with the navbar
