@@ -26,14 +26,31 @@ $medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width 
   }
 }
 
+.user-names-list-container {
+  .card {
+    display: inline-block;
+    overflow: visible;
+		width: 100%;
+		height: 80vh;
+  }
+}
+
 .hide {
 	display: none;
+}
+
+.disabled-text-input {
+	color: dimgray;
+	cursor: not-allowed !important;
 }
 
 @media #{$small-and-down} {
   .cards-container {
     @include column-count(1);
   }
+	.user-names-list-container {
+		@include column-count(1)
+	}
 	.hide-on-small, .show-on-med, .show-on-large {
 		display: none;
 	}
@@ -50,6 +67,9 @@ $medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width 
   .cards-container {
     @include column-count(3);
   }
+	.user-names-list-container {
+		@include column-count(2)
+	}
 	.show-on-small, .hide-on-large, .hide-on-med-and-up {
 		display: none;
 	}
@@ -114,6 +134,14 @@ body {
 	margin-left: 1rem;
 }
 
+.user-name-list-name {
+	display: block;
+	cursor: pointer;
+	padding: 0.5rem 0.5rem;
+	border-top: 1px solid #009688;
+	border-bottom: 1px solid #009688;
+}
+
 .pagination {
 	display: flex;
 	justify-content: space-between;
@@ -135,6 +163,13 @@ body {
 	margin: 0 auto;
 	max-width: 1280px;
 	width: 90%;
+	min-height: 80%;
+}
+
+.modal.names-list {
+	margin: 0 auto;
+	max-width: 1280px;
+	width: 60%;
 	min-height: 80%;
 }
 
@@ -404,7 +439,7 @@ body {
 	}
 	h2 {
 		font-size: 1.5rem;
-		margin: 1rem 0 0.5rem 0;
+		margin: 0 0 0.5rem 0;
 		font-weight: 500;
 		color: #424242;
 	}
