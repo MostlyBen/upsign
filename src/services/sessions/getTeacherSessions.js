@@ -1,11 +1,11 @@
 import { getDoc, doc, setDoc } from "@firebase/firestore";
 import { getNumberSessions } from "../../services";
-import { getSubdomain } from "../../utils";
+import { getSchoolId } from "../../utils";
 
 
 const getTeacherSessions = async (db, date, user, schoolId=null) => {
   if (schoolId === null) {
-    schoolId = getSubdomain()
+    schoolId = getSchoolId()
   }
   
   const teacher_id = user.uid;

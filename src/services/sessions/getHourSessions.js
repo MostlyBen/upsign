@@ -1,9 +1,9 @@
 import { collection, query, where, getDocs } from "@firebase/firestore"
-import { getSubdomain } from "../../utils";
+import { getSchoolId } from "../../utils";
 
 const getHourSessions = async (db, date, hour, schoolId=null) => {
   if (schoolId === null) {
-    schoolId = getSubdomain()
+    schoolId = getSchoolId()
   }
   
   // Query and get the session docs

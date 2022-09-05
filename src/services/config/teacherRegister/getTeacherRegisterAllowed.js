@@ -1,9 +1,9 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { getSubdomain } from "../../../utils";
+import { getSchoolId } from "../../../utils";
 
 const getTeacherRegisterAllowed = async (db, schoolId=null) => {
   if (schoolId === null) {
-    schoolId = getSubdomain()
+    schoolId = getSchoolId()
   }
   const teacherRegRef = doc(db, "schools", schoolId, "config", "teacher_register")
   const teacherRegSnap = await getDoc(teacherRegRef)

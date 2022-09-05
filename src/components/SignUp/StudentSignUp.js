@@ -9,7 +9,7 @@ import {
 } from "../../services";
 import {
   observeTopIntersect,
-  getSubdomain,
+  getSchoolId,
 } from "../../utils";
 
 import SessionSelector from './SessionSelector'
@@ -50,7 +50,7 @@ const StudentSignUp = (props) => {
   const [ signupAllowed, setSignupAllowed ]    = useState(false)
   const [ userDoc, setUserDoc ]               = useState({})  
 
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
 
   const updateNumberSessions = async (db, selectedDate) => {
     const newNumber = await getNumberSessions(db, selectedDate)

@@ -1,9 +1,9 @@
 import { doc, getDoc } from "@firebase/firestore"
-import { getSubdomain } from "../../utils"
+import { getSchoolId } from "../../utils"
 
 const getGroups = async (db, schoolId=null) => {
   if (schoolId === null) {
-    schoolId = getSubdomain()
+    schoolId = getSchoolId()
   }
   
   const groupRef = doc(db, "schools", schoolId, "config", "student_groups")

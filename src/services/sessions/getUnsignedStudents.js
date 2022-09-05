@@ -1,9 +1,9 @@
 import { collection, query, where, getDocs } from "@firebase/firestore"
 import { getAllStudents, getHourEnrollments } from "../"
-import { getSubdomain } from "../../utils";
+import { getSchoolId } from "../../utils";
 
 const getUnsignedStudents = async (db, date, hour, groupFilter = 'none') => {
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
   const hourEnrollments = await getHourEnrollments(db, date, hour)
   let signedIdList = hourEnrollments.map(e => e.uid)
   let unsignedList = []

@@ -12,7 +12,7 @@ import {
 import { SessionAttendanceList } from '../'
 
 import { getGroups } from "../../services"
-import { getSubdomain } from "../../utils"
+import { getSchoolId } from "../../utils"
 
 import M from 'materialize-css'
 
@@ -23,7 +23,7 @@ const SessionEditor = ({ db, session, date }) => {
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [groupOptions, setGroupOptions] = useState([])
 
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
 
 
   const updateGroupOptions = async () => {

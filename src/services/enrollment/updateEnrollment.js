@@ -1,9 +1,9 @@
 import { doc, updateDoc } from "@firebase/firestore"
-import { getSubdomain } from "../../utils";
+import { getSchoolId } from "../../utils";
 
 export const updateEnrollment = async (db, date, enrollmentId, payload, schoolId=null) => {
   if (schoolId === null) {
-    schoolId = getSubdomain()
+    schoolId = getSchoolId()
   }
   
   // Reference the enrollment doc

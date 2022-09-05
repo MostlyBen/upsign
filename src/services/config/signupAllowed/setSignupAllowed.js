@@ -1,9 +1,9 @@
 import { doc, setDoc } from "firebase/firestore";
-import { getSubdomain } from "../../../utils";
+import { getSchoolId } from "../../../utils";
 
 const setSignupAllowed = async (db, payload, schoolId=null) => {
   if (schoolId === null) {
-    schoolId = getSubdomain()
+    schoolId = getSchoolId()
   }
   
   const teacherRegRef = doc(db, "schools", schoolId, "config", "student_signup")

@@ -1,9 +1,9 @@
 import { doc, getDoc, setDoc, updateDoc } from "@firebase/firestore"
-import { getSubdomain, getDefaultSchoolInfo } from "../../utils"
+import { getSchoolId, getDefaultSchoolInfo } from "../../utils"
 
 const getSchoolName = async (db, schoolId=null) => {
   if (!schoolId) {
-    schoolId = getSubdomain()
+    schoolId = getSchoolId()
   }
 
   // Get the school info doc

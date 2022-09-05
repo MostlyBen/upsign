@@ -1,6 +1,6 @@
 import { collection, addDoc } from "@firebase/firestore"
 import { unenrollFromHour } from "../"
-import { getSubdomain } from "../../utils";
+import { getSchoolId } from "../../utils";
 
 
 const enrollStudent = async (db, date, session, user) => {
@@ -8,7 +8,7 @@ const enrollStudent = async (db, date, session, user) => {
     console.log("Tried to enroll student without enough info")
     return
   }
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
   if (db) {
     await unenrollFromHour(db, date, user, session.session)
   }

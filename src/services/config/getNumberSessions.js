@@ -1,8 +1,8 @@
 import { doc, getDoc, setDoc } from "@firebase/firestore"
-import { getSubdomain, getDefaultSessionsConfig } from "../../utils"
+import { getSchoolId, getDefaultSessionsConfig } from "../../utils"
 
 const getNumberSessions = async ( db, selectedDate=null ) => {
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
   const sessionsConfigRef = doc(db, "schools", schoolId, "config", "sessions")
   const sessionConfig = await getDoc(sessionsConfigRef)
 

@@ -17,7 +17,7 @@ import {
 } from "../../services"
 
 import {
-  getSubdomain,
+  getSchoolId,
   mergeSessionEnrollment,
 } from "../../utils"
 
@@ -37,7 +37,7 @@ const AllSessionOverview = ({ db, match }) => {
   const [ totalCapacity, setTotalCapacity ]       = useState(0)
   const [ loading, setLoading ]                   = useState(true)
 
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
 
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, selectedDate, Number(hour))

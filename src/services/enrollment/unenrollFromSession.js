@@ -1,5 +1,5 @@
 import { collection, query, where, getDocs, deleteDoc } from "@firebase/firestore"
-import { getSubdomain } from "../../utils";
+import { getSchoolId } from "../../utils";
 
 export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=null) => {
   if (!sessionId || !userId) {
@@ -7,7 +7,7 @@ export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=
   }
 
   if (schoolId === null) {
-    schoolId = getSubdomain()
+    schoolId = getSchoolId()
   }
 
   // Reference the enrollments collection for the day

@@ -1,9 +1,9 @@
 import { doc, getDoc } from "@firebase/firestore"
-import { getSubdomain } from "../../utils"
+import { getSchoolId } from "../../utils"
 
   const getUserDoc = async (db, uid, schoolId=null) => {
     if (schoolId === null) {
-      schoolId = getSubdomain()
+      schoolId = getSchoolId()
     }
 
     const userRef = doc(db, "schools", schoolId, "users", uid)

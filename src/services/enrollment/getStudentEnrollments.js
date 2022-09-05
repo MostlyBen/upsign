@@ -1,9 +1,9 @@
 import { collection, getDocs, query, where } from "@firebase/firestore"
-import { getSubdomain } from "../../utils";
+import { getSchoolId } from "../../utils";
 
 const getStudentEnrollments = async (db, date, uid, schoolId=null) => {
   if (schoolId === null) {
-    schoolId = getSubdomain()
+    schoolId = getSchoolId()
   }
   
   const enrRef = collection(

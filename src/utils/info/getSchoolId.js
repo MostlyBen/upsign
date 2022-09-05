@@ -1,5 +1,5 @@
 // DEFAULTS TO MUSEUM. SHOULD CHANGE THIS SOON
-const getSubdomain = () => {
+const getSchoolId = () => {
   const host = window.location.host;
   // Make this work on localhost
   if ( host.includes("localhost") ) {
@@ -26,4 +26,4 @@ const getSubdomain = () => {
 
 }
 
-export default getSubdomain
+export default getSchoolId
