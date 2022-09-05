@@ -1,4 +1,4 @@
-import Signups from "./Signups";
+import General from "./General";
 import StudentGroups from "./StudentGroups";
 import Registrations from "./Registrations";
 import EditGroups from "./EditGroups";
@@ -6,7 +6,7 @@ import People from "./People";
 import ScheduleConfig from "./ScheduleConfig";
 
 export {
-  Signups,
+  General,
   StudentGroups,
   Registrations,
   EditGroups,

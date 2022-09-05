@@ -8,12 +8,10 @@ const setSchoolName = async (db, schoolName, schoolId=null) => {
 
   // Get the school info doc
   const schoolNamesRef = doc(db, "school_names", schoolId)
-  // Construct the payload
-  let payload = {}
-  payload[schoolId] = schoolName
   // Update the doc and return the response
-  const res = await updateDoc(schoolNamesRef, payload)
+  const res = await updateDoc(schoolNamesRef, {name: schoolName})
   return res
+  
 }
 
 export default setSchoolName

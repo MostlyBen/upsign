@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc, updateDoc } from "@firebase/firestore"
 import { getSchoolId, getDefaultSchoolInfo } from "../../utils"
 
-const getDefaultDay = async (db, schoolId=null) => {
+const getDefaultDay = async (db, schoolId=null, asString=false) => {
   if (!schoolId) {
     schoolId = getSchoolId()
   }
@@ -36,11 +36,16 @@ const getDefaultDay = async (db, schoolId=null) => {
   }
   // Add the default_day property if it doesn't exist
   let configData = configSnap.data()
+
   if (!configData.default_day) {
     updateDoc(configRef, {default_day: "today"})
     defaultDay = "today"
   } else {
     defaultDay = configData.default_day
+  }
+
+  if (asString) {
+    return defaultDay
   }
 
   const d = new Date()

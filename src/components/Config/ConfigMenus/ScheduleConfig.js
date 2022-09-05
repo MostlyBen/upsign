@@ -6,7 +6,7 @@ import {
   setSessionTimes,
 } from "../../../services"
 import { numberToArrayOfStrings } from '../../../utils';
-import { LoadingBar } from "../.."
+import { LoadingBar, MenuDiv } from "../.."
 
 const SessionsConfigRow = ({ number, time, handleChange }) => {
 
@@ -94,7 +94,7 @@ const ScheduleConfig = ({ db }) => {
         Configure Sessions
       </h1>
 
-      <hr style={{margin: "2rem 0"}} />
+      <MenuDiv />
 
       <h2>Number of Sessions</h2>
       <div>
@@ -131,7 +131,7 @@ const ScheduleConfig = ({ db }) => {
 
       </div>
 
-      <hr style={{margin: "2rem 0"}} />
+      <MenuDiv />
 
       <h2>Session Times</h2>
       <div>
@@ -148,6 +148,7 @@ const ScheduleConfig = ({ db }) => {
               number={Number(s)}
               time={sessionTimesState[Number(s)-1]}
               handleChange={handleChangeTime}
+              key={`table-row-session-${s}`}
             />
             )) }
           </tbody>

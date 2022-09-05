@@ -1,7 +1,7 @@
 import { Link, Redirect } from "react-router-dom";
 import { useState, useEffect } from "react"
 import {
-  Signups,
+  General,
   StudentGroups,
   Registrations,
   EditGroups,
@@ -10,18 +10,18 @@ import {
 } from './ConfigMenus'
 
 const Config = ({ db, match }) => {
-  const [menu, setMenu] = useState(match.params.menu ?? 'signups') // Signups switch not working, for some reason
+  const [menu, setMenu] = useState(match.params.menu ?? 'general') // Signups switch not working, for some reason
 
   useEffect(() => {
     setMenu(match.params.menu)
   }, [match.params.menu])
 
   if (!menu) {
-    return <Redirect to="/config/signups" />
+    return <Redirect to="/config/general" />
   }
 
   const menuObject = {
-    signups: <Signups db={db} />,
+    general: <General db={db} />,
     registrations: <Registrations db={db} />,
     schedule: <ScheduleConfig db={db} />,
     people: <People db={db} />,
@@ -32,8 +32,8 @@ const Config = ({ db, match }) => {
   return (
     <div className="row" style={{marginTop: "5rem"}}>
       <div className="col s12 m4 l3 menu-selector" style={{paddingTop: '3rem'}}>
-        <Link to="/config/signups" className={`menu-btn waves-effect ${menu === 'signups' ? 'active' : ''}`}>
-          SignUps
+        <Link to="/config/general" className={`menu-btn waves-effect ${menu === 'general' ? 'active' : ''}`}>
+          General
         </Link>
 
         <Link to="/config/registrations" className={`menu-btn waves-effect ${menu === 'registrations' ? 'active' : ''}`}>

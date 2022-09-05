@@ -10,6 +10,7 @@ import TeacherSignUp from './SignUp/TeacherSignUp'
 import CircularLoading from './SmallBits/CircularLoading'
 import LittleLoadingBar from './SmallBits/LittleLoadingBar'
 import LoadingBar from './SmallBits/LoadingBar'
+import MenuDiv from './SmallBits/MenuDiv'
 import SettingsButton from './SmallBits/SettingsButton'
 // Dashboards
 import AllSessionOverview from './AllSessions/AllSessionOverview'
@@ -29,6 +30,7 @@ export {
   CircularLoading,
   LittleLoadingBar,
   LoadingBar,
+  MenuDiv,
   SettingsButton,
 
   AllSessionOverview,
