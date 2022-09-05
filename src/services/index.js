@@ -14,6 +14,8 @@ import setSessionTimes from "./config/setSessionTimes";
 // Data
 import getDefaultDay from "./data/getDefaultDay";
 import getSchoolName from "./data/getSchoolName";
+import setDefaultDay from "./data/setDefaultDay";
+import setSchoolName from "./data/setSchoolName";
 
 // Enrollment
 import enrollStudent from "./enrollment/enrollStudent";
@@ -56,6 +58,8 @@ export {
   // Data
   getDefaultDay,
   getSchoolName,
+  setDefaultDay,
+  setSchoolName,
   // Enrollment
   enrollStudent,
   getHourEnrollments,

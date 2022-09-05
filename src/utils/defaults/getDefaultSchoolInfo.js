@@ -1,7 +1,6 @@
 const getDefaultSchoolInfo = () => {
   return {
-    default_day: "today",
-    name: "unnamed school"
+    default_day: "today"
   }
 }
 
