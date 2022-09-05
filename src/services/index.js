@@ -35,7 +35,9 @@ import getUnsignedStudents from "./sessions/getUnsignedStudents";
 import unenrollFromSession from "./enrollment/unenrollFromSession";
 
 // User
+import deleteUser from "./user/deleteUser";
 import getAllStudents from "./user/getAllStudents";
+import getAllUsers from "./user/getAllUsers";
 import getUser from "./user/getUser";
 import getUserType from "./user/getUserType";
 import setUserType from "./user/setUserType";
@@ -76,7 +78,9 @@ export {
   getTeacherSessions,
   getUnsignedStudents,
   // User
+  deleteUser,
   getUser,
+  getAllUsers,
   getUserType,
   setUserType,
   updateUser,

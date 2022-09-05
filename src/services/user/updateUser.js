@@ -1,14 +1,19 @@
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteField } from "firebase/firestore";
 import { getSchoolId } from "../../utils";
 
-const updateUser = async (db, uid, payload, schoolId=null) => {
+const updateUser = async (db, uid, payload, schoolId=null, shouldDeleteField=false) => {
   if (schoolId === null) {
     schoolId = getSchoolId()
   }
   
-  const teacherRegRef = doc(db, "schools", schoolId, "users", uid)
+  const userRef = doc(db, "schools", schoolId, "users", uid)
 
-  const res = await updateDoc(teacherRegRef, payload)
+  if (shouldDeleteField) {
+    let newPayload = {}
+    newPayload[payload] = deleteField()
+    payload = newPayload
+  }
+  const res = await updateDoc(userRef, payload)
   return res
   
 }
