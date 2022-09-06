@@ -11,7 +11,7 @@ import {
 
 import { SessionAttendanceList } from '../'
 
-import { getGroups } from "../../services"
+import { getGroupOptions } from "../../services"
 import { getSchoolId } from "../../utils"
 
 import M from 'materialize-css'
@@ -27,7 +27,7 @@ const SessionEditor = ({ db, session, date }) => {
 
 
   const updateGroupOptions = async () => {
-    const options = await getGroups(db)
+    const options = await getGroupOptions(db)
     setGroupOptions(options)
   }
 

@@ -12,7 +12,7 @@ import UnsignedStudents from "./UnsignedStudents"
 import { 
   getHourEnrollments,
   getHourSessions,
-  getGroups,
+  getGroupOptions,
   getDefaultDay,
 } from "../../services"
 
@@ -57,7 +57,7 @@ const AllSessionOverview = ({ db, match }) => {
   }
 
   const updateGroupOptions = async () => {
-    const options = await getGroups(db)
+    const options = await getGroupOptions(db)
     setGroupOptions(options)
   }
 

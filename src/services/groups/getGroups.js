@@ -1,7 +1,7 @@
 import { doc, getDoc } from "@firebase/firestore"
 import { getSchoolId } from "../../utils"
 
-const getGroups = async (db, schoolId=null) => {
+const getGroupOptions = async (db, schoolId=null) => {
   if (schoolId === null) {
     schoolId = getSchoolId()
   }
@@ -21,4 +21,4 @@ const getGroups = async (db, schoolId=null) => {
   }
 }
 
-export default getGroups
+export default getGroupOptions
