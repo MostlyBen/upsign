@@ -12,7 +12,7 @@ const SessionsConfigRow = ({ number, time, handleChange }) => {
 
   return (
     <tr>
-      <td>{number}</td>
+      <td> <b>{number}</b> </td>
       <td className="table-input">
         <div className="input-field table-input">
           <input
@@ -91,7 +91,7 @@ const ScheduleConfig = ({ db }) => {
   return (
     <div className="menu-card">
       <h1>
-        Configure Sessions
+        Configure Schedule
       </h1>
 
       <MenuDiv />
@@ -135,7 +135,7 @@ const ScheduleConfig = ({ db }) => {
 
       <h2>Session Times</h2>
       <div>
-        <table className="responsive-table">
+        <table className="centered highlight">
           <thead>
             <tr>
               <th>Session</th>
