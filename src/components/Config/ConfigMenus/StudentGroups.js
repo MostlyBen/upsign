@@ -20,7 +20,7 @@ const StudentGroups = ({ db }) => {
   const getStudents = async () => {
     getAllStudents(db).then(students => {
       if (Array.isArray(students)) {
-        students.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
+        students.sort( (a, b) => ( (a.nickname ?? a.name) > (b.nickname ?? b.name) ) ? 1 : -1 )
         setAllStudents(students)
       }
     })
@@ -122,7 +122,7 @@ const StudentGroups = ({ db }) => {
               key={`student-${student.uid}`}
               onClick={() => handleClickStudent(student)}
             >
-              {student.name}
+              {student.nickname ?? student.name}
             </a>
           )
         })}
