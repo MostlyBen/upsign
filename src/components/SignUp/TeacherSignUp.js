@@ -142,19 +142,20 @@ const TeacherSignUp = ({ db, user }) => {
       </div>
 
       <div className="teacher-sessions">
-        { Array.isArray(sessions) ? sessions.map(s =>
-          <div key={s.id} className="session-section">
-            <h4 className="session-header">Session {s.session} 
-              <span className="session-time"> {sessionTimes[s.session - 1] ? '('+sessionTimes[s.session - 1]+')': ''}</span>
-            </h4>
-            <hr style={{marginBottom: "1rem"}} />
-            <div className="row card session-card is-enrolled teacher-card">
-              <SessionEditor key={s.id} session={s} db={db} date={selectedDate} />
+        { Array.isArray(sessions)
+          ? sessions.map( s =>
+            <div key={s.id} className="session-section">
+              <h4 className="session-header">Session {s.session} 
+                <span className="session-time"> {sessionTimes[s.session - 1] ? '('+sessionTimes[s.session - 1]+')': ''}</span>
+              </h4>
+              <hr style={{marginBottom: "1rem"}} />
+              <div className="row card session-card is-enrolled teacher-card">
+                <SessionEditor key={s.id} session={s} db={db} date={selectedDate} />
+              </div>
             </div>
-
-            <SettingsButton />
-          </div>
-        ) : null }
+            )
+          : null }
+        <SettingsButton />
       </div>
     </div>
   )

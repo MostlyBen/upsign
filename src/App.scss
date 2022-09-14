@@ -177,7 +177,7 @@ body {
 .modal.names-list {
 	margin: 0 auto;
 	max-width: 1280px;
-	width: 60%;
+	width: 90%;
 	min-height: 80%;
 }
 
@@ -386,7 +386,6 @@ body {
 
 .settings-button {
 	background-color: #fff !important;
-	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.10);
 }
 
 .settings-button-icon {
@@ -531,10 +530,16 @@ body {
 	.modal.teacher-sessions {
 		width: 85%;
 	}
+	.modal.names-list {
+		width: 85%;
+	}
 }
 
 @media only screen and (min-width: 993px) {
 	.modal.teacher-sessions {
+		width: 70%;
+	}
+	.modal.names-list {
 		width: 70%;
 	}
 }
