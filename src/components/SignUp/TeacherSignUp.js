@@ -143,7 +143,7 @@ const TeacherSignUp = ({ db, user }) => {
 
       <div className="teacher-sessions">
         { Array.isArray(sessions) ? sessions.map(s =>
-          <div key={s.id}>
+          <div key={s.id} className="session-section">
             <h4 className="session-header">Session {s.session} 
               <span className="session-time"> {sessionTimes[s.session - 1] ? '('+sessionTimes[s.session - 1]+')': ''}</span>
             </h4>

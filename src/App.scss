@@ -80,6 +80,14 @@ body {
 	background-color: #fafafa;
 }
 
+.session-section {
+	margin-bottom: 2rem;
+}
+
+.session-section:last-child {
+	margin-bottom: 3rem;
+}
+
 .body-container {
 	height: calc(100vh - 56px) !important;
 	overflow-y: auto;
