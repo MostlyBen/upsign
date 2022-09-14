@@ -1,8 +1,11 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { getSubdomain } from "../../utils"
+import { getSchoolId } from "../../utils"
 
-const allowStudentRegister = async (db, email) => {
-  const schoolId = getSubdomain()
+const allowStudentRegister = async (db, email, schoolId=null) => {
+  if (schoolId === null) {
+    schoolId = getSchoolId()
+  }
+  
   // Get the config for domain restrictions
   // Should probably be from the getDomainRestriction
   const domResRef = doc(db, "schools", schoolId, "config", "domain_restriction")

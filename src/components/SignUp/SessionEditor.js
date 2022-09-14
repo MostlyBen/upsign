@@ -11,8 +11,8 @@ import {
 
 import { SessionAttendanceList } from '../'
 
-import { getGroups } from "../../services"
-import { getSubdomain } from "../../utils"
+import { getGroupOptions } from "../../services"
+import { getSchoolId } from "../../utils"
 
 import M from 'materialize-css'
 
@@ -23,11 +23,11 @@ const SessionEditor = ({ db, session, date }) => {
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [groupOptions, setGroupOptions] = useState([])
 
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
 
 
   const updateGroupOptions = async () => {
-    const options = await getGroups(db)
+    const options = await getGroupOptions(db)
     setGroupOptions(options)
   }
 
@@ -201,9 +201,7 @@ const SessionEditor = ({ db, session, date }) => {
           <div className="teacher-card-h1">
             Student List
           </div>
-          { Number(capacity) !== 0
-          ? <SessionAttendanceList db={db} date={date} session={session} />
-          : null}
+          <SessionAttendanceList db={db} schoolId={schoolId} date={date} session={session} />
 
         </div>
       </div>

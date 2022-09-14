@@ -51,18 +51,17 @@ const SessionCard = ({ db, date, session, filter }) => {
     } else {
       setFilteredEnrollment(session.enrollment)
     }
-  }, [filter, allStudentRef, session])
+  }, [filter, allStudentRef, session, session.enrollment])
 
 
   const [monitor, drop] = useDrop(() => ({
     accept: 'student',
     drop: () => {
       const user = monitor.getItem().enrollment
-
-      enrollStudent(db, date, session, user, true)
+      enrollStudent(db, date, session, user)
     },
     collect: monitor => (monitor),
-  }))
+  }), [db, date, session])
 
   if ( Array.isArray(session.enrollment) ) {
     session.enrollment.sort( (a, b) => (a.name > b.name) ? 1 : -1 )

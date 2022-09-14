@@ -1,77 +1,74 @@
 import { collection, query, where, getDocs } from "@firebase/firestore"
-import { getSubdomain } from "../../utils";
+import { getAllStudents, getHourEnrollments } from "../"
+import { getSchoolId } from "../../utils";
 
 const getUnsignedStudents = async (db, date, hour, groupFilter = 'none') => {
-  const schoolId = getSubdomain()
-  const sessionQuery = query(collection(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString())), where("session", "==", Number(hour))/*, where("capacity", "!=", 0)*/);
-  const hourSessions = await getDocs(sessionQuery)
-    .then(querySnapshot => {
-      const s = []
-      querySnapshot.forEach((doc) => {
-        if (doc.data().title) {
-          s.push({
-            uid: doc.id,
-            ...doc.data()
-          })
-        }
-      });
+  const schoolId = getSchoolId()
+  const hourEnrollments = await getHourEnrollments(db, date, hour)
+  let signedIdList = hourEnrollments.map(e => e.uid)
+  let unsignedList = []
 
-      return s
+  // If there are enrollments, find all students who are not in that list
+  if (signedIdList.length > 0) {
+    // Create query for students not in the hourEnrollments
+    const unsignedQuery = query(
+      collection(db, "schools", schoolId, "users"),
+      // "__name__" refers to the document's name (AKA, its ID)
+      where("type", "==", "student"))
+
+    // Get docs fitting the query
+    const unsignedSnap = await getDocs(unsignedQuery)
+    unsignedSnap.forEach((snap) => {
+      // Check if the student is already signed up
+      if (!signedIdList.includes(snap.id)) {
+        const snapData = snap.data()
+        // If no group filter, push the student in
+        if (groupFilter === 'none') {
+          unsignedList.push({
+            uid: snap.id,
+            ...snapData
+          })
+        // If there IS a group filter...
+        } else {
+          // Make sure the student's doc has a groups property
+          if (Array.isArray(snapData.groups)) {
+            // Push the student if they're in the group
+            if (snapData.groups.includes(groupFilter)) {
+              unsignedList.push({
+                uid: snap.id,
+                ...snapData
+              })
+            }
+          }
+        }
+      }
     })
 
+  // If no one is signed up, get a list of all students
+  } else {
+    // Set the unsignedList to a list of all students (if no group filter)
+    if (groupFilter === 'none') {
+      unsignedList = await getAllStudents(db)
+    
+    // Find all students and push those in the group, otherwise
+    } else {
+      var allStudents = await getAllStudents(db)
 
-  const studentQuery = query(collection(db, "schools", schoolId, "users"), where("type", "==", "student"));
-  const allStudents = await getDocs(studentQuery)
-    .then(querySnapshot => {
-      const s = []
-      querySnapshot.forEach((doc) => {
-        if (doc.data()) {
-          s.push({
-            uid: doc.id,
-            name: doc.data().name,
-            groups: doc.data().groups,
-            nickname: doc.data().nickname,
-          })
+      for (const i in allStudents) {
+        if ( Array.isArray(allStudents[i].groups) ) {
+          if (allStudents[i].groups.includes(groupFilter)) {
+            unsignedList.push(allStudents[i])
+          }
         }
-      });
+      } // End for loop
+    }
 
-      return s
-    });
+  }
 
-
-  const unsignedStudents = []
+  // Sort and return the list
+  unsignedList.sort((a, b) => (( a.nickname ?? a.name ) > ( b.nickname ?? b.name )) ? 1 : -1 )
+  return unsignedList
   
-  // For each student, look through all sessions and see if their ID is in any enrollment
-  allStudents.forEach(student => {
-    let signed = false;
-    for (const i in hourSessions) {
-      const enrollment = hourSessions[i].enrollment
-
-      if (Array.isArray(enrollment)) {
-        for (const j in enrollment) {
-          
-          if (String(hourSessions[i].enrollment[j].uid) === String(student.uid)) {
-            signed = true;
-          }
-        }
-      }
-    }
-
-    if (!signed) {
-      if (groupFilter === 'none') {
-        unsignedStudents.push(student)
-      } else {
-        if (Array.isArray(student.groups)) {
-          if (student.groups.includes(groupFilter)) {
-            unsignedStudents.push(student)
-          }
-        }
-      }
-    }
-  });
-
-  unsignedStudents.sort((a, b) => (( a.nickname ?? a.name ) > ( b.nickname ?? b.name )) ? 1 : -1 )
-  return unsignedStudents
 }
 
 export default getUnsignedStudents

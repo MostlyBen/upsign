@@ -26,20 +26,53 @@ $medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width 
   }
 }
 
+.user-names-list-container {
+  .card {
+    display: inline-block;
+    overflow: visible;
+		width: 100%;
+		height: 80vh;
+  }
+}
+
+.hide {
+	display: none;
+}
+
+.disabled-text-input {
+	color: dimgray;
+	cursor: not-allowed !important;
+}
+
 @media #{$small-and-down} {
   .cards-container {
     @include column-count(1);
   }
+	.user-names-list-container {
+		@include column-count(1)
+	}
+	.hide-on-small, .show-on-med, .show-on-large {
+		display: none;
+	}
 }
 @media #{$medium-and-up} {
   .cards-container {
     @include column-count(2);
   }
+	.show-on-small, .show-on-large, .hide-on-med {
+		display: none;
+	}
 }
 @media #{$large-and-up} {
   .cards-container {
     @include column-count(3);
   }
+	.user-names-list-container {
+		@include column-count(2)
+	}
+	.show-on-small, .hide-on-large, .hide-on-med-and-up {
+		display: none;
+	}
 }
 
 /* Menus & Stuff */
@@ -101,6 +134,14 @@ body {
 	margin-left: 1rem;
 }
 
+.user-name-list-name {
+	display: block;
+	cursor: pointer;
+	padding: 0.5rem 0.5rem;
+	border-top: 1px solid #009688;
+	border-bottom: 1px solid #009688;
+}
+
 .pagination {
 	display: flex;
 	justify-content: space-between;
@@ -122,6 +163,13 @@ body {
 	margin: 0 auto;
 	max-width: 1280px;
 	width: 90%;
+	min-height: 80%;
+}
+
+.modal.names-list {
+	margin: 0 auto;
+	max-width: 1280px;
+	width: 60%;
 	min-height: 80%;
 }
 
@@ -164,6 +212,13 @@ body {
 
 .session-selector {
 	padding: 0 1rem;
+}
+
+.session-time {
+	color: grey;
+	display: inline-block;
+	position: relative;
+	left: 1rem;
 }
 
 .session-card {
@@ -315,6 +370,20 @@ body {
 	}
 }
 
+.settings-button-holder {
+	position: fixed;
+	right: 3.5rem;
+	bottom: 2.3rem;
+}
+
+.settings-button {
+	background-color: #fff !important;
+	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.10);
+}
+
+.settings-button-icon {
+	color: #9e9e9e !important;
+}
 
 .student-list-btn {
 	color: grey;
@@ -326,9 +395,12 @@ body {
 	padding-right: 1.5rem;
 }
 
+.student-name {
+	user-select: none;
+}
+
 .student-name-empty {
 	color: grey;
-	user-select: none;
 }
 
 .icon-button-offset {
@@ -365,6 +437,33 @@ body {
 		margin: 0;
 		font-weight: 500;
 	}
+	h2 {
+		font-size: 1.5rem;
+		margin: 0 0 0.5rem 0;
+		font-weight: 500;
+		color: #424242;
+	}
+}
+
+.table-input {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.first-menu-row {
+	padding-top: 0 !important;
+}
+.menu-row-odd {
+	padding-top: 1.5rem;
+}
+
+.menu-row-even {
+	background-color: #fafafa;
+	margin-top: 0;
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
+	border-top: 1px solid grey;
+	border-bottom: 1px solid grey;
 }
 
 .switches {
@@ -375,6 +474,17 @@ body {
 	margin: 1rem 0;
 	font-size: medium;
 	color: #424242;
+}
+
+.spinner-grey,
+.spinner-grey-only {
+	border-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+.warning {
+	margin: 0.5rem 0;
+	padding: 0.5rem 1rem;
+	background-color: #fff176;
 }
 
 .login-with-google-btn {

@@ -7,7 +7,11 @@ import SignOut from './auth/SignOut'
 import StudentSignUp from './SignUp/StudentSignUp'
 import TeacherSignUp from './SignUp/TeacherSignUp'
 // Small Bits
+import CircularLoading from './SmallBits/CircularLoading'
+import LittleLoadingBar from './SmallBits/LittleLoadingBar'
 import LoadingBar from './SmallBits/LoadingBar'
+import MenuDiv from './SmallBits/MenuDiv'
+import SettingsButton from './SmallBits/SettingsButton'
 // Dashboards
 import AllSessionOverview from './AllSessions/AllSessionOverview'
 import Config from './Config/Config'
@@ -23,7 +27,11 @@ export {
   StudentSignUp,
   TeacherSignUp,
 
+  CircularLoading,
+  LittleLoadingBar,
   LoadingBar,
+  MenuDiv,
+  SettingsButton,
 
   AllSessionOverview,
   Config,

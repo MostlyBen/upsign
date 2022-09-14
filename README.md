@@ -51,8 +51,6 @@ There are a few documents that need to be in the Firestore database, but are not
   - Give the document one field called "active" with a boolean value of true
 - Add a document with the id "teacher_register"
   - Give the document one field called "active" with a boolean value of true
-- Add a document with the id "teacher_edit"
-  - Give the document one field called "active" with a boolean value of true
 - Add a document called "student_groups"
   - Give the document a field called "groups" with an empty array
 

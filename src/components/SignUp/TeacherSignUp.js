@@ -5,15 +5,15 @@ import {
   getSessionTimes,
   getNumberSessions,
   getTeacherSessions,
-  getNextFriday,
+  getDefaultDay,
 } from "../../services";
 import {
   observeTopIntersect,
-  getSubdomain,
+  getSchoolId,
 } from "../../utils";
 
 import SessionEditor from "./SessionEditor";
-import { LoadingBar } from "../";
+import { LoadingBar, SettingsButton } from "../";
 import DatePicker from "./DatePicker";
 
 const TopMessage = ({ user }) => {
@@ -38,9 +38,7 @@ const TopMessage = ({ user }) => {
   )
 }
 
-const TeacherSignUp = (props) => {
-  const db = props.db;
-  const user = props.user;
+const TeacherSignUp = ({ db, user }) => {
 
   const [sessions, setSessions] = useState()
   // This is just needed to getTeacherSessions again if the number updates
@@ -49,7 +47,7 @@ const TeacherSignUp = (props) => {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [sessionTimes, setSessionTimes] = useState([])
 
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
 
   const updateSessionTimes = async (db) => {
     const newTimes = await getSessionTimes(db, selectedDate)
@@ -94,11 +92,14 @@ const TeacherSignUp = (props) => {
     setSelectedDate(date)
   }
 
-  useEffect(() => {
-    // Select upcoming Friday
-    const nextFriday = getNextFriday()
+  // Select default day
+  const updateDefaultDay = async (db) => {
+    const defaultDay = await getDefaultDay(db)
+    setSelectedDate(defaultDay)
+  }
 
-    setSelectedDate(nextFriday)
+  useEffect(() => {
+    updateDefaultDay(db)
 
     // Load teacher sessions
     handleLoadSessions()
@@ -143,13 +144,15 @@ const TeacherSignUp = (props) => {
       <div className="teacher-sessions">
         { Array.isArray(sessions) ? sessions.map(s =>
           <div key={s.id}>
-            <h4>Session {s.session} 
-              <span style={{color: 'gray'}}> {sessionTimes[s.session - 1] ? '('+sessionTimes[s.session - 1]+')': ''}</span>
+            <h4 className="session-header">Session {s.session} 
+              <span className="session-time"> {sessionTimes[s.session - 1] ? '('+sessionTimes[s.session - 1]+')': ''}</span>
             </h4>
             <hr style={{marginBottom: "1rem"}} />
             <div className="row card session-card is-enrolled teacher-card">
-              <SessionEditor key={s.id} session={s} db={props.db} date={selectedDate} />
+              <SessionEditor key={s.id} session={s} db={db} date={selectedDate} />
             </div>
+
+            <SettingsButton />
           </div>
         ) : null }
       </div>

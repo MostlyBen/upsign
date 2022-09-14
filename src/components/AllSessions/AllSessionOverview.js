@@ -10,47 +10,54 @@ import HourSelector from "./HourSelector"
 import UnsignedStudents from "./UnsignedStudents"
 
 import { 
+  getHourEnrollments,
   getHourSessions,
-  getUnsignedStudents,
-  getGroups,
-  getNextFriday,
+  getGroupOptions,
+  getDefaultDay,
 } from "../../services"
 
 import {
-  getSubdomain,
+  getSchoolId,
+  mergeSessionEnrollment,
 } from "../../utils"
 
 import DatePicker from "../SignUp/DatePicker"
+import LoadingBar from "../SmallBits/LoadingBar"
+import SettingsButton from "../SmallBits/SettingsButton"
 
 
 const AllSessionOverview = ({ db, match }) => {
   const hour = match.params.session
-  const [sessions, setSessions] = useState([])
-  const [unsignedStudents, setUnsignedStudents] = useState([])
-  const [groupOptions, setGroupOptions] = useState([])
-  const [groupFilter, setGroupFilter] = useState('All Students')
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const [totalCapacity, setTotalCapacity] = useState(0)
+  const [ sessions, setSessions ]                 = useState([])
+  const [ enrollments, setEnrollments ]           = useState([])
+  const [ sessionsWithEnr, setSessionsWithEnr ]   = useState([])
+  const [ groupOptions, setGroupOptions ]         = useState([])
+  const [ groupFilter, setGroupFilter ]           = useState('All Students')
+  const [ selectedDate, setSelectedDate ]         = useState(new Date())
+  const [ totalCapacity, setTotalCapacity ]       = useState(0)
+  const [ loading, setLoading ]                   = useState(true)
 
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
 
   const loadSessions = async (db) => {
     const s = await getHourSessions(db, selectedDate, Number(hour))
-    const u = groupFilter === 'All Students'
-      ? await getUnsignedStudents(db, selectedDate, Number(hour))
-      : await getUnsignedStudents(db, selectedDate, Number(hour), groupFilter)
 
     if (s.length > 0) {
+      // Not sure why this check was here...
       if (Number(s[0].session) === Number(hour)) {
         s.sort( (a, b) => (a.title > b.title) ? 1 : -1 )
-        setSessions(s)
-        setUnsignedStudents(u)
+        setSessions( [...s] )
       }
     }
   }
 
+  const loadEnrollments = async (db) => {
+    const e = await getHourEnrollments(db, selectedDate, hour)
+    setEnrollments( [...e] )
+  }
+
   const updateGroupOptions = async () => {
-    const options = await getGroups(db)
+    const options = await getGroupOptions(db)
     setGroupOptions(options)
   }
 
@@ -58,31 +65,77 @@ const AllSessionOverview = ({ db, match }) => {
     setSelectedDate(date)
   }
 
-  // Select upcoming Friday
+  // Select default day
+  const updateDefaultDay = async (db) => {
+    const defaultDay = await getDefaultDay(db)
+    setSelectedDate(defaultDay)
+  }
   useEffect(() => {
-    const nextFriday = getNextFriday()
-
-    setSelectedDate(nextFriday)
-  }, [])
-
-  useEffect(() => {
-    setSessions([])
+    updateDefaultDay(db)
     // Get list of student groups for filter
     updateGroupOptions()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // SESSIONS: Load & subscribe to updates
+  useEffect(() => {
+    setLoading(true)
+    setSessions([])
     // Set up snapshot & load sessions
-    const q = query(collection(db, "schools", schoolId, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString()))/*, where("session", "==", Number(hour))*/);
-    const unsubscribe = onSnapshot(q, () => {
+    const sQuery = query(
+                collection(
+                  db,
+                  "schools",
+                  schoolId,
+                  "sessions",
+                  String(selectedDate.getFullYear()),
+                  String(selectedDate.toDateString())
+                  )
+                );
+    const unsubscribe = onSnapshot(sQuery, () => {
       loadSessions(db)
+      setLoading(false)
     })
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, selectedDate, hour, groupFilter])
 
+  // ENROLLMENTS: Load & subscribe to updates
+  useEffect(() => {
+    setEnrollments([])
+    // Set up snapshot & load sessions
+    const eQuery = query(
+                collection(
+                  db,
+                  "schools",
+                  schoolId,
+                  "sessions",
+                  String(selectedDate.getFullYear()),
+                  `${String(selectedDate.toDateString())}-enrollments`
+                  )
+                );
+    const unsubscribe = onSnapshot(eQuery, () => {
+      loadEnrollments(db)
+    })
+
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db, selectedDate, hour, groupFilter])
+
+  // Combine sessions & enrollments whenever one of them updates
+  useEffect(() => {
+    const newArray = mergeSessionEnrollment(sessions, enrollments)
+    // Doesn't re-render the cards if you just setSessionsWithEnr(newArray)
+    // So I changed loadSessions & loadEnrollments, too
+    setSessionsWithEnr( [...newArray] )
+  }, [sessions, enrollments])
+
+  // Reset state when hour is changed
   useEffect(() => {
     setSessions([])
-    setUnsignedStudents([])
+    setEnrollments([])
   }, [hour])
 
   useEffect(() => {
@@ -99,6 +152,7 @@ const AllSessionOverview = ({ db, match }) => {
 
   return (
     <div>
+      {/* --- HEADINGS --- */}
       <div style={{ marginTop: "3rem" }}>
         <h3
           className="all-sessions-heading"
@@ -117,11 +171,8 @@ const AllSessionOverview = ({ db, match }) => {
         />
       </div>
 
-      {/* <hr /> */}
-      
+      {/* --- BUTTONS --- */}
       <div className="row">
-
-        
         {/* Group Dropdown Trigger */}
         <div className='col s12 m6'>
           <div
@@ -145,8 +196,6 @@ const AllSessionOverview = ({ db, match }) => {
         
       </div>
 
-
-
       {/* Group Dropdown Structure */}
       <ul id={`filter-dropdown`} className='dropdown-content'>
       <li><a
@@ -169,14 +218,24 @@ const AllSessionOverview = ({ db, match }) => {
                 </a></li>)
             })}
       </ul>
-
+      
+      {loading
+       ? <LoadingBar />
+       : <div />
+      }
+      {/* --- BODY --- */}
       <DndProvider backend={HTML5Backend}>
         <div className="row">
           <div className="col s12 cards-container">
-            {sessions.length > 0
-              ? <UnsignedStudents key="unsigned-students" students={unsignedStudents} />
-              : <div></div>}
-            {sessions.map( s => {
+            <UnsignedStudents
+              key="unsigned-students"
+              db={db}
+              schoolId={schoolId}
+              date={selectedDate}
+              hour={hour}
+              groupFilter={groupFilter}
+            />
+            {sessionsWithEnr.map( s => {
               return <SessionCard
                   key={`session-${s.id}`}
                   id={`session-${s.id}`}
@@ -190,7 +249,7 @@ const AllSessionOverview = ({ db, match }) => {
           </div>
         </div>
       </DndProvider>
-
+      <SettingsButton />
     </div>
   )
 }

@@ -1,20 +1,26 @@
-import { doc, getDoc } from "firebase/firestore";
-import { getSubdomain } from "../../../utils";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { getSchoolId } from "../../../utils";
 
-const getSignupAllowed = async (db) => {
-  const schoolId = getSubdomain()
+const getSignupAllowed = async (db, schoolId=null) => {
+  if (schoolId === null) {
+    schoolId = getSchoolId()
+  }
+  
   const signupAllowedRef = doc(db, "schools", schoolId, "config", "student_signup")
+  const signupAllowedSnap = await getDoc(signupAllowedRef)
 
-  getDoc(signupAllowedRef).then(signupAllowedSetting => {
-    if (signupAllowedSetting.exists()) {
-      const active = signupAllowedSetting.data().active
-      if (typeof active === "boolean") {
-        return active
-      } else {
-        return false
-      }
+  if (signupAllowedSnap.exists()) {
+    const active = signupAllowedSnap.data().active
+    if (typeof active === "boolean") {
+      return active
+    } else {
+      await setDoc(signupAllowedRef, {active: true})
+      return true
     }
-  })
+  } else {
+    await setDoc(signupAllowedRef, {active: true})
+    return true
+  }
 }
 
 export default getSignupAllowed

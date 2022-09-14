@@ -21,6 +21,21 @@ const DatePicker = ({ selectedDate, handleSelectDate, events }) => {
 
   }, [selectedDate, handleSelectDate])
 
+  // Re-initialize the datepicker when the selected date changes
+  useEffect(() => {
+      const datepicker = document.querySelector('.datepicker')
+      M.Datepicker.init(datepicker, {
+        format: 'mmm dd, yyyy',
+        autoClose: true,
+        disableWeekends: true,
+        defaultDate: selectedDate,
+        setDefaultDate: true,
+        // events: events,
+        onSelect: handleSelectDate,
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate])
+
   return (
     <input className="datepicker btn white" />
   )

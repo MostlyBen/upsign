@@ -1,11 +1,19 @@
-import { doc, updateDoc } from "firebase/firestore";
-import { getSubdomain } from "../../utils";
+import { doc, updateDoc, deleteField } from "firebase/firestore";
+import { getSchoolId } from "../../utils";
 
-const updateUser = async (db, uid, payload) => {
-  const schoolId = getSubdomain()
-  const teacherRegRef = doc(db, "schools", schoolId, "users", uid)
+const updateUser = async (db, uid, payload, schoolId=null, shouldDeleteField=false) => {
+  if (schoolId === null) {
+    schoolId = getSchoolId()
+  }
+  
+  const userRef = doc(db, "schools", schoolId, "users", uid)
 
-  const res = await updateDoc(teacherRegRef, payload)
+  if (shouldDeleteField) {
+    let newPayload = {}
+    newPayload[payload] = deleteField()
+    payload = newPayload
+  }
+  const res = await updateDoc(userRef, payload)
   return res
   
 }

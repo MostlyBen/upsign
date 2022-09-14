@@ -1,8 +1,8 @@
 import { collection, query, where, getDocs } from "@firebase/firestore"
-import { getSubdomain } from "../../utils";
+import { getSchoolId } from "../../utils";
 
 const getAllStudents = async (db, asDictionary = false) => {
-  const schoolId = getSubdomain()
+  const schoolId = getSchoolId()
   const studentQuery = query(collection(db, "schools", schoolId, "users"), where("type", "==", "student"));
   const allStudents = await getDocs(studentQuery)
     .then(querySnapshot => {

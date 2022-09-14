@@ -8,21 +8,36 @@ import getTeacherRegisterAllowed from "./config/teacherRegister/getTeacherRegist
 import setDomainRestriction from "./config/domainRestriction/setDomainRestriction";
 import setSignupAllowed from "./config/signupAllowed/setSignupAllowed";
 import setTeacherRegisterAllowed from "./config/teacherRegister/setTeacherRegisterAllowed";
+import setNumberSessions from "./config/setNumberSessions";
+import setSessionTimes from "./config/setSessionTimes";
 
 // Data
-import getNextFriday from "./data/getNextFriday";
+import getDefaultDay from "./data/getDefaultDay";
+import getSchoolName from "./data/getSchoolName";
+import setDefaultDay from "./data/setDefaultDay";
+import setSchoolName from "./data/setSchoolName";
+
+// Enrollment
+import enrollStudent from "./enrollment/enrollStudent";
+import getHourEnrollments from "./enrollment/getHourEnrollments";
+import getSessionEnrollments from "./enrollment/getSessionEnrollments";
+import getStudentEnrollments from "./enrollment/getStudentEnrollments";
+import unenrollFromHour from "./enrollment/unenrollFromHour";
+import updateEnrollment from "./enrollment/updateEnrollment";
 
 // Groups
-import getGroups from "./groups/getGroups";
+import getGroupOptions from "./groups/getGroupOptions";
 
 // Sessions
-import enrollStudent from "./sessions/enrollStudent";
-import getAllStudents from "./sessions/getAllStudents";
 import getHourSessions from "./sessions/getHourSessions";
 import getTeacherSessions from "./sessions/getTeacherSessions";
 import getUnsignedStudents from "./sessions/getUnsignedStudents";
+import unenrollFromSession from "./enrollment/unenrollFromSession";
 
 // User
+import deleteUser from "./user/deleteUser";
+import getAllStudents from "./user/getAllStudents";
+import getAllUsers from "./user/getAllUsers";
 import getUser from "./user/getUser";
 import getUserType from "./user/getUserType";
 import setUserType from "./user/setUserType";
@@ -40,18 +55,32 @@ export {
   setDomainRestriction,
   setSignupAllowed,
   setTeacherRegisterAllowed,
+  setNumberSessions,
+  setSessionTimes,
   // Data
-  getNextFriday,
-  // Groups
-  getGroups,
-  // Sessions
+  getDefaultDay,
+  getSchoolName,
+  setDefaultDay,
+  setSchoolName,
+  // Enrollment
   enrollStudent,
+  getHourEnrollments,
+  getSessionEnrollments,
+  getStudentEnrollments,
+  unenrollFromHour,
+  unenrollFromSession,
+  updateEnrollment,
+  // Groups
+  getGroupOptions,
+  // Sessions
   getAllStudents,
   getHourSessions,
   getTeacherSessions,
   getUnsignedStudents,
   // User
+  deleteUser,
   getUser,
+  getAllUsers,
   getUserType,
   setUserType,
   updateUser,

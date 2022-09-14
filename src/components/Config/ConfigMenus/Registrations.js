@@ -1,23 +1,32 @@
 import { useState, useEffect } from "react"
-import { getDomainRestriction, setDomainRestriction } from "../../../services";
+import {
+  getDomainRestriction,
+  setDomainRestriction,
+  getTeacherRegisterAllowed,
+  setTeacherRegisterAllowed,
+} from "../../../services";
 import { LoadingBar } from "../../"
 
 const Registrations = ({ db }) => {
   const [loading, setLoading] = useState(true)
+  const [teacherReg, setTeacherReg] = useState(false)
   const [restrictDomain, setRestrictDomain] = useState(false)
   const [domain, setDomain] = useState('')
   // const [teacherEdit, setTeacherEdit] = useState(true)
 
   const updateSettings = async (db) => {
-    await getDomainRestriction(db)
-      .then(r => {
-        setRestrictDomain( r.active )
-        setDomain( r.domain )
-      })
-      .then(() => {
-        setLoading(false)
-      })
+    const domainResSettings = await getDomainRestriction(db)
+    setRestrictDomain( domainResSettings.active )
+    setDomain( domainResSettings.domain )
 
+    const teacherRegSetting = await getTeacherRegisterAllowed(db)
+    setTeacherReg(teacherRegSetting)
+    setLoading(false)
+  }
+
+  const handleSwitchTeacherReg = async () => {
+    await setTeacherRegisterAllowed(db, {active: !teacherReg});
+    setTeacherReg(!teacherReg);
   }
 
   useEffect(() => {
@@ -50,21 +59,30 @@ const Registrations = ({ db }) => {
         : <div />
       }
       <div className="switches">
+        {/* Teacher Registrations */}
+        <div className="switch toggle-switch">
+          <label>
+            <input type="checkbox" checked={!!teacherReg} readOnly={true} onClick={handleSwitchTeacherReg} />
+            <span className="lever"></span>
+          </label>
+          New users can register as teachers
+        </div>
 
-      {/* Domain */}
-      <div className="input-field col s12">
-        <input value={domain} id="domain" type = "text" onChange={(e) => handleUpdateDomain(e)} />
-        <label className="active" htmlFor="domain">Domain</label>
-      </div>
-
-      {/* Student SignUps */}
-      <div className="switch toggle-switch">
+        {/* Student Registrations */}
+        <div className="switch toggle-switch">
           <label>
             <input type="checkbox" checked={!!restrictDomain} onChange={handleSwitchRestrictDomain} />
             <span className="lever"></span>
           </label>
-          Restrict new students to this domain
+          Restrict new students to this domain:
         </div>
+
+        {/* Domain */}
+        <div className="input-field col s12">
+          <input value={domain} id="domain" type = "text" onChange={(e) => handleUpdateDomain(e)} />
+          <label className="active" htmlFor="domain">Domain</label>
+        </div>
+
       </div>
 
     </div>
