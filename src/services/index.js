@@ -27,6 +27,7 @@ import updateEnrollment from "./enrollment/updateEnrollment";
 
 // Groups
 import getGroupOptions from "./groups/getGroupOptions";
+import setGroupOptions from "./groups/setGroupOptions";
 
 // Sessions
 import getHourSessions from "./sessions/getHourSessions";
@@ -72,6 +73,7 @@ export {
   updateEnrollment,
   // Groups
   getGroupOptions,
+  setGroupOptions,
   // Sessions
   getAllStudents,
   getHourSessions,
