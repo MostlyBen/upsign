@@ -221,21 +221,21 @@ const People = ({ db }) => {
           <h2>Edit Person</h2>
 
           {/* Name */}
-          <div className="input-field col s12 m6">
-            <div>Name</div>
+          <div className="input-field col s12 m6 disabled-input-holder">
+            <div className="disabled-input-title">Name</div>
             <input placeholder="User Name" id="user-name" type="text" className="disabled disabled-text-input" />
           </div>
 
           {/* Email */}
-          <div className="input-field col s12 m6">
-            <div>Email</div>
-            <input placeholder="User Name" id="user-email" type="text" className="disabled disabled-text-input" />
+          <div className="input-field col s12 m6 disabled-input-holder">
+            <div className="disabled-input-title">Email</div>
+            <input placeholder="Email" id="user-email" type="text" className="disabled disabled-text-input" />
           </div>
 
           {/* Nickname */}
           <div className="input-field col s12 m6">
             <div>Nickname</div>
-            <input placeholder="No Nickname" id="user-nickname" type="text" className="" onChange={handleChangeNickname} />
+            <input placeholder="No Nickname" id="user-nickname" type="text" className="" autoComplete="off" onChange={handleChangeNickname} />
           </div>
 
           {/* Type */}

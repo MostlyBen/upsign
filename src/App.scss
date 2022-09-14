@@ -41,7 +41,14 @@ $medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width 
 
 .disabled-text-input {
 	color: dimgray;
-	cursor: not-allowed !important;
+}
+
+.disabled-input-holder {
+	cursor: not-allowed;
+}
+
+.disabled-input-title {
+	cursor: default;
 }
 
 @media #{$small-and-down} {
