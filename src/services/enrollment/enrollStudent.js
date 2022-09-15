@@ -24,6 +24,7 @@ const enrollStudent = async (db, date, session, user) => {
   const payload = {
     attendance: '',
     name: user.name,
+    nickname: user.nickname,
     session: Number(session.session),
     session_id: session.id,
     teacher_id: session.teacher_id,
