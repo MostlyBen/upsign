@@ -8,14 +8,23 @@ import {
 const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed, enrollment }) => {
   const [ isFull, setIsFull ] = useState(false)
   const [ isEnrolled, setIsEnrolled ] = useState(false)
+  const [ isEnabled, setIsEnabled ] = useState(true)
 
   const handleClick = (enrolled) => {
-    if (Number(enrollment.length) < Number(session.capacity) && signupAllowed && !enrolled) {
-      enrollStudent(db, selectedDate, session, userDoc)
-    } else if (signupAllowed && enrolled) {
-      unenrollFromSession(db, selectedDate, userDoc.uid, session.id)
+    if (signupAllowed) {
+      setIsEnabled(false)
+
+      if (enrolled) {
+        unenrollFromSession(db, selectedDate, userDoc.uid, session.id)
+      } else if (Number(enrollment.length) < Number(session.capacity)) {
+        enrollStudent(db, selectedDate, session, userDoc)
+      }
     }
   }
+
+  useEffect(() => {
+    setIsEnabled(true)
+  }, [isEnrolled])
 
   // When the enrollment or capacity updates
   useEffect(() => {
@@ -93,7 +102,7 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
 
   return (
     <div>
-      <div className={`card session-card selectable-card ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`} onClick={() => handleClick(isEnrolled)}>
+      <div className={`card session-card selectable-card ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''} ${isEnabled ? '' : 'not-enabled'}`} onClick={() => handleClick(isEnrolled)}>
         <div className={`session-card-content ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`}>
           {/* Title */}
           <h1>{session.title}</h1>

@@ -227,6 +227,7 @@ body {
 
 .session-selector {
 	padding: 0 1rem;
+	user-select: none;
 }
 
 .session-time {
@@ -306,6 +307,11 @@ body {
 		cursor: pointer;
 		user-select: none;
 	}
+}
+
+.selectable-card.not-enabled {
+	opacity: 0.25;
+	pointer-events: none;
 }
 
 .teacher-card {
