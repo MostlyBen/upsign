@@ -51,7 +51,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
     <tr
       className="student-name"
       id={`enrollment-row-${session.id}-${enrollment.uid}`}
-      key={`${enrollment.name}-${session.id}`}
+      key={`${enrollment.uid}-${session.id}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -151,7 +151,7 @@ const SessionAttendanceList = ({ db, schoolId, date, session }) => {
   }, [db])
   
   if (Array.isArray(enrollments)) {
-    enrollments.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
+    enrollments.sort( (a, b) => ((a.nickname ?? a.name) > (b.nickname ?? b.name)) ? 1 : -1 )
   }
 
   if (loading) {
