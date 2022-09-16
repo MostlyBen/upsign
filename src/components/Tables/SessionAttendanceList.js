@@ -58,7 +58,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
       <td
         style={{padding: "0 0 0 1.5rem", textAlign: "left"}}
       >
-        {enrollment.name}
+        {enrollment.nickname ?? enrollment.name}
         <span
           className="material-icons icon-button-offset"
           onClick={() => handleRemoveStudent(enrollment.uid, enrollment.name)}
