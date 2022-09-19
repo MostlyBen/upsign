@@ -21,9 +21,11 @@ import {
   mergeSessionEnrollment,
 } from "../../utils"
 
-import DatePicker from "../SignUp/DatePicker"
-import LoadingBar from "../SmallBits/LoadingBar"
-import SettingsButton from "../SmallBits/SettingsButton"
+import {
+  DatePicker,
+  LoadingBar,
+  SettingsButton,
+} from "../"
 
 
 const AllSessionOverview = ({ db, match }) => {

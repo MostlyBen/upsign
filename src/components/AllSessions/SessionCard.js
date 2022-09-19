@@ -5,7 +5,7 @@ import { useDrop } from 'react-dnd'
 import M from 'materialize-css';
 
 import StudentName from "./StudentName"
-import SessionEditor from "../SignUp/SessionEditor"
+import { SessionEditor } from "../"
 
 const SessionCard = ({ db, date, session, filter }) => {
   const [filteredEnrollment, setFilteredEnrollment] = useState(session.enrollment)

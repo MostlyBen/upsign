@@ -13,8 +13,7 @@ import {
 } from "../../utils";
 
 import SessionEditor from "./SessionEditor";
-import { LoadingBar, SettingsButton } from "../";
-import DatePicker from "./DatePicker";
+import { DatePicker, LoadingBar, SettingsButton } from "../";
 
 const TopMessage = ({ user }) => {
   

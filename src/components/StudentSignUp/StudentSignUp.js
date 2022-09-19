@@ -13,7 +13,7 @@ import {
 } from "../../utils";
 
 import SessionSelector from './SessionSelector'
-import DatePicker from "./DatePicker";
+import { DatePicker } from "../";
 
 
 const TopMessage = ({ user }) => {

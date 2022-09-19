@@ -3,11 +3,14 @@ import NavBar from './NavBar/NavBar'
 // User Data Related
 import UserTypeSelect from './auth/UserTypeSelect'
 import SignOut from './auth/SignOut'
-// Main SignUp Pages
-import StudentSignUp from './SignUp/StudentSignUp'
-import TeacherSignUp from './SignUp/TeacherSignUp'
+// Student Sign Up
+import StudentSignUp from './StudentSignUp/StudentSignUp'
+// Teacher Sign Up
+import TeacherSignUp from './TeacherSignUp/TeacherSignUp'
+import SessionEditor from './TeacherSignUp/SessionEditor'
 // Small Bits
 import CircularLoading from './SmallBits/CircularLoading'
+import DatePicker from './SmallBits/DatePicker'
 import LittleLoadingBar from './SmallBits/LittleLoadingBar'
 import LoadingBar from './SmallBits/LoadingBar'
 import MenuDiv from './SmallBits/MenuDiv'
@@ -25,9 +28,12 @@ export {
   SignOut,
   
   StudentSignUp,
+  
   TeacherSignUp,
+  SessionEditor,
 
   CircularLoading,
+  DatePicker,
   LittleLoadingBar,
   LoadingBar,
   MenuDiv,
