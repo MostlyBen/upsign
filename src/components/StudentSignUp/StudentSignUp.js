@@ -148,15 +148,15 @@ const StudentSignUp = (props) => {
       </div>
 
       { sessionArray.map( (index) => <SessionSelector
-                                            key={`session-${index}`}
-                                            hour={index+1}
-                                            userDoc={userDoc}
-                                            db={db}
-                                            selectedDate={selectedDate}
-                                            sessionTime={sessionTimes[index]}
-                                            signupAllowed={signupAllowed}
-                                            schoolId={schoolId}
-                                          /> ) }
+                                        key={`session-${index}`}
+                                        hour={index+1}
+                                        userDoc={userDoc}
+                                        db={db}
+                                        selectedDate={selectedDate}
+                                        sessionTime={sessionTimes[index]}
+                                        signupAllowed={signupAllowed}
+                                        schoolId={schoolId}
+                                      /> ) }
     </div>
   )
 
