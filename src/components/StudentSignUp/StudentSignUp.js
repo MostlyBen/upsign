@@ -43,12 +43,12 @@ const StudentSignUp = (props) => {
   const db = props.db;
   const user = props.user;
 
-  const [ sessionArray, setSessionArray ]     = useState([])
-  const [ selectedDate, setSelectedDate ]     = useState(new Date())
-  const [ numberSessions, setNumberSessions ] = useState(1)
-  const [ sessionTimes, setSessionTimes ]     = useState([])
+  const [ sessionArray, setSessionArray ]      = useState([])
+  const [ selectedDate, setSelectedDate ]      = useState(new Date())
+  const [ numberSessions, setNumberSessions ]  = useState(1)
+  const [ sessionTimes, setSessionTimes ]      = useState([])
   const [ signupAllowed, setSignupAllowed ]    = useState(false)
-  const [ userDoc, setUserDoc ]               = useState({})  
+  const [ userDoc, setUserDoc ]                = useState({})  
 
   const schoolId = getSchoolId()
 
