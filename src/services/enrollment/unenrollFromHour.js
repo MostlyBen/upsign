@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, deleteDoc } from "@firebase/firestore"
+import { doc, collection, query, where, getDocs, updateDoc, deleteDoc, increment } from "@firebase/firestore"
 import { getSchoolId } from "../../utils";
 
 const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
@@ -28,6 +28,21 @@ const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
 
   // Iterate through and delete any enrollment docs
   quSnapshot.forEach(async (snap) => {
+    // Create a reference to the session the enrollment is for
+    var enrData = snap.data()
+    var sessionRef = doc(
+                         db,
+                         "schools",
+                         schoolId,
+                         "sessions",
+                         String(date.getFullYear()),
+                         `${String(date.toDateString())}`,
+                         enrData.session_id
+    )
+
+    // Subtract one from the session's enrollment count
+    await updateDoc(sessionRef, { number_enrolled: increment(-1) })
+    // Delete the enrollment doc
     await deleteDoc(snap.ref)
   })
 

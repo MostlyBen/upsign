@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, deleteDoc } from "@firebase/firestore"
+import { doc, collection, query, where, getDocs, updateDoc, deleteDoc, increment } from "@firebase/firestore"
 import { getSchoolId } from "../../utils";
 
 export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=null) => {
@@ -10,6 +10,21 @@ export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=
     schoolId = getSchoolId()
   }
 
+  // Update the number enrolled in the session doc
+  const sessionRef = doc(
+                         db,
+                         "schools",
+                         schoolId,
+                         "sessions",
+                         String(date.getFullYear()),
+                         `${String(date.toDateString())}`,
+                         sessionId
+  )
+
+  await updateDoc(sessionRef, { number_enrolled: increment(-1) })
+
+
+  // Find & remove the enrollment doc
   // Reference the enrollments collection for the day
   const enrRef = collection(
                             db,
