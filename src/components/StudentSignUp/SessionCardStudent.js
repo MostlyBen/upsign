@@ -5,7 +5,7 @@ import {
   unenrollFromSession,
 } from "../../services"
 
-const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed, enrollment }) => {
+const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed, userEnrollments }) => {
   const [ isFull, setIsFull ] = useState(false)
   const [ isEnrolled, setIsEnrolled ] = useState(false)
   const [ isEnabled, setIsEnabled ] = useState(true)
@@ -16,7 +16,7 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
 
       if (enrolled) {
         unenrollFromSession(db, selectedDate, userDoc.uid, session.id)
-      } else if (Number(enrollment.length) < Number(session.capacity)) {
+      } else if ( (session.number_enrolled ?? 0) < Number(session.capacity)) {
         enrollStudent(db, selectedDate, session, userDoc)
       }
     }
@@ -26,29 +26,29 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
     setIsEnabled(true)
   }, [isEnrolled])
 
-  // When the enrollment or capacity updates
+  // When the number_enrolled or capacity updates
   useEffect(() => {
-    setIsEnrolled(false)
     // Check if the session is full
-    if (Array.isArray(enrollment)) {
-      if (Number(enrollment.length) >= Number(session.capacity)) {
+    if (typeof session.number_enrolled === "number") {
+      if (session.number_enrolled >= Number(session.capacity)) {
         setIsFull(true)
       } else {
         setIsFull(false)
       }
-    }
-  
-    // Check if the student is enrolled
-    if (Array.isArray(enrollment)) {
-      for (var i = 0; i < enrollment.length; i++) {
-        if (String(enrollment[i].uid) === String(userDoc.uid)) {
-          setIsEnrolled(true)
-          break
-        }
-      }
+    } else {
+      setIsFull(false)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enrollment, session.capacity])
+  }, [session.number_enrolled, session.capacity])
+
+  useEffect(() => {
+    setIsEnrolled(false)
+    for (var i = 0; i < userEnrollments.length; i++) {
+      if ( String(userEnrollments[i].session_id) === String(session.id) ) {
+        setIsEnrolled(true)
+      }
+    }
+  }, [userEnrollments, session.id])
 
   // Check if filtering changes if the userDoc is updated
   useEffect(() => {
@@ -110,7 +110,7 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
           <h2>{session.teacher ?? 'No Teacher'}</h2>
           <h2>{session.room ?? 'No Room'}</h2>
           <h2 className="capacity">
-            {Array.isArray(enrollment) ? enrollment.length : 0}/{session.capacity}
+            {session.number_enrolled ?? 0}/{session.capacity}
           </h2>
         </div>
       </div>

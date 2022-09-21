@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { onSnapshot, doc } from "@firebase/firestore"
+import { onSnapshot, doc, query, where, collection } from "@firebase/firestore"
 import {
   getNumberSessions,
   getDefaultDay,
   getSessionTimes,
   getSignupAllowed,
+  getStudentEnrollments,
   getUser,
 } from "../../services";
 import {
@@ -48,7 +49,8 @@ const StudentSignUp = (props) => {
   const [ numberSessions, setNumberSessions ]  = useState(1)
   const [ sessionTimes, setSessionTimes ]      = useState([])
   const [ signupAllowed, setSignupAllowed ]    = useState(false)
-  const [ userDoc, setUserDoc ]                = useState({})  
+  const [ userDoc, setUserDoc ]                = useState({})
+  const [ userEnrollments, setUserEnrollments ] = useState([])
 
   const schoolId = getSchoolId()
 
@@ -79,6 +81,12 @@ const StudentSignUp = (props) => {
   const updateDefaultDay = async (db) => {
     const defaultDay = await getDefaultDay(db)
     setSelectedDate(defaultDay)
+  }
+
+  // Get the user's enrollments
+  const updateUserEnrollments = async (db, date) => {
+    var enr = await getStudentEnrollments(db, date, user.uid)
+    setUserEnrollments(enr)
   }
 
   /* Initial Load */
@@ -115,6 +123,28 @@ const StudentSignUp = (props) => {
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db])
+
+  // Subscribe to changes in user's enrollments
+  useEffect(() => {
+    const enrQuery = query(
+                      collection(
+                                  db,
+                                  "schools",
+                                  schoolId,
+                                  "sessions",
+                                  String(selectedDate.getFullYear()),
+                                  `${String(selectedDate.toDateString())}-enrollments`
+                                ),
+                      where("uid", "==", user.uid)
+                      )
+    
+    const unsubscribe = onSnapshot(enrQuery, () => {
+      updateUserEnrollments(db, selectedDate)
+    })
+
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db, selectedDate])
 
   // Update the number & times of sessions if the selected date changes
   useEffect(() => {
@@ -156,6 +186,7 @@ const StudentSignUp = (props) => {
                                         sessionTime={sessionTimes[index]}
                                         signupAllowed={signupAllowed}
                                         schoolId={schoolId}
+                                        userEnrollments={userEnrollments}
                                       /> ) }
     </div>
   )
