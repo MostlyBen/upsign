@@ -1,3 +1,0 @@
-dispatch:
-  - url: "*.upsign.app/"
-    service: default
