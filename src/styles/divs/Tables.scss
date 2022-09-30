@@ -1,0 +1,23 @@
+@import '../variables/ThemeVariables.scss';
+
+.student-name {
+	user-select: none;
+
+	@include themify($themes) {
+		color: themed('onSurface');
+	}
+}
+
+.student-name-empty {
+	@include themify($themes) {
+		color: themed('outline');
+	}
+}
+
+.user-name-list-name {
+	display: block;
+	cursor: pointer;
+	padding: 0.5rem 0.5rem;
+	border-top: 1px solid #009688;
+	border-bottom: 1px solid #009688;
+}

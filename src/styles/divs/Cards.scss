@@ -1,0 +1,138 @@
+@import '../variables/ThemeVariables.scss';
+
+.card {
+	border-radius: 2rem;
+	padding: 2rem;
+	margin-bottom: 1rem;
+	@include themify($themes) {
+		background: themed('surface');
+		color: themed('onSurface');
+	}
+}
+
+.student-card-room {
+	width: 75%
+}
+
+.session-card {
+	padding: 1.5rem 1.5rem 1rem 1.5rem;
+	border-radius: 1rem;
+	margin: 10px;
+
+	h1 {
+		font-size: 1.5rem;
+		margin: 0;
+		font-weight: 500;
+	}
+	h2 {
+		font-size: 1.25rem;
+		margin: 0.5rem 0;
+		font-weight: 400;
+	}
+	.capacity {
+		position: absolute;
+		text-align: right;
+		bottom: 1rem;
+		right: 1.5rem;
+		width: 25%;
+	}
+	.capacity-overview {
+		position: relative;
+		font-weight: 500;
+		float: right;
+		bottom: 2.8rem;
+	}
+	.capacity-overview-unsigned {
+		position: relative;
+		display: inline-block;
+		font-weight: 500;
+	}
+}
+
+.mimic-card-h1 {
+	font-size: 1.5rem !important;
+	margin: 0 !important;
+	font-weight: 500 !important;
+}
+
+.mimic-card-h2 {
+	font-size: 1.25rem;
+	margin: 0.5rem 0;
+	font-weight: 400;
+	@include themify($themes) {
+		color: themed('onSurface');
+	}
+	border: none !important;
+}
+
+.selectable-card {
+	user-select: none;
+}
+
+.selectable-card:not(.is-full) {
+	cursor: pointer;
+
+	&:active {
+		transform: scale(0.95);
+		cursor: pointer;
+		user-select: none;
+	}
+}
+
+.selectable-card.is-enrolled {
+	cursor: pointer;
+
+	&:active {
+		transform: scale(0.95);
+		cursor: pointer;
+		user-select: none;
+	}
+}
+
+.selectable-card.not-enabled {
+	opacity: 0.25;
+	pointer-events: none;
+}
+
+.teacher-card {
+	padding-bottom: 1.5rem;
+}
+
+.teacher-card-h1 {
+	font-size: 2.5rem;
+	margin: 1rem 0 2rem 0;
+	text-align: center;
+	user-select: none;
+}
+
+.selectable-card.is-full:not(.is-enrolled) {
+	cursor: default;
+}
+
+.session-card-content.is-full:not(.is-enrolled) {
+	opacity: 0.5;
+}
+
+.session-card.is-enrolled {
+	@include themify($themes) {
+		border: 4px solid themed('primaryContainer');
+		box-shadow: 3px 3px 6px themed('shadow'), inset 2px 2px 4px themed('shadowVariant');
+	}
+	margin: 6px;
+}
+
+.menu-card {
+	h1 {
+		font-size: 2rem;
+		margin: 0;
+		font-weight: 500;
+	}
+	h2 {
+		font-size: 1.5rem;
+		margin: 0 0 0.5rem 0;
+		font-weight: 500;
+		@include themify($themes) {
+			color: themed('onSurface');
+		}
+	}
+}

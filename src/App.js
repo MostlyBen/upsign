@@ -1,4 +1,4 @@
-import './App.scss';
+import './styles/App.scss';
 
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -22,6 +22,8 @@ import {
 
 import { getUserType, getSchoolName } from './services';
 
+import { ThemeContext } from './contexts'
+
 import { firebaseConfig } from './config';
 
 initializeApp(firebaseConfig)
@@ -41,6 +43,16 @@ function App() {
   const [loadingNickname, setLoadingNickname] = useState(true)
   const [schoolName, setSchoolName] = useState("")
   const [schoolNameLoading, setSchoolNameLoading] = useState(true)
+
+  // Detecting the default theme
+  const isBrowserDefaultDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const getDefaultTheme = () => {
+    const localStorageTheme = localStorage.getItem('default-theme');
+    const browserDefault = isBrowserDefaultDark() ? 'dark' : 'light';
+    return localStorageTheme || browserDefault;
+  };
+  const [theme, setTheme] = useState(getDefaultTheme());
+
 
   const updateSchoolName = async () => {
     const name = await getSchoolName(db)
@@ -150,6 +162,9 @@ function App() {
 
     return (
       <div className="App">
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+        <div className={`theme-${theme}`}>
+
         <Router>
         <NavBar user={user} userType={userType} schoolName={schoolName} />
           <div className="body-container">
@@ -161,6 +176,9 @@ function App() {
             </div>
           </div>
         </Router>
+
+        </div>
+        </ThemeContext.Provider>
       </div>
     );
   } else {

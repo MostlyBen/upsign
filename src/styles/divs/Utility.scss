@@ -1,0 +1,31 @@
+@import '../variables/ThemeVariables.scss';
+
+.dim {
+	opacity: 0.5;
+}
+
+.hidden {
+	display: none;
+}
+
+.disabled {
+	pointer-events: none;
+}
+
+.hide {
+	display: none;
+}
+
+.disabled-text-input {
+	@include themify($themes) {
+		color: themed('outline');
+	}
+}
+
+.disabled-input-holder {
+	cursor: not-allowed;
+}
+
+.disabled-input-title {
+	cursor: default;
+}

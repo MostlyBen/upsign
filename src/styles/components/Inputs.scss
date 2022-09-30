@@ -1,0 +1,161 @@
+@import '../variables/ThemeVariables.scss';
+
+.datepicker-row:not(.is-disabled) {
+	color: #191c1b;
+}
+
+.datepicker-controls .selects-container .select-wrapper input.select-dropdown.dropdown-trigger {
+		color: #191c1b !important;
+}
+
+.datepicker {
+	@include themify($themes) {
+		background: themed('surface') !important;
+		color: themed('primary');
+	}
+
+	text-align: center;
+	border: none !important;
+
+	text-transform: none;
+	user-select: none;
+	width: 100%;
+	margin-top: 0px;
+	height: 3rem;
+	padding-top: 0px;
+	font-size: 1.25rem !important;
+	font-weight: 700;
+
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14),
+							0 3px 1px -2px rgba(0, 0, 0, .12),
+							0 1px 5px 0 rgba(0, 0, 0, .20) !important
+}
+
+.settings-button-holder {
+	position: fixed;
+	right: 3.5rem;
+	bottom: 2.3rem;
+}
+
+.settings-button {
+	@include themify($themes) {
+		background: themed('surface');
+	}
+}
+
+.settings-button-icon {
+	@include themify($themes) {
+		background: themed('surfaceVariant');
+		color: themed('onSurfaceVariant');
+	}
+}
+
+.student-list-btn {
+	@include themify($themes) {
+		color: themed('onSurface');
+	}
+	cursor: pointer;
+	user-select: none;
+}
+
+.icon-button-offset {
+	@include themify($themes) {
+		color: themed('onSurface');
+	}
+	position: relative;
+	top: 0.445rem;
+	cursor: pointer;
+	margin-left: 0.25rem;
+	line-height: 0;
+	transform: scale(0.75);
+}
+
+.menu-selector {
+	text-align: center;
+}
+
+.menu-btn {
+	@include themify($themes) {
+		background: themed('background');
+		color: themed('onBackground');
+	}
+	box-shadow: none;
+	display: block;
+	text-transform: uppercase;
+	padding: 0.5rem 0 0.5rem 0;
+}
+
+.menu-btn.active {
+	@include themify($themes) {
+		color: themed('onBackground');
+	}
+	font-weight: bold;
+}
+
+.switches {
+	margin-top: 2rem;
+}
+
+.toggle-switch {
+	margin: 1rem 0;
+	font-size: medium;
+	@include themify($themes) {
+		color: themed('onSurface');
+	}
+}
+
+.hour-selector {
+	border-top: 1px solid rgba(0, 0, 0, .25);
+	border-bottom: 1px solid rgba(0, 0, 0, .25);
+	margin-bottom: 1rem;
+}
+
+.group-dropdown {
+	@include themify($themes) {
+		background: themed('surface');
+		color: themed('primary');
+	}
+
+	text-transform: none;
+	width: 100%;
+	margin: 0 0 1.5rem 0;
+	height: 3rem;
+	padding-top: 0.25rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+
+.navbar-link {
+	@include themify($themes) {
+		color: themed('onSurfaceVariant');
+	}
+
+	font-size: 1.5rem;
+	display: inline-block;
+	margin-right: 1rem;
+	margin-left: 1rem;
+}
+
+.open-session {
+	cursor: pointer;
+}
+
+.pagination {
+	display: flex;
+	justify-content: space-between;
+}
+
+.open-session-div {
+	@include themify($themes) {
+		color: themed('onSurfaceVariant');
+	}
+	cursor: pointer;
+	width: 100%;
+	text-align: right;
+	height: 0;
+}
+
+.table-input {
+	margin: 0 !important;
+	padding: 0 !important;
+}
