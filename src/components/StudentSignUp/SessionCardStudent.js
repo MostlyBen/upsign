@@ -11,7 +11,7 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
   const [ isEnabled, setIsEnabled ] = useState(true)
 
   const handleClick = (enrolled) => {
-    if (signupAllowed) {
+    if (signupAllowed && !isFull) {
       setIsEnabled(false)
 
       if (enrolled) {
@@ -108,7 +108,7 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
           <h1>{session.title}</h1>
           <hr style={{ margin: '1rem 0' }} />
           <h2>{session.teacher ?? 'No Teacher'}</h2>
-          <h2>{session.room ?? 'No Room'}</h2>
+          <h2 className="student-card-room">{session.room ?? 'No Room'}</h2>
           <h2 className="capacity">
             {session.number_enrolled ?? 0}/{session.capacity}
           </h2>

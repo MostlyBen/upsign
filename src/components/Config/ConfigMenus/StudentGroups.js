@@ -82,7 +82,7 @@ const StudentGroups = ({ db }) => {
       
       {/* <!-- Dropdown Trigger --> */}
       <div
-        className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
+        className='dropdown-trigger btn group-dropdown'
         data-target='option-dropdown'
       >
         {selectedGroup.length > 0 ? selectedGroup : "Select Group"}

@@ -178,7 +178,7 @@ const AllSessionOverview = ({ db, match }) => {
         {/* Group Dropdown Trigger */}
         <div className='col s12 m6'>
           <div
-            className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
+            className='dropdown-trigger btn group-dropdown'
             data-target={`filter-dropdown`}
           >
             {groupFilter}

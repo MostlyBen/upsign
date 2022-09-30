@@ -37,7 +37,7 @@ const DatePicker = ({ selectedDate, handleSelectDate, events }) => {
   }, [selectedDate])
 
   return (
-    <input className="datepicker btn white" />
+    <input className="datepicker btn" />
   )
 }
 

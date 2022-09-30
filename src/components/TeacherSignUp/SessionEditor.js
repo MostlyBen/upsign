@@ -155,7 +155,7 @@ const SessionEditor = ({ db, session, date }) => {
           <div>
             {/* <!-- Dropdown Trigger --> */}
             <div
-              className='dropdown-trigger btn group-dropdown white cyan-text text-darken-2'
+              className='dropdown-trigger btn group-dropdown'
               data-target={`option-dropdown-${session.id}`}
             >
               {session.restricted_to

@@ -50,7 +50,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
 
   if (loading) {
     return (
-      <div className="session-selector row">
+      <div className="session-selector-container row">
       <h4 className="session-header">Session {hour}
         <span className="session-time"> {sessionTime ? '('+sessionTime+')': ''}</span>
       </h4>
@@ -61,7 +61,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
   }
   
   return (
-    <div className="session-selector row">
+    <div className="session-selector-container row">
       <h4>Session {hour}
         <span className="session-time"> {sessionTime ? '('+sessionTime+')': ''}</span>
       </h4>

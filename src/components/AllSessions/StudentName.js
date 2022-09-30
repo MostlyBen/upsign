@@ -15,12 +15,13 @@ const StudentName = ({ enrollment, currentSession }) => {
   return (
     <div
     ref={drag}
+    className='student-name'
     key={`enrollment-${enrollment.uid}`}
     style={{ opacity: isDragging ? 0.25 : 1, cursor: 'move', marginBottom: '0.5rem' }}
   >
     {/* <span className="material-icons">lock</span> */}
     {enrollment.nickname ?? enrollment.name} {enrollment.attendance
-    ? <span style={{color: "dimgrey", margin: "0 0 0 0.5rem"}}>|<span style={{margin: "0 0 0 0.75rem", fontWeight: "500",
+    ? <span style={{margin: "0 0 0 0.5rem"}}>|<span style={{margin: "0 0 0 0.75rem", fontWeight: "500",
         color: enrollment.attendance === "present" ? "#009688" : enrollment.attendance === "tardy" ? "#f9a825" : "#d32f2f"}}>
         {enrollment.attendance.charAt(0).toUpperCase() + enrollment.attendance.slice(1)}</span>
       </span>
