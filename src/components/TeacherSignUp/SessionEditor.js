@@ -19,12 +19,21 @@ import M from 'materialize-css'
 const SessionEditor = ({ db, session, date }) => {
 
   const [title, setTitle] = useState(session.title ?? "")
+  const [savedTitle, setSavedTitle] = useState(session.title ?? "")
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [groupOptions, setGroupOptions] = useState([])
 
   const schoolId = getSchoolId()
 
+  useEffect(() => {
+    var titleEl = document.getElementById(`session-title-${session.id}`)
+    var isActive = (titleEl === document.activeElement)
+
+    if (!isActive) {
+      setTitle(savedTitle)
+    }
+  }, [savedTitle])
 
   const updateGroupOptions = async () => {
     const options = await getGroupOptions(db)
@@ -47,7 +56,7 @@ const SessionEditor = ({ db, session, date }) => {
         querySnapshot.forEach( d => {
           var updatedSession = d.data();
 
-          setTitle(updatedSession.title ?? '');
+          setSavedTitle(updatedSession.title ?? '');
           setRoom(updatedSession.room ?? '');
           setCapacity(updatedSession.capacity ?? 30);
           session.restricted_to = updatedSession.restricted_to;
@@ -64,6 +73,13 @@ const SessionEditor = ({ db, session, date }) => {
     var elems = document.querySelectorAll('.dropdown-trigger');
     M.Dropdown.init(elems, {});
   }, [groupOptions])
+
+  /* BLUR HANDLERS */
+  const handleBlurTitle = () => {
+    if (savedTitle !== title) {
+      handleChangeTitle({target:{value:savedTitle}})
+    }
+  }
 
 
   /* CHANGE HANDLERS */
@@ -114,6 +130,7 @@ const SessionEditor = ({ db, session, date }) => {
             onChange={handleChangeTitle}
             autoComplete="off"
             placeholder="Session Title"
+            onBlur={handleBlurTitle}
           />
         </div>
 
