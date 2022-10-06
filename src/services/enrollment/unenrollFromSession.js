@@ -24,7 +24,6 @@ export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=
   )
 
   batch.update(sessionRef, { number_enrolled: increment(-1) })
-  // await updateDoc(sessionRef, { number_enrolled: increment(-1) })
 
 
   // Find & remove the enrollment doc
@@ -47,7 +46,6 @@ export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=
   // Iterate through and delete any enrollment docs
   qSnapshot.forEach(async (snap) => {
     batch.delete(snap.ref)
-    // await deleteDoc(snap.ref)
   })
   
   const res = batch.commit()

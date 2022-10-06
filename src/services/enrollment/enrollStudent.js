@@ -27,7 +27,6 @@ const enrollStudent = async (db, date, session, user) => {
   )
 
   batch.update(sessionRef, { number_enrolled: increment(1) })
-  // updateDoc(sessionRef, { number_enrolled: increment(1) })
 
 
   // Update the enrollment
@@ -53,7 +52,6 @@ const enrollStudent = async (db, date, session, user) => {
   }
   // Add the enrollment
   batch.set(enrRef, payload)
-  // const res = await addDoc(enrRef, payload)
 
   const res = await batch.commit()
   return res

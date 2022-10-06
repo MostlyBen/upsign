@@ -44,10 +44,9 @@ const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
 
     // Subtract one from the session's enrollment count
     batch.update(sessionRef, { number_enrolled: increment(-1) })
-    // await updateDoc(sessionRef, { number_enrolled: increment(-1) })
     // Delete the enrollment doc
     batch.delete(snap.ref)
-    // await deleteDoc(snap.ref)
+    
     const res = await batch.commit()
     return res
   })
