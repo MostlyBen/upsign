@@ -17,7 +17,7 @@ import {
   MenuDiv
 } from "../../"
 
-const GroupEditRow = ({ db, group, groupArray, index }) => {
+const EditGroupRow = ({ db, group, groupArray, index }) => {
 
   const handleClickUp = () => {
     var newGroupList = groupArray
@@ -223,7 +223,7 @@ const EditGroups = ({ db }) => {
       <h1>
         Edit Groups
       </h1>
-      
+
       <MenuDiv />
 
       <table className="highlight">
@@ -236,7 +236,7 @@ const EditGroups = ({ db }) => {
         <tbody>
 
           {/* Group Rows */}
-          {groupOptionState.map((option, index) => <GroupEditRow db={db} group={option} groupArray={groupOptionState} index={index} /> )}
+          {groupOptionState.map((option, index) => <EditGroupRow db={db} group={option} groupArray={groupOptionState} index={index} /> )}
 
           {/* Adding Groups */}
           { addingGroup
