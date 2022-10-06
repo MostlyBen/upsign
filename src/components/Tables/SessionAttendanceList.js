@@ -4,7 +4,7 @@ import {
   getSessionEnrollments,
   unenrollFromSession,
   updateEnrollment,
-  updateSession,
+  // updateSession,
 } from "../../services"
 import { LittleLoadingBar } from "../"
 
@@ -151,16 +151,17 @@ const SessionAttendanceList = ({ db, schoolId, date, session }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db])
 
+  /* THIS WAS SCREWING UP. */
   // Update session.number_enrolled if it's wrong
-  useEffect(() => {
-    if (Array.isArray(session.enrollment)) {
-      if ( Number(session.enrollment.length) !== session.number_enrolled ) {
-        updateSession(db, date, session.id, {
-          number_enrolled: Number(session.enrollment.length),
-        }, schoolId)
-      }
-    }
-  }, [db, date, session.enrollment, session.number_enrolled, session.id, schoolId])
+  // useEffect(() => {
+  //   if (Array.isArray(session.enrollment)) {
+  //     if ( Number(session.enrollment.length) !== session.number_enrolled ) {
+  //       updateSession(db, date, session.id, {
+  //         number_enrolled: Number(session.enrollment.length),
+  //       }, schoolId)
+  //     }
+  //   }
+  // }, [db, date, session.enrollment, session.number_enrolled, session.id, schoolId])
   
   if (Array.isArray(enrollments)) {
     enrollments.sort( (a, b) => ((a.nickname ?? a.name) > (b.nickname ?? b.name)) ? 1 : -1 )
