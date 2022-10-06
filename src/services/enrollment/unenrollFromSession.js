@@ -1,4 +1,4 @@
-import { doc, collection, query, where, getDocs, updateDoc, deleteDoc, increment } from "@firebase/firestore"
+import { doc, collection, query, where, getDocs, writeBatch, increment } from "@firebase/firestore"
 import { getSchoolId } from "../../utils";
 
 export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=null) => {
@@ -9,6 +9,8 @@ export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=
   if (schoolId === null) {
     schoolId = getSchoolId()
   }
+
+  const batch = writeBatch(db)
 
   // Update the number enrolled in the session doc
   const sessionRef = doc(
@@ -21,7 +23,8 @@ export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=
                          sessionId
   )
 
-  await updateDoc(sessionRef, { number_enrolled: increment(-1) })
+  batch.update(sessionRef, { number_enrolled: increment(-1) })
+  // await updateDoc(sessionRef, { number_enrolled: increment(-1) })
 
 
   // Find & remove the enrollment doc
@@ -43,8 +46,12 @@ export const unenrollFromSession = async (db, date, userId, sessionId, schoolId=
 
   // Iterate through and delete any enrollment docs
   qSnapshot.forEach(async (snap) => {
-    await deleteDoc(snap.ref)
+    batch.delete(snap.ref)
+    // await deleteDoc(snap.ref)
   })
+  
+  const res = batch.commit()
+  return res
 
 }
 

@@ -11,13 +11,16 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
   const [ isEnabled, setIsEnabled ] = useState(true)
 
   const handleClick = (enrolled) => {
-    if (signupAllowed && !isFull) {
-      setIsEnabled(false)
+    if (signupAllowed) {
+      if (!isFull || isEnrolled) {
 
-      if (enrolled) {
-        unenrollFromSession(db, selectedDate, userDoc.uid, session.id)
-      } else if ( (session.number_enrolled ?? 0) < Number(session.capacity)) {
-        enrollStudent(db, selectedDate, session, userDoc)
+        setIsEnabled(false)
+
+        if (enrolled) {
+          unenrollFromSession(db, selectedDate, userDoc.uid, session.id)
+        } else if ( (session.number_enrolled ?? 0) < Number(session.capacity)) {
+          enrollStudent(db, selectedDate, session, userDoc)
+        }
       }
     }
   }

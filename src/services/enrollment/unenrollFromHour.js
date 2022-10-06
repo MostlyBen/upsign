@@ -1,4 +1,4 @@
-import { doc, collection, query, where, getDocs, updateDoc, deleteDoc, increment } from "@firebase/firestore"
+import { doc, collection, query, where, getDocs, writeBatch, increment } from "@firebase/firestore"
 import { getSchoolId } from "../../utils";
 
 const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
@@ -9,6 +9,8 @@ const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
   if (schoolId === null) {
     schoolId = getSchoolId()
   }
+
+  const batch = writeBatch(db)
   
   // Reference the enrollments collection for the day
   const enrRef = collection(
@@ -41,9 +43,13 @@ const unenrollFromHour = async (db, date, user, hour, schoolId=null) => {
     )
 
     // Subtract one from the session's enrollment count
-    await updateDoc(sessionRef, { number_enrolled: increment(-1) })
+    batch.update(sessionRef, { number_enrolled: increment(-1) })
+    // await updateDoc(sessionRef, { number_enrolled: increment(-1) })
     // Delete the enrollment doc
-    await deleteDoc(snap.ref)
+    batch.delete(snap.ref)
+    // await deleteDoc(snap.ref)
+    const res = await batch.commit()
+    return res
   })
 
 }

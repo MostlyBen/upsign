@@ -1,4 +1,4 @@
-import { doc, collection, addDoc, updateDoc, increment } from "@firebase/firestore"
+import { doc, collection, writeBatch, updateDoc, addDoc, increment } from "@firebase/firestore"
 import { unenrollFromHour } from "../"
 import { getSchoolId } from "../../utils";
 
@@ -13,6 +13,8 @@ const enrollStudent = async (db, date, session, user) => {
     await unenrollFromHour(db, date, user, session.session)
   }
 
+  const batch = writeBatch(db)
+
   // Add one to the number enrolled
   const sessionRef = doc(
                          db,
@@ -24,17 +26,18 @@ const enrollStudent = async (db, date, session, user) => {
                          session.id
   )
 
-  updateDoc(sessionRef, { number_enrolled: increment(1) })
+  batch.update(sessionRef, { number_enrolled: increment(1) })
+  // updateDoc(sessionRef, { number_enrolled: increment(1) })
 
 
   // Update the enrollment
-  const enrRef = collection(
+  const enrRef = doc(collection(
     db,
     "schools",
     schoolId,
     "sessions",
     String(date.getFullYear()),
-    `${String(date.toDateString())}-enrollments`)
+    `${String(date.toDateString())}-enrollments`))
   // Construct the payload
   const payload = {
     attendance: '',
@@ -49,7 +52,10 @@ const enrollStudent = async (db, date, session, user) => {
     payload.nickname = user.nickname
   }
   // Add the enrollment
-  const res = await addDoc(enrRef, payload)
+  batch.set(enrRef, payload)
+  // const res = await addDoc(enrRef, payload)
+
+  const res = await batch.commit()
   return res
 
 }
