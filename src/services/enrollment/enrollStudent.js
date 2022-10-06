@@ -1,4 +1,4 @@
-import { doc, collection, writeBatch, updateDoc, addDoc, increment } from "@firebase/firestore"
+import { doc, collection, writeBatch, increment } from "@firebase/firestore"
 import { unenrollFromHour } from "../"
 import { getSchoolId } from "../../utils";
 
