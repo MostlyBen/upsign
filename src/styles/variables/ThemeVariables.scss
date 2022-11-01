@@ -31,6 +31,8 @@ $themes: (
     shadowVariant: #bdbdbd,
     surfaceVariant: #dae5e1,
     onSurfaceVariant: #3f4947,
+
+    highlight: rgba(242, 242, 242, 0.5),
   ),
   
   dark: (
@@ -64,6 +66,8 @@ $themes: (
     shadowVariant: #101010,
     surfaceVariant: #3f4947,
     onSurfaceVariant: #bec9c6,
+
+    highlight: rgba(65, 77, 75, 0.5),
   ),
 );
 

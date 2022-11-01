@@ -1,5 +1,16 @@
 @import '../variables/ThemeVariables.scss';
 
+table.highlight > tbody > tr {
+  -webkit-transition: background-color .25s ease;
+  transition: background-color .25s ease;
+}
+
+table.highlight > tbody > tr:hover {
+	@include themify($themes) {
+		background-color: themed('highlight');
+	}
+}
+
 .student-name {
 	user-select: none;
 
