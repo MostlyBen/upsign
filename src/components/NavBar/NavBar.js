@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
+// import { useNavigate } from "react-router";
 
 import { SignOut } from "../"
 import { ThemeContext } from '../../contexts';
@@ -29,6 +29,7 @@ const TeacherLinks = (props) => {
 
       <Link
         to="/overview"
+        // onClick={() => navigate('/overview')}
         className="navbar-link"
       >
         All Sessions
@@ -38,10 +39,12 @@ const TeacherLinks = (props) => {
 }
 
 const StudentLinks = ({ schoolName }) => {
+  // const navigate = useNavigate()
+
   return (
     <div>
-      <Link
-        to="/"
+      <div
+        // onClick = {() => navigate('/')}
         className="navbar-link"
         style={{whiteSpace: "nowrap"}}
       >
@@ -57,7 +60,7 @@ const StudentLinks = ({ schoolName }) => {
           }}
         />
         <span className="hide-on-small" style={{whiteSpace: "nowrap"}}>{schoolName}</span>
-      </Link>
+      </div>
     </div>
   )
 }
@@ -85,4 +88,4 @@ const NavBar = ({ userType, match, schoolName }) => {
   )
 }
 
-export default withRouter(NavBar)
+export default NavBar

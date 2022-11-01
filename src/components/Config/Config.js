@@ -1,4 +1,4 @@
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react"
 import {
   General,
@@ -9,15 +9,18 @@ import {
   ScheduleConfig,
 } from './ConfigMenus'
 
-const Config = ({ db, match }) => {
-  const [menu, setMenu] = useState(match.params.menu ?? 'general') // Signups switch not working, for some reason
+const Config = ({ db }) => {
+  const params = useParams()
+  const initialMenu = params.menu
+
+  const [menu, setMenu] = useState(initialMenu ?? 'general') // Signups switch not working, for some reason
 
   useEffect(() => {
-    setMenu(match.params.menu)
-  }, [match.params.menu])
+    setMenu(initialMenu)
+  }, [initialMenu])
 
-  if (!menu) {
-    return <Redirect to="/config/general" />
+  if (!initialMenu) {
+    return <Navigate to="/config/general" />
   }
 
   const menuObject = {

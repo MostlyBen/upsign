@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Redirect } from "react-router-dom"
+import { Navigate, useLoaderData, useParams } from "react-router-dom"
 import { query, collection, onSnapshot } from "@firebase/firestore"
 
 import { DndProvider } from 'react-dnd'
@@ -12,8 +12,6 @@ import UnsignedStudents from "./UnsignedStudents"
 import { 
   getHourEnrollments,
   getHourSessions,
-  getGroupOptions,
-  getDefaultDay,
 } from "../../services"
 
 import {
@@ -28,14 +26,17 @@ import {
 } from "../"
 
 
-const AllSessionOverview = ({ db, match }) => {
-  const hour = match.params.session
+const AllSessionOverview = ({ db }) => {
+  const params = useParams()
+  const hour = params.session
+
+  const { defaultDay, groupOptions } = useLoaderData()
+
   const [ sessions, setSessions ]                 = useState([])
   const [ enrollments, setEnrollments ]           = useState([])
   const [ sessionsWithEnr, setSessionsWithEnr ]   = useState([])
-  const [ groupOptions, setGroupOptions ]         = useState([])
   const [ groupFilter, setGroupFilter ]           = useState('All Students')
-  const [ selectedDate, setSelectedDate ]         = useState(new Date())
+  const [ selectedDate, setSelectedDate ]         = useState(defaultDay)
   const [ totalCapacity, setTotalCapacity ]       = useState(0)
   const [ loading, setLoading ]                   = useState(true)
 
@@ -58,27 +59,9 @@ const AllSessionOverview = ({ db, match }) => {
     setEnrollments( [...e] )
   }
 
-  const updateGroupOptions = async () => {
-    const options = await getGroupOptions(db)
-    setGroupOptions(options)
-  }
-
   const handleSelectDate = (date) => {
     setSelectedDate(date)
   }
-
-  // Select default day
-  const updateDefaultDay = async (db) => {
-    const defaultDay = await getDefaultDay(db)
-    setSelectedDate(defaultDay)
-  }
-  useEffect(() => {
-    updateDefaultDay(db)
-    // Get list of student groups for filter
-    updateGroupOptions()
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   // SESSIONS: Load & subscribe to updates
   useEffect(() => {
@@ -102,7 +85,7 @@ const AllSessionOverview = ({ db, match }) => {
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, selectedDate, hour, groupFilter])
+  }, [db, selectedDate, hour])
 
   // ENROLLMENTS: Load & subscribe to updates
   useEffect(() => {
@@ -124,22 +107,21 @@ const AllSessionOverview = ({ db, match }) => {
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, selectedDate, hour, groupFilter])
+  }, [db, selectedDate, hour])
 
   // Combine sessions & enrollments whenever one of them updates
   useEffect(() => {
     const newArray = mergeSessionEnrollment(sessions, enrollments)
-    // Doesn't re-render the cards if you just setSessionsWithEnr(newArray)
-    // So I changed loadSessions & loadEnrollments, too
     setSessionsWithEnr( [...newArray] )
   }, [sessions, enrollments])
 
-  // Reset state when hour is changed
+  // Reset state when hour or day is changed
   useEffect(() => {
     setSessions([])
     setEnrollments([])
-  }, [hour])
+  }, [hour, selectedDate])
 
+  // Calculate total capacity
   useEffect(() => {
     let cap = 0
     for (let i = 0; i < sessions.length; i++) {
@@ -149,7 +131,7 @@ const AllSessionOverview = ({ db, match }) => {
   }, [sessions])
 
   if (!hour) {
-    return <Redirect to="/overview/1" />
+    return <Navigate to="/overview/1" />
   }
 
   return (
@@ -177,18 +159,21 @@ const AllSessionOverview = ({ db, match }) => {
       <div className="row">
         {/* Group Dropdown Trigger */}
         <div className='col s12 m6'>
-          <div
-            className='dropdown-trigger btn group-dropdown'
-            data-target={`filter-dropdown`}
+          <select
+            className='btn group-dropdown'
+            onChange={(e) => setGroupFilter(e.target.value)}
           >
-            {groupFilter}
-            <span
-              className="material-icons"
-              style={{position: "relative", top: "0.45rem", margin: "0 0 -0.5rem 0.25rem"}}
-            >
-              expand_more
-            </span>
-          </div>
+            {/* Options */}
+            <option value="All Students">All Students</option>
+            {groupOptions.map(option => {
+              return (
+                <option
+                  value={option}
+                  key={`group-options-${option}`}
+                >{option}</option>
+              )
+            })}
+          </select>
         </div>
 
         {/* Date Picker */}
@@ -197,29 +182,6 @@ const AllSessionOverview = ({ db, match }) => {
         </div>
         
       </div>
-
-      {/* Group Dropdown Structure */}
-      <ul id={`filter-dropdown`} className='dropdown-content'>
-      <li><a
-          href="#!"
-          onClick={() => setGroupFilter('All Students')}
-        >
-          All Students
-        </a></li>
-        
-        <li className="divider" key="divider-1" tabIndex="-1" />
-
-        {groupOptions.map(option => {
-              return (
-                <li key={`dropdown-item-${option}`}><a
-                  href="#!"
-                  onClick={() => setGroupFilter(option)}
-                  key={`dropdown-link-${option}`}
-                >
-                  {option}
-                </a></li>)
-            })}
-      </ul>
       
       {loading
        ? <LoadingBar />
@@ -246,6 +208,7 @@ const AllSessionOverview = ({ db, match }) => {
                   session={s}
                   hour={hour}
                   filter={groupFilter}
+                  groupOptions={groupOptions}
                 />
             })}
           </div>

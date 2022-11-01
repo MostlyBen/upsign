@@ -1,23 +1,70 @@
-import { Route, Switch } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+} from "react-router-dom";
 
-import { TeacherSignUp, AllSessionOverview, Config } from '../components';
+import { TeacherSignUp, AllSessionOverview, Config, NavBar } from '../components';
 
+import { getDefaultDay, getGroupOptions } from "../services";
 
-const TeacherRouter = ({ db, user }) => {
-
+const Layout = ({user, schoolName}) => {
   return (
-      <Switch>
-        <Route path="/overview/:session?"
-          render={(matchProps) => ( <AllSessionOverview db={db} {...matchProps} /> )}
-        />
-        <Route path="/config/:menu?"
-          render={(matchProps => ( <Config db={db} {...matchProps} /> ))}
-        />
-        <Route path="/"
-          render={() => ( <TeacherSignUp db={db} user={user} /> )}
-        />
-      </Switch>
-  )
+    <div>
+      <NavBar user={user} userType="teacher" schoolName={schoolName} />
+      {/* body-container is styled to be below the navbar & have light/dark theme */}
+      <div className="body-container">
+        {/* container is here because materialize has its width settings */}
+        <div className="container">
+          <Outlet />
+        </div>
+      </div>
+    </div>)
+}
+
+const DefaultLoader = async (db) => {
+  const defaultDay = await getDefaultDay(db)
+  const groupOptions = await getGroupOptions(db)
+  return {
+    defaultDay: defaultDay,
+    groupOptions: groupOptions,
+  }
+}
+
+const TeacherRouter = ({ db, user, schoolName }) => {
+  const router = createBrowserRouter([
+    {
+      element: <Layout user={user} schoolName={schoolName} />,
+      children: [
+        {
+          path: "/overview/:session",
+          element: <AllSessionOverview db={db} />,
+          loader: async () => DefaultLoader(db),
+        },
+        {
+          path: "/overview",
+          element: <AllSessionOverview db={db} />,
+          loader: async () => DefaultLoader(db),
+        },
+        {
+          path: "/config/:menu",
+          element: <Config db={db} />,
+        },
+        {
+          path: "/config",
+          element: <Config db={db} />,
+        },
+        {
+          path: "/",
+          element: <TeacherSignUp db={db} user={user} />,
+          loader: async () => DefaultLoader(db),
+        }
+      ]
+    }
+  ])
+
+  return <RouterProvider router={router} />
+
 }
 
 export default TeacherRouter

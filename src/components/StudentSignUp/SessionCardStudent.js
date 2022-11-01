@@ -65,6 +65,10 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
       return false
     }
 
+    if (Number(session.capacity) === 0 && !isEnrolled) {
+      return true
+    }
+
     let groupBlocking = true
 
     // If the session is restricted to an array of groups

@@ -1,7 +1,6 @@
 import './styles/App.scss';
 
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 import { getFirestore } from '@firebase/firestore';
 import { initializeApp } from '@firebase/app';
@@ -15,7 +14,6 @@ import {
 
 import {
   UserTypeSelect,
-  NavBar,
   LoadingBar,
   CircularLoading,
 } from './components';
@@ -164,19 +162,10 @@ function App() {
       <div className="App">
         <ThemeContext.Provider value={{ theme, setTheme }}>
         <div className={`theme-${theme}`}>
-
-        <Router>
-        <NavBar user={user} userType={userType} schoolName={schoolName} />
-          <div className="body-container">
-            <div className="container">
-              <div className="main-content">
-                {userType === 'teacher' ? <TeacherRouter db={db} user={u} /> : null}
-                {userType === 'student' ? <StudentRouter db={db} user={u} /> : null}
-              </div>
-            </div>
+          <div>
+            {userType === 'teacher' ? <TeacherRouter db={db} user={u} schoolName={schoolName} /> : null}
+            {userType === 'student' ? <StudentRouter db={db} user={u} schoolName={schoolName} /> : null}
           </div>
-        </Router>
-
         </div>
         </ThemeContext.Provider>
       </div>

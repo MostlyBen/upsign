@@ -106,7 +106,14 @@ const TeacherSignUp = ({ db, user }) => {
   }, [])
 
   useEffect(() => {
-    const q = query(collection(db, "schools", schoolId, "sessions", String(selectedDate.getFullYear()), String(selectedDate.toDateString())), where("teacher", "==", user.displayName));
+    const q = query(collection(
+                db,
+                "schools",
+                schoolId,
+                "sessions",
+                String(selectedDate.getFullYear()),
+                String(selectedDate.toDateString())),
+                where("teacher", "==", user.displayName));
     const unsubscribe = onSnapshot(q, async () => {
       await getTeacherSessions(db, selectedDate, user)
         .then( s => {

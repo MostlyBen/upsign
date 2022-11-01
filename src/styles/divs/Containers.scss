@@ -87,7 +87,7 @@
 	top: -1px;
 	z-index: 997;
 	@include themify($themes) {
-		border-top: 2px solid themed('background');
+		border-top: 1px solid themed('background');
 	}
 	transition: 0.25s;
 }

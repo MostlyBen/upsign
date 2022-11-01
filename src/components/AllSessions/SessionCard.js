@@ -7,7 +7,7 @@ import M from 'materialize-css';
 import StudentName from "./StudentName"
 import { SessionEditor } from "../"
 
-const SessionCard = ({ db, date, session, filter }) => {
+const SessionCard = ({ db, date, session, filter, groupOptions }) => {
   const [filteredEnrollment, setFilteredEnrollment] = useState(session.enrollment)
   const [allStudentRef, setAllStudentRef] = useState()
   const [showOpen, setShowOpen] = useState(false)
@@ -73,7 +73,7 @@ const SessionCard = ({ db, date, session, filter }) => {
       <div id={`modal-${session.id}`} className="modal teacher-sessions session-card teacher-card">
         <div className="modal-content row">
           { Object.keys(session) !== 0
-            ? <SessionEditor key={session.id} session={session} db={db} date={date} />
+            ? <SessionEditor key={session.id} session={session} db={db} date={date} groupOptions={groupOptions} />
             : <div /> }
         </div>
       </div>

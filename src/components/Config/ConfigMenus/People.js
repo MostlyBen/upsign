@@ -234,8 +234,8 @@ const People = ({ db }) => {
 
           {/* Nickname */}
           <div className="input-field col s12 m6">
-            <div>Nickname</div>
-            <input placeholder="No Nickname" id="user-nickname" type="text" className="" autoComplete="off" onChange={handleChangeNickname} />
+            <div>Preferred Name</div>
+            <input placeholder="Not Set" id="user-nickname" type="text" className="" autoComplete="off" onChange={handleChangeNickname} />
           </div>
 
           {/* Type */}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useLoaderData } from "react-router-dom"
 import {
   doc,
   updateDoc,
@@ -11,18 +12,16 @@ import {
 
 import { SessionAttendanceList } from '../'
 
-import { getGroupOptions } from "../../services"
 import { getSchoolId } from "../../utils"
 
-import M from 'materialize-css'
-
-const SessionEditor = ({ db, session, date }) => {
+const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
+  const loaderData = useLoaderData()
+  let groupList = groupOptions.length ? groupOptions : loaderData.groupOptions
 
   const [title, setTitle] = useState(session.title ?? "")
   const [savedTitle, setSavedTitle] = useState(session.title ?? "")
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
-  const [groupOptions, setGroupOptions] = useState([])
 
   const schoolId = getSchoolId()
 
@@ -33,19 +32,17 @@ const SessionEditor = ({ db, session, date }) => {
     if (!isActive) {
       setTitle(savedTitle)
     }
-  }, [savedTitle])
+  }, [savedTitle, session.id])
 
-  const updateGroupOptions = async () => {
-    const options = await getGroupOptions(db)
-    setGroupOptions(options)
-  }
-
-  /* INITIAL LOAD */
   useEffect(() => {
-    updateGroupOptions()
-    // M.AutoInit()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    if (session.restricted_to) {
+      document.getElementById(`group-select-${session.id}`).value = session.restricted_to
+    } else {
+      // If not restricted to anything yet, show All Students
+      document.getElementById(`group-select-${session.id}`).value = ""
+    }
+  }, [session.id, session.restricted_to])
+
 
   /* SUBSCRIBE TO UPDATES FROM FIRESTORE */
   useEffect(() => {
@@ -68,16 +65,11 @@ const SessionEditor = ({ db, session, date }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, session])
 
-  /* INITIALIZE THE GROUP-SELECT DROPDOWN */
-  useEffect(() => {
-    var elems = document.querySelectorAll('.dropdown-trigger');
-    M.Dropdown.init(elems, {});
-  }, [groupOptions])
 
   /* BLUR HANDLERS */
   const handleBlurTitle = () => {
     if (savedTitle !== title) {
-      handleChangeTitle({target:{value:savedTitle}})
+      handleChangeTitle({target:{value:savedTitle}});
     }
   }
 
@@ -92,7 +84,7 @@ const SessionEditor = ({ db, session, date }) => {
   }
 
   const handleChangeRoom = (e) => {
-    setRoom(e.target.value)
+    setRoom(e.target.value);
 
     var room = String(e.target.value);
     updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {room: room});
@@ -100,14 +92,15 @@ const SessionEditor = ({ db, session, date }) => {
   }
 
   const handleChangeCapacity = (e) => {
-    setCapacity(e.target.value)
+    setCapacity(e.target.value);
 
     var capacity = String(e.target.value);
     updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {capacity: capacity});
     session.capacity = capacity;
   }
 
-  const handleRestrict = async (group) => {
+  const handleRestrict = async (e) => {
+    const group = e.target.value;
     updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {restricted_to: group});
     session.restricted_to = group;
   }
@@ -169,47 +162,21 @@ const SessionEditor = ({ db, session, date }) => {
           </div>
 
           {/* Restrict */}
-          <div>
-            {/* <!-- Dropdown Trigger --> */}
-            <div
-              className='dropdown-trigger btn group-dropdown'
-              data-target={`option-dropdown-${session.id}`}
-            >
-              {session.restricted_to
-                ? session.restricted_to.length > 0 ? session.restricted_to : "Select Group"
-                : "Select Group"}
-              <span
-                className="material-icons"
-                style={{position: "relative", top: "0.45rem", margin: "0 0 -0.5rem 0.25rem"}}
-              >
-                expand_more
-              </span>
-            </div>
-
-            {/* <!-- Dropdown Structure --> */}
-            <ul id={`option-dropdown-${session.id}`} className='dropdown-content'>
-            <li><a
-                href="#!"
-                onClick={() => handleRestrict("")}
-              >
-                Anyone
-              </a></li>
-
-              <li className="divider" key="divider-1" tabIndex="-1" />
-
-              {groupOptions.map(option => {
-                return (
-                  <li key={`dropdown-item-${option}`}><a
-                    href="#!"
-                    onClick={() => handleRestrict(option)}
-                    key={`dropdown-link-${option}`}
-                  >
-                    {option}
-                  </a></li>)
-              })}
-            </ul>
-
-          </div>
+          <select
+            id={`group-select-${session.id}`}
+            className='btn group-dropdown'
+            onChange={handleRestrict}
+          >
+            <option value="">All Students</option>
+            {groupList.map((option) => {
+              return (
+                <option
+                  value={option}
+                  key={`group-options-${option}`}
+                >{option}</option>
+              )
+            })}
+          </select>
         </div>
 
       {/* Student Enrollment */}
@@ -219,7 +186,6 @@ const SessionEditor = ({ db, session, date }) => {
             Student List
           </div>
           <SessionAttendanceList db={db} schoolId={schoolId} date={date} session={session} />
-
         </div>
       </div>
     </div>
