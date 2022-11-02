@@ -9,7 +9,7 @@ import { StudentSignUp, NavBar } from '../components';
 const Layout = ({user, schoolName}) => {
   return (
     <div>
-      <NavBar user={user} userType="teacher" schoolName={schoolName} />
+      <NavBar user={user} userType="student" schoolName={schoolName} />
       {/* body-container is styled to be below the navbar & have light/dark theme */}
       <div className="body-container">
         {/* container is here because materialize has its width settings */}
