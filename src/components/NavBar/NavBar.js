@@ -48,8 +48,6 @@ const TeacherLinks = (props) => {
     setShowLogoMenu(!showLogoMenu)
   }
 
-
-
   return (
     <div>
       <div id="logo-menu-clickbox" style={{display: "inline-block"}}>
@@ -93,6 +91,19 @@ const TeacherLinks = (props) => {
 }
 
 const StudentLinks = ({ schoolName }) => {
+  const [showLogoMenu, setShowLogoMenu] = useState(false)
+
+  const clickOffListener = (e) => {
+    if ( !document.getElementById('logo-menu-clickbox').contains(e.target) && showLogoMenu ) {
+      setShowLogoMenu(false)
+    }
+  }
+
+  window.addEventListener('click', clickOffListener)
+
+  const handleClickShow = () => {
+    setShowLogoMenu(!showLogoMenu)
+  }
 
   return (
     <div>
@@ -100,17 +111,28 @@ const StudentLinks = ({ schoolName }) => {
         className="navbar-link"
         style={{whiteSpace: "nowrap"}}
       >
-        <img
-          src={logo}
-          height="40"
-          alt="logo"
-          style={{
-            paddingRight: "1.5rem",
-            position: "relative",
-            verticalAlign: "middle",
-            top: "-4px",
-          }}
-        />
+        <div id="logo-menu-clickbox" style={{display: "inline-block"}}>
+          <div className="logo-menu-btn" onClick={handleClickShow}>
+            <img
+              src={logo}
+              height="40"
+              alt="logo"
+              style={{
+                position: "relative",
+                verticalAlign: "middle",
+                top: "-4px",
+              }}
+            />
+            <span
+              className="material-icons"
+              style={{position: "relative", top: "0.45rem", margin: "0 1rem 0 0"}}
+            >
+              expand_more
+            </span>
+          </div>
+          
+          <NavBarMenu show={showLogoMenu} />
+        </div>
         <span className="hide-on-small" style={{whiteSpace: "nowrap"}}>{schoolName}</span>
       </div>
     </div>
