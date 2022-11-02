@@ -17,7 +17,6 @@ const General = ({ db }) => {
   const [defaultDayState, setDefaultDayState] = useState('')
   const [schoolNameState, setSchoolNameState] = useState('')
   const [nameMatch, setNameMatch] = useState(true)
-  // const [teacherEdit, setTeacherEdit] = useState(true)
 
   const updateSettings = async () => {
     const studentSignupSetting = await getSignupAllowed(db)
@@ -42,16 +41,13 @@ const General = ({ db }) => {
   }, [defaultDayState])
 
   const updateDropdown = () => {
-    var elem = document.getElementById("default-day-select")
-    if (elem !== null) {
-        for (var option of elem.options) {
-          if (option.value === defaultDayState) {
-            option.selected = true
-            return
-          }
-        }
-    } else {
-      setTimeout(updateDropdown, 15)
+    if (defaultDayState) {
+      var elem = document.getElementById("default-day-select")
+      if (elem !== null) {
+        elem.value = defaultDayState
+      } else {
+        setTimeout(updateDropdown, 15)
+      }
     }
   }
 
@@ -158,9 +154,9 @@ const General = ({ db }) => {
             <option value="today">Today</option>
             <option value="tomorrow">Tomorrow</option>
             {/* Makeshift Divider */}
-            <option value="" style={{fontSize: "3pt", backgroundColor: "#fff"}} disabled>&nbsp;</option>
+            {/* <option value="" style={{fontSize: "3pt", backgroundColor: "#fff"}} disabled>&nbsp;</option> */}
             <option value="" style={{fontSize: "1pt", backgroundColor: "dimgrey"}} disabled>&nbsp;</option>
-            <option value="" style={{fontSize: "3pt", backgroundColor: "#fff"}} disabled>&nbsp;</option>
+            {/* <option value="" style={{fontSize: "3pt", backgroundColor: "#fff"}} disabled>&nbsp;</option> */}
 
             <option value="sunday">Sunday</option>
             <option value="monday">Monday</option>

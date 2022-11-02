@@ -3,8 +3,9 @@ $themes: (
   light: (
     primary: #009688,
     onPrimary: #ffffff,
-    primaryContainer: #4db6ac ,
+    primaryContainer: #4db6ac,
     onPrimaryContainer: #00201c,
+    primaryLightOnly: #009688,
 
     secondary: #7f5600,
     onSecondary: #ffffff,
@@ -33,6 +34,7 @@ $themes: (
     onSurfaceVariant: #3f4947,
 
     highlight: rgba(242, 242, 242, 0.5),
+    highlightBackground: rgba(210, 210, 210, 0.5),
   ),
   
   dark: (
@@ -40,6 +42,7 @@ $themes: (
     onPrimary: #003731,
     primaryContainer: #00796b,
     onPrimaryContainer: #74f8e5,
+    primaryLightOnly : #e0e3e1,
 
     secondary: #ffba40,
     onSecondary: #432c00,
@@ -68,6 +71,7 @@ $themes: (
     onSurfaceVariant: #bec9c6,
 
     highlight: rgba(65, 77, 75, 0.5),
+    highlightBackground: rgba(65, 77, 75, 0.5),
   ),
 );
 

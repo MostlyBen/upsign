@@ -3,7 +3,7 @@ import { getAuth } from "@firebase/auth";
 const SignOut = (props) => {
   return (
     <button
-      className="btn btn-flat waves-effect white grey-text"
+      className="btn btn-flat waves-effect surface grey-text"
       onClick={() => {getAuth().signOut(); window.location.reload()}}
       style={props.style}
     >

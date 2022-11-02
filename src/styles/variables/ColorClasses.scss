@@ -1,0 +1,157 @@
+@import './ThemeVariables.scss';
+
+.primary {
+	@include themify($themes) {
+		background: themed('primary');
+	}
+}
+
+.onPrimary {
+	@include themify($themes) {
+		background: themed('onPrimary');
+	}
+}
+
+.primaryContainer {
+	@include themify($themes) {
+		background: themed('primaryContainer');
+	}
+}
+
+.onPrimaryContainer {
+	@include themify($themes) {
+		background: themed('onPrimaryContainer');
+	}
+}
+
+.primaryLightOnly {
+	@include themify($themes) {
+		background: themed('primaryLightOnly');
+	}
+}
+
+.secondary {
+	@include themify($themes) {
+		background: themed('secondary');
+	}
+}
+
+.onSecondary {
+	@include themify($themes) {
+		background: themed('onSecondary');
+	}
+}
+
+.secondaryContainer {
+	@include themify($themes) {
+		background: themed('secondaryContainer');
+	}
+}
+
+.onSecondaryContainer {
+	@include themify($themes) {
+		background: themed('onSecondaryContainer');
+	}
+}
+
+.tertiary {
+	@include themify($themes) {
+		background: themed('tertiary');
+	}
+}
+
+.onTertiary {
+	@include themify($themes) {
+		background: themed('onTertiary');
+	}
+}
+
+.tertiaryContainer {
+	@include themify($themes) {
+		background: themed('tertiaryContainer');
+	}
+}
+
+.onTertiaryContainer {
+	@include themify($themes) {
+		background: themed('onTertiaryContainer');
+	}
+}
+
+.error {
+	@include themify($themes) {
+		background: themed('error');
+	}
+}
+
+.onError {
+	@include themify($themes) {
+		background: themed('onError');
+	}
+}
+
+.errorContainer {
+	@include themify($themes) {
+		background: themed('errorContainer');
+	}
+}
+
+.onErrorContainer {
+	@include themify($themes) {
+		background: themed('onErrorContainer');
+	}
+}
+
+.background {
+	@include themify($themes) {
+		background: themed('background');
+	}
+}
+
+.onBackground {
+	@include themify($themes) {
+		background: themed('onBackground');
+	}
+}
+
+.surface {
+	@include themify($themes) {
+		background: themed('surface');
+	}
+}
+
+.onSurface {
+	@include themify($themes) {
+		background: themed('onSurface');
+	}
+}
+
+.outline {
+	@include themify($themes) {
+		background: themed('outline');
+	}
+}
+
+.shadow {
+	@include themify($themes) {
+		background: themed('shadow');
+	}
+}
+
+.shadowVariant {
+	@include themify($themes) {
+		background: themed('shadowVariant');
+	}
+}
+
+.surfaceVariant {
+	@include themify($themes) {
+		background: themed('surfaceVariant');
+	}
+}
+
+.onSurfaceVariant {
+	@include themify($themes) {
+		background: themed('onSurfaceVariant');
+	}
+}

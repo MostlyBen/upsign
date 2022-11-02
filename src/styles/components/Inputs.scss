@@ -4,14 +4,48 @@
 	color: #191c1b;
 }
 
-.datepicker-controls .selects-container .select-wrapper input.select-dropdown.dropdown-trigger {
-		color: #191c1b !important;
+.datepicker-date-display {
+	@include themify($themes) {
+		background: themed('primary');
+		color: themed('onPrimary');
+	}
+}
+
+.datepicker-calendar-container {
+	@include themify($themes) {
+		background: themed('surface');
+	}
+}
+
+.datepicker-day-button {
+	@include themify($themes) {
+		color: themed('onSurface');
+	}
+}
+
+.is-today .datepicker-day-button {
+	@include themify($themes) {
+		color: themed('primary') !important;
+	}
+}
+
+.is-selected .datepicker-day-button {
+	@include themify($themes) {
+		color: themed('onPrimary') !important;
+	}
+}
+
+
+.is-disabled .datepicker-day-button {
+	@include themify($themes) {
+		color: themed('shadow') !important;
+	}
 }
 
 .datepicker {
 	@include themify($themes) {
 		background: themed('surface') !important;
-		color: themed('primary');
+		color: themed('primaryLightOnly');
 	}
 
 	text-align: center;
@@ -113,7 +147,7 @@
 .group-dropdown {
 	@include themify($themes) {
 		background: themed('surface');
-		color: themed('primary');
+		color: themed('primaryLightOnly');
 	}
 
 	text-transform: none;
@@ -143,6 +177,22 @@
 .pagination {
 	display: flex;
 	justify-content: space-between;
+}
+
+.pagination li.active a {
+	color: white !important;
+}
+
+.pagination li.active {
+	@include themify($themes) {
+		background-color: themed('primaryContainer') !important;
+	}
+}
+
+.pagination li a {
+	@include themify($themes) {
+		color: themed('outline');
+	}
 }
 
 .open-session-div {

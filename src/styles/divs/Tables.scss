@@ -11,6 +11,34 @@ table.highlight > tbody > tr:hover {
 	}
 }
 
+.collection {
+	border: none;
+}
+
+.collection .collection-item {
+	border-radius: 4px;
+	margin: 3px 0;
+	border: none;
+	@include themify($themes) {
+		background-color: themed('background');
+		color: themed('primaryLightOnly');
+		border-color: themed('outline');
+	}
+}
+
+.collection .active {
+	@include themify($themes) {
+		background-color: themed('primary') !important;
+		color: themed('onPrimary') !important;
+	}
+}
+
+.collection a.collection-item:not(.active):hover {
+	@include themify($themes) {
+		background-color: themed('highlightBackground');
+	}
+}
+
 .student-name {
 	user-select: none;
 

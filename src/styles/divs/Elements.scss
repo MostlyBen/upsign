@@ -21,6 +21,18 @@ blockquote {
 	}
 }
 
+select {
+  @include themify($themes) {
+    border-color: themed('shadow');
+		background-color: themed('surface');
+    color: themed('onSurface');
+	}
+}
+
+hr {
+  background-color: #e0e3e1;
+}
+
 input {
   @include themify($themes) {
     color: themed('onBackground')

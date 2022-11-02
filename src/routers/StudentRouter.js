@@ -27,7 +27,7 @@ const StudentRouter = ({ db, user, schoolName }) => {
       element: <Layout user={user} schoolName={schoolName} />,
       children: [
         {
-          path: "/",
+          path: "/*",
           element: <StudentSignUp db={db} user={user} />,
         },
       ]
