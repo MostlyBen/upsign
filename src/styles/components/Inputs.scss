@@ -1,5 +1,13 @@
 @import '../variables/ThemeVariables.scss';
 
+.logo-menu-btn {
+	display: inline-block;
+	margin-left: 1rem;
+	cursor: pointer;
+	user-select: none;
+	border-radius: 25%;
+}
+
 .datepicker-row:not(.is-disabled) {
 	color: #191c1b;
 }
@@ -139,9 +147,12 @@
 }
 
 .hour-selector {
-	border-top: 1px solid rgba(0, 0, 0, .25);
-	border-bottom: 1px solid rgba(0, 0, 0, .25);
+	border-top: 1px solid;
+	border-bottom: 1px solid;
 	margin-bottom: 1rem;
+	@include themify($themes) {
+		border-color: themed('outline');
+	}
 }
 
 .group-dropdown {

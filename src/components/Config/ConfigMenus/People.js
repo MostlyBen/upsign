@@ -209,7 +209,7 @@ const People = ({ db }) => {
             </div>
           </div>
 
-          <a className="btn waves-effect waves-light modal-trigger" data-target="names-modal" href="#!">
+          <a className="btn primary waves-effect waves-light modal-trigger" data-target="names-modal" href="#!">
             List All Users
           </a>
 
@@ -251,7 +251,7 @@ const People = ({ db }) => {
         </div>
         {/* Delete User */}
         <div className="col s12 m6" style={{marginLeft: "0.5rem", marginTop: "0.5rem"}}>
-          <div className="btn waves-effect white grey-text text-darken-2" style={{height: "3rem"}} onClick={handleDeleteUser}>
+          <div className="btn waves-effect surface text-onSurfaceVariant" style={{height: "3rem"}} onClick={handleDeleteUser}>
           <i className="material-icons red-text text-lighten-1" style={{position: "relative", top: "0.325rem", left: "-0.25rem"}}>delete</i>
             Delete User
           </div>

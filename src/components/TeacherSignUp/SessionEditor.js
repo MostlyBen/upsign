@@ -106,7 +106,7 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
   }
 
   return (
-    <div>
+    <div className="session-editor">
       {/* Session Info */}
       <div className="col s12 m6">
         <div className="teacher-card-h1">

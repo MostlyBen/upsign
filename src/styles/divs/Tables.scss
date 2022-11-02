@@ -11,6 +11,25 @@ table.highlight > tbody > tr:hover {
 	}
 }
 
+.dropdown-content {
+	@include themify($themes) {
+		background-color: themed('background');
+		color: themed('primaryLightOnly');
+	}
+}
+
+.dropdown-content li:hover, .dropdown-content li.active {
+	@include themify($themes) {
+		background-color: themed('highlight');
+	}
+}
+
+.autocomplete-content li .highlight {
+	@include themify($themes) {
+		color: themed('onBackground');
+	}
+}
+
 .collection {
 	border: none;
 }

@@ -2,156 +2,313 @@
 
 .primary {
 	@include themify($themes) {
-		background: themed('primary');
+		background-color: themed('primary');
 	}
 }
 
 .onPrimary {
 	@include themify($themes) {
-		background: themed('onPrimary');
+		background-color: themed('onPrimary');
 	}
 }
 
 .primaryContainer {
 	@include themify($themes) {
-		background: themed('primaryContainer');
+		background-color: themed('primaryContainer');
 	}
 }
 
 .onPrimaryContainer {
 	@include themify($themes) {
-		background: themed('onPrimaryContainer');
+		background-color: themed('onPrimaryContainer');
 	}
 }
 
 .primaryLightOnly {
 	@include themify($themes) {
-		background: themed('primaryLightOnly');
+		background-color: themed('primaryLightOnly');
 	}
 }
 
 .secondary {
 	@include themify($themes) {
-		background: themed('secondary');
+		background-color: themed('secondary');
 	}
 }
 
 .onSecondary {
 	@include themify($themes) {
-		background: themed('onSecondary');
+		background-color: themed('onSecondary');
 	}
 }
 
 .secondaryContainer {
 	@include themify($themes) {
-		background: themed('secondaryContainer');
+		background-color: themed('secondaryContainer');
 	}
 }
 
 .onSecondaryContainer {
 	@include themify($themes) {
-		background: themed('onSecondaryContainer');
+		background-color: themed('onSecondaryContainer');
 	}
 }
 
 .tertiary {
 	@include themify($themes) {
-		background: themed('tertiary');
+		background-color: themed('tertiary');
 	}
 }
 
 .onTertiary {
 	@include themify($themes) {
-		background: themed('onTertiary');
+		background-color: themed('onTertiary');
 	}
 }
 
 .tertiaryContainer {
 	@include themify($themes) {
-		background: themed('tertiaryContainer');
+		background-color: themed('tertiaryContainer');
 	}
 }
 
 .onTertiaryContainer {
 	@include themify($themes) {
-		background: themed('onTertiaryContainer');
+		background-color: themed('onTertiaryContainer');
 	}
 }
 
 .error {
 	@include themify($themes) {
-		background: themed('error');
+		background-color: themed('error');
 	}
 }
 
 .onError {
 	@include themify($themes) {
-		background: themed('onError');
+		background-color: themed('onError');
 	}
 }
 
 .errorContainer {
 	@include themify($themes) {
-		background: themed('errorContainer');
+		background-color: themed('errorContainer');
 	}
 }
 
 .onErrorContainer {
 	@include themify($themes) {
-		background: themed('onErrorContainer');
+		background-color: themed('onErrorContainer');
 	}
 }
 
-.background {
+.background-color {
 	@include themify($themes) {
-		background: themed('background');
+		background-color: themed('background-color');
 	}
 }
 
-.onBackground {
+.onbackground-color {
 	@include themify($themes) {
-		background: themed('onBackground');
+		background-color: themed('onbackground-color');
 	}
 }
 
 .surface {
 	@include themify($themes) {
-		background: themed('surface');
+		background-color: themed('surface');
 	}
 }
 
 .onSurface {
 	@include themify($themes) {
-		background: themed('onSurface');
+		background-color: themed('onSurface');
 	}
 }
 
 .outline {
 	@include themify($themes) {
-		background: themed('outline');
+		background-color: themed('outline');
 	}
 }
 
 .shadow {
 	@include themify($themes) {
-		background: themed('shadow');
+		background-color: themed('shadow');
 	}
 }
 
 .shadowVariant {
 	@include themify($themes) {
-		background: themed('shadowVariant');
+		background-color: themed('shadowVariant');
 	}
 }
 
 .surfaceVariant {
 	@include themify($themes) {
-		background: themed('surfaceVariant');
+		background-color: themed('surfaceVariant');
 	}
 }
 
 .onSurfaceVariant {
 	@include themify($themes) {
-		background: themed('onSurfaceVariant');
+		background-color: themed('onSurfaceVariant');
+	}
+}
+
+
+.text-primary {
+	@include themify($themes) {
+		color: themed('primary');
+	}
+}
+
+.text-onPrimary {
+	@include themify($themes) {
+		color: themed('onPrimary');
+	}
+}
+
+.text-primaryContainer {
+	@include themify($themes) {
+		color: themed('primaryContainer');
+	}
+}
+
+.text-onPrimaryContainer {
+	@include themify($themes) {
+		color: themed('onPrimaryContainer');
+	}
+}
+
+.text-primaryLightOnly {
+	@include themify($themes) {
+		color: themed('primaryLightOnly');
+	}
+}
+
+.text-secondary {
+	@include themify($themes) {
+		color: themed('secondary');
+	}
+}
+
+.text-onSecondary {
+	@include themify($themes) {
+		color: themed('onSecondary');
+	}
+}
+
+.text-secondaryContainer {
+	@include themify($themes) {
+		color: themed('secondaryContainer');
+	}
+}
+
+.text-onSecondaryContainer {
+	@include themify($themes) {
+		color: themed('onSecondaryContainer');
+	}
+}
+
+.text-tertiary {
+	@include themify($themes) {
+		color: themed('tertiary');
+	}
+}
+
+.text-onTertiary {
+	@include themify($themes) {
+		color: themed('onTertiary');
+	}
+}
+
+.text-tertiaryContainer {
+	@include themify($themes) {
+		color: themed('tertiaryContainer');
+	}
+}
+
+.text-onTertiaryContainer {
+	@include themify($themes) {
+		color: themed('onTertiaryContainer');
+	}
+}
+
+.text-error {
+	@include themify($themes) {
+		color: themed('error');
+	}
+}
+
+.text-onError {
+	@include themify($themes) {
+		color: themed('onError');
+	}
+}
+
+.text-errorContainer {
+	@include themify($themes) {
+		color: themed('errorContainer');
+	}
+}
+
+.text-onErrorContainer {
+	@include themify($themes) {
+		color: themed('onErrorContainer');
+	}
+}
+
+.text-color {
+	@include themify($themes) {
+		color: themed('color');
+	}
+}
+
+.text-oncolor {
+	@include themify($themes) {
+		color: themed('oncolor');
+	}
+}
+
+.text-surface {
+	@include themify($themes) {
+		color: themed('surface');
+	}
+}
+
+.text-onSurface {
+	@include themify($themes) {
+		color: themed('onSurface');
+	}
+}
+
+.text-outline {
+	@include themify($themes) {
+		color: themed('outline');
+	}
+}
+
+.text-shadow {
+	@include themify($themes) {
+		color: themed('shadow');
+	}
+}
+
+.text-shadowVariant {
+	@include themify($themes) {
+		color: themed('shadowVariant');
+	}
+}
+
+.text-surfaceVariant {
+	@include themify($themes) {
+		color: themed('surfaceVariant');
+	}
+}
+
+.text-onSurfaceVariant {
+	@include themify($themes) {
+		color: themed('onSurfaceVariant');
 	}
 }

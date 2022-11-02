@@ -100,7 +100,7 @@ const ScheduleConfig = ({ db }) => {
       <div>
         <a
           href="#!"
-          className="btn-floating btn-large waves-effect waves-light teal lighten-1"
+          className="btn-floating btn-large waves-effect waves-light primary"
           style={{transform: "scale(0.6)"}}
           onClick={() => handleChangeSessions("remove")}
         >
@@ -120,7 +120,7 @@ const ScheduleConfig = ({ db }) => {
         </span>
         <a
           href="#!"
-          className="btn-floating btn-large waves-effect waves-light teal lighten-1"
+          className="btn-floating btn-large waves-effect waves-light primary"
           style={{transform: "scale(0.6)"}}
           onClick={() => handleChangeSessions("add")}
         >
