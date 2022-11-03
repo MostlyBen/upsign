@@ -16,7 +16,7 @@
 
 # hosting
 .firebase
-.fireebaserc
+.firebaserc
 
 # misc
 .DS_Store
