@@ -42,6 +42,7 @@
 .floating-menu {
 	display: block;
 	position: fixed;
+	z-index: 997;
 	padding: 0.5rem;
 	top: 56px;
 	left: 1rem;
@@ -108,7 +109,7 @@
 	position: -webkit-sticky; /* Safari */
 	position: sticky;
 	top: -1px;
-	z-index: 997;
+	z-index: 996;
 	@include themify($themes) {
 		border-top: 1px solid themed('background');
 	}
