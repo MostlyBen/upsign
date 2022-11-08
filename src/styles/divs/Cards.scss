@@ -116,7 +116,8 @@
 .session-card.is-enrolled {
 	@include themify($themes) {
 		border: 4px solid themed('primaryContainer');
-		box-shadow: 3px 3px 6px themed('shadow'), inset 2px 2px 4px themed('shadowVariant');
+		-webkit-box-shadow: 3px 3px 6px themed('shadow'), inset 2px 2px 4px themed('shadowVariant');
+						box-shadow: 3px 3px 6px themed('shadow'), inset 2px 2px 4px themed('shadowVariant');
 	}
 	margin: 6px;
 }
