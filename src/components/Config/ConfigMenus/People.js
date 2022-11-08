@@ -145,11 +145,17 @@ const People = ({ db }) => {
     var nicknameElem = document.getElementById('user-nickname')
 
     if (selectedUser) {
-      nameInputElem.value = selectedUser.nickname ?? selectedUser.name
-      nameElem.value = selectedUser.name
-      emailElem.value = selectedUser.email
+      nameInputElem.value = selectedUser.nickname ?? selectedUser.name ?? ''
+      nameElem.value = selectedUser.name ?? ''
+      emailElem.value = selectedUser.email ?? ''
       nicknameElem.value = selectedUser.nickname ?? ''
-      updateDropdown(selectedUser.type)
+      updateDropdown(selectedUser.type ?? '')
+    } else {
+      nameInputElem.value = ''
+      nameElem.value = ''
+      emailElem.value = ''
+      nicknameElem.value = ''
+      updateDropdown('')
     }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -174,19 +180,11 @@ const People = ({ db }) => {
   const handleDeleteUser = () => {
     if (window.confirm(`Are you sure you want to remove ${selectedUser.nickname ?? selectedUser.name} from this school?`)) {
       deleteUser(db, selectedUser.uid)
-      setSelectedUser({})
-      
-      var nameInputElem = document.getElementById('user-name-box')
-      var nameElem = document.getElementById('user-name')
-      var emailElem = document.getElementById('user-email')
-      var nicknameElem = document.getElementById('user-nickname')
-
-      nameInputElem.value = ''
-      nameElem.value = ''
-      emailElem.value = ''
-      nicknameElem.value = ''
-      updateDropdown('')
+      setSelectedUser(null)
     }
+
+    let inputEl = document.getElementById("user-name-box")
+    inputEl.focus()
   }
 
   return (
