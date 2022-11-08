@@ -170,7 +170,6 @@ const People = ({ db }) => {
   }
 
   const handleChangeUserType = async (e) => {
-    console.log(e)
     var elem = document.getElementById("user-type-select")
     var value = elem.value
 
@@ -182,7 +181,7 @@ const People = ({ db }) => {
       deleteUser(db, selectedUser.uid)
       setSelectedUser(null)
     }
-
+    updateUserList(db)
     let inputEl = document.getElementById("user-name-box")
     inputEl.focus()
   }
