@@ -110,9 +110,6 @@
 	position: sticky;
 	top: -1px;
 	z-index: 996;
-	@include themify($themes) {
-		border-top: 1px solid themed('background');
-	}
 	transition: 0.25s;
 }
 
