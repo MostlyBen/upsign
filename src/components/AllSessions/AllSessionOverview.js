@@ -183,22 +183,29 @@ const AllSessionOverview = ({ db }) => {
         
       </div>
       
+      {/* Show loading bar if loading */}
       {loading
        ? <LoadingBar />
        : <div />
       }
+
       {/* --- BODY --- */}
       <DndProvider backend={HTML5Backend}>
         <div className="row">
           <div className="col s12 cards-container">
-            <UnsignedStudents
-              key="unsigned-students"
-              db={db}
-              schoolId={schoolId}
-              date={selectedDate}
-              hour={hour}
-              groupFilter={groupFilter}
-            />
+            {/* Don't render UnsignedStudents if still loading */}
+            {loading
+            ? <div />
+            : <UnsignedStudents
+                key="unsigned-students"
+                db={db}
+                schoolId={schoolId}
+                date={selectedDate}
+                hour={hour}
+                groupFilter={groupFilter}
+              />
+            }
+
             {sessionsWithEnr.map( s => {
               return <SessionCard
                   key={`session-${s.id}`}
