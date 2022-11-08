@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 import M from "materialize-css"
 
@@ -35,6 +35,8 @@ const People = ({ db }) => {
   const [userIdFinder, setUserIdFinder] = useState()
   const [selectedUser, setSelectedUser] = useState()
 
+  const nameInputRef = useRef(null);
+
   const updateUserList = async (db) => {
     var allUsers = await getAllUsers(db)
     allUsers.sort((a, b) => (( a.nickname ?? a.name ) > ( b.nickname ?? b.name )) ? 1 : -1 )
@@ -50,6 +52,21 @@ const People = ({ db }) => {
 
     setSelectedUser(userObject)
   }
+
+  // Handle name input focus
+  useEffect(() => {
+    // Focus the input when page loads or selected user changes
+    let inputEl = document.getElementById("user-name-box")
+    inputEl.focus()
+
+    // Remove focus if the user has been set
+    // Must have a delay or it's not focused for long enough to move the "Find User" text
+    if (selectedUser) {
+      setTimeout(() => {
+        inputEl.blur()
+      }, 100)
+    }
+  }, [selectedUser])
 
   // Initialize the Modal
   useEffect(() => {
@@ -204,7 +221,7 @@ const People = ({ db }) => {
           <div className="row" style={{marginBottom: "0"}}>
             <div className="input-field col s12">
               <i className="material-icons prefix">person</i>
-              <input type="text" id="user-name-box" className="autocomplete" autoComplete="off" />
+              <input type="text" id="user-name-box" className="autocomplete" autoComplete="off" ref={nameInputRef} />
               <label htmlFor="user-name-box">Find User</label>
             </div>
           </div>
