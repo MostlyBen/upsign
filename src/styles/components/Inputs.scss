@@ -172,7 +172,7 @@
 
 .navbar-link {
 	@include themify($themes) {
-		color: themed('onSurfaceVariant');
+		color: themed('onSurface');
 	}
 
 	font-size: 1.5rem;
