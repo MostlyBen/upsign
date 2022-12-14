@@ -126,6 +126,15 @@ const TeacherSignUp = ({ db, user }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, selectedDate, numberSessions])
 
+  useEffect(() => {
+    if (Array.isArray(sessions)) {
+      if (numberSessions !== sessions.length) {
+        let s = sessions.slice(0, numberSessions)
+        setSessions(s)
+      }
+    }
+  }, [numberSessions, sessions])
+
 
 
   if (!sessions) {
