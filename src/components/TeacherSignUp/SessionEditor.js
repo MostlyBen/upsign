@@ -37,7 +37,7 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
   useEffect(() => {
     if (session.restricted_to) {
       document.getElementById(`group-select-${session.id}`).value = session.restricted_to
-    } else {
+    } else if (session.restricted_to === "") {
       // If not restricted to anything yet, show All Students
       document.getElementById(`group-select-${session.id}`).value = ""
     }
