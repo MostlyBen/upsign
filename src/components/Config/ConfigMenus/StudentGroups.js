@@ -98,7 +98,7 @@ const StudentGroups = ({ db }) => {
       <ul id='option-dropdown' className='dropdown-content'>
         {groupOptions.map(option => {
           return (
-            <li key={`dropdown-item-${option}`}><a
+            <li key={`dropdown-item-${option}-${Math.floor(Math.random() * 10000)}`}><a
               href="#!"
               className={option === selectedGroup ? "bold" : ""}
               onClick={() => setSelectedGroup(option)}

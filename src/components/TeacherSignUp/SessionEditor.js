@@ -172,7 +172,7 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
               return (
                 <option
                   value={option}
-                  key={`group-options-${option}`}
+                  key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
                 >{option}</option>
               )
             })}

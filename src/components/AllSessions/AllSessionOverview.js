@@ -169,7 +169,7 @@ const AllSessionOverview = ({ db }) => {
               return (
                 <option
                   value={option}
-                  key={`group-options-${option}`}
+                  key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
                 >{option}</option>
               )
             })}
