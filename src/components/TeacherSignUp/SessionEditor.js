@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
 import { useLoaderData } from "react-router-dom"
+import { DebounceInput } from 'react-debounce-input'
+
 import {
   doc,
   updateDoc,
@@ -76,8 +78,9 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
 
   /* CHANGE HANDLERS */
   const handleChangeTitle = (e) => {
+    console.log("Setting title to:", e.target.value)
     setTitle(e.target.value);
-
+    
     var title = String(e.target.value);
     updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {title: title});
     session.title = title;
@@ -115,7 +118,7 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
 
         <div className="col s12">
           {/* Title */}
-          <input
+          <DebounceInput
             className="mimic-card-h1"
             id={`session-title-${session.id}`}
             type="text"
@@ -123,6 +126,8 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
             onChange={handleChangeTitle}
             autoComplete="off"
             placeholder="Session Title"
+            minLength={0}
+            debounceTimeout={1200}
             onBlur={handleBlurTitle}
           />
         </div>
@@ -136,13 +141,15 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
         <div className="col s6">
 
           <label htmlFor={`session-title-${session.id}`}>Room</label>
-          <input
+          <DebounceInput
             className="mimic-card-h2"
             id={`session-room-${session.id}`}
             type="text"
             value={room}
             onChange={handleChangeRoom}
             autoComplete="off"
+            minLength={0}
+            debounceTimeout={1200}
             placeholder="No Room"
           />
         </div>
@@ -150,13 +157,15 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
         {/* Capacity */}
         <div className="col s6">
           <label htmlFor={`session-title-${session.id}`}>Capacity</label>
-            <input
+            <DebounceInput
               className="mimic-card-h2"
               id={`session-capacity-${session.id}`}
               type="number"
               value={capacity}
               onChange={handleChangeCapacity}
               autoComplete="off"
+              minLength={0}
+              debounceTimeout={1200}
               placeholder="Capacity"
             />
           </div>
