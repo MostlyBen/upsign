@@ -5,7 +5,7 @@ const SignOut = (props) => {
     <button
       className="btn btn-flat waves-effect surface grey-text"
       onClick={() => {getAuth().signOut(); window.location.reload()}}
-      style={props.style}
+      style={{height: '3rem', margin: 'auto', ...props.style}}
     >
       Log Out
     </button>

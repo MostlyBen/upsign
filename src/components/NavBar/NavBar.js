@@ -17,16 +17,16 @@ const NavBarMenu = ({show}) => {
   return (
     <div className={`floating-menu scale-transition ${show ? 'scale-in': 'scale-out'}`}>
       <div>
-        <div className="switch toggle-switch" style={{margin: "0", paddingRight: "1.5rem"}}>
+        <div className="switch toggle-switch" style={{margin: "0", padding: "1rem"}}>
           <label>
             <input type="checkbox" defaultChecked={theme === 'dark'} onClick={handleThemeChange} />
-            <span className="lever"></span>
+            <span className="lever" style={{marginLeft: '0'}}></span>
           </label>
           Dark Mode
         </div>
       </div>
       <hr />
-      <div style={{minHeight: "0px !important"}}>
+      <div style={{minHeight: "0px !important", height: 'max-content', display: 'flex'}}>
         <SignOut />
       </div>
     </div>
@@ -70,7 +70,6 @@ const TeacherLinks = (props) => {
           </span>
         </div>
         
-        <NavBarMenu show={showLogoMenu} />
       </div>
 
       <Link
@@ -90,8 +89,7 @@ const TeacherLinks = (props) => {
   )
 }
 
-const StudentLinks = ({ schoolName }) => {
-  const [showLogoMenu, setShowLogoMenu] = useState(false)
+const StudentLinks = ({ schoolName, showLogoMenu, setShowLogoMenu }) => {
 
   const clickOffListener = (e) => {
     if ( !document.getElementById('logo-menu-clickbox').contains(e.target) && showLogoMenu ) {
@@ -131,7 +129,6 @@ const StudentLinks = ({ schoolName }) => {
             </span>
           </div>
           
-          <NavBarMenu show={showLogoMenu} />
         </div>
         <span className="hide-on-small" style={{whiteSpace: "nowrap"}}>{schoolName}</span>
       </div>
@@ -140,15 +137,21 @@ const StudentLinks = ({ schoolName }) => {
 }
 
 const NavBar = ({ userType, match, schoolName }) => {
+  const [showLogoMenu, setShowLogoMenu] = useState(false)
+
   return (
+    <>
+    <NavBarMenu show={showLogoMenu} />
     <div className="navbar-fixed">
       <nav>
         <div className="nav-wrapper valign-wrapper">
-          {userType === "teacher" ? <TeacherLinks match={match} /> : <StudentLinks schoolName={schoolName} />}
+          {userType === "teacher" ? <TeacherLinks match={match} showLogoMenu={showLogoMenu} setShowLogoMenu={setShowLogoMenu} /> : <StudentLinks schoolName={schoolName} showLogoMenu={showLogoMenu} setShowLogoMenu={setShowLogoMenu} />}
           {/* <SignOut style={{position: "absolute", right: "2rem"}} /> */}
         </div>
       </nav>
     </div>
+    </>
+
   )
 }
 
