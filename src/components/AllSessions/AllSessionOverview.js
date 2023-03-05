@@ -12,6 +12,7 @@ import UnsignedStudents from "./UnsignedStudents"
 import { 
   getHourEnrollments,
   getHourSessions,
+  getAllStudents,
 } from "../../services"
 
 import {
@@ -39,6 +40,7 @@ const AllSessionOverview = ({ db }) => {
   const [ selectedDate, setSelectedDate ]         = useState(defaultDay)
   const [ totalCapacity, setTotalCapacity ]       = useState(0)
   const [ loading, setLoading ]                   = useState(true)
+  const [ allStudents, setAllStudents ]           = useState()
 
   const schoolId = getSchoolId()
 
@@ -63,6 +65,11 @@ const AllSessionOverview = ({ db }) => {
     setSelectedDate(date)
   }
 
+  // All Students List
+  useEffect(() => {
+    getAllStudents(db, true).then(r => { setAllStudents(r) })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db])
   // SESSIONS: Load & subscribe to updates
   useEffect(() => {
     setLoading(true)
@@ -216,6 +223,7 @@ const AllSessionOverview = ({ db }) => {
                   hour={hour}
                   filter={groupFilter}
                   groupOptions={groupOptions}
+                  allStudents={allStudents}
                 />
             })}
           </div>

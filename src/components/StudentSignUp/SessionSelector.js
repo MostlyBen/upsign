@@ -8,11 +8,18 @@ import {
 
 import SessionCardStudent from "./SessionCardStudent"
 import { LittleLoadingBar } from "../"
+import { getAllStudents } from "../../services"
 
 const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupAllowed, schoolId, userEnrollments }) => {
   const [ hourSessions, setHourSessions ] = useState([])
   const [ loading, setLoading ] = useState(true)
+  const [ allStudents, setAllStudents ] = useState()
 
+    // All Students List
+    useEffect(() => {
+      getAllStudents(db, true).then(r => { setAllStudents(r) })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [db])
   // Get & subscribe to sessions for the hour
   useEffect(() => {
     setLoading(true)
@@ -75,6 +82,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
                                         selectedDate={selectedDate}
                                         signupAllowed={signupAllowed}
                                         userEnrollments={userEnrollments}
+                                        allStudents={allStudents}
                                         /> ) }
       </div>
     </div>

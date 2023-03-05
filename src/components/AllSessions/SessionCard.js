@@ -7,14 +7,15 @@ import M from 'materialize-css';
 import StudentName from "./StudentName"
 import { SessionEditor } from "../"
 
-const SessionCard = ({ db, date, session, filter, groupOptions }) => {
+const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) => {
   const [filteredEnrollment, setFilteredEnrollment] = useState(session.enrollment)
   const [allStudentRef, setAllStudentRef] = useState()
   const [showOpen, setShowOpen] = useState(false)
 
   useEffect(() => {
-    // This should probably happen on the page level, so it doesn't make this request for every card
-    getAllStudents(db, true).then(r => { setAllStudentRef(r) })
+    if (!allStudents) {
+      getAllStudents(db, true).then(r => { setAllStudentRef(r) })
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
