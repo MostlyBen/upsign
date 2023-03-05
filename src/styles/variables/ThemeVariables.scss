@@ -35,6 +35,9 @@ $themes: (
 
     highlight: rgba(242, 242, 242, 0.5),
     highlightBackground: rgba(210, 210, 210, 0.5),
+
+    nmShadowLight: #ffffff,
+    nmShadowDark: #d5d5d5,
   ),
   
   dark: (
@@ -72,6 +75,9 @@ $themes: (
 
     highlight: rgba(65, 77, 75, 0.5),
     highlightBackground: rgba(65, 77, 75, 0.5),
+
+    nmShadowDark: #0f1110,
+    nmShadowLight: #232726,
   ),
 );
 

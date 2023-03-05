@@ -54,10 +54,15 @@
 	@include themify($themes) {
 		background: themed('surface') !important;
 		color: themed('primaryLightOnly');
+		-webkit-box-shadow:  5px 5px 10px themed('nmShadowDark'),
+												-5px -5px 10px themed('nmShadowLight');
+						box-shadow:  5px 5px 10px themed('nmShadowDark'),
+												-5px -5px 10px themed('nmShadowLight');
 	}
 
 	text-align: center;
 	border: none !important;
+	border-radius: 0.25rem !important;
 
 	text-transform: none;
 	user-select: none;
@@ -71,13 +76,6 @@
 	// Not ideal, but iOS was removing the box-shadow otherwise
 	-webkit-appearance: none;
 	appearance: none;
-	
-	-webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14),
-											0 3px 1px -2px rgba(0, 0, 0, .12),
-											0 1px 5px 0 rgba(0, 0, 0, .20) !important;
-					box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14),
-											0 3px 1px -2px rgba(0, 0, 0, .12),
-											0 1px 5px 0 rgba(0, 0, 0, .20) !important;
 }
 
 .settings-button-holder {
