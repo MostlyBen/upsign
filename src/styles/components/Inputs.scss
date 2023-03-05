@@ -78,6 +78,10 @@
 	appearance: none;
 }
 
+.sticky-container {
+	z-index: 999;
+}
+
 .settings-button-holder {
 	position: fixed;
 	right: 3.5rem;

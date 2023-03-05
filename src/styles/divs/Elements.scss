@@ -48,7 +48,16 @@ nav {
 	@include themify($themes) {
     color: themed('onSurface');
 		background: themed('surface');
+    z-index: 100;
+    -webkit-box-shadow:  5px 5px 10px themed('nmShadowDark'),
+                        -5px -5px 10px themed('nmShadowLight');
+    box-shadow:  5px 5px 10px themed('nmShadowDark'),
+                        -5px -5px 10px themed('nmShadowLight');
 	}
+}
+
+.navbar-fixed {
+  z-index: 10;
 }
 
 code {

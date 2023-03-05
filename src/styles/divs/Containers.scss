@@ -145,6 +145,7 @@
 	width: 100vw;
 	margin-left: -5vw;
 	transition: 0.25s;
+	border-top: 2px solid rgba(0, 0, 0, 0.75)
 }
 @media only screen and (min-width: 601px) {
 	.sticky-container.is-pinned {
