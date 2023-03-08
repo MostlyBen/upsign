@@ -169,6 +169,7 @@ const AllSessionOverview = ({ db }) => {
           <select
             className='btn group-dropdown'
             onChange={(e) => setGroupFilter(e.target.value)}
+            value={groupFilter}
           >
             {/* Options */}
             <option value="All Students">All Students</option>
