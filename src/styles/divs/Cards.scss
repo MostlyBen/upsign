@@ -14,6 +14,11 @@
 	width: 75%
 }
 
+.no-shadow {
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important
+}
+
 .session-card {
 	padding: 1.5rem 1.5rem 1rem 1.5rem;
 	border-radius: 1rem;

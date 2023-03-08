@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllStudents, enrollStudent } from "../../services"
+import { enrollStudent } from "../../services"
 import { useDrop } from 'react-dnd'
 
 import M from 'materialize-css';
@@ -9,15 +9,15 @@ import { SessionEditor } from "../"
 
 const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) => {
   const [filteredEnrollment, setFilteredEnrollment] = useState(session.enrollment)
-  const [allStudentRef, setAllStudentRef] = useState()
+  // const [allStudentRef, setAllStudentRef] = useState()
   const [showOpen, setShowOpen] = useState(false)
 
-  useEffect(() => {
-    if (!allStudents) {
-      getAllStudents(db, true).then(r => { setAllStudentRef(r) })
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   if (!allStudents) {
+  //     getAllStudents(db, true).then(r => { setAllStudentRef(r) })
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   // Initialize the Modal
   useEffect(() => {
@@ -35,8 +35,8 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
 
         for ( var i = 0; i < session.enrollment.length; i++ ) {
           try {
-            if (Array.isArray(allStudentRef[session.enrollment[i].uid].groups)) {
-              if ( allStudentRef[session.enrollment[i].uid].groups.includes(filter) ) {
+            if (Array.isArray(allStudents[session.enrollment[i].uid].groups)) {
+              if ( allStudents[session.enrollment[i].uid].groups.includes(filter) ) {
                 s.push(session.enrollment[i])
               }
             }
@@ -52,7 +52,7 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
     } else {
       setFilteredEnrollment(session.enrollment)
     }
-  }, [filter, allStudentRef, session, session.enrollment])
+  }, [filter, allStudents, session, session.enrollment])
 
 
   const [monitor, drop] = useDrop(() => ({
@@ -71,7 +71,7 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
   return (
     <div>
       {/* Session Pop-Up */}
-      <div id={`modal-${session.id}`} className="modal teacher-sessions session-card teacher-card">
+      <div id={`modal-${session.id}`} className="modal teacher-sessions session-card teacher-card no-shadow">
         <div className="modal-content row">
           { Object.keys(session) !== 0
             ? <SessionEditor key={session.id} session={session} db={db} date={date} groupOptions={groupOptions} />
@@ -100,7 +100,7 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
           >
               <span
                 data-target={`modal-${session.id}`}
-                className="modal-trigger material-icons open-session"
+                className="modal-trigger material-icons"
               >
                 open_in_full
               </span>
