@@ -43,7 +43,7 @@ const TeacherSignUp = ({ db, user }) => {
   // This is just needed to getTeacherSessions again if the number updates
   // getTeacherSessions also creates sessions for the teacher
   const [numberSessions, setNumberSessions] = useState(1)
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState()
   const [sessionTimes, setSessionTimes] = useState([])
 
   const schoolId = getSchoolId()
@@ -66,14 +66,16 @@ const TeacherSignUp = ({ db, user }) => {
 
   // Subscribe to updates for session number and times
   useEffect(() => {
-    // Set up snapshot & load the times of the sessions
-    const d = doc(db, "schools", schoolId, "config", "sessions")
-    const unsubscribe = onSnapshot(d, () => {
-      updateSessionTimes(db)
-      updateNumberSessions(db)
-    })
-
-    return () => unsubscribe()
+    if (selectedDate) {
+      // Set up snapshot & load the times of the sessions
+      const d = doc(db, "schools", schoolId, "config", "sessions")
+      const unsubscribe = onSnapshot(d, () => {
+        updateSessionTimes(db)
+        updateNumberSessions(db)
+      })
+      
+      return () => unsubscribe()
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, selectedDate])
 
@@ -98,31 +100,35 @@ const TeacherSignUp = ({ db, user }) => {
   }
 
   useEffect(() => {
-    updateDefaultDay(db)
-
-    // Load teacher sessions
-    handleLoadSessions()
+    if (!selectedDate) {
+      updateDefaultDay(db)
+    } else {
+      // Load teacher sessions
+      handleLoadSessions()
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [db, selectedDate])
 
   useEffect(() => {
-    const q = query(collection(
-                db,
-                "schools",
-                schoolId,
-                "sessions",
-                String(selectedDate.getFullYear()),
-                String(selectedDate.toDateString())),
-                where("teacher", "==", user.displayName));
+    if (selectedDate) {
+      const q = query(collection(
+        db,
+        "schools",
+        schoolId,
+        "sessions",
+        String(selectedDate.getFullYear()),
+        String(selectedDate.toDateString())),
+        where("teacher", "==", user.displayName));
     const unsubscribe = onSnapshot(q, async () => {
       await getTeacherSessions(db, selectedDate, user)
-        .then( s => {
-          setSessions(s)
-        }
+      .then( s => {
+        setSessions(s)
+      }
       )
     })
-
+    
     return () => unsubscribe()
+  }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, selectedDate, numberSessions])
 
