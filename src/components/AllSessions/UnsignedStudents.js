@@ -73,7 +73,7 @@ const UnsignedStudents = ({ db, schoolId, date, hour, groupFilter }) => {
               {Array.isArray(unsignedStudents)
               ? unsignedStudents.map(e => {
                 return (
-                  <StudentName key={`student-list-${e.nickname ?? e.name}`} enrollment={e} currentSession={{}} />
+                  <StudentName key={`student-list-${e.uid}`} enrollment={e} currentSession={{}} />
                 )
               })
               : <div />}
