@@ -173,11 +173,11 @@ const AllSessionOverview = ({ db }) => {
           >
             {/* Options */}
             <option value="All Students">All Students</option>
-            {groupOptions.map(option => {
+            {groupOptions.map((option, i) => {
               return (
                 <option
                   value={option}
-                  key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
+                  key={`group-options-${i}-${option}`}
                 >{option}</option>
               )
             })}
