@@ -167,7 +167,7 @@ const AllSessionOverview = ({ db }) => {
         {/* Group Dropdown Trigger */}
         <div className='col s12 m6'>
           <select
-            className='btn group-dropdown'
+            className='btn group-dropdown u-shadow'
             onChange={(e) => setGroupFilter(e.target.value)}
             value={groupFilter}
           >

@@ -29,3 +29,12 @@
 .disabled-input-title {
 	cursor: default;
 }
+
+.u-shadow {
+	@include themify($themes) {
+		-webkit-box-shadow:  5px 5px 10px themed('nmShadowDark'),
+												-5px -5px 10px themed('nmShadowLight');
+						box-shadow:  5px 5px 10px themed('nmShadowDark'),
+												-5px -5px 10px themed('nmShadowLight');
+	}
+}
