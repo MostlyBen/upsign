@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { collection,onSnapshot } from "firebase/firestore";
+import areEqual from 'deep-equal'
 import { getAllStudents, getGroupOptions, getUser, updateUser } from "../../../services"
 import { getSchoolId } from '../../../utils';
 import M from "materialize-css";
@@ -14,7 +15,9 @@ const StudentGroups = ({ db }) => {
 
   const updateGroupOptions = async () => {
     const options = await getGroupOptions(db)
-    setGroupOptions(options)
+    if (!areEqual(options, groupOptions)) {
+      setGroupOptions(options)
+    }
   }
 
   const getStudents = async () => {
