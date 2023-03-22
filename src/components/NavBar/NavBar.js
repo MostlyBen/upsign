@@ -33,8 +33,7 @@ const NavBarMenu = ({show}) => {
   )
 }
 
-const TeacherLinks = (props) => {
-  const [showLogoMenu, setShowLogoMenu] = useState(false)
+const TeacherLinks = ({ showLogoMenu, setShowLogoMenu }) => {
 
   const clickOffListener = (e) => {
     if ( !document.getElementById('logo-menu-clickbox').contains(e.target) && showLogoMenu ) {
