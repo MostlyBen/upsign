@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { useLoaderData } from "react-router-dom"
 import { DebounceInput } from 'react-debounce-input'
 
@@ -18,7 +18,7 @@ import { getSchoolId } from "../../utils"
 
 const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
   const loaderData = useLoaderData()
-  let groupList = groupOptions.length ? groupOptions : loaderData.groupOptions
+  let groupList = useRef(groupOptions.length ? groupOptions : loaderData.groupOptions)
 
   const [title, setTitle] = useState(session.title ?? "")
   const [savedTitle, setSavedTitle] = useState(session.title ?? "")
@@ -102,11 +102,33 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
     session.capacity = capacity;
   }
 
-  const handleRestrict = async (e) => {
-    const group = e.target.value;
-    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {restricted_to: group});
-    session.restricted_to = group;
-  }
+  const GroupSelect = useMemo(() => {
+    const handleRestrict = async (e) => {
+      const group = e.target.value;
+      updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {restricted_to: group});
+      session.restricted_to = group;
+    }
+
+    return (
+      <select
+            id={`group-select-${session.id}`}
+            className='btn group-dropdown'
+            onChange={handleRestrict}
+          >
+            <option value="">All Students</option>
+            {groupList.current.map((option) => {
+              return (
+                <option
+                  value={option}
+                  key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
+                  selected={option === session.restricted_to}
+                >{option}</option>
+              )
+            })}
+          </select>
+    )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db, date, schoolId, session.restricted_to])
 
   return (
     <div className="session-editor">
@@ -171,22 +193,7 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
           </div>
 
           {/* Restrict */}
-          <select
-            id={`group-select-${session.id}`}
-            className='btn group-dropdown'
-            onChange={handleRestrict}
-          >
-            <option value="">All Students</option>
-            {groupList.map((option) => {
-              return (
-                <option
-                  value={option}
-                  key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
-                  selected={option === session.restricted_to}
-                >{option}</option>
-              )
-            })}
-          </select>
+          {GroupSelect}
         </div>
 
       {/* Student Enrollment */}
