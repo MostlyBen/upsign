@@ -25,6 +25,10 @@ const getHourSessions = async (db, date, hour, schoolId=null) => {
     // Make sure the session has a title
     if (docData.title) {
       s.push(docData)
+    // Still show if students are signed up
+    } else if (docData.number_enrolled > 0) {
+      docData.title = "No Title"
+      s.push(docData)
     }
 
   })
