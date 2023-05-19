@@ -78,7 +78,6 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
 
   /* CHANGE HANDLERS */
   const handleChangeTitle = (e) => {
-    console.log("Setting title to:", e.target.value)
     setTitle(e.target.value);
     
     var title = String(e.target.value);
