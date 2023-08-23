@@ -5,13 +5,13 @@ import {
   unenrollFromSession,
 } from "../../services"
 
-const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed, userEnrollments }) => {
+const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed, userEnrollments, locked }) => {
   const [ isFull, setIsFull ] = useState(false)
   const [ isEnrolled, setIsEnrolled ] = useState(false)
   const [ isEnabled, setIsEnabled ] = useState(true)
 
   const handleClick = (enrolled) => {
-    if (signupAllowed) {
+    if (signupAllowed && !locked) {
       if (!isFull || isEnrolled) {
 
         setIsEnabled(false)
@@ -46,8 +46,8 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
 
   useEffect(() => {
     setIsEnrolled(false)
-    for (var i = 0; i < userEnrollments.length; i++) {
-      if ( String(userEnrollments[i].session_id) === String(session.id) ) {
+    for (var e of userEnrollments) {
+      if ( String(e.session_id) === String(session.id) ) {
         setIsEnrolled(true)
       }
     }
@@ -103,6 +103,10 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
     return <div />
   }
 
+  if (locked && !isEnrolled) {
+    return <div />
+  }
+
   if (getIsFiltered()) {
     return <div />
   }
@@ -112,7 +116,7 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
       <div className={`card session-card selectable-card ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''} ${isEnabled ? '' : 'not-enabled'}`} onClick={() => handleClick(isEnrolled)}>
         <div className={`session-card-content ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`}>
           {/* Title */}
-          <h1>{session.title}</h1>
+          <h1>{session.title} {(locked && signupAllowed) ? <span className={`material-icons student-lock`} style={{transform: 'translateY(4px)'}}>lock</span> : ''}</h1>
           <hr style={{ margin: '1rem 0' }} />
           <h2>{session.teacher ?? 'No Teacher'}</h2>
           <h2 className="student-card-room">{session.room ?? 'No Room'}</h2>

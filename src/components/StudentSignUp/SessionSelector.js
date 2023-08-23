@@ -8,21 +8,15 @@ import {
 
 import SessionCardStudent from "./SessionCardStudent"
 import { LittleLoadingBar } from "../"
-import { getAllStudents } from "../../services"
 
 const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupAllowed, schoolId, userEnrollments }) => {
   const [ hourSessions, setHourSessions ] = useState([])
   const [ loading, setLoading ] = useState(true)
-  const [ allStudents, setAllStudents ] = useState()
+  const [ locked, setLocked ] = useState(false)
 
-    // All Students List
-    useEffect(() => {
-      getAllStudents(db, true).then(r => { setAllStudents(r) })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [db])
   // Get & subscribe to sessions for the hour
   useEffect(() => {
-    setLoading(true)
+    // setLoading(true)
     const sessionQuery = query(
                 collection(
                   db,
@@ -35,13 +29,26 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
     
     const unsubscribe = onSnapshot(sessionQuery, querySnapshot => {
       let allSessions = [];
+      let _locked = false
 
       querySnapshot.forEach((d) => {
         if (d.data().title) {
-          allSessions.push({
-            id: d.id,
-            ...d.data()
-          })
+          for (var e of userEnrollments) {
+            if ( String(e.session_id) === String(d.id) && e.locked ) {
+              setLocked(true)
+              _locked = true
+              allSessions = [{id: d.id, ...d.data()}]
+              break
+            }
+          }
+          
+          if (!_locked) {
+            allSessions.push({
+              id: d.id,
+              ...d.data()
+            })
+          }
+
         }
       })
 
@@ -52,7 +59,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDate])
+  }, [db, selectedDate])
 
 
   if (loading) {
@@ -75,14 +82,14 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
       <hr />
       <div className="cards-container">
         { hourSessions.map (session => <SessionCardStudent
-                                        key={`session-card-${session.id}`}
-                                        session={session}
-                                        userDoc={userDoc}
-                                        db={db}
-                                        selectedDate={selectedDate}
-                                        signupAllowed={signupAllowed}
-                                        userEnrollments={userEnrollments}
-                                        allStudents={allStudents}
+                                          key={`session-card-${session.id}`}
+                                          session={session}
+                                          userDoc={userDoc}
+                                          db={db}
+                                          selectedDate={selectedDate}
+                                          signupAllowed={signupAllowed}
+                                          userEnrollments={userEnrollments}
+                                          locked={locked}
                                         /> ) }
       </div>
     </div>

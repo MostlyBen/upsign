@@ -229,3 +229,15 @@
 	margin: 0 !important;
 	padding: 0 !important;
 }
+
+.student-lock {
+	color: #858e96;
+	font-size: 1.25rem;
+	position: absolute;
+	transform: translateX(4px);
+	cursor: pointer;
+}
+
+.student-lock.locked {
+	color: #000000;
+}

@@ -12,13 +12,6 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
   // const [allStudentRef, setAllStudentRef] = useState()
   const [showOpen, setShowOpen] = useState(false)
 
-  // useEffect(() => {
-  //   if (!allStudents) {
-  //     getAllStudents(db, true).then(r => { setAllStudentRef(r) })
-  //   }
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
-
   // Initialize the Modal
   useEffect(() => {
     var modal = document.getElementById(`modal-${session.id}`)
@@ -124,7 +117,7 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
                 {Array.isArray(session.enrollment)
                 ? filteredEnrollment.map(e => {
                   return (
-                    <StudentName key={`student-list-${e.nickname ?? e.name}`} enrollment={e} currentSession={session} />
+                    <StudentName key={`student-list-${e.nickname ?? e.name}`} db={db} enrollment={e} currentSession={session} date={date} isSession={true} />
                   )
                 })
                 : <div />}
