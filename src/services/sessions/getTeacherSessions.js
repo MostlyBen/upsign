@@ -1,4 +1,4 @@
-import { getDoc, doc, setDoc } from "@firebase/firestore";
+import { doc, setDoc, collection, query, where, getDocs } from "@firebase/firestore";
 import { getNumberSessions } from "../../services";
 import { getSchoolId } from "../../utils";
 
@@ -11,11 +11,39 @@ const getTeacherSessions = async (db, date, user, schoolId=null) => {
   const teacher_id = user.uid;
   const numberSessions = await getNumberSessions(db, date)
   let teacherSessions = []
+  let sortedSessions = {}
 
-  // Then, filter the array for each session
-  for (let i = 0; i < numberSessions; i++) {
-    const sessionId = `${teacher_id}-session-${i+1}`
-    const sessionRef = doc(
+  const dayRef = collection(
+    db,
+    "schools",
+    schoolId,
+    "sessions",
+    String(date.getFullYear()),
+    String(date.toDateString())
+  )
+  const q = query( dayRef, where('teacher_id', '==', teacher_id) )
+  const snapshot = await getDocs(q)
+  snapshot.forEach(doc => {
+    teacherSessions.push({
+      id: doc.id,
+      ...doc.data()
+    })
+  })
+
+  for (let hour = 1; hour < numberSessions + 1; hour++) {
+    let hourSessions = teacherSessions.filter(el => {
+      return el.session === hour;
+    })
+
+    // Teacher already has session(s)
+    if (hourSessions.length > 0) {
+      sortedSessions[String(hour)] = hourSessions
+    // Teacher does not have session(s)
+    } else {
+      // Figure out ID
+      var sessionId = `${teacher_id}-session-${hour}`
+      // Locate doc
+      var sessionRef = doc(
                             db,
                             "schools",
                             schoolId,
@@ -23,28 +51,24 @@ const getTeacherSessions = async (db, date, user, schoolId=null) => {
                             String(date.getFullYear()),
                             String(date.toDateString()),
                             sessionId)
-
-    const sessionDoc = await getDoc(sessionRef)
-
-    if (sessionDoc.exists()) {
-      const s = sessionDoc.data()
-      teacherSessions.push(s)
-
-    } else {
-      const docObject = {
+      // Empty session object
+      var docObject = {
         id: sessionId,
         teacher: user.nickname ?? user.displayName,
         teacher_id: user.uid,
-        session: i + 1,
+        session: hour,
         capacity: 30,
         number_enrolled: 0,
       }
-
+      // Create the doc
       await setDoc(sessionRef, docObject)
-      teacherSessions.push(docObject)
+      // Add session for return
+      sortedSessions[String(hour)] = [docObject]
     }
   }
-    return teacherSessions
+
+  // console.log("Sessions:", sortedSessions)
+  return sortedSessions
 
 }
 

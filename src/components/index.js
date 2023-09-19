@@ -7,6 +7,7 @@ import SignOut from './auth/SignOut'
 import StudentSignUp from './StudentSignUp/StudentSignUp'
 // Teacher Sign Up
 import TeacherSignUp from './TeacherSignUp/TeacherSignUp'
+import SessionHolder from './TeacherSignUp/SessionHolder'
 import SessionEditor from './TeacherSignUp/SessionEditor'
 // Small Bits
 import CircularLoading from './SmallBits/CircularLoading'
@@ -30,6 +31,7 @@ export {
   StudentSignUp,
   
   TeacherSignUp,
+  SessionHolder,
   SessionEditor,
 
   CircularLoading,

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot, doc } from "@firebase/firestore"
 
+import { SessionHolder } from "../../components";
+
 import {
   getSessionTimes,
   getNumberSessions,
@@ -12,7 +14,6 @@ import {
   getSchoolId,
 } from "../../utils";
 
-import SessionEditor from "./SessionEditor";
 import { DatePicker, LoadingBar, SettingsButton } from "../";
 
 const TopMessage = ({ user }) => {
@@ -35,6 +36,20 @@ const TopMessage = ({ user }) => {
       <hr style={{margin: "1rem 0 1rem 0"}} />
     </div>
   )
+}
+
+// Clunky, but it gets the job done
+const renderHours = (db, selectedDate, numberSessions, sessionTimes, sessions) => {
+  var hourArr = []
+  for (let i = 1; i < numberSessions + 1; i++) {
+    hourArr.push(i)
+  }
+
+  return (<>
+    {hourArr.map(hour => {
+      return <SessionHolder db={db} selectedDate={selectedDate} hour={hour} sessionTimes={sessionTimes} sessions={sessions[String(hour)]} />
+    })}
+  </>)
 }
 
 const TeacherSignUp = ({ db, user }) => {
@@ -163,19 +178,7 @@ const TeacherSignUp = ({ db, user }) => {
       </div>
 
       <div className="teacher-sessions">
-        { Array.isArray(sessions)
-          ? sessions.map( s =>
-            <div key={s.id} className="session-section">
-              <h4 className="session-header">Session {s.session} 
-                <span className="session-time"> {sessionTimes[s.session - 1] ? '('+sessionTimes[s.session - 1]+')': ''}</span>
-              </h4>
-              <hr style={{marginBottom: "1rem"}} />
-              <div className="row card session-card is-enrolled teacher-card">
-                <SessionEditor key={s.id} session={s} db={db} date={selectedDate} />
-              </div>
-            </div>
-            )
-          : null }
+          {renderHours(db, selectedDate, numberSessions, sessionTimes, sessions)}
         <SettingsButton />
       </div>
     </div>
