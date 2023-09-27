@@ -12,11 +12,11 @@ import {
  } from "@firebase/firestore"
 
 
-import { SessionAttendanceList } from '../'
+import { SessionAttendanceList, SessionOptions } from '../'
 
 import { getSchoolId } from "../../utils"
 
-const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
+const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
   const loaderData = useLoaderData()
   let groupList = useRef(groupOptions.length ? groupOptions : loaderData.groupOptions)
 
@@ -24,6 +24,7 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
   const [savedTitle, setSavedTitle] = useState(session.title ?? "")
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
+  const [showOptions, setShowOptions] = useState(false)
 
   const schoolId = getSchoolId()
 
@@ -66,6 +67,19 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, session])
+
+  /* BUTTON HANDLERS */
+  const clickOffListener = (e) => {
+    if ( !e.target.classList.contains('more-btn-clickbox') && showOptions ) {
+      setShowOptions(false)
+    }
+  }
+
+  window.addEventListener('click', clickOffListener)
+
+  const handleClickOptions = () => {
+    setShowOptions(true)
+  }
 
 
   /* BLUR HANDLERS */
@@ -131,6 +145,12 @@ const SessionEditor = ({ db, session, date, groupOptions=[] }) => {
 
   return (
     <div className="session-editor">
+      {/* Options Button & Menu */}
+      <button className="session-more-btn btn btn-floating btn-flat more-btn-clickbox" onClick={handleClickOptions}>
+        <i className="material-icons grey-text text-darken-4 more-btn-clickbox">more_vert</i>
+      </button>
+      <SessionOptions db={db} date={date} session={session.session} show={showOptions} user={user} />
+
       {/* Session Info */}
       <div className="col s12 m6">
         <div className="teacher-card-h1">

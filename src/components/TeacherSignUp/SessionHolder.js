@@ -1,6 +1,6 @@
 import SessionEditor from "./SessionEditor";
 
-const SessionHolder = ({ db, selectedDate, hour, sessionTimes, sessions }) => {
+const SessionHolder = ({ db, selectedDate, hour, sessionTimes, sessions, user }) => {
   return (
     <div key={`session-${hour}-holder`} className="session-section">
     <h4 className="session-header">Session {hour} 
@@ -10,7 +10,7 @@ const SessionHolder = ({ db, selectedDate, hour, sessionTimes, sessions }) => {
       {sessions.map(s => {
         return (
           <div key={`teacher-card-${s.id}`} className="row card session-card is-enrolled teacher-card">
-            <SessionEditor session={s} db={db} date={selectedDate} />
+            <SessionEditor session={s} db={db} date={selectedDate} user={user} />
           </div>
         )})}
   </div>

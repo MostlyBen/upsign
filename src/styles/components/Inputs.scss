@@ -241,3 +241,13 @@
 .student-lock.locked {
 	color: #000000;
 }
+
+.session-more-btn {
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+}
+
+.session-more-btn:hover {
+	background-color: #eeeeee;
+}

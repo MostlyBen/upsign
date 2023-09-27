@@ -59,7 +59,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, selectedDate])
+  }, [db, selectedDate, userEnrollments])
 
 
   if (loading) {

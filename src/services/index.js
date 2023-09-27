@@ -30,6 +30,7 @@ import getGroupOptions from "./groups/getGroupOptions";
 import setGroupOptions from "./groups/setGroupOptions";
 
 // Sessions
+import addTeacherSession from "./sessions/addTeacherSession";
 import getHourSessions from "./sessions/getHourSessions";
 import getTeacherSessions from "./sessions/getTeacherSessions";
 import getUnsignedStudents from "./sessions/getUnsignedStudents";
@@ -76,6 +77,7 @@ export {
   getGroupOptions,
   setGroupOptions,
   // Sessions
+  addTeacherSession,
   getAllStudents,
   getHourSessions,
   getTeacherSessions,

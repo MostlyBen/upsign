@@ -39,7 +39,7 @@ const TopMessage = ({ user }) => {
 }
 
 // Clunky, but it gets the job done
-const renderHours = (db, selectedDate, numberSessions, sessionTimes, sessions) => {
+const renderHours = (db, selectedDate, numberSessions, sessionTimes, sessions, user) => {
   var hourArr = []
   for (let i = 1; i < numberSessions + 1; i++) {
     hourArr.push(i)
@@ -47,7 +47,7 @@ const renderHours = (db, selectedDate, numberSessions, sessionTimes, sessions) =
 
   return (<>
     {hourArr.map(hour => {
-      return <SessionHolder db={db} selectedDate={selectedDate} hour={hour} sessionTimes={sessionTimes} sessions={sessions[String(hour)]} />
+      return <SessionHolder db={db} selectedDate={selectedDate} hour={hour} sessionTimes={sessionTimes} sessions={sessions[String(hour)]} user={user} />
     })}
   </>)
 }
@@ -178,7 +178,7 @@ const TeacherSignUp = ({ db, user }) => {
       </div>
 
       <div className="teacher-sessions">
-          {renderHours(db, selectedDate, numberSessions, sessionTimes, sessions)}
+          {renderHours(db, selectedDate, numberSessions, sessionTimes, sessions, user)}
         <SettingsButton />
       </div>
     </div>
