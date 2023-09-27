@@ -147,7 +147,7 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
     <div className="session-editor">
       {/* Options Button & Menu */}
       <button className="session-more-btn btn btn-floating btn-flat more-btn-clickbox" onClick={handleClickOptions}>
-        <i className="material-icons grey-text text-darken-4 more-btn-clickbox">more_vert</i>
+        <i className="material-icons session-more-btn-icon more-btn-clickbox">more_vert</i>
       </button>
       <SessionOptions db={db} date={date} session={session.session} show={showOptions} user={user} />
 

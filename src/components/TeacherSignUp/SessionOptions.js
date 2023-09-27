@@ -8,7 +8,7 @@ const SessionMenu = ({ db, date, user, session, show }) => {
 
   return (
     <div className={`session-options-menu scale-transition ${show ? 'scale-in': 'scale-out'}`}>
-      <button className="btn-flat" onClick={handleAddSession}>
+      <button className="btn-flat session-option-btn" onClick={handleAddSession}>
         + Add Session
       </button>
     </div>

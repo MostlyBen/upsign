@@ -251,3 +251,21 @@
 .session-more-btn:hover {
 	background-color: #eeeeee;
 }
+
+.session-more-btn-icon, .session-option-btn {
+	@include themify($themes) {
+		color: themed('onSurface') !important;
+	}
+}
+
+.session-more-btn-icon:hover {
+	@include themify($themes) {
+		background-color: themed('surfaceVariant') !important;
+	}
+}
+
+.session-more-btn-icon:active {
+	@include themify($themes) {
+		background-color: themed('surfaceVariant') !important;
+	}
+}
