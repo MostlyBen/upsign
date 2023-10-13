@@ -6,6 +6,7 @@ import {
   Registrations,
   EditGroups,
   // NewYear,
+  // StudentList,
   People,
   ScheduleConfig,
 } from './ConfigMenus'
@@ -32,6 +33,7 @@ const Config = ({ db }) => {
     groups: <StudentGroups db={db} />,
     editgroups: <EditGroups db={db} />,
     newyear: <div>Dev use only</div>, // <NewYear db={db} />,
+    studentlist: <div>Dev use only</div> // </div><StudentList db={db} />,
   }
   
   return (

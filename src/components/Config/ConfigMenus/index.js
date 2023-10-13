@@ -5,6 +5,7 @@ import EditGroups from "./EditGroups";
 import NewYear from './NewYear'
 import People from "./People";
 import ScheduleConfig from "./ScheduleConfig";
+import StudentList from "./StudentList";
 
 export {
   General,
@@ -14,4 +15,5 @@ export {
   NewYear,
   People,
   ScheduleConfig,
+  StudentList,
 }
