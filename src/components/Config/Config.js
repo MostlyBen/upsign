@@ -33,7 +33,7 @@ const Config = ({ db }) => {
     groups: <StudentGroups db={db} />,
     editgroups: <EditGroups db={db} />,
     newyear: <div>Dev use only</div>, // <NewYear db={db} />,
-    studentlist: <div>Dev use only</div> // </div><StudentList db={db} />,
+    studentlist: <div>Dev use only</div>, // </div><StudentList db={db} />,
   }
   
   return (
