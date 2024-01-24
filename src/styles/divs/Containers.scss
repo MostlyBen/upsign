@@ -18,6 +18,10 @@
 	.hide-on-small, .show-on-med, .show-on-large {
 		display: none;
 	}
+	.settings-button-holder {
+		right: 1.5rem;
+		bottom: 1rem;
+	}
 }
 @media #{$medium-and-up} {
   .cards-container {
@@ -114,7 +118,7 @@
 }
 
 .teacher-sessions {
-	padding-bottom: 4rem;
+	padding-bottom: 2rem;
 }
 
 .modal.teacher-sessions {
