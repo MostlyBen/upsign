@@ -67,8 +67,8 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
       }
     }
 
-    for (var s of session.enrollment) {
-      updateEnrollment(db, date, s.id, { locked: !locked })
+    for (var t of session.enrollment) {
+      updateEnrollment(db, date, t.id, { locked: !locked })
     }
   }
 
