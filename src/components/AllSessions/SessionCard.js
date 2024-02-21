@@ -102,15 +102,25 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
             {/* Title & Info */}
             <h1 style={{paddingRight: '2rem'}}>{session.title}</h1>
             {session.subtitle && <h2 style={{opacity: 0.8}}>{session.subtitle}</h2>}
+            
             <hr style={{ margin: '1rem 0' }} />
-            <h2><span className="material-icons card-icon">person</span>{session.teacher}</h2>
-            <h2><span className="material-icons card-icon">home</span>{session.room ?? 'No Room'}</h2>
+
+            <h2>
+              <span className="material-icons card-icon">person</span>
+              {session.teacher}
+            </h2>
+            <h2>
+              <span className="material-icons card-icon">home</span>
+              {session.room ?? 'No Room'}
+            </h2>
 
             <hr style={{margin: '1rem 0'}} />
 
             {/* Student List */}
             <div className="student-list">
-              <h2 style={{ margin: '1rem 0', fontWeight: '500' }}>Students</h2>
+              <h2 style={{ margin: '1rem 0', fontWeight: '500' }}>
+                Students
+              </h2>
               <h2 className="capacity-overview">
                 {Array.isArray(session.enrollment) ? session.enrollment.length : 0}/{session.capacity}
               </h2>

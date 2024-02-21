@@ -187,7 +187,6 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
             debounceTimeout={1200}
             onBlur={handleBlurTitle}
           />
-          <br />
           <DebounceInput
             className="mimic-card-h2"
             id={`session-subtitle-${session.id}`}
@@ -199,12 +198,13 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
             minLength={0}
             debounceTimeout={1200}
             onBlur={handleBlurSubtitle}
+            style={{marginBottom: '6px', height: '2.5rem'}}
           />
         </div>
 
         {/* Teacher */}
         <div className="col s12">
-          <h2>{session.teacher}</h2>
+          <h2 style={{margin: '0 0 12px 0'}}>{session.teacher}</h2>
         </div>
 
         {/* Room */}
