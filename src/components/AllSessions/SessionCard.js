@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { enrollStudent } from "../../services"
+import { enrollStudent, updateEnrollment } from "../../services"
 import { useDrop } from 'react-dnd'
 
 import M from 'materialize-css';
@@ -11,6 +11,7 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
   const [filteredEnrollment, setFilteredEnrollment] = useState(session.enrollment)
   // const [allStudentRef, setAllStudentRef] = useState()
   const [showOpen, setShowOpen] = useState(false)
+  const [showLock, setShowLock] = useState(false)
 
   // Initialize the Modal
   useEffect(() => {
@@ -57,6 +58,20 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
     collect: monitor => (monitor),
   }), [db, date, session])
 
+  const handleLockAll = () => {
+    let locked = true
+    for (var s of session.enrollment) {
+      if (!s.locked) {
+        locked = false
+        break
+      }
+    }
+
+    for (var s of session.enrollment) {
+      updateEnrollment(db, date, s.id, { locked: !locked })
+    }
+  }
+
   if ( Array.isArray(session.enrollment) ) {
     session.enrollment.sort( (a, b) => (a.name > b.name) ? 1 : -1 )
   }
@@ -102,7 +117,7 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
             {/* Title & Info */}
             <h1 style={{paddingRight: '2rem'}}>{session.title}</h1>
             {session.subtitle && <h2 style={{opacity: 0.8}}>{session.subtitle}</h2>}
-            
+
             <hr style={{ margin: '1rem 0' }} />
 
             <h2>
@@ -118,8 +133,12 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
 
             {/* Student List */}
             <div className="student-list">
-              <h2 style={{ margin: '1rem 0', fontWeight: '500' }}>
+              <h2 style={{ margin: '1rem 0', fontWeight: '500' }} onPointerEnter={() => setShowLock(true)} onPointerLeave={() => setShowLock(false)}>
                 Students
+                {showLock &&
+                  <span className={`material-icons student-lock`} onClick={handleLockAll}>
+                    lock
+                  </span>}
               </h2>
               <h2 className="capacity-overview">
                 {Array.isArray(session.enrollment) ? session.enrollment.length : 0}/{session.capacity}
