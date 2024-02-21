@@ -101,9 +101,10 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
 
             {/* Title & Info */}
             <h1 style={{paddingRight: '2rem'}}>{session.title}</h1>
+            {session.subtitle && <h2 style={{opacity: 0.8}}>{session.subtitle}</h2>}
             <hr style={{ margin: '1rem 0' }} />
-            <h2>{session.teacher}</h2>
-            <h2>{session.room ?? 'No Room'}</h2>
+            <h2><span className="material-icons card-icon">person</span>{session.teacher}</h2>
+            <h2><span className="material-icons card-icon">home</span>{session.room ?? 'No Room'}</h2>
 
             <hr style={{margin: '1rem 0'}} />
 

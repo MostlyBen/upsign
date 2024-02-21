@@ -22,6 +22,8 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
 
   const [title, setTitle] = useState(session.title ?? "")
   const [savedTitle, setSavedTitle] = useState(session.title ?? "")
+  const [subtitle, setSubtitle] = useState(session.subtitle ?? "")
+  const [savedSubtitle, setSavedSubtitle] = useState(session.subtitle ?? "")
   const [room, setRoom] = useState(session.room ?? "")
   const [capacity, setCapacity] = useState(session.capacity ?? 0)
   const [showOptions, setShowOptions] = useState(false)
@@ -57,6 +59,7 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
           var updatedSession = d.data();
 
           setSavedTitle(updatedSession.title ?? '');
+          setSavedSubtitle(updatedSession.subtitle ?? '')
           setRoom(updatedSession.room ?? '');
           setCapacity(updatedSession.capacity ?? 30);
           session.restricted_to = updatedSession.restricted_to;
@@ -88,6 +91,11 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
       handleChangeTitle({target:{value:savedTitle}});
     }
   }
+  const handleBlurSubtitle = () => {
+    if (savedSubtitle !== session.subtitle) {
+      handleChangeSubtitle({target:{value:session.subtitle}});
+    }
+  }
 
 
   /* CHANGE HANDLERS */
@@ -97,6 +105,14 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
     var title = String(e.target.value);
     updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {title: title});
     session.title = title;
+  }
+
+  const handleChangeSubtitle = (e) => {
+    setSubtitle(e.target.value);
+
+    var subtitle = String(e.target.value);
+    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {subtitle: subtitle});
+    session.subtitle = subtitle;
   }
 
   const handleChangeRoom = (e) => {
@@ -171,6 +187,19 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
             debounceTimeout={1200}
             onBlur={handleBlurTitle}
           />
+          <br />
+          <DebounceInput
+            className="mimic-card-h2"
+            id={`session-subtitle-${session.id}`}
+            type="text"
+            value={subtitle}
+            onChange={handleChangeSubtitle}
+            autoComplete="off"
+            placeholder="Subtitle"
+            minLength={0}
+            debounceTimeout={1200}
+            onBlur={handleBlurSubtitle}
+          />
         </div>
 
         {/* Teacher */}
@@ -183,7 +212,7 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
 
           <label htmlFor={`session-title-${session.id}`}>Room</label>
           <DebounceInput
-            className="mimic-card-h2"
+            className="mimic-card-h2 remove-border"
             id={`session-room-${session.id}`}
             type="text"
             value={room}
@@ -199,7 +228,7 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
         <div className="col s6">
           <label htmlFor={`session-title-${session.id}`}>Capacity</label>
             <DebounceInput
-              className="mimic-card-h2"
+              className="mimic-card-h2 remove-border"
               id={`session-capacity-${session.id}`}
               type="number"
               value={capacity}

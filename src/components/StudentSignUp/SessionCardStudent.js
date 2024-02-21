@@ -117,6 +117,7 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
         <div className={`session-card-content ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`}>
           {/* Title */}
           <h1>{session.title} {(locked && signupAllowed) ? <span className={`material-icons student-lock`} style={{transform: 'translateY(4px)'}}>lock</span> : ''}</h1>
+          {session.subtitle && <h2 style={{opacity: 0.8}}>{session.subtitle}</h2>}
           <hr style={{ margin: '1rem 0' }} />
           <h2>{session.teacher ?? 'No Teacher'}</h2>
           <h2 className="student-card-room">{session.room ?? 'No Room'}</h2>
