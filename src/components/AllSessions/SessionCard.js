@@ -82,7 +82,7 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
       <div id={`modal-${session.id}`} className="modal teacher-sessions session-card teacher-card no-shadow">
         <div className="modal-content row">
           { Object.keys(session) !== 0
-            ? <SessionEditor key={session.id} session={session} db={db} date={date} groupOptions={groupOptions} />
+            ? <SessionEditor key={session.id} session={session} db={db} date={date} groupOptions={groupOptions} hideOptions={true} />
             : <div /> }
         </div>
       </div>
@@ -116,7 +116,7 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
 
             {/* Title & Info */}
             <h1 style={{paddingRight: '2rem'}}>{session.title}</h1>
-            {session.subtitle && <h2 style={{opacity: 0.8}}>{session.subtitle}</h2>}
+            {(session.subtitle && session.subtitle !== "undefined") && <h2 style={{opacity: 0.8}}>{session.subtitle}</h2>}
 
             <hr style={{ margin: '1rem 0' }} />
 

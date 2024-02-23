@@ -9,6 +9,7 @@ import {
   collection,
   where,
   onSnapshot,
+  deleteField
  } from "@firebase/firestore"
 
 
@@ -16,7 +17,7 @@ import { SessionAttendanceList, SessionOptions } from '../'
 
 import { getSchoolId } from "../../utils"
 
-const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
+const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions }) => {
   const loaderData = useLoaderData()
   let groupList = useRef(groupOptions.length ? groupOptions : loaderData.groupOptions)
 
@@ -111,8 +112,13 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
     setSubtitle(e.target.value);
 
     var subtitle = String(e.target.value);
-    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {subtitle: subtitle});
-    session.subtitle = subtitle;
+    if (subtitle === "undefined") {
+      updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {subtitle: deleteField()});
+    } else {
+      updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {subtitle: subtitle});
+      session.subtitle = subtitle;
+    }
+
   }
 
   const handleChangeRoom = (e) => {
@@ -162,10 +168,12 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[] }) => {
   return (
     <div className="session-editor">
       {/* Options Button & Menu */}
-      <button className="session-more-btn btn btn-floating btn-flat more-btn-clickbox" onClick={handleClickOptions}>
-        <i className="material-icons session-more-btn-icon more-btn-clickbox">more_vert</i>
-      </button>
-      <SessionOptions db={db} date={date} session={session.session} show={showOptions} user={user} />
+      {!hideOptions && <>
+        <button className="session-more-btn btn btn-floating btn-flat more-btn-clickbox" onClick={handleClickOptions}>
+          <i className="material-icons session-more-btn-icon more-btn-clickbox">more_vert</i>
+        </button>
+        <SessionOptions db={db} date={date} session={session.session} show={showOptions} user={user} />
+      </>}
 
       {/* Session Info */}
       <div className="col s12 m6">
