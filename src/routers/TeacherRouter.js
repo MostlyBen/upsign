@@ -2,6 +2,7 @@ import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
+  Navigate,
 } from "react-router-dom";
 
 import { TeacherSignUp, AllSessionOverview, Config, NavBar } from '../components';
@@ -43,8 +44,7 @@ const TeacherRouter = ({ db, user, schoolName }) => {
         },
         {
           path: "/overview",
-          element: <AllSessionOverview db={db} />,
-          loader: async () => DefaultLoader(db),
+          element: <Navigate to="/overview/1" />,
         },
         {
           path: "/config/:menu",
