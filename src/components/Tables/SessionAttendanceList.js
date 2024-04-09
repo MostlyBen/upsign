@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Emoji } from 'emoji-picker-react'
 import { query, collection, onSnapshot } from "@firebase/firestore"
 import {
   getSessionEnrollments,
@@ -6,10 +7,11 @@ import {
   updateEnrollment,
   // updateSession,
 } from "../../services"
-import { LittleLoadingBar } from "../"
+import { EmojiSelect, LittleLoadingBar } from "../"
 
 const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const [showRemove, setShowRemove] = useState(0)
+  const [reactionOpen, setReactionOpen] = useState(false)
 
   // Un-dims the row when the update comes through
   useEffect(() => {
@@ -26,10 +28,24 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
 
   const handleMouseLeave = () => {
     setShowRemove(0)
+    setReactionOpen(false)
+  }
+
+  const handleClickEmoji = (emoji) => {
+    handleMouseLeave()
+    updateEnrollment(db, date, enrollment.id, {
+      flag: emoji
+    })
+  }
+
+  const handleRemoveFlag = () => {
+    updateEnrollment(db, date, enrollment.id, {
+      flag: null
+    })
   }
 
   const handleRemoveStudent = (uid, name) => {
-    if (window.confirm(`Are you sure you want to remove ${name} from this workshop?`)) {
+    if (window.confirm(`Are you sure you want to remove ${name} from this session?`)) {
       unenrollFromSession(db, date, uid, session.id)
     }
   }
@@ -57,9 +73,26 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
       onMouseLeave={handleMouseLeave}
     >
       <td
+        className="enrollment-name-cell"
         style={{padding: "0 0 0 1.5rem", textAlign: "left"}}
       >
         {enrollment.nickname ?? enrollment.name}
+        <EmojiSelect open={reactionOpen} onSubmit={handleClickEmoji} />
+
+        {enrollment.flag
+        ? <button className="remove-btn-styling" onClick={() => handleRemoveFlag()} style={{transform: "translateY(2px)"}}>
+            <Emoji unified={enrollment.flag ?? "1f389"} size="16" />
+          </button>
+        : <span
+            className="material-icons icon-button-offset"
+            onClick={() => setReactionOpen(o => !o)}
+            style={{
+              opacity: showRemove,
+              userSelect: 'none',
+            }}
+          >flag</span>
+        }
+
         <span
           className="material-icons icon-button-offset"
           onClick={() => handleRemoveStudent(enrollment.uid, enrollment.name)}
@@ -150,18 +183,6 @@ const SessionAttendanceList = ({ db, schoolId, date, session }) => {
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db])
-
-  /* THIS WAS SCREWING UP. */
-  // Update session.number_enrolled if it's wrong
-  // useEffect(() => {
-  //   if (Array.isArray(session.enrollment)) {
-  //     if ( Number(session.enrollment.length) !== session.number_enrolled ) {
-  //       updateSession(db, date, session.id, {
-  //         number_enrolled: Number(session.enrollment.length),
-  //       }, schoolId)
-  //     }
-  //   }
-  // }, [db, date, session.enrollment, session.number_enrolled, session.id, schoolId])
   
   if (Array.isArray(enrollments)) {
     enrollments.sort( (a, b) => ((a.nickname ?? a.name) > (b.nickname ?? b.name)) ? 1 : -1 )

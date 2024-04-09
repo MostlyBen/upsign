@@ -38,3 +38,17 @@
 												-5px -5px 10px themed('nmShadowLight');
 	}
 }
+
+.remove-btn-styling {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.remove-btn-styling:focus {
+	background-color: inherit;
+}

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useDrag } from 'react-dnd'
+import { Emoji } from 'emoji-picker-react'
 
 import { updateEnrollment } from '../../services'
 
@@ -35,12 +36,20 @@ const StudentName = ({ db, enrollment, date, currentSession, isSession }) => {
     onPointerLeave={() => setIsHovering(false)}
   >
     {/* Name */}
-    {enrollment.nickname ?? enrollment.name} {enrollment.attendance
+    {enrollment.nickname ?? enrollment.name}
+    {/* Emoji Flag */}
+    {enrollment.flag && <div style={{display: 'inline-block', margin: '0 0 0 6px', height: '14px'}}>
+      <Emoji unified={enrollment.flag} size="16" />
+    </div>}
+    {/* Attendance */}
+    {enrollment.attendance
     ? <span style={{margin: "0 0 0 0.5rem"}}>|<span style={{margin: "0 0 0 0.75rem", fontWeight: "500",
     color: enrollment.attendance === "present" ? "#009688" : enrollment.attendance === "tardy" ? "#f9a825" : "#d32f2f"}}>
         {enrollment.attendance.charAt(0).toUpperCase() + enrollment.attendance.slice(1)}</span>
       </span>
     : null}
+
+    
 
     {/* Lock */}
     {( (isSession && isHovering) || (isSession && enrollment.locked) ) &&

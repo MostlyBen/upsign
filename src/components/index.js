@@ -13,6 +13,7 @@ import SessionEditor from './TeacherSignUp/SessionEditor'
 // Small Bits
 import CircularLoading from './SmallBits/CircularLoading'
 import DatePicker from './SmallBits/DatePicker'
+import EmojiSelect from './SmallBits/EmojiSelect'
 import LittleLoadingBar from './SmallBits/LittleLoadingBar'
 import LoadingBar from './SmallBits/LoadingBar'
 import MenuDiv from './SmallBits/MenuDiv'
@@ -38,6 +39,7 @@ export {
 
   CircularLoading,
   DatePicker,
+  EmojiSelect,
   LittleLoadingBar,
   LoadingBar,
   MenuDiv,

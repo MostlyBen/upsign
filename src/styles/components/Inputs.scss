@@ -109,6 +109,47 @@
 	user-select: none;
 }
 
+.flag-emoji-offset {
+	position: relative;
+	margin-left: 0.5rem;
+}
+
+.emoji-select-list {
+	position: absolute;
+	z-index: 1;
+}
+
+.emoji-picker-react {
+	@include themify($themes) {
+		background-color: themed('surface');
+		color: themed('onSurface')
+	}
+	border: 0px;
+}
+
+.emoji-select-list > aside {
+	border-radius: 4px;
+	@include themify($themes) {
+		border: 0px;
+		-webkit-box-shadow:  5px 5px 10px themed('nmShadowDark'),
+												-5px -5px 10px themed('nmShadowLight');
+						box-shadow:  5px 5px 10px themed('nmShadowDark'),
+												-5px -5px 10px themed('nmShadowLight');
+	}
+}
+
+// Add horizontal padding to emoji reaction list
+.emoji-select-list > aside > ul {
+	padding: 0 12px;
+}
+// Scale down reaction emojis, but not plus button
+.emoji-select-list > aside > ul > li:not(:last-child) {
+	transform: scale(0.75);
+}
+// Icon was in the wrong place
+.epr-icn-search {
+	display: none;
+}
 .icon-button-offset {
 	@include themify($themes) {
 		color: themed('onSurface');

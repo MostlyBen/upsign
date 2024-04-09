@@ -72,6 +72,11 @@ table.highlight > tbody > tr:hover {
 	}
 }
 
+// Emoji
+.enrollment-name-cell > button {
+	margin: 2px 0 0 6px !important;
+}
+
 .user-name-list-name {
 	display: block;
 	cursor: pointer;

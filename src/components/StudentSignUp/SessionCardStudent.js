@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Emoji } from 'emoji-picker-react'
 
 import {
   enrollStudent,
@@ -8,6 +9,7 @@ import {
 const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed, userEnrollments, locked }) => {
   const [ isFull, setIsFull ] = useState(false)
   const [ isEnrolled, setIsEnrolled ] = useState(false)
+  const [ enrollmentFlag, setEnrollmentFlag ] = useState()
   const [ isEnabled, setIsEnabled ] = useState(true)
 
   const handleClick = (enrolled) => {
@@ -46,9 +48,12 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
 
   useEffect(() => {
     setIsEnrolled(false)
+    setEnrollmentFlag(null)
+
     for (var e of userEnrollments) {
       if ( String(e.session_id) === String(session.id) ) {
         setIsEnrolled(true)
+        setEnrollmentFlag(e.flag)
       }
     }
   }, [userEnrollments, session.id])
@@ -116,7 +121,14 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
       <div className={`card session-card selectable-card ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''} ${isEnabled ? '' : 'not-enabled'}`} onClick={() => handleClick(isEnrolled)}>
         <div className={`session-card-content ${isEnrolled ? 'is-enrolled' : ''} ${isFull ? 'is-full' : ''}`}>
           {/* Title */}
-          <h1>{session.title} {(locked && signupAllowed) ? <span className={`material-icons student-lock`} style={{transform: 'translateY(4px)'}}>lock</span> : ''}</h1>
+          <h1>
+            {/* Flag */}
+            {enrollmentFlag && <span style={{marginRight: '6px', transform: 'translateY(3px)', display: 'inline-block'}}>
+              <Emoji unified={enrollmentFlag ?? "1f389"} size="24" />
+            </span>}
+            {/* Title */}
+            {session.title} {(locked && signupAllowed) ? <span className={`material-icons student-lock`} style={{transform: 'translateY(4px)'}}>lock</span> : ''}
+          </h1>
           {(session.subtitle && session.subtitle !== "undefined") && <h2 style={{opacity: 0.8}}>{session.subtitle}</h2>}
           <hr style={{ margin: '1rem 0' }} />
           <h2>{session.teacher ?? 'No Teacher'}</h2>
