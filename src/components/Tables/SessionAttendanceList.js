@@ -84,13 +84,13 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
             <Emoji unified={enrollment.flag ?? "1f389"} size="16" />
           </button>
         : <span
-            className="material-icons icon-button-offset"
+            className="material-icons-outlined icon-button-offset"
             onClick={() => setReactionOpen(o => !o)}
             style={{
               opacity: showRemove,
               userSelect: 'none',
             }}
-          >flag</span>
+          >add_reaction</span>
         }
 
         <span
