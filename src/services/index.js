@@ -13,8 +13,10 @@ import setSessionTimes from "./config/setSessionTimes";
 
 // Data
 import getDefaultDay from "./data/getDefaultDay";
+import getDefaultReactions from './data/getDefaultReactions';
 import getSchoolName from "./data/getSchoolName";
 import setDefaultDay from "./data/setDefaultDay";
+import setDefaultReactions from "./data/setDefaultReactions";
 import setSchoolName from "./data/setSchoolName";
 
 // Enrollment
@@ -62,8 +64,10 @@ export {
   setSessionTimes,
   // Data
   getDefaultDay,
+  getDefaultReactions,
   getSchoolName,
   setDefaultDay,
+  setDefaultReactions,
   setSchoolName,
   // Enrollment
   enrollStudent,

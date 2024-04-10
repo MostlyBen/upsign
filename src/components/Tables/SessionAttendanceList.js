@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Emoji } from 'emoji-picker-react'
 import { query, collection, onSnapshot } from "@firebase/firestore"
 import {
+  getDefaultReactions,
   getSessionEnrollments,
   unenrollFromSession,
   updateEnrollment,
@@ -12,6 +13,16 @@ import { EmojiSelect, LittleLoadingBar } from "../"
 const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const [showRemove, setShowRemove] = useState(0)
   const [reactionOpen, setReactionOpen] = useState(false)
+  const [reactions, setReactions] = useState()
+
+  // Update the reactions list
+  useEffect(() => {
+    const updateReactions = async () => {
+      const _reactions = await getDefaultReactions(db)
+      setReactions(_reactions)
+    }
+    updateReactions()
+  }, [db])
 
   // Un-dims the row when the update comes through
   useEffect(() => {
@@ -77,7 +88,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
         style={{padding: "0 0 0 1.5rem", textAlign: "left"}}
       >
         {enrollment.nickname ?? enrollment.name}
-        <EmojiSelect open={reactionOpen} onSubmit={handleClickEmoji} />
+        <EmojiSelect open={reactionOpen} onSubmit={handleClickEmoji} reactions={reactions} />
 
         {enrollment.flag
         ? <button className="remove-btn-styling" onClick={() => handleRemoveFlag()} style={{transform: "translateY(2px)"}}>

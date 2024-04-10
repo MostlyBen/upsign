@@ -1,31 +1,57 @@
 import { useState, useEffect } from "react"
+import { Emoji } from 'emoji-picker-react'
 import {
   getSignupAllowed,
   setSignupAllowed,
   getDefaultDay,
   setDefaultDay,
+  getDefaultReactions,
+  setDefaultReactions,
   getSchoolName,
   setSchoolName,
 } from '../../../services'
-import { LoadingBar, MenuDiv } from "../../";
+import { LoadingBar, MenuDiv, EmojiSelect } from "../../";
 
 import M from "materialize-css";
+
+const ReactionButton = ({ reaction, onRemove }) => {
+  const [hovering, setHovering] = useState(false)
+
+  return (
+    <div
+      onPointerEnter={() => setHovering(true)}
+      onPointerLeave={() => setHovering(false)}
+      style={{ display: 'inline-block', margin: '0 6px', position: 'relative' }}
+    >
+      <Emoji key={reaction} unified={reaction} size="24" />
+      <button
+        className="remove-btn-styling"
+        style={{ position: 'absolute', right: '-8px', top: '-8px', opacity: hovering ? 1 : 0}}
+        onClick={() => onRemove(reaction)}
+      ><span className="material-icons">close</span></button>
+    </div>
+  )
+}
 
 const General = ({ db }) => {
   const [loading, setLoading] = useState(true)
   const [studentSign, setStudentSign] = useState(true)
   const [defaultDayState, setDefaultDayState] = useState('')
   const [schoolNameState, setSchoolNameState] = useState('')
+  const [defaultReactions, setDefaultReactionsState] = useState([])
+  const [reactionsOpen, setReactionsOpen] = useState(false)
   const [nameMatch, setNameMatch] = useState(true)
 
   const updateSettings = async () => {
     const studentSignupSetting = await getSignupAllowed(db)
     const defaultDaySetting = await getDefaultDay(db, null, true)
     const schoolNameSetting = await getSchoolName(db)
+    const _defaultReactions = await getDefaultReactions(db)
 
     setStudentSign(studentSignupSetting)
     setDefaultDayState(defaultDaySetting)
     setSchoolNameState(schoolNameSetting)
+    setDefaultReactionsState(_defaultReactions)
     setLoading(false)
   }
 
@@ -78,6 +104,20 @@ const General = ({ db }) => {
     var value = elem.value
     setDefaultDay(db, value)
     setDefaultDayState(value)
+  }
+
+  const handleAddReaction = async (reaction) => {
+    const newReactions = [...defaultReactions, reaction]
+    console.log("New reactions:", newReactions)
+    setDefaultReactionsState(newReactions)
+    await setDefaultReactions(db, newReactions)
+  }
+
+  const handleRemoveReaction = async (reaction) => {
+    const newReactions = defaultReactions.filter(r => r !== reaction)
+    console.log("New reactions:", newReactions)
+    setDefaultReactionsState(newReactions)
+    await setDefaultReactions(db, newReactions)
   }
 
   if (loading) {
@@ -167,6 +207,31 @@ const General = ({ db }) => {
             <option value="saturday">Saturday</option>
           </select>
         </div>
+      </div>
+
+      {/* Reactions */}
+      <div>
+        <h2>Reactions</h2>
+        <div>
+          {Array.isArray(defaultReactions) && 
+          defaultReactions.map((reaction, i) =>
+            <ReactionButton
+              key={i}
+              reaction={reaction}
+              onRemove={handleRemoveReaction}
+            />
+          )}
+
+          <button
+            className="remove-btn-styling"
+            onClick={() => setReactionsOpen(o => !o)}
+            style={{ margin: '0 0 0 6px' }}
+          >
+            <span className="material-icons">{reactionsOpen ? 'close' : 'add'}</span>
+          </button>
+        </div>
+        
+        <EmojiSelect reactionsOpen={false} open={reactionsOpen} onSubmit={handleAddReaction} />
       </div>
 
       <div style={{height: "3rem"}} />

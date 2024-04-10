@@ -1,7 +1,7 @@
 import EmojiPicker from 'emoji-picker-react';
 
 
-const EmojiSelect = ({ open, onSubmit }) => {
+const EmojiSelect = ({ open, onSubmit, reactions, reactionsOpen=true }) => {
 
   const handleClickEmoji = (e) => {
     console.log("Emoji clicked!:", e)
@@ -13,14 +13,14 @@ const EmojiSelect = ({ open, onSubmit }) => {
       <EmojiPicker
         onReactionClick={handleClickEmoji}
         onEmojiClick={handleClickEmoji}
-        reactionsDefaultOpen="true"
+        reactionsDefaultOpen={(Array.isArray(reactions) && !reactions.length) ? false : reactionsOpen}
         skinTonesDisabled="true"
         lazyLoadEmojis="true"
         emojiStyle="apple"
         theme="auto"
         previewConfig={{showPreview: false}}
         open={open}
-        reactions={[
+        reactions={reactions ?? [
           "1f389", // 🎉
           "1f90f", // 🤏
           "1f345", // 🍅

@@ -47,7 +47,7 @@ const renderHours = (db, selectedDate, numberSessions, sessionTimes, sessions, u
 
   return (<>
     {hourArr.map(hour => {
-      return <SessionHolder db={db} selectedDate={selectedDate} hour={hour} sessionTimes={sessionTimes} sessions={sessions[String(hour)]} user={user} />
+      return <SessionHolder db={db} selectedDate={selectedDate} hour={hour} key={`hour-${hour}`} sessionTimes={sessionTimes} sessions={sessions[String(hour)]} user={user} />
     })}
   </>)
 }
