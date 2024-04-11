@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { collection,onSnapshot } from "firebase/firestore";
 import areEqual from 'deep-equal'
 import { getAllStudents, getGroupOptions, getUser, updateUser } from "../../../services"
@@ -12,6 +12,28 @@ const StudentGroups = ({ db }) => {
   const [allStudents, setAllStudents] = useState([])
 
   const schoolId = getSchoolId()
+
+  const GroupSelect = useMemo(() => {
+    return (
+      <select
+        id={`group-select`}
+        className="btn group-dropdown"
+        onChange={(e) => setSelectedGroup(e.target.value)}
+      >
+        {groupOptions.map(option => {
+          return (
+            <option
+              value={option}
+              key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
+              selected={option === selectedGroup}
+            >
+              {option}
+            </option>
+          )
+        })}
+      </select>
+    )
+  }, [db])
 
   const updateGroupOptions = async () => {
     const options = await getGroupOptions(db)
@@ -32,12 +54,6 @@ const StudentGroups = ({ db }) => {
   useEffect(() => {
     updateGroupOptions()
     getStudents()
-
-    // --------------- FOR LATER ---------------
-    // Use the next 3 lines to re-initialize if list is updated (untested)
-    // var instance = M.Dropdown.getInstance(elem);
-    // instance.destroy()
-    M.AutoInit()
 
     const usersRef = collection(db, "schools", schoolId, "users")
 
