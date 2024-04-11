@@ -82,34 +82,24 @@ const StudentGroups = ({ db }) => {
   return (
     <div>
       <h1 style={{marginBottom: "1rem"}}>Student Groups</h1>
-      
-      {/* <!-- Dropdown Trigger --> */}
-      <div
-        className='dropdown-trigger btn group-dropdown'
-        data-target='option-dropdown'
-      >
-        {selectedGroup.length > 0 ? selectedGroup : "Select Group"}
-        <span
-          className="material-icons"
-          style={{position: "relative", top: "0.45rem", margin: "0 0 -0.5rem 0.25rem"}}
-        >
-          expand_more
-        </span>
-      </div>
 
-      {/* <!-- Dropdown Structure --> */}
-      <ul id='option-dropdown' className='dropdown-content'>
+      <select
+        id={`group-select`}
+        className="btn group-dropdown"
+        onChange={(e) => setSelectedGroup(e.target.value)}
+      >
         {groupOptions.map(option => {
           return (
-            <li key={`dropdown-item-${option}-${Math.floor(Math.random() * 10000)}`}><a
-              href="#!"
-              className={option === selectedGroup ? "bold" : ""}
-              onClick={() => setSelectedGroup(option)}
+            <option
+              value={option}
+              key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
+              selected={option === selectedGroup}
             >
               {option}
-            </a></li>)
+            </option>
+          )
         })}
-      </ul>
+      </select>
 
       {/* Student List */}
       <div className="collection" style={{maxHeight: "50vh", overflowY: "auto"}}>
