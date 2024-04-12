@@ -1,10 +1,8 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { collection,onSnapshot } from "firebase/firestore";
 import areEqual from 'deep-equal'
 import { getAllStudents, getGroupOptions, getUser, updateUser } from "../../../services"
 import { getSchoolId } from '../../../utils';
-import M from "materialize-css";
-
 
 const StudentGroups = ({ db }) => {
   const [groupOptions, setGroupOptions] = useState([])
@@ -12,28 +10,6 @@ const StudentGroups = ({ db }) => {
   const [allStudents, setAllStudents] = useState([])
 
   const schoolId = getSchoolId()
-
-  const GroupSelect = useMemo(() => {
-    return (
-      <select
-        id={`group-select`}
-        className="btn group-dropdown"
-        onChange={(e) => setSelectedGroup(e.target.value)}
-      >
-        {groupOptions.map(option => {
-          return (
-            <option
-              value={option}
-              key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
-              selected={option === selectedGroup}
-            >
-              {option}
-            </option>
-          )
-        })}
-      </select>
-    )
-  }, [db])
 
   const updateGroupOptions = async () => {
     const options = await getGroupOptions(db)
