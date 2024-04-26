@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { Emoji } from 'emoji-picker-react'
 import { query, collection, onSnapshot } from "@firebase/firestore"
 import {
@@ -14,7 +14,6 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const [showRemove, setShowRemove] = useState(0)
   const [reactionOpen, setReactionOpen] = useState(false)
   const [reactions, setReactions] = useState()
-  const rowEl = useRef(null)
 
   // Update the reactions list
   useEffect(() => {
