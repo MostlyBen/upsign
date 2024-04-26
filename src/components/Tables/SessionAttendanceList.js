@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Emoji } from 'emoji-picker-react'
 import { query, collection, onSnapshot } from "@firebase/firestore"
 import {
@@ -14,6 +14,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
   const [showRemove, setShowRemove] = useState(0)
   const [reactionOpen, setReactionOpen] = useState(false)
   const [reactions, setReactions] = useState()
+  const rowEl = useRef(null)
 
   // Update the reactions list
   useEffect(() => {
@@ -80,7 +81,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }) => {
       className="student-name"
       id={`enrollment-row-${session.id}-${enrollment.uid}`}
       key={`${enrollment.uid}-${session.id}`}
-      onMouseEnter={handleMouseEnter}
+      onMouseOver={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <td
