@@ -9,7 +9,7 @@ const EmojiSelect = ({ open, onSubmit, reactions, reactionsOpen=true }) => {
   }
 
   return (
-    <div className="emoji-select-list">
+    <div className="emoji-select-list" style={{padding: '18px', display: open ? '' : 'none', transform: 'translateY(-12px)'}}>
       <EmojiPicker
         onReactionClick={handleClickEmoji}
         onEmojiClick={handleClickEmoji}
