@@ -146,6 +146,20 @@
 .emoji-select-list > aside > ul > li:not(:last-child) {
 	transform: scale(0.75);
 }
+// Themify emoji picker category label
+.epr-emoji-category-label {
+	@include themify($themes) {
+		background: themed('surface');
+		color: themed('onSurface');
+	}
+}
+// Themify emoji picker button hover state bg
+.epr-btn:hover {
+	@include themify($themes) {
+		background-color: themed('surfaceVariant');
+	}
+}
+
 // Icon was in the wrong place
 .epr-icn-search {
 	display: none;
