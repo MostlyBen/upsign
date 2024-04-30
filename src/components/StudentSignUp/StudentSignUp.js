@@ -65,7 +65,7 @@ const StudentSignUp = (props) => {
   }
 
   const updateSignupAllowed = async () => {
-    const allowed = await getSignupAllowed(db)
+    const allowed = await getSignupAllowed(db, null, selectedDate)
     setSignupAllowed(allowed)
   }
 
@@ -141,6 +141,8 @@ const StudentSignUp = (props) => {
     const unsubscribe = onSnapshot(enrQuery, () => {
       updateUserEnrollments(db, selectedDate)
     })
+
+    updateSignupAllowed()
 
     return () => unsubscribe()
   // eslint-disable-next-line react-hooks/exhaustive-deps
