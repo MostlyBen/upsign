@@ -43,6 +43,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
           }
           
           if (!_locked) {
+            setLocked(false)
             allSessions.push({
               id: d.id,
               ...d.data()
