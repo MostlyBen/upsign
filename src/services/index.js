@@ -36,6 +36,7 @@ import addTeacherSession from "./sessions/addTeacherSession";
 import getHourSessions from "./sessions/getHourSessions";
 import getTeacherSessions from "./sessions/getTeacherSessions";
 import getUnsignedStudents from "./sessions/getUnsignedStudents";
+import removeTeacherSession from "./sessions/removeTeacherSession";
 import unenrollFromSession from "./enrollment/unenrollFromSession";
 import updateSession from "./sessions/updateSession";
 
@@ -86,6 +87,7 @@ export {
   getHourSessions,
   getTeacherSessions,
   getUnsignedStudents,
+  removeTeacherSession,
   updateSession,
   // User
   deleteUser,

@@ -10,7 +10,13 @@ const SessionHolder = ({ db, selectedDate, hour, sessionTimes, sessions, user })
       {sessions.map(s => {
         return (
           <div key={`teacher-card-${s.id}`} className="row card session-card is-enrolled teacher-card">
-            <SessionEditor session={s} db={db} date={selectedDate} user={user} />
+            <SessionEditor
+              session={s}
+              db={db}
+              date={selectedDate}
+              user={user}
+              hideRemove={sessions.filter(t => t.session === s.session).length === 1}
+            />
           </div>
         )})}
   </div>

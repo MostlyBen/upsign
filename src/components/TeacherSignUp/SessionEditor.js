@@ -17,7 +17,7 @@ import { SessionAttendanceList, SessionOptions } from '../'
 
 import { getSchoolId } from "../../utils"
 
-const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions }) => {
+const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, hideRemove }) => {
   const loaderData = useLoaderData()
   let groupList = useRef(groupOptions.length ? groupOptions : loaderData.groupOptions)
 
@@ -172,7 +172,15 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions }
         <button className="session-more-btn btn btn-floating btn-flat more-btn-clickbox" onClick={handleClickOptions}>
           <i className="material-icons session-more-btn-icon more-btn-clickbox">more_vert</i>
         </button>
-        <SessionOptions db={db} date={date} session={session.session} show={showOptions} user={user} />
+        <SessionOptions
+          db={db}
+          date={date}
+          session={session.session}
+          sessionId={session.id}
+          show={showOptions}
+          user={user}
+          hideRemove={hideRemove}
+        />
       </>}
 
       {/* Session Info */}
