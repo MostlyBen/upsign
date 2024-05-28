@@ -7,6 +7,7 @@ import {
   getSessionTimes,
   getNumberSessions,
   getTeacherSessions,
+  getSessionTitles,
   getDefaultDay,
 } from "../../services";
 import {
@@ -39,7 +40,7 @@ const TopMessage = ({ user }) => {
 }
 
 // Clunky, but it gets the job done
-const renderHours = (db, selectedDate, numberSessions, sessionTimes, sessions, user) => {
+const renderHours = (db, selectedDate, numberSessions, sessionTimes, sessionTitles, sessions, user) => {
   var hourArr = []
   for (let i = 1; i < numberSessions + 1; i++) {
     hourArr.push(i)
@@ -47,7 +48,18 @@ const renderHours = (db, selectedDate, numberSessions, sessionTimes, sessions, u
 
   return (<>
     {hourArr.map(hour => {
-      return <SessionHolder db={db} selectedDate={selectedDate} hour={hour} key={`hour-${hour}`} sessionTimes={sessionTimes} sessions={sessions[String(hour)]} user={user} />
+      return (
+        <SessionHolder
+          db={db}
+          selectedDate={selectedDate}
+          hour={hour}
+          key={`hour-${hour}`}
+          sessionTimes={sessionTimes}
+          sessionTitles={sessionTitles}
+          sessions={sessions[String(hour)]}
+          user={user}
+        />
+      )
     })}
   </>)
 }
@@ -60,6 +72,7 @@ const TeacherSignUp = ({ db, user }) => {
   const [numberSessions, setNumberSessions] = useState(1)
   const [selectedDate, setSelectedDate] = useState()
   const [sessionTimes, setSessionTimes] = useState([])
+  const [sessionTitles, setSessionTitles] = useState()
 
   const schoolId = getSchoolId()
 
@@ -71,6 +84,11 @@ const TeacherSignUp = ({ db, user }) => {
   const updateNumberSessions = async (db) => {
     const newNumber = await getNumberSessions(db, selectedDate)
     setNumberSessions(newNumber)
+  }
+
+  const updateSessionTitles = async (db) => {
+    const newTitles = await getSessionTitles(db, selectedDate)
+    setSessionTitles(newTitles)
   }
 
   // Initialize the observer
@@ -87,6 +105,7 @@ const TeacherSignUp = ({ db, user }) => {
       const unsubscribe = onSnapshot(d, () => {
         updateSessionTimes(db)
         updateNumberSessions(db)
+        updateSessionTitles(db)
       })
       
       return () => unsubscribe()
@@ -178,7 +197,7 @@ const TeacherSignUp = ({ db, user }) => {
       </div>
 
       <div className="teacher-sessions">
-          {renderHours(db, selectedDate, numberSessions, sessionTimes, sessions, user)}
+          {renderHours(db, selectedDate, numberSessions, sessionTimes, sessionTitles, sessions, user)}
         <SettingsButton />
       </div>
     </div>

@@ -3,6 +3,7 @@ import allowStudentRegister from "./config/allowStudentRegister";
 import getDomainRestriction from "./config/domainRestriction/getDomainRestriction";
 import getNumberSessions from "./config/getNumberSessions";
 import getSessionTimes from "./config/getSessionTimes";
+import getSessionTitles from "./config/getSessionTitles";
 import getSignupAllowed from "./config/signupAllowed/getSignupAllowed";
 import getTeacherRegisterAllowed from "./config/teacherRegister/getTeacherRegisterAllowed";
 import setDomainRestriction from "./config/domainRestriction/setDomainRestriction";
@@ -56,6 +57,7 @@ export {
   getDomainRestriction,
   getNumberSessions,
   getSessionTimes,
+  getSessionTitles,
   getSignupAllowed,
   getTeacherRegisterAllowed,
   setDomainRestriction,
