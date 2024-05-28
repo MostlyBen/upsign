@@ -1,6 +1,18 @@
+import { useState, useEffect } from "react";
 import { addTeacherSession, removeTeacherSession } from "../../services";
 
-const SessionMenu = ({ db, date, user, session, sessionId, show, hideRemove }) => {
+const SessionOptions = ({ db, date, user, session, sessionId, show, hideRemove }) => {
+  const [shouldRender, setShouldRender] = useState(show);
+
+  useEffect(() => {
+    if (show) {
+      setShouldRender(true)
+    } else {
+      setTimeout(() => {
+        setShouldRender(false)
+      }, 500)
+    }
+  }, [show])
 
   const handleAddSession = async () => {
     await addTeacherSession(db, date, user, session)
@@ -10,12 +22,12 @@ const SessionMenu = ({ db, date, user, session, sessionId, show, hideRemove }) =
     await removeTeacherSession(db, date, sessionId)
   }
 
-  if (!show) {
-    return <></>
-  }
-
   return (
-    <div className={`session-options-menu scale-transition ${show ? 'scale-in': 'scale-out'}`}>
+    <div className={`session-options-menu scale-transition ${show ? 'scale-in': 'scale-out'}`}
+      style={{
+        display: shouldRender ? '' : 'none',
+      }}
+    >
       <button
         className="btn-flat session-option-btn"
         onClick={handleAddSession}
@@ -34,4 +46,4 @@ const SessionMenu = ({ db, date, user, session, sessionId, show, hideRemove }) =
   )
 }
 
-export default SessionMenu
+export default SessionOptions
