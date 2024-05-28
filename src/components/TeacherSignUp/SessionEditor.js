@@ -23,6 +23,8 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, 
 
   const [title, setTitle] = useState(session.title ?? "")
   const [savedTitle, setSavedTitle] = useState(session.title ?? "")
+  const [teacher, setTeacher] = useState(session.teacher ?? "")
+  const [savedTeacher, setSavedTeacher] = useState(session.teacher ?? "")
   const [subtitle, setSubtitle] = useState(session.subtitle ?? "")
   const [savedSubtitle, setSavedSubtitle] = useState(session.subtitle ?? "")
   const [room, setRoom] = useState(session.room ?? "")
@@ -89,12 +91,17 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, 
   /* BLUR HANDLERS */
   const handleBlurTitle = () => {
     if (savedTitle !== title) {
-      handleChangeTitle({target:{value:savedTitle}});
+      handleChangeTitle({target:{value:session.title}});
     }
   }
   const handleBlurSubtitle = () => {
     if (savedSubtitle !== session.subtitle) {
       handleChangeSubtitle({target:{value:session.subtitle}});
+    }
+  }
+  const handleBlurTeacher = () => {
+    if (savedTeacher !== session.teacher) {
+      handleChangeTeacher({target:{value:session.teacher}})
     }
   }
 
@@ -106,6 +113,14 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, 
     var title = String(e.target.value);
     updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {title: title});
     session.title = title;
+  }
+
+  const handleChangeTeacher = (e) => {
+    setTeacher(e.target.value);
+
+    var teacher = String(e.target.value);
+    updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {teacher: teacher});
+    session.teacher = teacher;
   }
 
   const handleChangeSubtitle = (e) => {
@@ -220,7 +235,19 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, 
 
         {/* Teacher */}
         <div className="col s12">
-          <h2 style={{margin: '0 0 12px 0'}}>{session.teacher}</h2>
+          <DebounceInput
+            className="mimic-card-h2"
+            id={`session-teacher-${session.id}`}
+            type="text"
+            value={teacher}
+            onChange={handleChangeTeacher}
+            autoComplete="off"
+            placeholder="Teacher"
+            minLength={0}
+            debounceTimeout={1200}
+            onBlur={handleBlurTeacher}
+            style={{margin: '0 0 12px 0', height: 'auto', padding: '4px 0'}}
+          />
         </div>
 
         {/* Room */}
