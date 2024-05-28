@@ -10,7 +10,7 @@ const SessionOptions = ({ db, date, user, session, sessionId, show, hideRemove }
     } else {
       setTimeout(() => {
         setShouldRender(false)
-      }, 500)
+      }, 100)
     }
   }, [show])
 
