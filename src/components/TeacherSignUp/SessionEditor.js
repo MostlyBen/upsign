@@ -62,7 +62,8 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, 
           var updatedSession = d.data();
 
           setSavedTitle(updatedSession.title ?? '');
-          setSavedSubtitle(updatedSession.subtitle ?? '')
+          setSavedSubtitle(updatedSession.subtitle ?? '');
+          setSavedTeacher(updatedSession.teacher ?? '');
           setRoom(updatedSession.room ?? '');
           setCapacity(updatedSession.capacity ?? 30);
           session.restricted_to = updatedSession.restricted_to;
