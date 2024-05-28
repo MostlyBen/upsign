@@ -230,7 +230,7 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, 
             minLength={0}
             debounceTimeout={1200}
             onBlur={handleBlurSubtitle}
-            style={{marginBottom: '6px', height: '2.5rem'}}
+            style={{marginBottom: '0', height: '2.5rem'}}
           />
         </div>
 
