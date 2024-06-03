@@ -7,6 +7,7 @@ import {
   getSignupAllowed,
   getStudentEnrollments,
   getUser,
+  getSessionTitles,
 } from "../../services";
 import {
   observeTopIntersect,
@@ -44,12 +45,13 @@ const StudentSignUp = (props) => {
   const db = props.db;
   const user = props.user;
 
-  const [ sessionArray, setSessionArray ]      = useState([])
-  const [ selectedDate, setSelectedDate ]      = useState(new Date())
-  const [ numberSessions, setNumberSessions ]  = useState(1)
-  const [ sessionTimes, setSessionTimes ]      = useState([])
-  const [ signupAllowed, setSignupAllowed ]    = useState(false)
-  const [ userDoc, setUserDoc ]                = useState({})
+  const [ sessionArray, setSessionArray ]       = useState([])
+  const [ selectedDate, setSelectedDate ]       = useState(new Date())
+  const [ numberSessions, setNumberSessions ]   = useState(1)
+  const [ sessionTimes, setSessionTimes ]       = useState([])
+  const [ sessionTitles, setSessionTitles ]       = useState();
+  const [ signupAllowed, setSignupAllowed ]     = useState(false)
+  const [ userDoc, setUserDoc ]                 = useState({})
   const [ userEnrollments, setUserEnrollments ] = useState([])
 
   const schoolId = getSchoolId()
@@ -59,9 +61,14 @@ const StudentSignUp = (props) => {
     setNumberSessions(newNumber)
   }
 
-  const updateSessionTimes = async (db) => {
+  const updateSessionTimes = async (db, selectedDate) => {
     const newTimes = await getSessionTimes(db, selectedDate)
     setSessionTimes(newTimes)
+  }
+
+  const updateSessionTitles = async (db, selectedDate) => {
+    const newTitles = await getSessionTitles(db, selectedDate)
+    setSessionTitles(newTitles)
   }
 
   const updateSignupAllowed = async () => {
@@ -153,7 +160,8 @@ const StudentSignUp = (props) => {
     // Set up snapshot & load the times of the sessions
     const d = doc(db, "schools", schoolId ?? "museum", "config", "sessions")
     const unsubscribe = onSnapshot(d, () => {
-      updateSessionTimes(db)
+      updateSessionTimes(db, selectedDate)
+      updateSessionTitles(db, selectedDate)
       updateNumberSessions(db, selectedDate)
     })
 
@@ -186,6 +194,7 @@ const StudentSignUp = (props) => {
                                         db={db}
                                         selectedDate={selectedDate}
                                         sessionTime={sessionTimes[index]}
+                                        sessionTitle={Array.isArray(sessionTitles) ? sessionTitles[index] : null}
                                         signupAllowed={signupAllowed}
                                         schoolId={schoolId}
                                         userEnrollments={userEnrollments}

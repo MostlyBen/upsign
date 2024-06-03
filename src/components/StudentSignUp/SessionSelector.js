@@ -9,7 +9,7 @@ import {
 import SessionCardStudent from "./SessionCardStudent"
 import { LittleLoadingBar } from "../"
 
-const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupAllowed, schoolId, userEnrollments }) => {
+const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, sessionTitle, signupAllowed, schoolId, userEnrollments }) => {
   const [ hourSessions, setHourSessions ] = useState([])
   const [ loading, setLoading ] = useState(true)
   const [ locked, setLocked ] = useState(false)
@@ -77,7 +77,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, signupA
   
   return (
     <div className="session-selector-container row">
-      <h4>Session {hour}
+      <h4>{sessionTitle ?? `Session ${hour}`}
         <span className="session-time"> {sessionTime ? '('+sessionTime+')': ''}</span>
       </h4>
       <hr />
