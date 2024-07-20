@@ -13,6 +13,7 @@ import {
   getHourEnrollments,
   getHourSessions,
   getAllStudents,
+  getSessionTitles,
 } from "../../services"
 
 import {
@@ -41,6 +42,8 @@ const AllSessionOverview = ({ db }) => {
   const [ totalCapacity, setTotalCapacity ]       = useState(0)
   const [ loading, setLoading ]                   = useState(true)
   const [ allStudents, setAllStudents ]           = useState()
+  const [ sessionTitles, setSessionTitles ]       = useState()
+  const [ sessionTitle, setSessionTitle ]         = useState(`Session ${hour}`)
 
   const schoolId = getSchoolId()
 
@@ -56,7 +59,18 @@ const AllSessionOverview = ({ db }) => {
     }
   }
 
-  const loadEnrollments = async (db) => {
+  const loadSessionTitles = async (_db, _selectedDate) => {
+    const newTitles = await getSessionTitles(_db, _selectedDate)
+
+    if (Array.isArray(newTitles)) {
+      setSessionTitles([...newTitles])
+      return
+    }
+
+    setSessionTitles(null)
+  }
+
+  const loadEnrollments = async (db, selectedDate) => {
     const e = await getHourEnrollments(db, selectedDate, hour)
     setEnrollments( [...e] )
   }
@@ -70,6 +84,22 @@ const AllSessionOverview = ({ db }) => {
     getAllStudents(db, true).then(r => { setAllStudents(r) })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db])
+
+  // Session Titles
+  useEffect(() => {
+    loadSessionTitles(db, selectedDate)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db, selectedDate])
+
+  useEffect(() => {
+    if (Array.isArray(sessionTitles) && hour <= sessionTitles.length) {
+      setSessionTitle(sessionTitles[hour - 1])
+      return
+    }
+
+    setSessionTitle(`Session ${hour}`)
+  }, [sessionTitles, hour, selectedDate])
+
   // SESSIONS: Load & subscribe to updates
   useEffect(() => {
     setLoading(true)
@@ -148,7 +178,7 @@ const AllSessionOverview = ({ db }) => {
         <h3
           className="all-sessions-heading"
           >
-            Session
+            {sessionTitle}
             <span className="total-capacity">
               Total Capacity: 
               {` ${totalCapacity}`}
