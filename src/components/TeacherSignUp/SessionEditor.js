@@ -165,6 +165,7 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, 
             id={`group-select-${session.id}`}
             className='btn group-dropdown'
             onChange={handleRestrict}
+            value={session.restricted_to}
           >
             <option value="">All Students</option>
             {groupList.current.map((option) => {
@@ -172,7 +173,6 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, 
                 <option
                   value={option}
                   key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
-                  selected={option === session.restricted_to}
                 >{option}</option>
               )
             })}
