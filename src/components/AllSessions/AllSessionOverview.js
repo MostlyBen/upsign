@@ -70,8 +70,8 @@ const AllSessionOverview = ({ db }) => {
     setSessionTitles(null)
   }
 
-  const loadEnrollments = async (db, selectedDate) => {
-    const e = await getHourEnrollments(db, selectedDate, hour)
+  const loadEnrollments = async (_db, _selectedDate) => {
+    const e = await getHourEnrollments(_db, _selectedDate, hour)
     setEnrollments( [...e] )
   }
 
@@ -139,7 +139,7 @@ const AllSessionOverview = ({ db }) => {
                   )
                 );
     const unsubscribe = onSnapshot(eQuery, () => {
-      loadEnrollments(db)
+      loadEnrollments(db, selectedDate)
     })
 
     return () => unsubscribe()
