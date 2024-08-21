@@ -7,9 +7,8 @@ import M from 'materialize-css';
 import StudentName from "./StudentName"
 import { SessionEditor } from "../"
 
-const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) => {
+const SessionCard = ({ db, date, session, groupFilter, attendanceFilter, groupOptions, allStudents }) => {
   const [filteredEnrollment, setFilteredEnrollment] = useState(session.enrollment)
-  // const [allStudentRef, setAllStudentRef] = useState()
   const [showOpen, setShowOpen] = useState(false)
   const [showLock, setShowLock] = useState(false)
 
@@ -22,16 +21,15 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
   }, [])
 
   useEffect(() => {
-    if ( filter !== 'All Students' ) {
-      const s = []
-
+    var _filteredEnrollment = [];
+    if ( groupFilter !== 'All Students' ) {
       if ( Array.isArray(session.enrollment) ) {
 
         for ( var i = 0; i < session.enrollment.length; i++ ) {
           try {
             if (Array.isArray(allStudents[session.enrollment[i].uid].groups)) {
-              if ( allStudents[session.enrollment[i].uid].groups.includes(filter) ) {
-                s.push(session.enrollment[i])
+              if ( allStudents[session.enrollment[i].uid].groups.includes(groupFilter) ) {
+                _filteredEnrollment.push(session.enrollment[i])
               }
             }
           } catch (err) {
@@ -40,13 +38,16 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
         }
         
       }
-
-      setFilteredEnrollment(s)
-
     } else {
-      setFilteredEnrollment(session.enrollment)
+      _filteredEnrollment = session.enrollment
     }
-  }, [filter, allStudents, session, session.enrollment])
+
+    if (Array.isArray(attendanceFilter) && attendanceFilter.length) {
+      _filteredEnrollment = _filteredEnrollment.filter(e => attendanceFilter.includes(e.attendance))
+    }
+
+    setFilteredEnrollment(_filteredEnrollment)
+  }, [groupFilter, attendanceFilter, allStudents, session, session.enrollment])
 
 
   const [monitor, drop] = useDrop(() => ({
@@ -91,11 +92,11 @@ const SessionCard = ({ db, date, session, filter, groupOptions, allStudents }) =
         onMouseEnter={() => { setShowOpen(true) }}
         onMouseLeave={() => { setShowOpen(false) }}
         style={{
-          display: `${filter !== 'All Students' && Array.isArray(filteredEnrollment)
+          display: `${groupFilter !== 'All Students' && Array.isArray(filteredEnrollment)
           ? filteredEnrollment.length > 0
             ? ''
             // FIX ME WHEN MULTIPLE FILTERS CAN BE SET
-            : session.restricted_to === filter ? '' : 'none'
+            : session.restricted_to === groupFilter ? '' : 'none'
           : ''}`,
         }}
       >

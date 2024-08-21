@@ -1,5 +1,11 @@
 @import '../variables/ThemeVariables.scss';
 
+.btn-flat {
+	@include themify($themes) {
+		color: themed('onSurface');
+	}
+}
+
 .logo-menu-btn {
 	display: inline-block;
 	margin-left: 1rem;
@@ -227,7 +233,6 @@
 
 	text-transform: none;
 	width: 100%;
-	margin: 0 0 1.5rem 0;
 	height: 3rem;
 	padding-top: 0.25rem;
 	font-size: 1.25rem;

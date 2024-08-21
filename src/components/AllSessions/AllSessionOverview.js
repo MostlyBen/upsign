@@ -27,6 +27,8 @@ import {
   SettingsButton,
 } from "../"
 
+import AttendanceFilter from "./AttendanceFilter.js"
+
 
 const AllSessionOverview = ({ db }) => {
   const params = useParams()
@@ -44,6 +46,7 @@ const AllSessionOverview = ({ db }) => {
   const [ allStudents, setAllStudents ]           = useState()
   const [ sessionTitles, setSessionTitles ]       = useState()
   const [ sessionTitle, setSessionTitle ]         = useState(`Session ${hour}`)
+  const [ attendanceFilter, setAttendanceFilter ] = useState([])
 
   const schoolId = getSchoolId()
 
@@ -193,7 +196,10 @@ const AllSessionOverview = ({ db }) => {
       </div>
 
       {/* --- BUTTONS --- */}
-      <div className="row">
+      <div
+        className="row"
+        style={{ marginBottom: "10px" }}
+      >
         {/* Group Dropdown Trigger */}
         <div className='col s12 m6'>
           <select
@@ -218,9 +224,17 @@ const AllSessionOverview = ({ db }) => {
         <div className="col s12 m6">
           <DatePicker selectedDate={selectedDate} handleSelectDate={handleSelectDate} />
         </div>
-        
+
       </div>
-      
+
+      <AttendanceFilter
+        selected={attendanceFilter}
+        setSelected={setAttendanceFilter}
+        style={{
+          marginLeft: "11.25px"
+        }}
+      />
+
       {/* Show loading bar if loading */}
       {loading
        ? <LoadingBar />
@@ -252,7 +266,8 @@ const AllSessionOverview = ({ db }) => {
                   date={selectedDate}
                   session={s}
                   hour={hour}
-                  filter={groupFilter}
+                  groupFilter={groupFilter}
+                  attendanceFilter={attendanceFilter}
                   groupOptions={groupOptions}
                   allStudents={allStudents}
                 />

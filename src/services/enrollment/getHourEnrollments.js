@@ -5,7 +5,7 @@ const getHourEnrollments = async (db, date, hour, schoolId=null) => {
   if (schoolId === null) {
     schoolId = getSchoolId()
   }
-  
+
   if (db) {
     const enrRef = collection(
                     db,
