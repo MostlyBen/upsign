@@ -46,7 +46,7 @@ const AllSessionOverview = ({ db }) => {
   const [ allStudents, setAllStudents ]           = useState()
   const [ sessionTitles, setSessionTitles ]       = useState()
   const [ sessionTitle, setSessionTitle ]         = useState(`Session ${hour}`)
-  const [ attendanceFilter, setAttendanceFilter ] = useState([])
+  const [ attendanceFilter, setAttendanceFilter ] = useState(['present', 'tardy', 'absent'])
 
   const schoolId = getSchoolId()
 

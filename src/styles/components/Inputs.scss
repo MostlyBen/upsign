@@ -4,6 +4,15 @@
 	@include themify($themes) {
 		color: themed('onSurface');
 	}
+	&:hover {
+		@include themify($themes) {
+			background-color: themed('surface');
+			-webkit-box-shadow:  5px 5px 10px themed('nmShadowDark'),
+												-5px -5px 10px themed('nmShadowLight');
+						box-shadow:  5px 5px 10px themed('nmShadowDark'),
+												-5px -5px 10px themed('nmShadowLight');
+		}
+	}
 }
 
 .logo-menu-btn {
