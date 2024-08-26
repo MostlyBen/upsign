@@ -68,7 +68,6 @@ const TeacherLinks = ({ showLogoMenu, setShowLogoMenu }) => {
             expand_more
           </span>
         </div>
-        
       </div>
 
       <Link

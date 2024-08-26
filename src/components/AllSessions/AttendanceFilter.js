@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const AttendanceFilter = ({ selected, setSelected, style }) => {
   const [open, setOpen] = useState(false);
@@ -7,6 +7,21 @@ const AttendanceFilter = ({ selected, setSelected, style }) => {
     if (!Array.isArray(selected)) { return true }
     return selected.length === 3 || selected.length === 0;
   }
+
+  useEffect(() => {
+    const clickOffListener = (e) => {
+      if (e.target.id === "attendance-filter-btn") { return }
+      if ( !document.getElementById('attendance-filter-clickbox').contains(e.target) && open) {
+        setOpen(false)
+      }
+    }
+
+    window.addEventListener('click', clickOffListener)
+
+    return (() => {
+      window.removeEventListener('click', clickOffListener)
+    })
+  }, [open])
 
   const handleUpdateSelected = (option) => {
     let _selected = selected;
@@ -24,6 +39,7 @@ const AttendanceFilter = ({ selected, setSelected, style }) => {
 
   return (<>
     <button
+      id="attendance-filter-btn"
       className="btn btn-flat text-on-background attendance-filter-btn"
       onClick={() => setOpen(o => !o)}
       style={
@@ -36,6 +52,7 @@ const AttendanceFilter = ({ selected, setSelected, style }) => {
     </button>
     {open &&
       <div
+        id="attendance-filter-clickbox"
         style={{
           position: "relative",
           top: "0",
