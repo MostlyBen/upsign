@@ -43,7 +43,7 @@ const SessionCard = ({ db, date, session, groupFilter, attendanceFilter, groupOp
     }
 
     if (Array.isArray(attendanceFilter) && attendanceFilter.length) {
-      _filteredEnrollment = _filteredEnrollment.filter(e => attendanceFilter.includes(e.attendance))
+      _filteredEnrollment = _filteredEnrollment.filter(e => (attendanceFilter.includes(e.attendance) || !e.attendance))
     }
 
     setFilteredEnrollment(_filteredEnrollment)
