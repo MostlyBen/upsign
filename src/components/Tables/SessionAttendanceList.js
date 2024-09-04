@@ -167,8 +167,7 @@ const SessionAttendanceList = ({ db, schoolId, date, session }) => {
   const [ enrollments, setEnrollments ] = useState([])
   const [ loading, setLoading ] = useState(true)
 
-  const loadEnrollments = async (db, q) => {
-    console.log("q:", q)
+  const loadEnrollments = async (db) => {
     const sessionEnrollments = await getSessionEnrollments(db, date, session.id)
     setEnrollments(sessionEnrollments)
     setLoading(false)
@@ -189,8 +188,8 @@ const SessionAttendanceList = ({ db, schoolId, date, session }) => {
                   ),
                   where("session_id", "==", session.id)
                 );
-    const unsubscribe = onSnapshot(eQuery, (q) => {
-      loadEnrollments(db, q)
+    const unsubscribe = onSnapshot(eQuery, () => {
+      loadEnrollments(db)
     })
 
     return () => unsubscribe()
