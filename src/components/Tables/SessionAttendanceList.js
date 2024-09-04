@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Emoji } from 'emoji-picker-react'
-import { query, collection, onSnapshot } from "@firebase/firestore"
+import { query, collection, onSnapshot, where } from "@firebase/firestore"
 import {
   getDefaultReactions,
   getSessionEnrollments,
@@ -167,7 +167,8 @@ const SessionAttendanceList = ({ db, schoolId, date, session }) => {
   const [ enrollments, setEnrollments ] = useState([])
   const [ loading, setLoading ] = useState(true)
 
-  const loadEnrollments = async (db) => {
+  const loadEnrollments = async (db, q) => {
+    console.log("q:", q)
     const sessionEnrollments = await getSessionEnrollments(db, date, session.id)
     setEnrollments(sessionEnrollments)
     setLoading(false)
@@ -185,10 +186,11 @@ const SessionAttendanceList = ({ db, schoolId, date, session }) => {
                   "sessions",
                   String(date.getFullYear()),
                   `${String(date.toDateString())}-enrollments`
-                  )
+                  ),
+                  where("session_id", "==", session.id)
                 );
-    const unsubscribe = onSnapshot(eQuery, () => {
-      loadEnrollments(db)
+    const unsubscribe = onSnapshot(eQuery, (q) => {
+      loadEnrollments(db, q)
     })
 
     return () => unsubscribe()
