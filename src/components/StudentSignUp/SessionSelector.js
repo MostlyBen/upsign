@@ -26,7 +26,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, session
                   String(selectedDate.getFullYear()),
                   String(selectedDate.toDateString())),
                 where("session", "==", hour));
-    
+
     const unsubscribe = onSnapshot(sessionQuery, querySnapshot => {
       let allSessions = [];
       let _locked = false
@@ -41,7 +41,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, session
               break
             }
           }
-          
+
           if (!_locked) {
             setLocked(false)
             allSessions.push({
@@ -74,7 +74,7 @@ const SessionSelector = ({ db, selectedDate, userDoc, hour, sessionTime, session
     </div>
     )
   }
-  
+
   return (
     <div className="session-selector-container row">
       <h4>{sessionTitle ?? `Session ${hour}`}
