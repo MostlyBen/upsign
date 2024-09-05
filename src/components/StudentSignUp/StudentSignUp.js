@@ -35,7 +35,7 @@ const TopMessage = ({ user }) => {
       </blockquote>
 
       <hr style={{margin: "1.5rem 0 1.5rem 0"}} />
-      
+
     </div>
   )
 }
@@ -143,8 +143,8 @@ const StudentSignUp = (props) => {
                                   `${String(selectedDate.toDateString())}-enrollments`
                                 ),
                       where("uid", "==", user.uid)
-                      )
-    
+                    )
+
     const unsubscribe = onSnapshot(enrQuery, () => {
       updateUserEnrollments(db, selectedDate)
     })
