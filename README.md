@@ -93,3 +93,7 @@ gcloud app deploy
 ```
 
 You can configure the app from there in the [Google Cloud Console](https://console.cloud.google.com/).
+
+### OMG help it's not working!!
+
+If you're having issues, you can email me at [ben@upsign.app](mailto:ben@upsign.app)
