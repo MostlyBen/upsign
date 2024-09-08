@@ -63,7 +63,7 @@ function App() {
       .then((result) => {
         // Gives a Google Access Token. Can be used to access Google API
         // eslint-disable-next-line no-unused-vars
-        const credential = GoogleAuthProvider.credentialFromResult(result);
+        GoogleAuthProvider.credentialFromResult(result);
         // const token = credential.accessToken;
         // const user = result.user;
       }).catch((error => {
@@ -80,7 +80,7 @@ function App() {
   // Get the school's name on load
   useEffect(() => {
     updateSchoolName()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db])
 
   // Get user type & update state
@@ -96,14 +96,14 @@ function App() {
             if (data.hasOwnProperty('nickname')) {
               setUserNickname(data.nickname)
             }
-            
+
             return true
           } else {
             setUserTypeState("unset")
             return true
           }
         }
-      }).then ( complete => {
+      }).then(complete => {
         if (complete) {
           setLoadingNickname(false)
         }
@@ -122,18 +122,18 @@ function App() {
   if (!auth.currentUser && !loading) {
     return (
       <div className="App">
-        <div className="container" style={{marginTop: "30vh", maxWidth: "60vw", display: "table", textAlign: "center"}}>
+        <div className="container" style={{ marginTop: "30vh", maxWidth: "60vw", display: "table", textAlign: "center" }}>
           <div>
-            <h3 style={{width: "100vw", marginBottom: "2rem"}}>
+            <h3 style={{ width: "100vw", marginBottom: "2rem" }}>
               UpSign for
               {!schoolNameLoading
-               ? <span style={{fontWeight: "550", color: "#252525"}}>{` ${schoolName}`}</span>
-               : <CircularLoading />}
+                ? <span style={{ fontWeight: "550", color: "#252525" }}>{` ${schoolName}`}</span>
+                : <CircularLoading />}
             </h3>
             <button
               className='login-with-google-btn'
               onClick={() => handleSignIn()}
-              style={{display: "table", margin: "auto"}}
+              style={{ display: "table", margin: "auto" }}
             >
               Sign in with Google
             </button>
@@ -142,31 +142,31 @@ function App() {
       </div>
     );
 
-  // User Type Selection
+    // User Type Selection
   } else if (auth.currentUser && userType === 'unset' && !loading) {
     return (
       <div className="App">
         <UserTypeSelect db={db} user={user} />
       </div>
     );
-    
-  // Main App
+
+    // Main App
   } else if (auth.currentUser && userType !== 'unset' && !loading && !loadingNickname) {
     /* Update the user object if a nickname was found */
     let u = user
     if (userNickname) {
-      u = {nickname: userNickname, ...user}
+      u = { nickname: userNickname, ...user }
     }
 
     return (
       <div className="App">
         <ThemeContext.Provider value={{ theme, setTheme }}>
-        <div className={`theme-${theme}`}>
-          <div>
-            {userType === 'teacher' ? <TeacherRouter db={db} user={u} schoolName={schoolName} /> : null}
-            {userType === 'student' ? <StudentRouter db={db} user={u} schoolName={schoolName} /> : null}
+          <div className={`theme-${theme}`}>
+            <div>
+              {userType === 'teacher' ? <TeacherRouter db={db} user={u} schoolName={schoolName} /> : null}
+              {userType === 'student' ? <StudentRouter db={db} user={u} schoolName={schoolName} /> : null}
+            </div>
           </div>
-        </div>
         </ThemeContext.Provider>
       </div>
     );
@@ -175,5 +175,5 @@ function App() {
   }
 }
 
-
 export default App;
+

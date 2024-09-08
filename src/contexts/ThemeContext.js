@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 const ThemeContext = createContext({
   theme: '',
-  setTheme: (theme) => {}
+  setTheme: () => { }
 })
 
 export default ThemeContext
