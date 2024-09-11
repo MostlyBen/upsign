@@ -31,7 +31,6 @@ const TopMessage = ({ user }) => {
       </h3>
       <blockquote className="top-message">
         <p>Please fill in whatever sessions you want to hold.</p>
-        <p>You can select any day of the year now!</p>
         <p>Sessions without titles will not show up as options for students.</p>
       </blockquote>
       <hr style={{margin: "1rem 0 1rem 0"}} />
