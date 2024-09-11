@@ -21,7 +21,9 @@ const SessionCardStudent = ({ db, selectedDate, session, userDoc, signupAllowed,
         if (enrolled) {
           unenrollFromSession(db, selectedDate, userDoc.uid, session.id)
         } else if ( (session.number_enrolled ?? 0) < Number(session.capacity)) {
-          enrollStudent(db, selectedDate, session, userDoc)
+          enrollStudent(db, selectedDate, session, userDoc).then(() => {
+            setIsEnabled(true);
+          })
         }
       }
     }

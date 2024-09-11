@@ -1,9 +1,9 @@
-import { doc, collection, writeBatch, increment } from "@firebase/firestore"
+import { doc, collection, increment, runTransaction } from "@firebase/firestore"
 import { unenrollFromHour } from "../"
 import { getSchoolId } from "../../utils";
 
 
-const enrollStudent = async (db, date, session, user) => {
+const enrollStudent = async (db, date, session, user, isTeacher=false) => {
   if (!session || !user) {
     console.log("Tried to enroll student without enough info")
     return
@@ -12,8 +12,6 @@ const enrollStudent = async (db, date, session, user) => {
   if (db) {
     await unenrollFromHour(db, date, user, session.session)
   }
-
-  const batch = writeBatch(db)
 
   // Add one to the number enrolled
   const sessionRef = doc(
@@ -25,8 +23,6 @@ const enrollStudent = async (db, date, session, user) => {
                          `${String(date.toDateString())}`,
                          session.id
   )
-
-  batch.update(sessionRef, { number_enrolled: increment(1) })
 
 
   // Update the enrollment
@@ -50,12 +46,28 @@ const enrollStudent = async (db, date, session, user) => {
   if (user.nickname) {
     payload.nickname = user.nickname
   }
-  // Add the enrollment
-  batch.set(enrRef, payload)
 
-  const res = await batch.commit()
-  return res
+  try {
+    const res = await runTransaction(db, async (transaction) => {
+      const targetSession = await transaction.get(sessionRef);
+      if (!targetSession.exists()) {
+        return Promise.reject("Tried to enroll in a session that doesn't exist");
+      }
+
+      if (targetSession.data().number_enrolled >= targetSession.data().capacity && !isTeacher) {
+        return Promise.reject("Tried to enroll in a full session");
+      }
+
+      transaction.update(sessionRef, { number_enrolled: increment(1) });
+      transaction.set(enrRef, payload);
+    });
+
+    return res;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 
 }
 
-export default enrollStudent
+export default enrollStudent;
