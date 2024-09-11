@@ -146,9 +146,9 @@ const SessionEditor = ({ db, session, date, user, groupOptions=[], hideOptions, 
   }
 
   const handleChangeCapacity = (e) => {
-    setCapacity(e.target.value);
+    setCapacity(Number(e.target.value));
 
-    var capacity = String(e.target.value);
+    var capacity = Number(e.target.value);
     updateDoc(doc(db, "schools", schoolId, "sessions", String(date.getFullYear()), String(date.toDateString()), session.id), {capacity: capacity});
     session.capacity = capacity;
   }
