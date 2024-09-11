@@ -1,7 +1,5 @@
-import { doc, collection, increment, runTransaction } from "@firebase/firestore"
-import { unenrollFromHour } from "../"
+import { getDocs, query, where, doc, collection, increment, runTransaction } from "@firebase/firestore";
 import { getSchoolId } from "../../utils";
-
 
 const enrollStudent = async (db, date, session, user, isTeacher=false) => {
   if (!session || !user) {
@@ -9,9 +7,6 @@ const enrollStudent = async (db, date, session, user, isTeacher=false) => {
     return
   }
   const schoolId = getSchoolId()
-  if (db) {
-    await unenrollFromHour(db, date, user, session.session)
-  }
 
   // Add one to the number enrolled
   const sessionRef = doc(
@@ -24,15 +19,15 @@ const enrollStudent = async (db, date, session, user, isTeacher=false) => {
                          session.id
   )
 
-
   // Update the enrollment
-  const enrRef = doc(collection(
+  const enrCollectionRef = collection(
     db,
     "schools",
     schoolId,
     "sessions",
     String(date.getFullYear()),
-    `${String(date.toDateString())}-enrollments`))
+    `${String(date.toDateString())}-enrollments`)
+  const enrRef = doc(enrCollectionRef)
   // Construct the payload
   const payload = {
     attendance: '',
@@ -47,6 +42,35 @@ const enrollStudent = async (db, date, session, user, isTeacher=false) => {
     payload.nickname = user.nickname
   }
 
+  // Query for any docs for this user already has this hour
+  const q = query(enrCollectionRef,
+    where("uid", "==", user.uid),
+    where("session", "==", Number(session.session))
+  );
+  console.log("q:", q)
+
+  // Get all docs that fit the query
+  const qSnapshot = await getDocs(q)
+  // Iterate through and store refs to enrollment & session docs
+  const existingEnrollments = [];
+  qSnapshot.forEach(async (snap) => {
+    // Create a reference to the session the enrollment is for
+    var enrData = snap.data()
+    var sessionRef = doc(
+              db,
+              "schools",
+              schoolId,
+              "sessions",
+              String(date.getFullYear()),
+              `${String(date.toDateString())}`,
+              enrData.session_id
+    )
+    existingEnrollments.push({
+      enrollmentRef: snap.ref,
+      sessionRef: sessionRef,
+    })
+  });
+
   try {
     const res = await runTransaction(db, async (transaction) => {
       const targetSession = await transaction.get(sessionRef);
@@ -56,6 +80,11 @@ const enrollStudent = async (db, date, session, user, isTeacher=false) => {
 
       if (targetSession.data().number_enrolled >= targetSession.data().capacity && !isTeacher) {
         return Promise.reject("Tried to enroll in a full session");
+      }
+
+      for (var e of existingEnrollments) {
+        transaction.update(e.sessionRef, { number_enrolled: increment(-1) });
+        transaction.delete(e.enrollmentRef);
       }
 
       transaction.update(sessionRef, { number_enrolled: increment(1) });
