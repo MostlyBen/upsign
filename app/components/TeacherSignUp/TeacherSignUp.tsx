@@ -160,7 +160,8 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
     <div className="signup-body">
       <TopMessage user={user} />
       <input
-        className="w-full p-2 bg-base-100"
+        className="w-full mx-auto p-2 bg-base-100"
+        style={{ minWidth: "100%" }}
         type="date"
         value={selectedDate
           ? getDateString(selectedDate)
