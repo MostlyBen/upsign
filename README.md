@@ -1,3 +1,7 @@
+# WARNING: Out of date readme
+
+This readme is out of date since updating to Remix. I've had bigger fish to fry.
+
 # What is UpSign?
 
 UpSign is a an app that allows teachers to create classes and students to sign up for them.
