@@ -119,6 +119,12 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
     }
   }, [db, session])
 
+  useEffect(() => {
+    if (!isHovering) { return }
+    window.addEventListener("click", () => { setIsHovering(false) });
+    return () => window.removeEventListener("click", () => { setIsHovering(false) });
+  }, [isHovering]);
+
   /* BUTTON HANDLERS */
   const clickOffListener = (e: MouseEvent) => {
     if (!e.target) { return }
@@ -251,6 +257,7 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
       onPointerOut={() => setIsHovering(false)}
       onFocus={() => setIsHovering(true)}
       onBlur={() => setIsHovering(false)}
+      onClick={() => setIsHovering(true)}
     >
       {!isModal && isHovering && hasMultipleSessions && !removing &&
         <button
