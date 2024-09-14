@@ -17,6 +17,8 @@ export default function App() {
       if (user) {
         setUser(user);
         const type = await getUserType(firestore, user);
+        console.log('user type', type);
+        console.log('user', user);
         setUserType(type);
       } else {
         setUserType(null);
