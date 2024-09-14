@@ -16,6 +16,8 @@ export default function App() {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUser(user);
+        console.log('getting user type with firestore', firestore);
+        console.log('getting user type with user', user);
         const type = await getUserType(firestore, user);
         console.log('user type', type);
         console.log('user', user);
