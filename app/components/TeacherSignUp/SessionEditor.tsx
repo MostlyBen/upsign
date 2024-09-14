@@ -232,7 +232,7 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
         <button
           className="absolute btn btn-ghost p-1 h-full"
           onClick={() => setCollapsed(false)}
-          style={{ left: "-42px", top: "0px" }}
+          style={{ left: "-34px", top: "0px" }}
         >
           <ChevronRight />
         </button>
