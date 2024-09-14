@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { doc, getDoc, Firestore } from "@firebase/firestore";
+import { doc, getDoc, Firestore, collection, query, where, getDocs } from "@firebase/firestore";
 import { getSchoolId } from "../../utils";
 
 
@@ -20,6 +20,15 @@ const getUserType = async (
     console.log('user doc data', userDoc.data());
     return userDoc.data().type ?? null;
   } else {
+    const userCollection = collection(db, `schools/${schoolId}/users`);
+    const userQuery = query(userCollection, where('email', '==', user.email));
+    const userSnapshot = await getDocs(userQuery);
+    userSnapshot.forEach((doc) => {
+      console.log('user doc', doc.data());
+      if (doc.data().type) {
+        return doc.data().type;
+      }
+    });
     return null;
   }
 
