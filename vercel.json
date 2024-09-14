@@ -1,0 +1,5 @@
+{
+  "buildCommand": "remix vite:build",
+  "devCommand": "remix vite:dev",
+  "framework": "vite"
+}
