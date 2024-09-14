@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { Outlet, Scripts, Links, Meta } from '@remix-run/react';
 import { User } from 'firebase/auth';
 import { auth, firestore } from '~/lib/firebase';
-import { getUserType } from './services';
+import { getUserType, getUser } from './services';
 
 import './index.css';
+import { UpsignUser } from './types';
 
 export default function App() {
   const db = firestore;
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | UpsignUser | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -22,6 +23,13 @@ export default function App() {
         console.log('user type', type);
         console.log('user', user);
         setUserType(type);
+        console.log('getting user with firestore', firestore);
+        const userDoc = await getUser(firestore, user.uid);
+        console.log('user doc', userDoc);
+        setUser(userDoc as UpsignUser ?? user);
+        setUserType(userDoc?.type);
+        
+        
       } else {
         setUserType(null);
       }
