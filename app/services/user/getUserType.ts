@@ -19,23 +19,25 @@ const getUserType = async (
   if (userDoc.exists()) {
     console.log('user doc data', userDoc.data());
     if (userDoc.data().type) {
+      console.log("Have user type");
       console.log('user type', userDoc.data().type);
-    return userDoc.data().type;
-  } else {
-    console.log('user type not found in user doc, searching in user collection');
-    const userCollection = collection(db, `schools/${schoolId}/users`);
-    const userQuery = query(userCollection, where('email', '==', user.email));
-    const userSnapshot = await getDocs(userQuery);
-    userSnapshot.forEach((doc) => {
-      console.log('user doc', doc.data());
-      if (doc.data().type) {
-        return doc.data().type ?? null;
-      }
-    });
+      return userDoc.data().type;
+    } else {
+      console.log('user type not found in user doc, searching in user collection');
+      const userCollection = collection(db, `schools/${schoolId}/users`);
+      const userQuery = query(userCollection, where('email', '==', user.email));
+      const userSnapshot = await getDocs(userQuery);
+      userSnapshot.forEach((doc) => {
+        console.log('user doc', doc.data());
+        if (doc.data().type) {
+          return doc.data().type;
+        }
+      });
+    }
   }
-}
-  return null;
 
+  return null
 }
 
 export default getUserType;
+
