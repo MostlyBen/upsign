@@ -18,19 +18,20 @@ const getUserType = async (
   console.log('user doc', userDoc);
   if (userDoc.exists()) {
     console.log('user doc data', userDoc.data());
-    return userDoc.data().type ?? null;
+    if (userDoc.data().type) {
+    return userDoc.data().type;
   } else {
     const userCollection = collection(db, `schools/${schoolId}/users`);
     const userQuery = query(userCollection, where('email', '==', user.email));
     const userSnapshot = await getDocs(userQuery);
     userSnapshot.forEach((doc) => {
-      console.log('user doc', doc.data());
       if (doc.data().type) {
-        return doc.data().type;
+        return doc.data().type ?? null;
       }
     });
-    return null;
   }
+}
+  return null;
 
 }
 
