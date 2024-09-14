@@ -249,6 +249,8 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
       className={`relative${removing ? " opacity-30" : ""}`}
       onPointerOver={() => setIsHovering(true)}
       onPointerOut={() => setIsHovering(false)}
+      onFocus={() => setIsHovering(true)}
+      onBlur={() => setIsHovering(false)}
     >
       {!isModal && isHovering && hasMultipleSessions && !removing &&
         <button
