@@ -266,15 +266,17 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
   return (
     <div
       className={`relative${removing ? " opacity-30" : ""}`}
-      onClick={() => {
-        setIsHovering(true);
-        setHasClicked(true);
+      onClick={(e) => {
+        if (!(e.target instanceof HTMLElement)) { return }
+        if (!['BUTTON', 'INPUT', 'IMG', 'path', 'svg'].includes(e.target?.nodeName)) {
+          setIsHovering(true);
+          setHasClicked(true);
+        }
       }}
       onPointerEnter={() => { setIsHovering(true) }}
       onPointerLeave={() => {
         if (!hasClicked) { setIsHovering(false) }
       }}
-      tabIndex={0}
     >
       {!isModal && isHovering && hasMultipleSessions && !removing &&
         <button
