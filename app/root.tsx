@@ -14,6 +14,7 @@ export default function App() {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (_user) => {
+      setLoading(true);
       if (_user) {
         setUser(_user);
         const _userType = await getUserType(firestore, _user);

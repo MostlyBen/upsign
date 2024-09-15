@@ -24,7 +24,6 @@ export default function Index() {
   if (loading) {
     return <div>Loading...</div>;
   }
-  console.log("User type:", userType)
 
   return (
     <>
