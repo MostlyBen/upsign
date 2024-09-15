@@ -250,9 +250,8 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
     return (
       <div className="w-100 session-editor bg-base-100 card drop-shadow-md p-4 my-2">
         <button
-          className="absolute btn btn-ghost p-1 h-full"
+          className="absolute btn btn-ghost p-1 h-full collapse-btn-offset"
           onClick={() => setCollapsed(false)}
-          style={{ left: "-34px", top: "0px" }}
         >
           <ChevronRight />
         </button>
@@ -294,9 +293,8 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
         </button>}
       <div className="session-editor bg-base-100 card drop-shadow-md p-4 my-4 grid grid-cols-2 gap-8">
         {!isModal && <button
-          className="absolute btn btn-ghost p-1 h-full print:hidden"
+          className="absolute btn btn-ghost p-1 h-full collapse-btn-offset print:hidden"
           onClick={() => setCollapsed(true)}
-          style={{ left: "-34px" }}
         >
           <ChevronDown />
         </button>}
