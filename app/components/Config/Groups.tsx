@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Firestore, collection, onSnapshot } from "firebase/firestore";
 import areEqual from 'deep-equal';
-import { getAllStudents, getGroupOptions, getUser, updateUser } from "~/services";
+import { getAllStudents, getGroupOptions } from "~/services";
 import { getSchoolId } from '~/utils';
 import { UpsignUser } from "~/types";
 import { Funnel, Person } from "~/icons";
@@ -12,7 +12,7 @@ type StudentGroupsProps = {
 }
 const StudentGroups = ({ db }: StudentGroupsProps) => {
   const [groupOptions, setGroupOptions] = useState<string[]>([]);
-  const [selectedGroup, setSelectedGroup] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [allStudents, setAllStudents] = useState<UpsignUser[]>([]);
   const [search, setSearch] = useState<string>("");
   const [filterGroup, setFilterGroup] = useState<string>("");
@@ -145,7 +145,7 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
       {/* Student List */}
       <div className="grid grid-cols-2 gap-2" style={{ maxHeight: "calc(100dvh - 36rem)", overflowY: "auto" }}>
         <div>
-          <h2 className="mt-0 mb-2 text-center">Not in {selectedGroup ?? "Group"}</h2>
+          <h2 className="mt-0 mb-2 text-center">Not in {selectedGroup.length ? selectedGroup : "Group"}</h2>
           {filteredStudents.filter(s => !s.groups?.includes(selectedGroup)).map(student => {
             return (
               <StudentName
