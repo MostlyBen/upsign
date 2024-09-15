@@ -26,6 +26,10 @@ const Config = () => {
   const { db, userType } = useOutletContext() as RootContext;
   if (!menu) { return <Navigate to="/config/general" /> }
 
+  if (!userType || userType === "new") {
+    return <Navigate to="/" />
+  }
+
   return (
     <>
       <NavBar userType={userType} />

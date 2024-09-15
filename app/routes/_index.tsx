@@ -4,7 +4,7 @@ import { getGroupOptions } from '../services';
 import { AnonLayout, StudentLayout, TeacherLayout } from "~/layouts";
 import { RootContext } from '~/types';
 
-import { TeacherSignUp, StudentSignUp } from '../components';
+import { TeacherSignUp, StudentSignUp, NewUser } from '../components';
 
 export default function Index() {
   const { db, user, userType } = useOutletContext() as RootContext;
@@ -24,6 +24,7 @@ export default function Index() {
   if (loading) {
     return <div>Loading...</div>;
   }
+  console.log("User type:", userType)
 
   return (
     <>
@@ -31,8 +32,8 @@ export default function Index() {
         ? <AnonLayout>
           <Outlet context={{ db }} />
         </AnonLayout>
-        : !userType
-          ? <div>Uh oh, Hoff didn&apos;t finish this part</div>
+        : userType === "new"
+          ? <NewUser db={db} user={user} />
           : userType === 'teacher'
             ? <TeacherLayout>
               <TeacherSignUp db={db} user={user} groupOptions={groupOptions} />

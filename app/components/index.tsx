@@ -1,6 +1,7 @@
 // AllSessions
 
 // auth
+import NewUser from "./auth/NewUser";
 import { SignInButton } from "./auth/SignInButton";
 import { SignOutButton } from "./auth/SignOutButton";
 
@@ -39,7 +40,7 @@ import EmojiSelect from "./SmallBits/EmojiSelect";
 import StudentSignUp from "./StudentSignUp/StudentSignUp";
 
 export {
-
+  NewUser,
   SignInButton,
   SignOutButton,
 

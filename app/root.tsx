@@ -13,23 +13,21 @@ export default function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        setUser(user);
-        const type = await getUserType(firestore, user);
-        setUserType(type);
+    const unsubscribe = auth.onAuthStateChanged(async (_user) => {
+      if (_user) {
+        setUser(_user);
+        const _userType = await getUserType(firestore, _user);
+        if (_userType) {
+          setUserType(_userType);
+        } else { setUserType("new") }
       } else {
-        setUserType(null);
+        setUserType("new");
       }
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
 
   return (
@@ -49,7 +47,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet context={{ db, user, userType }} />
+        {!loading && userType && <Outlet context={{ db, user, userType }} />}
         <Scripts />
       </body>
     </html>

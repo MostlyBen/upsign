@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
 
-export type UserType = "student" | "teacher";
+export type UserType = "new" | "student" | "teacher";
 
 export type RootContext = {
   db: Firestore,
