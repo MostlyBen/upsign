@@ -1,4 +1,4 @@
-import { Session } from "~/types";
+import { Session, UpsignUser } from "~/types";
 import { User } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { Firestore, collection, query, where, onSnapshot, doc } from "@firebase/firestore"
@@ -22,7 +22,7 @@ import {
 
 type TeacherSignUpProps = {
   db: Firestore,
-  user: User,
+  user: User & { nickname?: string },
   groupOptions: string[]
 }
 
@@ -34,7 +34,7 @@ const renderHours = (
   sessionTimes: string[],
   sessionTitles: string[] | null | undefined,
   sessions: { [key: string]: Session[] },
-  user: User,
+  user: User & { nickname?: string },
   groupOptions: string[]
 ) => {
   const hourArr = []
@@ -55,7 +55,7 @@ const renderHours = (
           sessionTimes={sessionTimes}
           sessionTitles={sessionTitles}
           sessions={sessions[String(hour)]}
-          user={user}
+          user={{ name: user.displayName as string, type: "teacher", ...user } as UpsignUser}
           groupOptions={groupOptions}
         />
       )
@@ -91,7 +91,7 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
   // Checks when the DatePicker (".sticky-container") intersects with the navbar
   useEffect(() => {
     observeTopIntersect()
-  }, [sessions])
+  }, [sessions]);
 
   // Subscribe to updates for session number and times
   useEffect(() => {
@@ -148,19 +148,18 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
         await getTeacherSessions(db, selectedDate, user)
           .then(s => {
             setSessions(s)
-          }
-          )
-      })
+          })
+      });
 
       return () => unsubscribe()
     }
-  }, [db, selectedDate, numberSessions])
+  }, [db, selectedDate, numberSessions]);
 
   return (
     <div className="signup-body">
       <TopMessage user={user} />
       <input
-        className="w-full p-4 bg-base-100 rounded-sm"
+        className="w-full p-4 bg-base-100 rounded-sm print:hidden"
         style={{ minWidth: "100%" }}
         type="date"
         value={selectedDate
@@ -180,4 +179,5 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
   )
 }
 
-export default TeacherSignUp
+export default TeacherSignUp;
+

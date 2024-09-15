@@ -27,7 +27,7 @@ const HourSessions = ({ db, selectedDate, hour, sessionTimes, sessionTitles, ses
   }
 
   return (
-    <div key={`session-${hour}-holder`}>
+    <div key={`session-${hour}-holder`} className="print:break-inside-avoid">
       <div className="prose">
         <h2 className="mt-4 mb-2">
           {(Array.isArray(sessionTitles) && sessionTitles.length > 0)
@@ -44,7 +44,7 @@ const HourSessions = ({ db, selectedDate, hour, sessionTimes, sessionTitles, ses
 
       {sessions?.map(s => {
         return (
-          <div key={`teacher-card-${s.id}`} className="row card session-card is-enrolled teacher-card">
+          <div key={`teacher-card-${s.id}`} className="row card teacher-card">
             <SessionEditor
               session={s}
               db={db}
@@ -57,7 +57,7 @@ const HourSessions = ({ db, selectedDate, hour, sessionTimes, sessionTitles, ses
       })}
 
       <button
-        className="btn btn-ghost w-full"
+        className="btn btn-ghost w-full print:hidden"
         onClick={handleAddSession}
         disabled={sessionAdding}
       >+ Add Session</button>
@@ -66,5 +66,5 @@ const HourSessions = ({ db, selectedDate, hour, sessionTimes, sessionTitles, ses
 
 }
 
-export default HourSessions
+export default HourSessions;
 

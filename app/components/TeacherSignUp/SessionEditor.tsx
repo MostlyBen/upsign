@@ -134,8 +134,8 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
   useEffect(() => {
     if (hasClicked) {
       document.addEventListener("mousedown", () => { setIsHovering(false); setHasClicked(false) });
-    } 
-   return () => document.removeEventListener("mousedown", () => { setIsHovering(false); setHasClicked(false) });
+    }
+    return () => document.removeEventListener("mousedown", () => { setIsHovering(false); setHasClicked(false) });
   }, [hasClicked]);
 
 
@@ -279,7 +279,7 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
     >
       {!isModal && isHovering && hasMultipleSessions && !removing &&
         <button
-          className="btn btn-circle bg-base-100 text-error absolute top-0 z-40"
+          className="btn btn-circle bg-base-100 text-error absolute top-0 z-40 print:hidden"
           onPointerDown={() => {
             if (window.confirm("Remove session?")) {
               setRemoving(true);
@@ -294,7 +294,7 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
         </button>}
       <div className="session-editor bg-base-100 card drop-shadow-md p-4 my-4 grid grid-cols-2 gap-8">
         {!isModal && <button
-          className="absolute btn btn-ghost p-1 h-full"
+          className="absolute btn btn-ghost p-1 h-full print:hidden"
           onClick={() => setCollapsed(true)}
           style={{ left: "-42px" }}
         >

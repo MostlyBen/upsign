@@ -70,6 +70,7 @@ const NavBar = ({ userType, schoolName }: NavBarProps) => {
   return (
     <>
       <div
+        className="print:hidden"
         style={{
           opacity: showMenu ? 1 : 0,
           pointerEvents: showMenu ? "all" : "none",
@@ -77,7 +78,7 @@ const NavBar = ({ userType, schoolName }: NavBarProps) => {
       >
         <Menu />
       </div>
-      <div className="navbar px-4 bg-base-100 fixed z-30 drop-shadow-xl no-print">
+      <div className="navbar px-4 bg-base-100 fixed z-30 drop-shadow-xl print:hidden">
         <div role="button" onClick={handleClickShow} id="navbar-left-menu-btn">
           <img
             src={logo}

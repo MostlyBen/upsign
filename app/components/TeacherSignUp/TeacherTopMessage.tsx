@@ -2,7 +2,7 @@ import { User } from "firebase/auth";
 
 const TopMessage = ({ user }: { user: User & { nickname?: string } }) => {
   return (
-    <>
+    <div className="print:hidden">
       <div className="prose">
         <h1 className="my-2 font-normal select-none">Hey there, {user
           ? user.nickname
@@ -16,7 +16,7 @@ const TopMessage = ({ user }: { user: User & { nickname?: string } }) => {
         </blockquote>
       </div>
       <hr style={{ margin: "1rem 0 1rem 0" }} />
-    </>
+    </div>
   )
 }
 
