@@ -41,6 +41,7 @@ const SessionCard = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showLock, setShowLock] = useState<boolean>(false);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [hasClicked, setHasClicked] = useState<boolean>(false);
 
   const loadEnrollments = async (db: Firestore) => {
     const sessionEnrollments = await getSessionEnrollments(db, date, session.id) as Enrollment[];
@@ -66,6 +67,13 @@ const SessionCard = ({
 
     return () => unsubscribe()
   }, [db]);
+
+  useEffect(() => {
+    if (hasClicked) {
+      document.addEventListener("mousedown", () => { setShowOpen(false); setHasClicked(false) });
+    } 
+   return () => document.removeEventListener("mousedown", () => { setShowOpen(false); setHasClicked(false) });
+  }, [hasClicked]);
 
   const [monitor, drop]: [any, any] = useDrop(() => ({
     accept: "student",
@@ -105,15 +113,21 @@ const SessionCard = ({
 
       <div
         className="prose"
-        onPointerOver={() => { setShowOpen(true) }}
-        onPointerOut={() => { setShowOpen(false) }}
+        onClick={() => {
+          setShowOpen(true);
+          setHasClicked(true);
+        }}
+        onPointerEnter={() => { setShowOpen(true) }}
+        onPointerLeave={() => {
+          if (!hasClicked) { setShowOpen(false) }
+        }}
         ref={drop}
       >
         <div className="card overview-card shadow-md bg-base-100 p-6 mb-4 rounded-md">
 
           {showOpen && <button
             className="absolute top-4 right-4 z-10 bg-base-100"
-            onClick={() => setIsOpen(true)}
+            onPointerDown={() => setIsOpen(true)}
           ><ArrowsOut /></button>}
 
 

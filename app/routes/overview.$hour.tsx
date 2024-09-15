@@ -10,7 +10,7 @@ import {
   UnsignedStudents,
 } from "~/components";
 import { getHourSessions } from "~/services";
-import { Session, UpsignUser } from "~/types";
+import { Attendance, Session, UpsignUser } from "~/types";
 import { getSchoolId } from "~/utils";
 
 export async function loader({
@@ -61,8 +61,7 @@ const HourOverview = () => {
       )
     );
     const unsubscribe = onSnapshot(sQuery, () => {
-      fetchSessions();
-      setLoading(false);
+      fetchSessions().then(() => setLoading(false)).catch(() => setLoading(false));
     })
 
     return () => unsubscribe();
@@ -87,7 +86,7 @@ const HourOverview = () => {
           session={s}
           groupOptions={groupOptions}
           groupFilter={groupFilter}
-          attendanceFilter={attendanceFilter}
+          attendanceFilter={attendanceFilter as Attendance[]}
           allStudents={allStudents}
           key={s.id}
         />)}

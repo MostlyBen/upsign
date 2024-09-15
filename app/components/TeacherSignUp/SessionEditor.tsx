@@ -25,13 +25,15 @@ type SessionEditorProps = {
   date: Date,
   groupOptions: string[],
   isModal?: boolean,
-  hasMultipleSessions?: boolean
+  hasMultipleSessions?: boolean,
+  enrollmentsFromParent?: Enrollment[]
 }
 
-const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, isModal }: SessionEditorProps) => {
+const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, isModal, enrollmentsFromParent }: SessionEditorProps) => {
   const groupList = useRef(groupOptions.length ? groupOptions : []);
 
   const [isHovering, setIsHovering] = useState<boolean>(false);
+  const [hasClicked, setHasClicked] = useState<boolean>(false);
   const [removing, setRemoving] = useState<boolean>(false);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [title, setTitle] = useState(session.title ?? "");
@@ -43,11 +45,13 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
   const [room, setRoom] = useState(session.room ?? "");
   const [capacity, setCapacity] = useState(session.capacity ?? 0);
   const [showOptions, setShowOptions] = useState(false);
-  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>(enrollmentsFromParent ?? []);
 
   const schoolId = getSchoolId();
 
   const loadEnrollments = async (db: Firestore) => {
+    if (enrollmentsFromParent) { return }
+
     const sessionEnrollments = await getSessionEnrollments(db, date, session.id) as Enrollment[];
     if (!Array.isArray(sessionEnrollments)) { return }
 
@@ -57,6 +61,8 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
   }
 
   useEffect(() => {
+    if (enrollmentsFromParent) { return }
+
     setEnrollments([])
     // Set up snapshot & load sessions
     const eQuery = query(
@@ -94,7 +100,7 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
       // If not restricted to anything yet, show All Students
       groupSelect.value = ""
     }
-  }, [session.id, session.restricted_to])
+  }, [session.id, session.restricted_to]);
 
 
   /* SUBSCRIBE TO UPDATES FROM FIRESTORE */
@@ -117,13 +123,21 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
 
       return () => unsubscribe()
     }
-  }, [db, session])
+  }, [db, session]);
 
   useEffect(() => {
-    if (!isHovering) { return }
-    window.addEventListener("click", () => { setIsHovering(false) });
-    return () => window.removeEventListener("click", () => { setIsHovering(false) });
-  }, [isHovering]);
+    if (Array.isArray(enrollmentsFromParent)) {
+      setEnrollments([...enrollmentsFromParent]);
+    }
+  }, [enrollmentsFromParent]);
+
+  useEffect(() => {
+    if (hasClicked) {
+      document.addEventListener("mousedown", () => { setIsHovering(false); setHasClicked(false) });
+    } 
+   return () => document.removeEventListener("mousedown", () => { setIsHovering(false); setHasClicked(false) });
+  }, [hasClicked]);
+
 
   /* BUTTON HANDLERS */
   const clickOffListener = (e: MouseEvent) => {
@@ -253,16 +267,20 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
   return (
     <div
       className={`relative${removing ? " opacity-30" : ""}`}
-      onPointerOver={() => setIsHovering(true)}
-      onPointerOut={() => setIsHovering(false)}
-      onFocus={() => setIsHovering(true)}
-      onBlur={() => setIsHovering(false)}
-      onClick={() => setIsHovering(true)}
+      onClick={() => {
+        setIsHovering(true);
+        setHasClicked(true);
+      }}
+      onPointerEnter={() => { setIsHovering(true) }}
+      onPointerLeave={() => {
+        if (!hasClicked) { setIsHovering(false) }
+      }}
+      tabIndex={0}
     >
       {!isModal && isHovering && hasMultipleSessions && !removing &&
         <button
           className="btn btn-circle bg-base-100 text-error absolute top-0 z-40"
-          onClick={() => {
+          onPointerDown={() => {
             if (window.confirm("Remove session?")) {
               setRemoving(true);
               removeTeacherSession(db, date, session.id);

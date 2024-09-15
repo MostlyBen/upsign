@@ -38,11 +38,11 @@ const SessionModal = ({
     }
 
     window.addEventListener('keydown', handleKeypress);
-    window.addEventListener('click', handleClick);
+    window.addEventListener('pointerdown', handleClick);
 
     return () => {
       window.removeEventListener('keydown', handleKeypress);
-      window.removeEventListener('click', handleClick);
+      window.removeEventListener('pointerdown', handleClick);
     }
   }, []);
 
@@ -64,10 +64,8 @@ const SessionModal = ({
             db={db}
             session={session}
             date={date}
-            enrollments={enrollments}
+            enrollmentsFromParent={enrollments}
             groupOptions={groupOptions}
-            hideOptions
-            hideRemove
             isModal
           />
         </div>
