@@ -4,6 +4,8 @@ import areEqual from 'deep-equal';
 import { getAllStudents, getGroupOptions, getUser, updateUser } from "~/services";
 import { getSchoolId } from '~/utils';
 import { UpsignUser } from "~/types";
+import { Funnel, Person } from "~/icons";
+import StudentName from "./Groups/StudentName";
 
 type StudentGroupsProps = {
   db: Firestore,
@@ -12,6 +14,9 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
   const [groupOptions, setGroupOptions] = useState<string[]>([]);
   const [selectedGroup, setSelectedGroup] = useState("");
   const [allStudents, setAllStudents] = useState<UpsignUser[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const [filterGroup, setFilterGroup] = useState<string>("");
+  const [filteredStudents, setFilteredStudents] = useState<UpsignUser[]>([]);
 
   const schoolId = getSchoolId()
 
@@ -48,59 +53,49 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
     if (typeof groupOptions[0] === "string") {
       setSelectedGroup(groupOptions[0])
     }
-  }, [groupOptions])
+  }, [groupOptions]);
 
-  const handleClickStudent = async (student: UpsignUser) => {
-    if (!student.uid) { return }
+  useEffect(() => {
+    if (selectedGroup === filterGroup) {
+      setFilterGroup("");
+    }
+  }, [selectedGroup]);
 
-    getUser(db, student.uid)
-      .then(studentDoc => {
-        if (!studentDoc) { return }
+  useEffect(() => {
+    if (!search.length && !filterGroup) {
+      setFilteredStudents(allStudents);
+      return;
+    }
 
-        if (Array.isArray(studentDoc.groups)) {
-          if (studentDoc.groups.includes(selectedGroup)) {
-            const g = studentDoc.groups.filter(obj => {
-              return obj !== selectedGroup
-            })
-            studentDoc.groups = g
-          } else {
-            studentDoc.groups.push(selectedGroup)
-          }
-          // Student had no groups
-        } else {
-          studentDoc.groups = [selectedGroup]
-        }
+    const filteredArr = allStudents.filter(student => {
+      return (
+        ((student.nickname && student.nickname.toLowerCase().includes(search.toLowerCase())) ||
+          (student.name && student.name.toLowerCase().includes(search.toLowerCase())) ||
+          (student.email && student.email.toLowerCase().includes(search.toLowerCase()))) &&
+        (filterGroup === "" || student.groups?.includes(filterGroup))
+      )
+    });
 
-        return studentDoc
-      }).then(studentDoc => {
-        if (!student || !studentDoc) { return }
-        updateUser(db, student.uid as string, { groups: studentDoc.groups })
-      });
-
-  }
+    setFilteredStudents(filteredArr);
+  }, [allStudents, filterGroup, search]);
 
   return (
     <div className="prose">
-      <h1>Student Groups</h1>
+      <h1 className="mb-4">Student Groups</h1>
 
-      <div>Key:</div>
-      <div className="flex flex-row gap-4 mb-4">
-        <button className="btn grow pointer-events-none">Is <b>not</b> in Group</button>
-        <button className="btn btn-primary grow pointer-events-none"><b>Is</b> in Group</button>
-      </div>
-
-      <div>Group:</div>
+      {/* Group Select */}
+      <h4 className="mt-0">Add/Remove From:</h4>
       <select
         id="group-select"
         className="select select-bordered w-full mb-4"
         onChange={(e) => setSelectedGroup(e.target.value)}
+        value={selectedGroup}
       >
         {groupOptions.map(option => {
           return (
             <option
               value={option}
               key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
-              selected={option === selectedGroup}
             >
               {option}
             </option>
@@ -108,22 +103,73 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
         })}
       </select>
 
+      {/* Search */}
+      <h4 className="mt-0">Filters:</h4>
+      <div className="md:flex md:flex-row gap-4">
+        <label className="input input-bordered flex items-center gap-2 w-full mb-4" htmlFor="user-name-box">
+          <span className="opacity-80"><Person /></span>
+          <input
+            className="bg-base-100 w-full"
+            placeholder="Name"
+            type="text"
+            id="user-name-box"
+            autoComplete="off"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </label>
+        <label className="input input-bordered flex items-center gap-2 w-full mb-4 pr-0" htmlFor="user-group-filter">
+          <span className="opacity-80"><Funnel /></span>
+          <select className="w-full h-full rounded-lg cursor-pointer"
+            id="user-group-filter"
+            onChange={e => setFilterGroup(e.target.value)}
+            value={filterGroup}
+          >
+            <option value="">All Students</option>
+            {groupOptions.map(option => {
+              if (option === selectedGroup) { return <></> }
+              return (
+                <option
+                  value={option}
+                  key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
+                >
+                  {option}
+                </option>
+              )
+            })}
+          </select>
+        </label>
+      </div>
+
       {/* Student List */}
-      <div style={{ maxHeight: "48vh", overflowY: "auto" }}>
-        {allStudents.map(student => {
-          return (
-            <button
-              className={`btn mb-1 w-full block ${Array.isArray(student.groups)
-                ? student.groups.includes(selectedGroup) ? "btn-primary" : ""
-                : ""
-                }`}
-              key={`student-${student.uid}`}
-              onClick={() => handleClickStudent(student)}
-            >
-              {student.nickname ?? student.name}
-            </button>
-          )
-        })}
+      <div className="grid grid-cols-2 gap-2" style={{ maxHeight: "calc(100dvh - 36rem)", overflowY: "auto" }}>
+        <div>
+          <h2 className="mt-0 mb-2 text-center">Not in Group</h2>
+          {filteredStudents.filter(s => !s.groups?.includes(selectedGroup)).map(student => {
+            return (
+              <StudentName
+                db={db}
+                student={student}
+                selectedGroup={selectedGroup}
+                key={`student-${student.uid}`}
+              />
+            )
+          })}
+        </div>
+        <div>
+          <h2 className="mt-0 mb-2 text-center">In Group</h2>
+          {filteredStudents.filter(s => s.groups?.includes(selectedGroup)).map(student => {
+            return (
+              <StudentName
+                db={db}
+                student={student}
+                selectedGroup={selectedGroup}
+                key={`student-${student.uid}`}
+                inGroup
+              />
+            )
+          })}
+        </div>
       </div>
     </div>
   )

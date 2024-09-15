@@ -3,9 +3,11 @@ import ArrowDown from "./ArrowDown";
 import ArrowUp from "./ArrowUp";
 import ArrowsOut from "./ArrowsOut";
 import ChevronDown from "./ChevronDown";
+import ChevronLeft from "./ChevronLeft";
 import ChevronRight from "./ChevronRight";
 import Close from "./Close";
 import FaceSmile from "./FaceSmile";
+import Funnel from "./Funnel";
 import Gear from "./Gear";
 import LockClosedMini from "./LockClosedMini";
 import LockClosedMicro from "./LockClosedMicro";
@@ -20,9 +22,11 @@ export {
   ArrowUp,
   ArrowsOut,
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
   Close,
   FaceSmile,
+  Funnel,
   Gear,
   LockClosedMicro,
   LockClosedMini,
