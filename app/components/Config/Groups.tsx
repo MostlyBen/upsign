@@ -176,5 +176,5 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
   )
 }
 
-export default StudentGroups
+export default StudentGroups;
 
