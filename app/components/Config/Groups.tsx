@@ -116,6 +116,7 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
             autoComplete="off"
             value={search}
             onChange={e => setSearch(e.target.value)}
+            onFocus={() => setSearch("")}
           />
         </label>
         <label className="input input-bordered flex items-center gap-2 w-full mb-4 pr-0" htmlFor="user-group-filter">
