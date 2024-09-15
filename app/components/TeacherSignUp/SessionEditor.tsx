@@ -296,7 +296,7 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
         {!isModal && <button
           className="absolute btn btn-ghost p-1 h-full print:hidden"
           onClick={() => setCollapsed(true)}
-          style={{ left: "-42px" }}
+          style={{ left: "-34px" }}
         >
           <ChevronDown />
         </button>}
