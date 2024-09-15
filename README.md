@@ -1,7 +1,3 @@
-# WARNING: Out of date readme
-
-This readme is out of date since updating to Remix. I've had bigger fish to fry.
-
 # What is UpSign?
 
 UpSign is a an app that allows teachers to create classes and students to sign up for them.
@@ -21,23 +17,18 @@ You will need...
 [Firebase has a great quickstart guide for this.](https://firebase.google.com/docs/firestore/quickstart)
 Just follow the "Create a Cloud Firestore database" section.
 ### Saving your Configuration
-Create a file called `config.js` in the `src` directory.
+Create a file called `.env.local` in the root directory.
 
 Put this code in it:
-```
-const firebaseConfig = {
-  apiKey: "YOUR API KEY",
-  authDomain: "YOUR AUTH DOMAIN",
-  projectId: "YOUR PROJECTID",
-  storageBucket: "YOUR STORAGE BUCKET",
-  messagingSenderId: "YOUR SENDER ID",
-  appId: "YOUR APP ID",
-  measurementId: "YOUR MEASUREMENT ID"
-}
-
-export {
-  firebaseConfig,
-}
+```env
+VITE_FIREBASE_APIKEY=YOUR API KEY
+VITE_FIREBASE_AUTHDOMAIN=YOUR AUTH DOMAIN
+VITE_FIREBASE_DATABASEURL=YOUR PROJECT DATABASE URL
+VITE_FIREBASE_PROJECTID=YOUR PROJECT ID
+VITE_FIREBASE_STORAGEBUCKET=YOUR FIREBASE STORAGE BUCKET
+VITE_FIREBASE_MESSAGINGSENDERID=YOUR MESSAGING SENDER ID
+VITE_FIREBASE_APPID=YOUR FIREBASE APP ID
+VITE_FIREBASE_MEASUREMENTID=YOUR FIREBASE MEASUREMENT ID
 ```
 
 You can get all of the information for this by...
@@ -48,16 +39,27 @@ You can get all of the information for this by...
 - (You may need to create an app first by clicking the "</>" icon)
 
 ### Configuring the Database
-There are a few documents that need to be in the Firestore database, but are not yet automatically created. Here's what you will need to do:
+There are a few documents that need to be in the Firestore database, more testing needs to be done to make sure they are automatically created.
 
-- Start a collection called "config"
-- Add a document with the id "student_signup"
-  - Give the document one field called "active" with a boolean value of true
-- Add a document with the id "teacher_register"
-  - Give the document one field called "active" with a boolean value of true
-- Add a document called "student_groups"
-  - Give the document a field called "groups" with an empty array
+You may only need to create the `school_names` collection and update the default school ID in `/app/utils/info/getSchoolId.ts`.
 
+However, since the rest is not tested, here are steps to create all the necessary documents manually.
+
+- Create a collection called `school_names` in your Firestore
+- Add a document with an ID you want to use for your school
+- Give it the field `name` defined as a string with your school's name
+  - NOTE: The `getSchoolId` method (`/app/utils/info/getSchoolId.ts`) defaults to `museum`. You should probably change that for your deployment.
+  - Otherwise, everyone will need to go to {yourSchoolId}.{your domain}.com
+- Create a collection called `schools` and a document with an ID that matches the school ID you created before
+- Create collections called `config`, `sessions`, and `users`
+- Create the following documents in your `config` collection
+`{ domain_restriction: {active: false, domain: ""} }`
+`{ reactions: {default: []} }`
+`{ school_info: {default_day: "friday"} }`
+`{ sessions: {number: X, times: [""]} }` // Where `X` is the number of hours in your day, and `times` is an array of strings with the start and end time of each hour (ex: "8:15 - 9:00")
+`{ student_groups: {groups: []} }`
+`{ student_signup: {active: false} }` // `false` means students can NOT sign up
+`{ teacher_register: {active: true} }` // `true` means new users CAN register as teachers
 
 
 ### Installing and Running Locally
@@ -71,32 +73,23 @@ npm install
 ```
 Then...
 ```
-npm run
+npm run dev
 ```
 
 ### Deploying to the Internet
-This app has been configured for deployment on the Google App Engine.
+This app has been configured for deployment on [Vercel](https://vercel.com).
 
 *Feel free to deploy anywhere else, if you know how.*
 <br></br>
 
-First, you'll need to [create a Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-
-You'll also need to [install Google Cloud SDK](https://cloud.google.com/sdk/docs/install).
-
-Then, open a command prompt and navigate to the project's main directory.
-
-[Initialize the Google Cloud SDK](https://cloud.google.com/sdk/docs/initializing). (You may need to restart your computer if you just installed Google Cloud SDK)
-
-Once initialized, run the following commands:
-```
-npm run-script build
-```
-```
-gcloud app deploy
-```
-
-You can configure the app from there in the [Google Cloud Console](https://console.cloud.google.com/).
+The easiest way to deploy to Vercel would be to:
+1. Clone this repository
+2. Sign up for Vercel
+3. Create a new Vercel project from your repository
+4. Add your environment variables to Vercel
+5. Switch the Framework Preset (in Build & Development Settings) to `Remix`
+6. Override the Install Command to `npm install`
+7. Switch Node.js Version to `18.x`
 
 ### OMG help it's not working!!
 
