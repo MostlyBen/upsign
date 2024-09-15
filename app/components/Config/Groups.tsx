@@ -145,7 +145,7 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
       {/* Student List */}
       <div className="grid grid-cols-2 gap-2" style={{ maxHeight: "calc(100dvh - 36rem)", overflowY: "auto" }}>
         <div>
-          <h2 className="mt-0 mb-2 text-center">Not in {selectedGroup}</h2>
+          <h2 className="mt-0 mb-2 text-center">Not in {selectedGroup ?? "Group"}</h2>
           {filteredStudents.filter(s => !s.groups?.includes(selectedGroup)).map(student => {
             return (
               <StudentName
