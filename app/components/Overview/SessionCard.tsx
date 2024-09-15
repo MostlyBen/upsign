@@ -57,7 +57,7 @@ const SessionCard = ({
     const eQuery = query(
       collection(
         db,
-        `schools/${getSchoolId()}/sessions/${String(date.getFullYear())}/${date.toDateString()}-enrollments`
+        `schools/${getSchoolId()}/sessions/${date.getFullYear()}/${date.toDateString()}-enrollments`
       ),
       where("session_id", "==", session.id)
     );
@@ -71,8 +71,8 @@ const SessionCard = ({
   useEffect(() => {
     if (hasClicked) {
       document.addEventListener("mousedown", () => { setShowOpen(false); setHasClicked(false) });
-    } 
-   return () => document.removeEventListener("mousedown", () => { setShowOpen(false); setHasClicked(false) });
+    }
+    return () => document.removeEventListener("mousedown", () => { setShowOpen(false); setHasClicked(false) });
   }, [hasClicked]);
 
   const [monitor, drop]: [any, any] = useDrop(() => ({
