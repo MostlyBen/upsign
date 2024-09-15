@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Firestore, query, collection, where, onSnapshot } from "firebase/firestore";
+import { Firestore, where } from "firebase/firestore";
 import { Attendance, Enrollment, Session, UpsignUser } from "~/types";
-import { getSessionEnrollments, enrollStudent, updateEnrollment } from "~/services";
+import { enrollStudent, updateEnrollment } from "~/services";
 import { getSchoolId } from "~/utils";
 import { useDrop } from "react-dnd";
 
@@ -9,6 +9,8 @@ import {
   StudentName,
   SessionModal,
 } from "~/components";
+
+import { useFirebaseQuery } from "~/hooks";
 
 import {
   ArrowsOut,
@@ -40,33 +42,12 @@ const SessionCard = ({
   const [showOpen, setShowOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showLock, setShowLock] = useState<boolean>(false);
-  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [hasClicked, setHasClicked] = useState<boolean>(false);
-
-  const loadEnrollments = async (db: Firestore) => {
-    const sessionEnrollments = await getSessionEnrollments(db, date, session.id) as Enrollment[];
-    if (!Array.isArray(sessionEnrollments)) { return }
-
-    setEnrollments(sessionEnrollments.sort((a, b) => {
-      return ((a.nickname ?? a.name) > (b.nickname ?? b.name) ? 1 : -1)
-    }));
-  }
-
-  useEffect(() => {
-    // Set up snapshot & load sessions
-    const eQuery = query(
-      collection(
-        db,
-        `schools/${getSchoolId()}/sessions/${date.getFullYear()}/${date.toDateString()}-enrollments`
-      ),
-      where("session_id", "==", session.id)
-    );
-    const unsubscribe = onSnapshot(eQuery, () => {
-      loadEnrollments(db)
-    })
-
-    return () => unsubscribe()
-  }, [db]);
+  const [enrollments] = useFirebaseQuery<Enrollment>(
+    db,
+    `schools/${getSchoolId()}/sessions/${date.getFullYear()}/${date.toDateString()}-enrollments`,
+    where("session_id", "==", session.id)
+  );
 
   useEffect(() => {
     if (hasClicked) {
@@ -87,16 +68,18 @@ const SessionCard = ({
 
   const handleLockAll = () => {
     let locked = true;
-    for (const s of enrollments) {
+    for (const k of Object.keys(enrollments)) {
+      const s = enrollments[k];
       if (!s.locked) {
         locked = false;
         break;
       }
     }
 
-    for (const t of enrollments) {
-      if (!t.id) { throw new Error(`Something went wrong locking student ${t.name}`) }
-      updateEnrollment(db, date, t.id, { locked: !locked })
+    for (const k of Object.keys(enrollments)) {
+      const s = enrollments[k];
+      if (!s.id) { throw new Error(`Something went wrong locking student ${s.name}`) }
+      updateEnrollment(db, date, s.id, { locked: !locked })
     }
   }
 
@@ -107,7 +90,14 @@ const SessionCard = ({
         session={session}
         date={date}
         groupOptions={groupOptions}
-        enrollments={enrollments}
+        enrollments={
+          Object.keys(enrollments)
+            .sort((a, b) => {
+              return (enrollments[a].nickname ?? enrollments[a].name) > (enrollments[b].nickname ?? enrollments[b].name)
+                ? 1 : -1;
+            })
+            .map(k => { return { id: k, ...enrollments[k] } })
+        }
         onClose={() => setIsOpen(false)}
       />}
 
@@ -176,13 +166,16 @@ const SessionCard = ({
             <span>{session.number_enrolled}/{session.capacity}</span>
           </div>
           <div>
-            {enrollments.map(e => <StudentName
-              key={e.id}
+            {Object.keys(enrollments).sort((a, b) => {
+              return (enrollments[a].nickname ?? enrollments[a].name) > (enrollments[b].nickname ?? enrollments[b].name)
+                ? 1 : -1;
+            }).map(k => <StudentName
+              key={enrollments[k].id}
               db={db}
-              enrollment={e}
+              enrollment={enrollments[k]}
               date={date}
               currentSession={session}
-              user={allStudents[e.uid as string]}
+              user={allStudents[enrollments[k].uid as string]}
               groupFilter={groupFilter}
               attendanceFilter={attendanceFilter as Attendance[]}
               isSession

@@ -15,7 +15,7 @@ const getUserType = async (
 
   const userRef = doc(db, `schools/${schoolId}/users/${user.uid}`);
   const userDoc = await getDoc(userRef);
-  console.log('user doc', userDoc);
+
   if (userDoc.exists()) {
     if (userDoc.data().type) {
       return userDoc.data().type;

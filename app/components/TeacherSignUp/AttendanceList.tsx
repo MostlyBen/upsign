@@ -5,6 +5,7 @@ import {
 } from "../../services";
 import { Session, Enrollment } from "~/types";
 import EnrollmentRow from "./EnrollmentRow";
+import { useFirebaseQuery } from "~/hooks";
 
 
 interface AttendanceListProps {
@@ -18,16 +19,11 @@ interface AttendanceListProps {
 const AttendanceList = ({ db, schoolId, date, session, enrollmentsFromParent }: AttendanceListProps) => {
   const [enrollments, setEnrollments] = useState<Enrollment[]>(enrollmentsFromParent ?? [])
   const [loading, setLoading] = useState<boolean>(true)
-
-  const loadEnrollments = async (db: Firestore) => {
-    const sessionEnrollments = await getSessionEnrollments(db, date, session.id) as Enrollment[];
-    if (!Array.isArray(sessionEnrollments)) { return }
-
-    setEnrollments(sessionEnrollments.sort((a, b) => {
-      return ((a.nickname ?? a.name) > (b.nickname ?? b.name) ? 1 : -1)
-    }));
-    setLoading(false);
-  }
+  const [_enrollments] = enrollmentsFromParent ? [null] : useFirebaseQuery<Enrollment>(
+    db,
+    `schools/${schoolId}/sessions/${String(date.getFullYear())}/${date.toDateString()}-enrollments`,
+    where("session_id", "==", session.id)
+  );
 
   useEffect(() => {
     // If enrollments are managed by parent, don't load here
@@ -38,20 +34,17 @@ const AttendanceList = ({ db, schoolId, date, session, enrollmentsFromParent }: 
 
     setLoading(true);
     setEnrollments([]);
-    // Set up snapshot & load sessions
-    const eQuery = query(
-      collection(
-        db,
-        `schools/${schoolId}/sessions/${String(date.getFullYear())}/${date.toDateString()}-enrollments`
-      ),
-      where("session_id", "==", session.id)
-    );
-    const unsubscribe = onSnapshot(eQuery, () => {
-      loadEnrollments(db)
-    })
-
-    return () => unsubscribe()
   }, [db]);
+
+  useEffect(() => {
+    if (!_enrollments) { return }
+    setEnrollments(
+      Object.keys(_enrollments).sort((a, b) => {
+        return (_enrollments[a].nickname ?? _enrollments[a].name) > (_enrollments[b].nickname ?? _enrollments[b].name)
+          ? 1 : -1
+      }).map(k => { return { id: k, ..._enrollments[k] } })
+    );
+  }, [_enrollments]);
 
   useEffect(() => {
     if (Array.isArray(enrollmentsFromParent)) {
