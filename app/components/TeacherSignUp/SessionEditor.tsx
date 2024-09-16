@@ -65,14 +65,14 @@ const SessionEditor = ({
     if (!Array.isArray(sessionEnrollments)) { return }
 
     setEnrollments(sessionEnrollments.sort((a, b) => {
-      return ((a.nickname ?? a.name) > (b.nickname ?? b.name) ? 1 : -1)
+      return ((a.nickname ?? a.name) > (b.nickname ?? b.name) ? 1 : -1);
     }));
   }
 
   useEffect(() => {
     if (enrollmentsFromParent) { return }
 
-    setEnrollments([])
+    setEnrollments([]);
     // Set up snapshot & load sessions
     const eQuery = query(
       collection(
@@ -82,19 +82,19 @@ const SessionEditor = ({
       where("session_id", "==", session.id)
     );
     const unsubscribe = onSnapshot(eQuery, () => {
-      loadEnrollments(db)
+      loadEnrollments(db);
     })
 
-    return () => unsubscribe()
+    return () => unsubscribe();
 
   }, [db]);
 
   useEffect(() => {
-    const titleEl = document.getElementById(`session-title-${session.id}`)
-    const isActive = (titleEl === document.activeElement)
+    const titleEl = document.getElementById(`session-title-${session.id}`);
+    const isActive = (titleEl === document.activeElement);
 
     if (!isActive) {
-      setTitle(savedTitle)
+      setTitle(savedTitle);
     }
   }, [savedTitle, session.id])
 
@@ -107,7 +107,7 @@ const SessionEditor = ({
       groupSelect.value = group as string;
     } else if (session.restricted_to === "") {
       // If not restricted to anything yet, show All Students
-      groupSelect.value = ""
+      groupSelect.value = "";
     }
   }, [session.id, session.restricted_to]);
 
@@ -127,10 +127,10 @@ const SessionEditor = ({
           setRoom(updatedSession.room ?? '');
           setCapacity(updatedSession.capacity ?? 30);
           session.restricted_to = updatedSession.restricted_to;
-        })
-      })
+        });
+      });
 
-      return () => unsubscribe()
+      return () => unsubscribe();
     }
   }, [db, session]);
 
@@ -144,7 +144,7 @@ const SessionEditor = ({
     if (enrollments.length !== session.number_enrolled) {
       updateSession(db, date, session.id, { number_enrolled: enrollments.length });
     }
-  }, [enrollments])
+  }, [enrollments]);
 
   useEffect(() => {
     if (hasClicked) {
