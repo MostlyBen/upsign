@@ -46,7 +46,7 @@ const ThemeSelector = () => {
 
   useEffect(() => {
     if (typeof window === 'undefined') { return }
-    
+
     const _windowDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     setWindowDark(_windowDark);
@@ -54,8 +54,8 @@ const ThemeSelector = () => {
     if (window.localStorage.getItem("theme")) {
       setTheme(window.localStorage.getItem("theme") as Themes);
     } else {
-      setTheme(_windowDark ? "dark" : "light" )
-  }
+      setTheme(_windowDark ? "dark" : "light")
+    }
   }, []);
 
   const handleChangeTheme = (t: Themes) => {
@@ -64,7 +64,7 @@ const ThemeSelector = () => {
   }
 
   return (
-    <label className="flex cursor-pointer gap-2" suppressHydrationWarning>
+    <label className="flex cursor-pointer gap-2 mb-2" suppressHydrationWarning>
       {windowDark ? <Moon /> : <Sun />}
       <input
         type="checkbox"

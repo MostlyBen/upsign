@@ -11,9 +11,8 @@ const Menu = () => {
       id="navbar-left-menu"
       className="fixed top-16 z-40 p-4 bg-base-100 drop-shadow-lg flex flex-col justify-center"
     >
-      <div className="mb-2">
-        <ThemeSelector />
-      </div>
+      <ThemeSelector />
+      <hr className="mt-2 mb-4" />
 
       <SignOutButton />
     </div>
