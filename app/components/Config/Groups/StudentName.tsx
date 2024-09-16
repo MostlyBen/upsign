@@ -58,9 +58,9 @@ const StudentName = ({
       onClick={() => handleClickStudent(student)}
       disabled={loading}
     >
-      {inGroup && <span className="hover-parent-show"><ChevronLeft /></span>}
+      {inGroup && <span className="hover-parent-show hidden mb:block"><ChevronLeft /></span>}
       <span>{student.nickname ?? student.name}</span>
-      {!inGroup && <span className="hover-parent-show"><ChevronRight /></span>}
+      {!inGroup && <span className="hover-parent-show hidden md:block"><ChevronRight /></span>}
     </button>
   )
 }

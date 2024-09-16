@@ -47,14 +47,14 @@ const Config = () => {
             </Link>)}
           </div>
 
-          <div className="flex flex-col gap-4 w-full"
+          <div className="w-full"
             style={{
               height: "calc(100dvh - 10rem)",
               maxHeight: "calc(100dvh - 10rem)",
               maxWidth: "720px",
             }}
           >
-            <div role="alert" className="alert alert-warning bg-secondary rounded-lg">
+            <div role="alert" className="alert alert-warning bg-secondary rounded-lg mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 shrink-0 stroke-current"
@@ -72,6 +72,10 @@ const Config = () => {
 
             <div
               className="p-8 grow bg-base-100 card rounded-lg overflow-y-auto"
+              style={{
+                height: "calc(100dvh - 16rem)",
+                maxHeight: "calc(100dvh - 16rem)",
+              }}
             >
               <Outlet
                 context={{
