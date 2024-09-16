@@ -2,7 +2,13 @@ import { Firestore, doc, collection, query, where, getDocs, writeBatch, incremen
 import { getSchoolId } from "../../utils";
 import { Enrollment, UpsignUser } from "~/types";
 
-const unenrollFromHour = async (db: Firestore, date: Date, user: UpsignUser | Enrollment, hour: number, schoolId: string | null = null): Promise<void> => {
+const unenrollFromHour = async (
+  db: Firestore,
+  date: Date,
+  user: UpsignUser | Enrollment,
+  hour: number,
+  schoolId: string | null = null
+): Promise<void> => {
   if (!user.uid || !hour) {
     return;
   }

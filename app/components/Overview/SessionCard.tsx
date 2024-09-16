@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Firestore, where } from "firebase/firestore";
 import { Attendance, Enrollment, Session, UpsignUser } from "~/types";
-import { enrollStudent, updateEnrollment } from "~/services";
+import { enrollStudent, updateEnrollment, updateSession } from "~/services";
 import { getSchoolId } from "~/utils";
 import { useDrop } from "react-dnd";
 
@@ -55,6 +55,12 @@ const SessionCard = ({
     }
     return () => document.removeEventListener("mousedown", () => { setShowOpen(false); setHasClicked(false) });
   }, [hasClicked]);
+
+  useEffect(() => {
+    if (session.number_enrolled !== Object.keys(enrollments).length) {
+      updateSession(db, date, session.id, { number_enrolled: Object.keys(enrollments).length });
+    }
+  }, [enrollments]);
 
   const [monitor, drop]: [any, any] = useDrop(() => ({
     accept: "student",

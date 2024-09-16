@@ -33,6 +33,7 @@ const UnsignedStudents = ({
   const updateUnsigned = async (db: Firestore) => {
     const _unsigned = await getUnsignedStudents(db, date, hour);
     setUnsigned([..._unsigned]);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -60,13 +61,15 @@ const UnsignedStudents = ({
     accept: "student",
     drop: (item: { enrollment: Enrollment }) => {
       const user = item.enrollment;
-      unenrollFromHour(db, date, user, hour);
+      if (!user.uid || !user.session_id) { return }
+      unenrollFromSession(db, date, user.uid, user.session_id);
     },
   }), [db, date]);
 
   return (
     <div className="card bg-base-100 shadow-lg prose w-full p-6 rounded-md mb-4" ref={drop}>
       <h3 className="leading-6">Unsigned Students</h3>
+      {loading && <p className="opacity-80 text-center">Loading...</p>}
       {unsigned.map(s => <StudentName
         key={`student-${s.uid}`}
         db={db}

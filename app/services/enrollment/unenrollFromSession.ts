@@ -1,7 +1,14 @@
 import { Firestore, doc, collection, query, where, getDocs, writeBatch, increment } from "firebase/firestore";
 import { getSchoolId } from "../../utils";
 
-const unenrollFromSession = async (db: Firestore, date: Date, userId: string, sessionId: string, schoolId: string | null = null): Promise<void> => {
+const unenrollFromSession = async (
+  db: Firestore,
+  date: Date,
+  userId: string,
+  sessionId: string,
+  schoolId: string | null = null
+): Promise<void> => {
+
   if (!sessionId || !userId) {
     return;
   }
@@ -28,7 +35,7 @@ const unenrollFromSession = async (db: Firestore, date: Date, userId: string, se
   qSnapshot.forEach((snap) => {
     batch.delete(snap.ref);
   });
-  
+
   await batch.commit();
 }
 
