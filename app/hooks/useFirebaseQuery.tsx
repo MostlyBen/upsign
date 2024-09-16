@@ -25,11 +25,13 @@ const useFirebaseQuery = <T extends any>(
     const q = query(collection(_db, collectionPath), ...queries);
     const unsubscribe = onSnapshot(q, (snap) => {
       setStored((_stored) => {
+        // Changes & creations
         snap.forEach((doc) => {
           _stored[doc.id] = {
             id: doc.id, ...doc.data()
           } as T;
         });
+        // Deletions
         for (const change of snap.docChanges()) {
           if (change.type === "removed") {
             delete _stored[change.doc.id];
