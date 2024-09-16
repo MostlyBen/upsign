@@ -244,7 +244,7 @@ const SessionEditor = ({
     return (
       <select
         id={`group-select-${session.id}`}
-        className="select select-bordered group-dropdown col-span-2 m-2"
+        className="select select-bordered group-dropdown col-span-2"
         onChange={handleRestrict}
         value={session.restricted_to}
       >
@@ -321,34 +321,38 @@ const SessionEditor = ({
         <div className="grid grid-cols-2 col-span-2 md:col-span-1 h-fit">
           <div className="block col-span-2">
             {/* Title */}
-            <DebounceInput
-              className="block w-full m-2 input input-bordered text-lg font-bold"
-              id={`session-title-${session.id}`}
-              type="text"
-              value={title}
-              onChange={handleChangeTitle}
-              autoComplete="off"
-              placeholder="Session Title"
-              debounceTimeout={1200}
-              onBlur={handleBlurTitle}
-            />
-            <DebounceInput
-              className="block w-full m-2 input input-bordered"
-              id={`session-subtitle-${session.id}`}
-              type="text"
-              value={subtitle}
-              onChange={handleChangeSubtitle}
-              autoComplete="off"
-              placeholder="Subtitle"
-              debounceTimeout={1200}
-              onBlur={handleBlurSubtitle}
-              style={{ marginBottom: '0', height: '2.5rem' }}
-            />
+            <div className="mb-2">
+              <DebounceInput
+                className="block w-full input input-bordered text-lg font-bold"
+                id={`session-title-${session.id}`}
+                type="text"
+                value={title}
+                onChange={handleChangeTitle}
+                autoComplete="off"
+                placeholder="Session Title"
+                debounceTimeout={1200}
+                onBlur={handleBlurTitle}
+              />
+            </div>
+            <div className="mb-2">
+              <DebounceInput
+                className="block w-full input input-bordered"
+                id={`session-subtitle-${session.id}`}
+                type="text"
+                value={subtitle}
+                onChange={handleChangeSubtitle}
+                autoComplete="off"
+                placeholder="Subtitle"
+                debounceTimeout={1200}
+                onBlur={handleBlurSubtitle}
+                style={{ marginBottom: '0', height: '2.5rem' }}
+              />
+            </div>
           </div>
 
           {/* Teacher */}
           <DebounceInput
-            className="col-span-2 ml-2 my-2 input h-auto w-full py-1 px-2 mb-0"
+            className="col-span-2 mb-2 input h-auto w-full py-1 px-2"
             id={`session-teacher-${session.id}`}
             type="text"
             value={teacher}
@@ -360,7 +364,7 @@ const SessionEditor = ({
           />
 
           {/* Room */}
-          <div className="m-2">
+          <div className="mb-2 mr-2">
 
             <label htmlFor={`session-title-${session.id}`}>Room</label>
             <DebounceInput
@@ -376,7 +380,7 @@ const SessionEditor = ({
           </div>
 
           {/* Capacity */}
-          <div className="m-2">
+          <div className="mb-2 ml-2">
             <label htmlFor={`session-title-${session.id}`}>Capacity</label>
             <DebounceInput
               className="mimic-card-h2 remove-border input input-bordered w-full"

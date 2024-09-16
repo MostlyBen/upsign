@@ -49,10 +49,7 @@ const SessionModal = ({
   return (
     <div
       id={`modal-${session.id}`}
-      className="fixed z-50 top-0 bottom-0 left-0 right-0 flex align-middle justify-center modal-open"
-      style={{
-        backdropFilter: 'blur(5px) brightness(80%)'
-      }}
+      className="fixed z-50 top-0 bottom-0 left-0 right-0 flex align-middle justify-center modal-open modal-bg"
     >
       <div
         className="h-fit w-fit m-auto px-6 md:py-12 md:px-32"
