@@ -16,7 +16,7 @@ import {
 
 import AttendanceList from './AttendanceList';
 import { ChevronDown, ChevronRight, Trash } from "~/icons";
-import { getSessionEnrollments, removeTeacherSession } from "~/services";
+import { getSessionEnrollments, removeTeacherSession, updateSession } from "~/services";
 import { getSchoolId } from "~/utils";
 
 type SessionEditorProps = {
@@ -29,7 +29,16 @@ type SessionEditorProps = {
   enrollmentsFromParent?: Enrollment[]
 }
 
-const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, isModal, enrollmentsFromParent }: SessionEditorProps) => {
+const SessionEditor = ({
+  db,
+  session,
+  date,
+  groupOptions,
+  hasMultipleSessions,
+  isModal,
+  enrollmentsFromParent
+}: SessionEditorProps) => {
+
   const groupList = useRef(groupOptions.length ? groupOptions : []);
 
   const [isHovering, setIsHovering] = useState<boolean>(false);
@@ -130,6 +139,12 @@ const SessionEditor = ({ db, session, date, groupOptions, hasMultipleSessions, i
       setEnrollments([...enrollmentsFromParent]);
     }
   }, [enrollmentsFromParent]);
+
+  useEffect(() => {
+    if (enrollments.length !== session.number_enrolled) {
+      updateSession(db, date, session.id, { number_enrolled: enrollments.length });
+    }
+  }, [enrollments])
 
   useEffect(() => {
     if (hasClicked) {
