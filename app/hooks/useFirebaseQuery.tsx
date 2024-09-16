@@ -30,6 +30,11 @@ const useFirebaseQuery = <T extends any>(
             id: doc.id, ...doc.data()
           } as T;
         });
+        for (const change of snap.docChanges()) {
+          if (change.type === "removed") {
+            delete _stored[change.doc.id];
+          }
+        }
         return { ..._stored };
       });
     }, (error) => {
