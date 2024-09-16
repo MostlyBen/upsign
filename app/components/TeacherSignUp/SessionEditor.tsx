@@ -308,7 +308,7 @@ const SessionEditor = ({
         >
           <Trash />
         </button>}
-      <div className="session-editor bg-base-100 card drop-shadow-md p-4 my-4 grid grid-cols-2 gap-8">
+      <div className="session-editor bg-base-100 card drop-shadow-md p-4 my-4 grid grid-cols-2 gap-4">
         {!isModal && <button
           className="absolute btn btn-ghost p-1 h-full collapse-btn-offset print:hidden"
           onClick={() => setCollapsed(true)}
