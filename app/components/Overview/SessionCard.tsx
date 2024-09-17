@@ -3,7 +3,7 @@ import { Firestore, where } from "firebase/firestore";
 import { Attendance, Enrollment, Session, UpsignUser } from "~/types";
 import { enrollStudent, updateEnrollment, updateSession } from "~/services";
 import { getSchoolId } from "~/utils";
-import { useDrop } from "react-dnd";
+import { useDroppable } from "@dnd-kit/core";
 
 import {
   StudentName,
@@ -56,21 +56,13 @@ const SessionCard = ({
     return () => document.removeEventListener("mousedown", () => { setShowOpen(false); setHasClicked(false) });
   }, [hasClicked]);
 
-  useEffect(() => {
-    if (session.number_enrolled !== Object.keys(enrollments).length) {
-      updateSession(db, date, session.id, { number_enrolled: Object.keys(enrollments).length });
+  const { isOver, setNodeRef } = useDroppable({
+    id: `droppable-${session.id}`,
+    data: {
+      type: "session",
+      session,
     }
-  }, [enrollments]);
-
-  const [monitor, drop]: [any, any] = useDrop(() => ({
-    accept: "student",
-    drop: () => {
-      const user = monitor.getItem().enrollment;
-      if (user.session_id === session.id) { return }
-      enrollStudent(db, date, session, user, true);
-    },
-    collect: monitor => (monitor),
-  }), [db, date]);
+  });
 
   const handleLockAll = () => {
     let locked = true;
@@ -117,9 +109,9 @@ const SessionCard = ({
         onPointerLeave={() => {
           if (!hasClicked) { setShowOpen(false) }
         }}
-        ref={drop}
+        ref={setNodeRef}
       >
-        <div className="card overview-card shadow-md bg-base-100 p-6 mb-4 rounded-md">
+        <div className={`card overview-card shadow-md p-6 mb-4 rounded-md ${isOver ? "bg-base-300" : "bg-base-100"}`}>
 
           {showOpen && <button
             className="absolute top-4 right-4 z-10 bg-base-100"

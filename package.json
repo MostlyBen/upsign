@@ -12,6 +12,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
     "@headlessui/react": "^1.7.18",
     "@remix-run/node": "2.10.0",
     "@remix-run/react": "2.10.0",
@@ -22,13 +23,11 @@
     "deep-equal": "^2.2.3",
     "emoji-picker-react": "^4.12.0",
     "firebase": "^10.13.1",
-    "isbot": "^4",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1"
+    "isbot": "^4"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-helmet-async": "^1.3.0"
   },
   "devDependencies": {

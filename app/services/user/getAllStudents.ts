@@ -28,7 +28,7 @@ const getAllStudents = async (
         const s: Record<string, UpsignUser> = {};
         querySnapshot.forEach((doc) => {
           if (doc.data()) {
-            s[doc.id] = doc.data() as UpsignUser;
+            s[doc.id] = { uid: doc.id, ...doc.data() } as UpsignUser;
           }
         });
 

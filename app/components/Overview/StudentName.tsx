@@ -1,6 +1,6 @@
 import { Firestore } from 'firebase/firestore';
 import { useMemo, useState } from 'react';
-import { useDrag } from 'react-dnd';
+import { useDraggable } from '@dnd-kit/core';
 import { Emoji } from 'emoji-picker-react';
 
 import { updateEnrollment } from '../../services';
@@ -10,8 +10,8 @@ import { LockClosedMicro } from '~/icons';
 type StudentNameProps = {
   db: Firestore,
   date: Date,
-  enrollment: Enrollment,
   user: UpsignUser,
+  enrollment?: Enrollment,
   groupFilter?: string,
   attendanceFilter?: Attendance[],
   currentSession?: Session,
@@ -29,22 +29,25 @@ const StudentName = ({
   isSession,
 }: StudentNameProps) => {
   const [isHovering, setIsHovering] = useState(false);
-  const dragItem = useMemo(() => ({ enrollment, currentSession }), [enrollment, currentSession]);
+  const dragItem = useMemo(() => ({ user, enrollment, currentSession }), [user, enrollment, currentSession]);
 
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'student',
-    item: dragItem,
-    collect: monitor => ({
-      isDragging: !!monitor.isDragging(),
-    })
-  }), [enrollment, currentSession, date, db]);
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: `draggable-${user.uid}`,
+    data: dragItem,
+  });
+
+  const style = transform ? {
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    zIndex: 30,
+  } : undefined;
 
   const toggleLock = async () => {
+    if (!enrollment) { return }
     const payload = {
       locked: !enrollment.locked
     }
 
-    await updateEnrollment(db, date, enrollment.id ?? "", payload)
+    await updateEnrollment(db, date, enrollment.id ?? "", payload);
   }
 
   if (!user) { return <></> }
@@ -53,7 +56,7 @@ const StudentName = ({
     if (!user.groups.includes(groupFilter)) { return <></> }
   }
   if (
-    enrollment.attendance &&
+    enrollment?.attendance &&
     attendanceFilter?.length &&
     !attendanceFilter.includes(enrollment.attendance)
   ) {
@@ -62,12 +65,14 @@ const StudentName = ({
 
   return (
     <div
-      ref={drag}
-      className="student-name mt-0"
-      key={`enrollment-${enrollment.uid}`}
-      style={{ opacity: isDragging ? 0.25 : 1, cursor: 'move' }}
+      className="student-name mt-0 cursor-move"
+      key={`enrollment-${user.uid}`}
       onPointerEnter={() => setIsHovering(true)}
       onPointerLeave={() => setIsHovering(false)}
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
     >
       {/* Lock */}
       {((isSession && isHovering) || (isSession && enrollment.locked)) &&
@@ -84,13 +89,13 @@ const StudentName = ({
         </span>}
 
       {/* Name */}
-      <span className="mr-2">{enrollment.nickname ?? enrollment.name}</span>
+      <span className="mr-2">{user.nickname ?? user.name}</span>
       {/* Emoji Flag */}
-      {enrollment.flag && <div className="emoji-holder pr-2" style={{ display: 'inline-block', margin: '6px 0 0 0', height: '14px' }}>
+      {enrollment?.flag && <div className="emoji-holder pr-2" style={{ display: 'inline-block', margin: '6px 0 0 0', height: '14px' }}>
         <Emoji unified={enrollment.flag} size={16} />
       </div>}
       {/* Attendance */}
-      {enrollment.attendance
+      {enrollment?.attendance
         ? <span>|<span className="ml-2" style={{
           fontWeight: "bold",
           color: enrollment.attendance === "present"

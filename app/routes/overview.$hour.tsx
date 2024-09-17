@@ -2,15 +2,14 @@ import { useState, useEffect } from "react";
 import { useLoaderData, useOutletContext } from "@remix-run/react";
 import { Firestore, query, collection, onSnapshot } from "firebase/firestore";
 import { LoaderFunctionArgs } from "react-router";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndContext, DragEndEvent, pointerWithin } from "@dnd-kit/core";
 
 import {
   SessionCard,
   UnsignedStudents,
 } from "~/components";
-import { getHourSessions } from "~/services";
-import { Attendance, Session, UpsignUser } from "~/types";
+import { getHourSessions, enrollStudent, unenrollFromSession } from "~/services";
+import { Attendance, Session, UpsignUser, Enrollment } from "~/types";
 import { getSchoolId } from "~/utils";
 
 export async function loader({
@@ -66,10 +65,24 @@ const HourOverview = () => {
 
     return () => unsubscribe();
 
-  }, [db, selectedDate, hour])
+  }, [db, selectedDate, hour]);
+
+  const handleDragEnd = (e: DragEndEvent) => {
+    const { user, enrollment } = e.active?.data?.current as { user: UpsignUser, enrollment: Enrollment };
+    if (!e.over?.data?.current || !user || !e.active?.data?.current) { return }
+
+    if (e.over.data.current.type === "unsigned") {
+      if (!e.active.data.current.currentSession) { return }
+      unenrollFromSession(db, selectedDate, user?.uid as string, enrollment.session_id as string);
+
+    } else if (e.over.data.current.type === "session") {
+      if (e.over.data.current.session.id === e.active.data.current.currentSession?.id) { return }
+      enrollStudent(db, selectedDate, e.over.data.current.session, user);
+    }
+  }
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
       {loading && <div>Loading...</div>}
 
       <div className="cards-container">
@@ -91,7 +104,7 @@ const HourOverview = () => {
           key={s.id}
         />)}
       </div>
-    </DndProvider>
+    </DndContext>
   )
 }
 

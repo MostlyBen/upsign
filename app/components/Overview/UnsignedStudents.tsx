@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { query, collection, onSnapshot, Firestore } from "firebase/firestore";
-import { useDrop } from "react-dnd";
+import { useDroppable } from "@dnd-kit/core";
 
 import { StudentName } from "~/components";
-import { Attendance, Enrollment, UpsignUser } from "~/types";
+import { Attendance, UpsignUser } from "~/types";
 import {
   getUnsignedStudents,
-  unenrollFromHour,
-  unenrollFromSession,
 } from "~/services";
 import { getSchoolId } from "~/utils";
 
@@ -55,25 +53,23 @@ const UnsignedStudents = ({
     return () => unsubscribe();
   }, [db, date, hour])
 
-
-  // DnD frame
-  const [, drop]: [any, any] = useDrop(() => ({
-    accept: "student",
-    drop: (item: { enrollment: Enrollment }) => {
-      const user = item.enrollment;
-      if (!user.uid || !user.session_id) { return }
-      unenrollFromSession(db, date, user.uid, user.session_id);
-    },
-  }), [db, date]);
+  const { isOver, setNodeRef } = useDroppable({
+    id: 'droppable',
+    data: {
+      type: 'unsigned',
+    }
+  });
 
   return (
-    <div className="card bg-base-100 shadow-lg prose w-full p-6 rounded-md mb-4" ref={drop}>
+    <div
+      className={`card bg-base-100 shadow-lg prose w-full p-6 rounded-md mb-4 ${isOver ? "bg-base-300" : "bg-base-100"}`}
+      ref={setNodeRef}
+    >
       <h3 className="leading-6">Unsigned Students</h3>
       {loading && <p className="opacity-80 text-center">Loading...</p>}
       {unsigned.map(s => <StudentName
         key={`student-${s.uid}`}
         db={db}
-        enrollment={s as Enrollment}
         user={allStudents[s.uid as string]}
         groupFilter={groupFilter}
         date={date}
