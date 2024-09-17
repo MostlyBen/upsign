@@ -5,7 +5,6 @@ import { getSchoolId } from "~/utils";
 
 import {
   setUserType,
-  getTeacherRegisterAllowed,
   allowStudentRegister
 } from "~/services";
 
