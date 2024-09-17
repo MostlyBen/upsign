@@ -7,7 +7,10 @@ export default function TeacherLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <NavBar userType="teacher" schoolName="UpSign" />
-      <div className="bg-base-200 p-8 md:py-12 md:px-16 lg:px-24 xl:px-32 2xl:px-64 print:p-1">
+      <div
+        className="bg-base-200 p-8 md:py-12 md:px-16 lg:px-24 mx-auto print:p-1"
+        style={{ maxWidth: "1800px" }}
+      >
         <div className="mt-16 print:mt-0">
           {children}
         </div>

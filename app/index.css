@@ -85,7 +85,7 @@ code {
   column-count: 1;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 648px) {
   .cards-container {
     column-count: 2;
   }
