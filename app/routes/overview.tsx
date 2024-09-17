@@ -108,7 +108,7 @@ const Overview = () => {
         <div className="flex flex-row gap-4 w-full">
           <select
             id="group-select-overview"
-            className="select bg-base-200 group-dropdown my-2 grow shadow-none"
+            className="select bg-base-200 group-dropdown my-2 grow w-full shadow-none"
             onChange={(e) => setGroupFilter(e.target.value)}
             value={groupFilter}
           >
@@ -124,7 +124,7 @@ const Overview = () => {
           </select>
 
           <input
-            className="input grow my-2 p-1 bg-base-200 rounded-lg ghost"
+            className="input grow my-2 p-1 bg-base-200 rounded-lg ghost w-full"
             type="date"
             value={selectedDateString ?? ""}
             onChange={(e) => setSelectedDateString(e.target.value)}
