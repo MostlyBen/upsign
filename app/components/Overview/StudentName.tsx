@@ -28,6 +28,8 @@ const StudentName = ({
   attendanceFilter,
   isSession,
 }: StudentNameProps) => {
+  if (!user) { return <div className="student-name mt-0">Unknown User {enrollment?.name}</div> }
+
   const [isHovering, setIsHovering] = useState(false);
   const dragItem = useMemo(() => ({ user, enrollment, currentSession }), [user, enrollment, currentSession]);
 
@@ -75,9 +77,9 @@ const StudentName = ({
       {...attributes}
     >
       {/* Lock */}
-      {((isSession && isHovering) || (isSession && enrollment.locked)) &&
+      {((isSession && isHovering) || (isSession && enrollment?.locked)) &&
         <span
-          className={`material-icons cursor-pointer ${enrollment.locked ? 'locked' : ''}`}
+          className={`material-icons cursor-pointer ${enrollment?.locked ? 'locked' : ''}`}
           onClick={toggleLock}
           style={{
             position: "relative",
