@@ -48,7 +48,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-base-200">
         {!loading && userType && <Outlet context={{ db, user, userType }} />}
         <Scripts />
       </body>
