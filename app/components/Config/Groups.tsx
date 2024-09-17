@@ -87,7 +87,7 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
       <h4 className="mt-0">Add/Remove From:</h4>
       <select
         id="group-select"
-        className="select select-bordered w-full mb-4"
+        className="select select-bordered w-full mb-4 bg-base-100"
         onChange={(e) => setSelectedGroup(e.target.value)}
         value={selectedGroup}
       >
@@ -121,7 +121,7 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
         </label>
         <label className="input input-bordered flex items-center gap-2 w-full mb-4 pr-0" htmlFor="user-group-filter">
           <span className="opacity-80"><Funnel /></span>
-          <select className="w-full h-full rounded-lg cursor-pointer"
+          <select className="w-full h-full rounded-lg cursor-pointer bg-base-100"
             id="user-group-filter"
             onChange={e => setFilterGroup(e.target.value)}
             value={filterGroup}
