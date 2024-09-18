@@ -1,3 +1,4 @@
+import { Link } from '@remix-run/react';
 import { SignInButton } from '../auth/SignInButton';
 
 function Index() {
@@ -16,6 +17,13 @@ function Index() {
             <div className="mt-4 grid gap-2">
               <SignInButton />
             </div>
+            <hr className="my-16" />
+            <div>
+              Upsign is an app for creating flexible school-day schedules.
+              <br />
+              Check out our <Link to="/terms">Terms of Service</Link> and <Link to="/privacy">Privacy Policy</Link>.
+            </div>
+
           </div>
         </div>
       </div>
