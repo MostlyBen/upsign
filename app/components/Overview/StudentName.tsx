@@ -80,7 +80,7 @@ const StudentName = ({
       {((isSession && isHovering) || (isSession && enrollment?.locked)) &&
         <span
           className={`material-icons cursor-pointer ${enrollment?.locked ? 'locked' : ''}`}
-          onClick={toggleLock}
+          onPointerDown={toggleLock}
           style={{
             position: "relative",
             top: "-2px",
