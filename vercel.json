@@ -2,8 +2,7 @@
   "rewrites": [
     {
       "source": "/__/auth/:path*",
-      "destination": "https://upsign-88bf7.firebaseapp.com/__/auth/:path*",
-      "type": 301
+      "destination": "https://upsign-88bf7.firebaseapp.com/__/auth/:path*"
     }
   ]
 }
