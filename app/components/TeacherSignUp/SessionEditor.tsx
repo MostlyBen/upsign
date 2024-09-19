@@ -141,12 +141,6 @@ const SessionEditor = ({
   }, [enrollmentsFromParent]);
 
   useEffect(() => {
-    if (enrollments.length !== session.number_enrolled) {
-      updateSession(db, date, session.id, { number_enrolled: enrollments.length });
-    }
-  }, [enrollments]);
-
-  useEffect(() => {
     if (hasClicked) {
       document.addEventListener("mousedown", () => { setIsHovering(false); setHasClicked(false) });
     }

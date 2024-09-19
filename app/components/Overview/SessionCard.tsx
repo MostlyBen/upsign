@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Firestore, where } from "firebase/firestore";
 import { Attendance, Enrollment, Session, UpsignUser } from "~/types";
-import { enrollStudent, updateEnrollment, updateSession } from "~/services";
+import { updateEnrollment } from "~/services";
 import { getSchoolId } from "~/utils";
 import { useDroppable } from "@dnd-kit/core";
 
