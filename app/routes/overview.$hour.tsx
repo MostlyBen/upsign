@@ -84,6 +84,12 @@ const HourOverview = () => {
   return (
     <DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
       {loading && <div>Loading...</div>}
+      <div
+        className="absolute right-0 select-none opacity-80"
+        style={{ top: "-2.75rem" }}
+      >
+        Total Capacity: {sessions.map(s => s.capacity).reduce((a, b) => a + b, 0)}
+      </div>
 
       <div className="cards-container">
         <UnsignedStudents
