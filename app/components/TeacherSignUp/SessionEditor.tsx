@@ -16,7 +16,7 @@ import {
 
 import AttendanceList from './AttendanceList';
 import { ChevronDown, ChevronRight, Trash } from "~/icons";
-import { getSessionEnrollments, removeTeacherSession, updateSession } from "~/services";
+import { getSessionEnrollments, removeTeacherSession } from "~/services";
 import { getSchoolId } from "~/utils";
 
 type SessionEditorProps = {
@@ -60,6 +60,7 @@ const SessionEditor = ({
 
   const loadEnrollments = async (db: Firestore) => {
     if (enrollmentsFromParent) { return }
+    if (!session.id) { return }
 
     const sessionEnrollments = await getSessionEnrollments(db, date, session.id) as Enrollment[];
     if (!Array.isArray(sessionEnrollments)) { return }
@@ -146,6 +147,14 @@ const SessionEditor = ({
     }
     return () => document.removeEventListener("mousedown", () => { setIsHovering(false); setHasClicked(false) });
   }, [hasClicked]);
+
+  // useEffect(() => {
+  //   if (!session.id) { return }
+  //
+  //   if (enrollments.length && (session.number_enrolled !== enrollments.length)) {
+  //     updateSession(db, date, session.id, { number_enrolled: enrollments.length });
+  //   }
+  // }, [enrollments])
 
 
   /* BUTTON HANDLERS */
@@ -291,6 +300,7 @@ const SessionEditor = ({
         <button
           className="btn btn-circle bg-base-100 text-error absolute top-0 z-40 print:hidden"
           onPointerDown={() => {
+            if (!session.id) { return }
             if (window.confirm("Remove session?")) {
               setRemoving(true);
               removeTeacherSession(db, date, session.id);
@@ -410,3 +420,4 @@ const SessionEditor = ({
 }
 
 export default SessionEditor
+

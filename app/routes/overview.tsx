@@ -46,7 +46,6 @@ const Overview = () => {
   if (userType === "student") { return <Navigate to="/" /> }
   const navigate = useNavigate();
 
-  // const hour = Number(useLoaderData<typeof loader>().hour);
   if (!useLoaderData<typeof loader>().hour) {
     return (<Navigate to="/overview/1" />);
   }
