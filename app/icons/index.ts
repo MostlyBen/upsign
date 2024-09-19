@@ -11,6 +11,7 @@ import Funnel from "./Funnel";
 import Gear from "./Gear";
 import LockClosedMini from "./LockClosedMini";
 import LockClosedMicro from "./LockClosedMicro";
+import LockOpenMicro from "./LockOpenMicro";
 import Minus from "./Minus";
 import Person from "./Person";
 import Pin from "./Pin";
@@ -30,6 +31,7 @@ export {
   Gear,
   LockClosedMicro,
   LockClosedMini,
+  LockOpenMicro,
   Minus,
   Person,
   Pin,

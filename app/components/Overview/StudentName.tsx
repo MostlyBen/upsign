@@ -5,7 +5,7 @@ import { Emoji } from 'emoji-picker-react';
 
 import { updateEnrollment } from '../../services';
 import { Attendance, Enrollment, Session, UpsignUser } from '~/types';
-import { LockClosedMicro } from '~/icons';
+import { LockClosedMicro, LockOpenMicro } from '~/icons';
 
 type StudentNameProps = {
   db: Firestore,
@@ -87,7 +87,7 @@ const StudentName = ({
             left: "-4px",
           }}
         >
-          <LockClosedMicro />
+          {enrollment?.locked ? <LockClosedMicro /> : <LockOpenMicro />}
         </span>}
 
       {/* Name */}
