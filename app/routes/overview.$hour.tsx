@@ -88,7 +88,9 @@ const HourOverview = () => {
         className="absolute right-0 select-none opacity-80"
         style={{ top: "-2.75rem" }}
       >
-        Total Capacity: {sessions.map(s => s.capacity).reduce((a, b) => a + b, 0)}
+        Total Capacity: {sessions.map(s => {
+          if (s.title) { return s.capacity } else { return 0 }
+        }).reduce((a, b) => a + b, 0)}
       </div>
 
       <div className="cards-container">
