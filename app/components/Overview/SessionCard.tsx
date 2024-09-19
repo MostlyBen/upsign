@@ -128,12 +128,12 @@ const SessionCard = ({
 
           <div className="flex flex-row items-center">
             <Person />
-            <span className="ml-2">{session.teacher ?? "No Teacher"}</span>
+            <span className="ml-2 h-full my-1" style={{ lineHeight: 1.2 }}>{session.teacher ?? "No Teacher"}</span>
           </div>
 
           <div className="flex flex-row items-center">
             <Pin />
-            <span className="ml-2">{session.room ?? "No Room"}</span>
+            <span className="ml-2 h-full my-1" style={{ lineHeight: 1.2 }}>{session.room ?? "No Room"}</span>
           </div>
 
           <hr className="my-2" />
