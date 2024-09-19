@@ -1,11 +1,7 @@
 import { collection, query, where, getDocs, Firestore } from "@firebase/firestore"
 import { getSchoolId } from "../../utils";
+import { Session } from "~/types";
 
-interface Session {
-  title?: string;
-  number_enrolled: number;
-  [key: string]: any;
-}
 
 const getHourSessions = async (db: Firestore, date: Date, hour: number, schoolId: string | null = null): Promise<Session[]> => {
   if (schoolId === null) {

@@ -1,11 +1,12 @@
 import { Firestore, addDoc, updateDoc, collection } from "firebase/firestore";
 import { getSchoolId } from "../../utils";
-import { Session, UpsignUser } from "~/types";
+import { Session } from "~/types";
+import { User } from "firebase/auth";
 
 const addTeacherSession = async (
   db: Firestore,
   date: Date,
-  user: UpsignUser,
+  user: User & { nickname: string },
   session: number,
   schoolId: string | null = null
 ): Promise<void> => {

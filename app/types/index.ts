@@ -11,7 +11,7 @@ export type RootContext = {
 
 export type Session = {
   capacity: number,
-  id: string,
+  id?: string,
   number_enrolled: number,
   restricted_to?: string | string[],
   room?: string,
