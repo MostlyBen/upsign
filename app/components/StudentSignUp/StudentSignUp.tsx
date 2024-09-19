@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { onSnapshot, doc, query, where, collection, Firestore } from "@firebase/firestore"
 import { User } from "firebase/auth";
-import areEqual from "deep-equal";
 
 import {
   getNumberSessions,
@@ -162,7 +161,7 @@ const StudentSignUp = ({ db, user }: StudentSignupProps) => {
 
   return (
     <div>
-      <StudentTopMessage user={user} />
+      <StudentTopMessage user={userDoc?.nickname ? { nickname: userDoc.nickname, ...user } : user} />
       <input
         className="w-full p-4 bg-base-100 rounded-sm"
         style={{ minWidth: "100%" }}
