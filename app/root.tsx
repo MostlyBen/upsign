@@ -12,6 +12,7 @@ export default function App() {
   const [userType, setUserType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // TODO: add user doc from db
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (_user) => {
       setLoading(true);

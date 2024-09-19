@@ -18,7 +18,7 @@ const HourSelectBtn = ({ hour, value }: { hour: number, value: number }) => {
 
   return (
     <input
-      className="join-item btn grow checked:bg-teal-600 checked:border-teal-600 text-lg shadow-none"
+      className="join-item btn grow checked:bg-primary checked:border-primary checked:text-white text-lg shadow-none"
       onClick={() => navigate(`/overview/${value}`)}
       type="radio"
       name="hour"
