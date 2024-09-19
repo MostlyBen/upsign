@@ -77,7 +77,7 @@ const HourOverview = () => {
 
     } else if (e.over.data.current.type === "session") {
       if (e.over.data.current.session.id === e.active.data.current.currentSession?.id) { return }
-      enrollStudent(db, selectedDate, e.over.data.current.session, user);
+      enrollStudent(db, selectedDate, e.over.data.current.session, user, true);
     }
   }
 
