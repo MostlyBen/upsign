@@ -13,13 +13,18 @@ export async function loader({
   return params;
 }
 
-const HourSelectBtn = ({ hour, value }: { hour: number, value: number }) => {
-  const navigate = useNavigate();
+const HourSelectBtn = ({
+  hour, value, onClick
+}: {
+  hour: number,
+  value: number,
+  onClick: (arg0: number) => void,
+}) => {
 
   return (
     <input
       className="join-item btn grow checked:bg-primary checked:border-primary text-lg shadow-none"
-      onClick={() => navigate(`/overview/${value}`)}
+      onClick={() => onClick(value)}
       type="radio"
       name="hour"
       aria-label={String(value)}
@@ -28,10 +33,10 @@ const HourSelectBtn = ({ hour, value }: { hour: number, value: number }) => {
   )
 }
 
-const renderHourBtns = (num: number, hour: number) => {
+const renderHourBtns = (num: number, hour: number, onClick: (arg0: number) => void) => {
   const btnArr = [];
   for (let i = 1; i <= num; i++) {
-    btnArr.push(<HourSelectBtn key={`hour-${i}`} value={i} hour={hour} />);
+    btnArr.push(<HourSelectBtn key={`hour-${i}`} value={i} hour={hour} onClick={onClick} />);
   }
   return btnArr;
 }
@@ -39,9 +44,12 @@ const renderHourBtns = (num: number, hour: number) => {
 const Overview = () => {
   const { db, userType } = useOutletContext() as RootContext;
   if (userType === "student") { return <Navigate to="/" /> }
+  const navigate = useNavigate();
 
-  const hour = Number(useLoaderData<typeof loader>().hour);
-  if (isNaN(hour)) return (<Navigate to="/overview/1" />);
+  // const hour = Number(useLoaderData<typeof loader>().hour);
+  if (!useLoaderData<typeof loader>().hour) {
+    return (<Navigate to="/overview/1" />);
+  }
 
   const [numberHours, setNumberHours] = useState<number>(7);
   const [selectedDateString, setSelectedDateString] = useState<string | null>();
@@ -50,6 +58,7 @@ const Overview = () => {
   const [groupFilter, setGroupFilter] = useState<string>("");
   const [allStudents, setAllStudents] = useState<Record<string, UpsignUser>>({});
   const [attendanceFilter, setAttendanceFilter] = useState<Attendance[]>([]);
+  const [hour, setHour] = useState<number>(Number(useLoaderData<typeof loader>().hour));
 
   useEffect(() => {
     const fetchGroupOptions = async () => {
@@ -79,7 +88,7 @@ const Overview = () => {
       Number(dateArray[2]))
     setSelectedDate(_selectedDate);
 
-  }, [selectedDateString])
+  }, [selectedDateString]);
 
   useEffect(() => {
     const fetchNumberHours = async () => {
@@ -93,6 +102,11 @@ const Overview = () => {
     fetchNumberHours();
   }, [selectedDate]);
 
+  const handleHourClick = (hour: number) => {
+    navigate(`/overview/${hour}`);
+    setHour(hour);
+  }
+
 
   return (
     <TeacherLayout>
@@ -102,7 +116,7 @@ const Overview = () => {
         </div>
 
         <div className="join w-full flex flex-row justify-center">
-          {renderHourBtns(numberHours, hour)}
+          {renderHourBtns(numberHours, hour, handleHourClick)}
         </div>
 
         <div className="flex flex-row gap-4 w-full">
