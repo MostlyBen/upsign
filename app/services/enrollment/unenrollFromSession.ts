@@ -1,4 +1,4 @@
-import { Firestore, doc, collection, query, where, getDocs, writeBatch, increment } from "firebase/firestore";
+import { Firestore, doc, collection, query, where, getDocs, increment, runTransaction, DocumentReference, Transaction } from "firebase/firestore";
 import { getSchoolId } from "../../utils";
 
 const unenrollFromSession = async (
@@ -17,11 +17,8 @@ const unenrollFromSession = async (
     schoolId = getSchoolId();
   }
 
-  const batch = writeBatch(db);
-
   // Update the number enrolled in the session doc
   const sessionRef = doc(db, `schools/${schoolId}/sessions/${date.getFullYear()}/${date.toDateString()}/${sessionId}`);
-  batch.update(sessionRef, { number_enrolled: increment(-1) });
 
   // Find & remove the enrollment doc
   // Reference the enrollments collection for the day
@@ -31,12 +28,24 @@ const unenrollFromSession = async (
   // Get all docs that fit the query
   const qSnapshot = await getDocs(q);
 
-  // Iterate through and delete any enrollment docs
+  // Iterate through and store refs to existing enrollments
+  const existingEnrollments: DocumentReference[] = [];
   qSnapshot.forEach((snap) => {
-    batch.delete(snap.ref);
+    existingEnrollments.push(snap.ref);
   });
 
-  await batch.commit();
+  try {
+    const res = await runTransaction(db, async (transaction: Transaction) => {
+      transaction.update(sessionRef, { number_enrolled: increment(-1) });
+      for (const existingRef of existingEnrollments) {
+        transaction.delete(existingRef);
+      }
+    });
+    return res
+  } catch (err) {
+    console.error(err);
+    Promise.reject(err);
+  }
 }
 
 export default unenrollFromSession;

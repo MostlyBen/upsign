@@ -43,9 +43,14 @@ const enrollStudent = async (db: Firestore, date: Date, session: Session, user: 
   // Get all docs that fit the query
   const qSnapshot = await getDocs(q)
   // Iterate through and store refs to enrollment & session docs
-  const existingEnrollments: DocumentReference[] = [];
+  const updates: { session: DocumentReference, enrollment: DocumentReference }[] = [];
   qSnapshot.forEach(async (snap) => {
-    existingEnrollments.push(snap.ref)
+    const enrData = snap.data();
+    const sessionRef = doc(db, `schools/${schoolId}/sessions/${date.getFullYear()}/${date.toDateString()}/${enrData.session_id}`);
+    updates.push({
+      session: sessionRef,
+      enrollment: snap.ref
+    });
   });
 
   try {
@@ -59,8 +64,9 @@ const enrollStudent = async (db: Firestore, date: Date, session: Session, user: 
         return Promise.reject(new Error("Tried to enroll in a full session"));
       }
 
-      for (const existingRef of existingEnrollments) {
-        transaction.delete(existingRef);
+      for (const u of updates) {
+        transaction.update(u.session, { number_enrolled: increment(-1) })
+        transaction.delete(u.enrollment);
       }
 
       transaction.update(sessionRef, { number_enrolled: increment(1) });
