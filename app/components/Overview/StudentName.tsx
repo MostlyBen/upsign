@@ -72,7 +72,9 @@ const StudentName = ({
       onPointerEnter={() => setIsHovering(true)}
       onPointerLeave={() => setIsHovering(false)}
       ref={setNodeRef}
-      style={style}
+      style={style
+        ? { ...style, marginRight: ((isSession && isHovering) || (isSession && enrollment?.locked)) ? "-16px" : "" }
+        : { marginRight: ((isSession && isHovering) || (isSession && enrollment?.locked)) ? "-16px" : "" }}
       {...listeners}
       {...attributes}
     >
@@ -84,7 +86,7 @@ const StudentName = ({
           style={{
             position: "relative",
             top: "-2px",
-            left: "-4px",
+            left: "-2px",
           }}
         >
           {enrollment?.locked ? <LockClosedMicro /> : <LockOpenMicro />}
