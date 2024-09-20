@@ -67,7 +67,7 @@ const StudentName = ({
 
   return (
     <div
-      className="student-name mt-0 cursor-move"
+      className="student-name mt-0 cursor-move touch-none"
       key={`enrollment-${user.uid}`}
       onPointerEnter={() => setIsHovering(true)}
       onPointerLeave={() => setIsHovering(false)}
