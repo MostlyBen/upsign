@@ -110,7 +110,7 @@ const SessionSelector = ({
       </div>
       <hr className="mb-4" />
 
-      <div className="cards-container" style={{ display: "-webkit-inline-box" }}>
+      <div className="cards-container">
         {hourSessions.map(session => <SessionCardStudent
           key={`session-card-${session.id}`}
           session={session}

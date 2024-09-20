@@ -137,7 +137,7 @@ const SessionCardStudent = ({
 
   return (
     <button
-      className={`text-left p-4 card bg-base-100 border-4 w-full mb-4 shadow-md ${isEnrolled ? 'border-primary' : 'border-base-100'} ${isFull && !isEnrolled || !isEnabled ? 'opacity-70 pointer-events-none' : ''}`}
+      className={`text-left break-inside-avoid p-4 card bg-base-100 border-4 w-full mb-4 shadow-md ${isEnrolled ? 'border-primary' : 'border-base-100'} ${isFull && !isEnrolled || !isEnabled ? 'opacity-70 pointer-events-none' : ''}`}
       onClick={() => handleClick(isEnrolled)}
     >
       <div className="w-full">
