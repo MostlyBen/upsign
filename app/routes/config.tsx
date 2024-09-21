@@ -10,7 +10,7 @@ export async function loader({
   return params;
 }
 
-const menus: { title: string, id: string }[] = [
+const schoolMenus: { title: string, id: string }[] = [
   { title: "General", id: "general" },
   { title: "Registrations", id: "registrations" },
   { title: "Schedule", id: "schedule" },
@@ -21,9 +21,14 @@ const menus: { title: string, id: string }[] = [
   // {title: "Student List", id: "studentlist"},
 ]
 
+const personalMenus: { title: string, id: string }[] = [
+  { title: "Preferences", id: "preferences" },
+  { title: "My Groups", id: "my_groups" },
+]
+
 const Config = () => {
   const [menu, setMenu] = useState<string | undefined>(useLoaderData<typeof loader>().menu);
-  const { db, userType } = useOutletContext() as RootContext;
+  const { db, user, userType } = useOutletContext() as RootContext;
   if (!menu) { return <Navigate to="/config/general" /> }
 
   if (!userType || userType === "new") {
@@ -36,15 +41,32 @@ const Config = () => {
       <div className="bg-base-200 p-12 md:py-12 md:px-16 lg:px-24 xl:px-32 2xl:px-64 min-h-screen">
         <div className="mt-12 flex flex-col md:flex-row gap-4 justify-center">
 
-          <div className="bg-base-100 h-full flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible card rounded-lg md:p-4">
-            {menus.map(m => <Link
-              key={`menu-link-${m.id}`}
-              className={`btn btn-ghost w-44 ${menu === m.id ? "font-bold" : "font-normal"}`}
-              to={`/config/${m.id}`}
-              onClick={() => setMenu(m.id)}
+          <div className="prose">
+            <h4>School Settings</h4>
+            <div
+              className="bg-base-100 h-fit flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible card rounded-lg md:p-2 mb-4"
             >
-              {m.title}
-            </Link>)}
+              {schoolMenus.map(m => <Link
+                key={`menu-link-${m.id}`}
+                className={`btn btn-ghost rounded-md w-44 ${menu === m.id ? "font-bold" : "font-normal"}`}
+                to={`/config/${m.id}`}
+                onClick={() => setMenu(m.id)}
+              >
+                {m.title}
+              </Link>)}
+            </div>
+            <h4>My Settings</h4>
+            <div className="bg-base-100 h-fit flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible card rounded-lg md:p-2">
+              {personalMenus.map(m => <Link
+                key={`menu-link-${m.id}`}
+                className={`btn btn-ghost rounded-md w-44 ${menu === m.id ? "font-bold" : "font-normal"}`}
+                to={`/config/${m.id}`}
+                onClick={() => setMenu(m.id)}
+              >
+                {m.title}
+              </Link>)}
+            </div>
+
           </div>
 
           <div className="w-full"
@@ -80,6 +102,7 @@ const Config = () => {
               <Outlet
                 context={{
                   db,
+                  user,
                 }}
               />
 

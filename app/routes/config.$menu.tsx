@@ -1,7 +1,18 @@
 import { Firestore } from "firebase/firestore";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { useOutletContext, useLoaderData } from "@remix-run/react";
-import { EditGroups, General, Groups, NewYear, People, Registrations, Schedule, StudentList } from "~/components";
+import {
+  EditGroups,
+  EditMyGroups,
+  General,
+  Groups,
+  NewYear,
+  People,
+  Registrations,
+  Schedule,
+  StudentList,
+} from "~/components";
+import { User } from "firebase/auth";
 
 export async function loader({
   params,
@@ -11,13 +22,13 @@ export async function loader({
 
 const ConfigMenu = () => {
   const menu = useLoaderData<typeof loader>().menu;
-  const { db } = useOutletContext() as { db: Firestore, menu: string };
+  const { db, user } = useOutletContext() as { db: Firestore, user: User };
 
   switch (menu) {
     case "editgroups":
       return <EditGroups db={db} />
     case "groups":
-      return <Groups db={db} />
+      return <Groups db={db} userId={user.uid} />
     case "newyear":
       return <NewYear db={db} />
     case "people":
@@ -28,6 +39,10 @@ const ConfigMenu = () => {
       return <Schedule db={db} />
     case "studentlist":
       return <StudentList db={db} />
+    case "preferences":
+      return <div>Coming soon...</div>
+    case "my_groups":
+      return <EditMyGroups db={db} userId={user.uid as string} />
     default:
       return <General db={db} />
   }

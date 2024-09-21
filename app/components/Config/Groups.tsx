@@ -9,8 +9,9 @@ import StudentName from "./Groups/StudentName";
 
 type StudentGroupsProps = {
   db: Firestore,
+  userId?: string,
 }
-const StudentGroups = ({ db }: StudentGroupsProps) => {
+const StudentGroups = ({ db, userId }: StudentGroupsProps) => {
   const [groupOptions, setGroupOptions] = useState<string[]>([]);
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [allStudents, setAllStudents] = useState<UpsignUser[]>([]);
@@ -21,17 +22,17 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
   const schoolId = getSchoolId()
 
   const updateGroupOptions = async () => {
-    const options = await getGroupOptions(db)
+    const options = await getGroupOptions(db, userId);
     if (!areEqual(options, groupOptions)) {
-      setGroupOptions(options)
+      setGroupOptions(options);
     }
   }
 
   const getStudents = async () => {
     getAllStudents(db).then(students => {
       if (Array.isArray(students)) {
-        students.sort((a, b) => ((a.nickname ?? a.name) > (b.nickname ?? b.name)) ? 1 : -1)
-        setAllStudents(students)
+        students.sort((a, b) => ((a.nickname ?? a.name) > (b.nickname ?? b.name)) ? 1 : -1);
+        setAllStudents(students);
       }
     })
   }
@@ -97,7 +98,7 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
               value={option}
               key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
             >
-              {option}
+              {option.startsWith("%t-") ? `${option.split("-")[2]} (your group)` : option}
             </option>
           )
         })}
@@ -134,7 +135,7 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
                   value={option}
                   key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
                 >
-                  {option}
+                  {option.startsWith("%t-") ? `${option.split("-")[2]} (your group)` : option}
                 </option>
               )
             })}
@@ -145,7 +146,11 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
       {/* Student List */}
       <div className="grid grid-cols-2 gap-2" style={{ maxHeight: "calc(100dvh - 19rem)", overflowY: "auto" }}>
         <div>
-          <h2 className="mt-0 mb-2 text-center">Not in {selectedGroup.length ? selectedGroup : "Group"}</h2>
+          <h2 className="mt-0 mb-2 text-center">Not in {selectedGroup.length
+            ? selectedGroup.startsWith("%t-")
+              ? `${selectedGroup.split("-")[2]}`
+              : selectedGroup
+            : "Group"}</h2>
           {filteredStudents.filter(s => !s.groups?.includes(selectedGroup)).map(student => {
             return (
               <StudentName
@@ -158,7 +163,11 @@ const StudentGroups = ({ db }: StudentGroupsProps) => {
           })}
         </div>
         <div>
-          <h2 className="mt-0 mb-2 text-center">In {selectedGroup}</h2>
+          <h2 className="mt-0 mb-2 text-center">In {selectedGroup.length
+            ? selectedGroup.startsWith("%t-")
+              ? `${selectedGroup.split("-")[2]}`
+              : selectedGroup
+            : "Group"}</h2>
           {filteredStudents.filter(s => s.groups?.includes(selectedGroup)).map(student => {
             return (
               <StudentName

@@ -30,7 +30,9 @@ import updateEnrollment from "./enrollment/updateEnrollment";
 
 // Groups
 import getGroupOptions from "./groups/getGroupOptions";
+import getUserGroupOptions from "./groups/getUserGroupOptions";
 import setGroupOptions from "./groups/setGroupOptions";
+import setUserGroupOptions from "./groups/setUserGroupOptions";
 
 // Sessions
 import addTeacherSession from "./sessions/addTeacherSession";
@@ -44,7 +46,7 @@ import updateSession from "./sessions/updateSession";
 // User
 import deleteUser from "./user/deleteUser";
 import getAllStudents from "./user/getAllStudents";
-import getAllTeachers from "./user/getAllUsers";
+import getAllTeachers from "./user/getAllTeachers";
 import getAllUsers from "./user/getAllUsers";
 import getUser from "./user/getUser";
 import getUserType from "./user/getUserType";
@@ -83,7 +85,9 @@ export {
   updateEnrollment,
   // Groups
   getGroupOptions,
+  getUserGroupOptions,
   setGroupOptions,
+  setUserGroupOptions,
   // Sessions
   addTeacherSession,
   getAllStudents,

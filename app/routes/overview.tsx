@@ -42,7 +42,7 @@ const renderHourBtns = (num: number, hour: number, onClick: (arg0: number) => vo
 }
 
 const Overview = () => {
-  const { db, userType } = useOutletContext() as RootContext;
+  const { db, user, userType } = useOutletContext() as RootContext;
   if (userType === "student") { return <Navigate to="/" /> }
   const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ const Overview = () => {
 
   useEffect(() => {
     const fetchGroupOptions = async () => {
-      const _options = await getGroupOptions(db);
+      const _options = await getGroupOptions(db, user?.uid);
       setGroupOptions(_options);
     }
     const fetchDefaultDay = async () => {

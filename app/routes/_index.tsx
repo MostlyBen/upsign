@@ -13,13 +13,13 @@ export default function Index() {
 
   useEffect(() => {
     const fetchGroupOptions = async () => {
-      const options = await getGroupOptions(db);
+      const options = await getGroupOptions(db, user?.uid);
       setGroupOptions(options);
       setLoading(false);
     };
 
     fetchGroupOptions();
-  }, []);
+  }, [user]);
 
   if (loading) {
     return <div>Loading...</div>;

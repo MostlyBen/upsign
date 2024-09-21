@@ -7,6 +7,7 @@ import { SignOutButton } from "./auth/SignOutButton";
 
 // config
 import EditGroups from "./Config/EditGroups";
+import EditMyGroups from "./Config/EditMyGroups";
 import General from "./Config/General";
 import Groups from "./Config/Groups";
 import NewYear from "./Config/NewYear";
@@ -45,6 +46,7 @@ export {
   SignOutButton,
 
   EditGroups,
+  EditMyGroups,
   General,
   Groups,
   NewYear,
