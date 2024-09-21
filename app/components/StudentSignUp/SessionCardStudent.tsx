@@ -39,6 +39,7 @@ const SessionCardStudent = ({
       setIsEnabled(false)
 
       if (enrolled) {
+        if (!session.id) { return }
         unenrollFromSession(db, selectedDate, userDoc.uid, session.id)
       } else if ((session.number_enrolled ?? 0) < Number(session.capacity)) {
         enrollStudent(db, selectedDate, session, userDoc).then(() => {
@@ -137,7 +138,12 @@ const SessionCardStudent = ({
 
   return (
     <button
-      className={`text-left break-inside-avoid p-4 card bg-base-100 border-4 w-full mb-4 shadow-md ${isEnrolled ? 'border-primary' : 'border-base-100'} ${isFull && !isEnrolled || !isEnabled ? 'opacity-70 pointer-events-none' : ''}`}
+      className={
+        `text-left break-inside-avoid p-4 card bg-base-100 border-4 w-full mb-4 shadow-md ${isEnrolled
+          ? 'border-primary'
+          : 'border-base-100'} ${isFull && !isEnrolled || !isEnabled
+            ? 'opacity-70 pointer-events-none'
+            : ''}`}
       onClick={() => handleClick(isEnrolled)}
     >
       <div className="w-full">
@@ -157,7 +163,8 @@ const SessionCardStudent = ({
 
         </h1>
 
-        {(session.subtitle && session.subtitle !== "undefined") && <h2 className="opacity-80">{session.subtitle}</h2>}
+        {(session.subtitle && session.subtitle !== "undefined") &&
+          <h2 className="opacity-80">{session.subtitle}</h2>}
         <hr style={{ margin: '1rem 0' }} />
         <h2>{session.teacher ?? 'No Teacher'}</h2>
         <h2>{session.room ?? 'No Room'}</h2>

@@ -2,7 +2,14 @@ import { Firestore, collection, getDocs, query, where } from "firebase/firestore
 import { getSchoolId } from "../../utils";
 import { Enrollment } from "~/types";
 
-const getStudentEnrollments = async (db: Firestore, date: Date, uid: string, schoolId: string | null = null, hour: number | null): Promise<Enrollment[]> => {
+const getStudentEnrollments = async (
+  db: Firestore,
+  date: Date,
+  uid: string,
+  schoolId: string | null = null,
+  hour: number | null = null
+): Promise<Enrollment[]> => {
+
   if (schoolId === null) {
     schoolId = getSchoolId();
   }

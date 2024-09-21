@@ -6,7 +6,7 @@ const getGroupOptions = async (db: Firestore, schoolId: string | null = null): P
   if (schoolId === null) {
     schoolId = getSchoolId();
   }
-  
+
   const groupRef = doc(db, `schools/${schoolId}/config/student_groups`);
   const groupDoc = await getDoc(groupRef);
 
