@@ -43,7 +43,7 @@ const NewUser = ({ db, user }: NewUserProps) => {
   }
 
   return (
-    <div className="prose my-32 w-screen">
+    <div className="prose pt-32 w-screen" style={{ height: "100dvh" }}>
       <h1 className="w-screen text-center">What&apos;s your role at the school?</h1>
       <div className="w-screen">
         <div className="flex flex-row content-between justify-between mx-12 md:mx-24 lg:mx-48 gap-8">

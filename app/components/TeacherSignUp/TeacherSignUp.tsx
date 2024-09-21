@@ -166,6 +166,7 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
           ? getDateString(selectedDate)
           : ''}
         onChange={(e) => {
+          if (isNaN(Date.parse(e.target.value))) { return }
           handleSelectDate(new Date(`${e.target.value}T00:00:00`));
         }}
       />
