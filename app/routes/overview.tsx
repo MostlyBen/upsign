@@ -131,7 +131,9 @@ const Overview = () => {
                 <option
                   value={option}
                   key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
-                >{option}</option>
+                >
+                  {option.startsWith("%t") ? `${option.split("-")[2]} (your group)` : option}
+                </option>
               )
             })}
           </select>
