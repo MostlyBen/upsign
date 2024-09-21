@@ -22,7 +22,7 @@ const schoolMenus: { title: string, id: string }[] = [
 ]
 
 const personalMenus: { title: string, id: string }[] = [
-  { title: "Preferences", id: "preferences" },
+  // { title: "Preferences", id: "preferences" },
   { title: "My Groups", id: "my_groups" },
 ]
 
