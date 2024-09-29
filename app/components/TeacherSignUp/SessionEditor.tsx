@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, ChangeEvent } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import DebounceInput from '../SmallBits/DebounceInput';
 import { Enrollment, Session } from "~/types";
 
@@ -15,6 +15,7 @@ import {
 
 
 import AttendanceList from './AttendanceList';
+import GroupSelect from './GroupSelect';
 import { ChevronDown, ChevronRight, Trash } from "~/icons";
 import { getSessionEnrollments, removeTeacherSession } from "~/services";
 import { getSchoolId } from "~/utils";
@@ -25,6 +26,7 @@ type SessionEditorProps = {
   date: Date,
   groupOptions: string[],
   isModal?: boolean,
+  index?: number,
   hasMultipleSessions?: boolean,
   enrollmentsFromParent?: Enrollment[]
 }
@@ -36,6 +38,7 @@ const SessionEditor = ({
   groupOptions,
   hasMultipleSessions,
   isModal,
+  index,
   enrollmentsFromParent
 }: SessionEditorProps) => {
 
@@ -148,6 +151,9 @@ const SessionEditor = ({
     return () => document.removeEventListener("mousedown", () => { setIsHovering(false); setHasClicked(false) });
   }, [hasClicked]);
 
+  // WARNING: This is a hacky way to update the number of enrolled students
+  // It breaks when users receive updates at different times. But it fixes the number if it was off for another reason.
+  //
   // useEffect(() => {
   //   if (!session.id) { return }
   //
@@ -193,7 +199,13 @@ const SessionEditor = ({
     setTitle(e.target.value);
 
     const title = String(e.target.value);
-    updateDoc(doc(db, `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`), { title });
+    updateDoc(
+      doc(
+        db,
+        `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`
+      ),
+      { title }
+    );
     session.title = title;
   }
 
@@ -202,7 +214,13 @@ const SessionEditor = ({
     setTeacher(e.target.value);
 
     const teacher = String(e.target.value);
-    updateDoc(doc(db, `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`), { teacher });
+    updateDoc(
+      doc(
+        db,
+        `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`
+      ),
+      { teacher }
+    );
     session.teacher = teacher;
   }
 
@@ -212,9 +230,21 @@ const SessionEditor = ({
 
     const subtitle = String(e.target.value);
     if (subtitle === "undefined") {
-      updateDoc(doc(db, `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`), { subtitle: deleteField() });
+      updateDoc(
+        doc(
+          db,
+          `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`
+        ),
+        { subtitle: deleteField() }
+      );
     } else {
-      updateDoc(doc(db, `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`), { subtitle });
+      updateDoc(
+        doc(
+          db,
+          `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`
+        ),
+        { subtitle }
+      );
       session.subtitle = subtitle;
     }
   }
@@ -224,7 +254,13 @@ const SessionEditor = ({
     setRoom(e.target.value);
 
     const room = String(e.target.value);
-    updateDoc(doc(db, `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`), { room });
+    updateDoc(
+      doc(
+        db,
+        `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`
+      ),
+      { room }
+    );
     session.room = room;
   }
 
@@ -233,42 +269,22 @@ const SessionEditor = ({
     setCapacity(Number(e.target.value));
 
     const capacity = String(e.target.value);
-    updateDoc(doc(db, `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`), { capacity: Number(capacity) });
+    updateDoc(
+      doc(
+        db,
+        `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`
+      ),
+      { capacity: Number(capacity) }
+    );
     session.capacity = Number(capacity);
   }
 
-  const GroupSelect = useMemo(() => {
-    const handleRestrict = async (e: ChangeEvent<HTMLSelectElement>) => {
-      const group = e.target.value;
-      updateDoc(doc(db, `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`), { restricted_to: group });
-      session.restricted_to = group;
-    }
-
-    return (
-      <select
-        id={`group-select-${session.id}`}
-        className="select select-bordered group-dropdown col-span-2"
-        onChange={handleRestrict}
-        value={session.restricted_to}
-      >
-        <option value="">All Students</option>
-        {groupList.current.map((option) => {
-          return (
-            <option
-              value={option}
-              key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
-            >
-              {option.startsWith("%t-") ? `${option.split("-")[2]} (your group)` : option}
-            </option>
-          )
-        })}
-      </select>
-    )
-  }, [db, date, schoolId, session.restricted_to])
-
   if (collapsed) {
     return (
-      <div className="w-100 session-editor bg-base-100 card drop-shadow-md p-4 my-2">
+      <div
+        className="w-100 session-editor bg-base-100 card drop-shadow-md p-4 my-2"
+        style={{ zIndex: index }}
+      >
         <button
           className="absolute btn btn-ghost p-1 h-full collapse-btn-offset"
           onClick={() => setCollapsed(false)}
@@ -285,7 +301,7 @@ const SessionEditor = ({
 
   return (
     <div
-      className={`relative${removing ? " opacity-30" : ""}`}
+      className={`${removing ? " opacity-30" : ""}`}
       onClick={(e) => {
         if (!(e.target instanceof HTMLElement)) { return }
         if (!['BUTTON', 'INPUT', 'IMG', 'path', 'svg'].includes(e.target?.nodeName)) {
@@ -309,12 +325,16 @@ const SessionEditor = ({
             }
           }}
           style={{
-            right: "-12px"
+            right: "-12px",
+            zIndex: index ? index + 1 : undefined,
           }}
         >
           <Trash />
         </button>}
-      <div className="session-editor bg-base-100 card drop-shadow-md p-4 my-4 grid grid-cols-2 gap-4">
+      <div
+        className="session-editor bg-base-100 card drop-shadow-md p-4 my-4 grid grid-cols-2 gap-4"
+        style={{ zIndex: index }}
+      >
         {!isModal && <button
           className="absolute btn btn-ghost p-1 h-full collapse-btn-offset print:hidden"
           onClick={() => setCollapsed(true)}
@@ -401,7 +421,15 @@ const SessionEditor = ({
           </div>
 
           {/* Restrict */}
-          {GroupSelect}
+          {schoolId && Array.isArray(groupList.current) &&
+            <GroupSelect
+              session={session}
+              date={date}
+              db={db}
+              schoolId={schoolId}
+              groupList={groupList.current}
+            />
+          }
         </div>
 
         {/* Student Enrollment */}
@@ -421,5 +449,5 @@ const SessionEditor = ({
   )
 }
 
-export default SessionEditor
+export default SessionEditor;
 

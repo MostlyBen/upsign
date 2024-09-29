@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-import { Firestore, query, collection, onSnapshot, where } from "@firebase/firestore";
-import {
-  getSessionEnrollments,
-} from "../../services";
+import { Firestore, where } from "@firebase/firestore";
 import { Session, Enrollment } from "~/types";
 import EnrollmentRow from "./EnrollmentRow";
 import { useFirebaseQuery } from "~/hooks";

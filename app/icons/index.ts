@@ -9,6 +9,7 @@ import Close from "./Close";
 import FaceSmile from "./FaceSmile";
 import Funnel from "./Funnel";
 import Gear from "./Gear";
+import Intersect from "./Intersect";
 import LockClosedMini from "./LockClosedMini";
 import LockClosedMicro from "./LockClosedMicro";
 import LockOpenMicro from "./LockOpenMicro";
@@ -16,6 +17,7 @@ import Minus from "./Minus";
 import Person from "./Person";
 import Pin from "./Pin";
 import Trash from "./Trash";
+import Union from "./Union";
 
 export {
   Add,
@@ -29,6 +31,7 @@ export {
   FaceSmile,
   Funnel,
   Gear,
+  Intersect,
   LockClosedMicro,
   LockClosedMini,
   LockOpenMicro,
@@ -36,4 +39,5 @@ export {
   Person,
   Pin,
   Trash,
+  Union,
 }

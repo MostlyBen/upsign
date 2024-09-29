@@ -1,3 +1,4 @@
+// TODO: Make sessions ordered by order they were added
 import { Firestore } from "@firebase/firestore";
 import { useState } from "react";
 import { Session, UpsignUser } from "~/types";
@@ -42,12 +43,13 @@ const HourSessions = ({ db, selectedDate, hour, sessionTimes, sessionTitles, ses
       </div>
       <hr />
 
-      {sessions?.map(s => {
+      {sessions?.map((s, i) => {
         return (
-          <div key={`teacher-card-${s.id}`} className="row card teacher-card">
+          <div key={`teacher-card-${s.id}`} className="card teacher-card">
             <SessionEditor
               session={s}
               db={db}
+              index={100 - parseInt(`${s.session}${i}`)}
               date={selectedDate}
               groupOptions={groupOptions}
               hasMultipleSessions={sessions.length > 1}

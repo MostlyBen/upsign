@@ -9,7 +9,8 @@ const Menu = () => {
   return (
     <div
       id="navbar-left-menu"
-      className="fixed top-16 z-40 p-4 bg-base-100 drop-shadow-lg flex flex-col justify-center"
+      className="fixed top-16 p-4 bg-base-100 drop-shadow-lg flex flex-col justify-center"
+      style={{ zIndex: 10000 }}
     >
       <ThemeSelector />
       <hr className="mt-2 mb-4" />
@@ -77,7 +78,10 @@ const NavBar = ({ userType, schoolName }: NavBarProps) => {
       >
         <Menu />
       </div>
-      <div className="navbar px-4 bg-base-100 fixed z-30 drop-shadow-xl print:hidden">
+      <div
+        className="navbar px-4 bg-base-100 fixed drop-shadow-xl print:hidden"
+        style={{ zIndex: 10000 }}
+      >
         <div role="button" onClick={handleClickShow} id="navbar-left-menu-btn">
           <img
             src={logo}
