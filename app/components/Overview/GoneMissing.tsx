@@ -102,10 +102,10 @@ const GoneMissingModal = ({ db, date, hour, onClose, absentThisHour }: GoneMissi
       <div
         className="h-fit w-fit m-auto px-6 md:py-12 md:px-32"
         id="modal-container"
-        style={{ maxHeight: "100vh", overflowY: "auto" }}
+        style={{ maxHeight: "100dvh", overflowY: "auto" }}
       >
         <div className="card prose bg-base-100 shadow-xl p-8"
-          style={{ maxHeight: "80vh", overflowY: "auto" }}
+          style={{ maxHeight: "80dvh", overflowY: "auto" }}
         >
           <h2>Gone Missing</h2>
           {loading && <div>Loading...</div>}

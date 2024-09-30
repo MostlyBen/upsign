@@ -69,23 +69,6 @@ const Overview = () => {
   const [enrollmentArray, setEnrollmentArray] = useState<Enrollment[]>([]);
 
   useEffect(() => {
-    if (typeof enrollments === "object") {
-      setEnrollmentArray(Object.values(enrollments));
-    } else {
-      setEnrollmentArray([]);
-    }
-  }, [enrollments]);
-
-  useEffect(() => {
-    setCollectionString(
-      `schools/${getSchoolId()}/sessions/${selectedDate?.getFullYear()}/${selectedDate?.toDateString()}-enrollments`
-    );
-  }, [selectedDate]);
-  useEffect(() => {
-    setQueries([where("session", "==", hour)]);
-  }, [hour]);
-
-  useEffect(() => {
     const fetchGroupOptions = async () => {
       const _options = await getGroupOptions(db, user?.uid);
       setGroupOptions(_options);
@@ -103,6 +86,18 @@ const Overview = () => {
     fetchDefaultDay();
     fetchStudents();
   }, []);
+
+  useEffect(() => {
+    setQueries([where("session", "==", hour)]);
+  }, [hour]);
+
+  useEffect(() => {
+    if (typeof enrollments === "object") {
+      setEnrollmentArray(Object.values(enrollments));
+    } else {
+      setEnrollmentArray([]);
+    }
+  }, [enrollments]);
 
   useEffect(() => {
     if (!selectedDateString) { return }
@@ -125,6 +120,9 @@ const Overview = () => {
     }
 
     fetchNumberHours();
+    setCollectionString(
+      `schools/${getSchoolId()}/sessions/${selectedDate?.getFullYear()}/${selectedDate?.toDateString()}-enrollments`
+    );
   }, [selectedDate]);
 
   const handleHourClick = (hour: number) => {
