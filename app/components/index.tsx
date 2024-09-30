@@ -12,6 +12,7 @@ import General from "./Config/General";
 import Groups from "./Config/Groups";
 import NewYear from "./Config/NewYear";
 import People from "./Config/People";
+import Preferences from "./Config/Preferences";
 import Registrations from "./Config/Registrations";
 import Schedule from "./Config/Schedule";
 import StudentList from "./Config/StudentList";
@@ -21,6 +22,7 @@ import NavBar from "./NavBar/NavBar";
 
 // overview
 import AttendanceFilter from "./Overview/AttendanceFilter";
+import GoneMissing from "./Overview/GoneMissing";
 import SessionCard from "./Overview/SessionCard";
 import SessionModal from "./Overview/SessionModal";
 import StudentName from "./Overview/StudentName";
@@ -51,6 +53,7 @@ export {
   Groups,
   NewYear,
   People,
+  Preferences,
   Registrations,
   Schedule,
   StudentList,
@@ -58,6 +61,7 @@ export {
   NavBar,
 
   AttendanceFilter,
+  GoneMissing,
   StudentName,
   UnsignedStudents,
 

@@ -68,7 +68,7 @@ const General = ({ db }: GeneralProps) => {
 
   useEffect(() => {
     updateSettings();
-  }, [])
+  }, []);
 
   useEffect(() => {
     updateDropdown();
@@ -151,7 +151,13 @@ const General = ({ db }: GeneralProps) => {
       <h2 className="mt-8">Student Sign-Ups</h2>
       <div className="switches">
         <div className="flex flex-row align-middle gap-4">
-          <input className="toggle toggle-primary" type="checkbox" checked={!!studentSign} readOnly onClick={handleSwitchStudentSign} />
+          <input
+            className="toggle toggle-primary"
+            type="checkbox"
+            checked={!!studentSign}
+            readOnly
+            onClick={handleSwitchStudentSign}
+          />
           <label className="relative" style={{ top: "-2px" }}>
             Students can sign up
           </label>

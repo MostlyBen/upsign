@@ -22,7 +22,7 @@ const schoolMenus: { title: string, id: string }[] = [
 ]
 
 const personalMenus: { title: string, id: string }[] = [
-  // { title: "Preferences", id: "preferences" },
+  { title: "Preferences", id: "preferences" },
   { title: "My Groups", id: "my_groups" },
 ]
 
@@ -55,6 +55,7 @@ const Config = () => {
                 {m.title}
               </Link>)}
             </div>
+
             <h4>My Settings</h4>
             <div className="bg-base-100 h-fit flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible card rounded-lg md:p-2">
               {personalMenus.map(m => <Link
@@ -74,24 +75,9 @@ const Config = () => {
               height: "calc(100dvh - 10rem)",
               maxHeight: "calc(100dvh - 10rem)",
               maxWidth: "720px",
+              marginTop: "32px",
             }}
           >
-            <div role="alert" className="alert alert-warning bg-secondary rounded-lg mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 shrink-0 stroke-current"
-                fill="none"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-              <span><b>Warning!</b> These settings affect how UpSign behaves.
-                <br />Do not change them unless you know what you&apos;re doing.</span>
-            </div>
-
             <div
               className="p-8 grow bg-base-100 card rounded-lg overflow-y-auto"
               style={{

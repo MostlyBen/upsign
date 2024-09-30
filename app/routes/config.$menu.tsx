@@ -8,6 +8,7 @@ import {
   Groups,
   NewYear,
   People,
+  Preferences,
   Registrations,
   Schedule,
   StudentList,
@@ -40,7 +41,7 @@ const ConfigMenu = () => {
     case "studentlist":
       return <StudentList db={db} />
     case "preferences":
-      return <div>Coming soon...</div>
+      return <Preferences db={db} />
     case "my_groups":
       return <EditMyGroups db={db} userId={user.uid as string} />
     default:

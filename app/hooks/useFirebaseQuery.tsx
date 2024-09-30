@@ -13,16 +13,18 @@ const useFirebaseQuery = <T extends any>(
   ...queries: QueryFieldFilterConstraint[]
 ): [
     storedValue: { [key: string]: T },
+    setCollectionString: (arg0: string) => void,
+    setQueries: (arg0: QueryFieldFilterConstraint[]) => void,
     setDb: (arg0: Firestore) => void,
-    setCollectionString: (arg0: string) => void
   ] => {
-
   const [_db, setDb] = useState<Firestore>(db);
+  const [_queries, setQueries] = useState<QueryFieldFilterConstraint[]>(queries);
   const [stored, setStored] = useState<{ [key: string]: T }>({});
   const [collectionString, setCollectionString] = useState<string>(collectionPath);
 
   useEffect(() => {
-    const q = query(collection(_db, collectionPath), ...queries);
+    setStored({});
+    const q = query(collection(_db, collectionString), ..._queries);
     const unsubscribe = onSnapshot(q, (snap) => {
       setStored((_stored) => {
         // Changes & creations
@@ -45,9 +47,9 @@ const useFirebaseQuery = <T extends any>(
     })
 
     return () => unsubscribe();
-  }, [collectionString]);
+  }, [collectionString, _queries]);
 
-  return [stored, setDb, setCollectionString];
+  return [stored, setCollectionString, setQueries, setDb];
 }
 
 export default useFirebaseQuery;

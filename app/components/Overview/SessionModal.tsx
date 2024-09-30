@@ -25,8 +25,8 @@ const SessionModal = ({
     if (!window) { return }
 
     const handleKeypress = (e: KeyboardEvent) => {
-      console.log("event:", e)
       if (e.key === "Escape") {
+        e.stopPropagation();
         onClose();
       }
     }

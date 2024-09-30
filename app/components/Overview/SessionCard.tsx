@@ -10,8 +10,6 @@ import {
   SessionModal,
 } from "~/components";
 
-import { useFirebaseQuery } from "~/hooks";
-
 import {
   ArrowsOut,
   LockClosedMicro,
@@ -23,6 +21,7 @@ import {
 type SessionCardProps = {
   db: Firestore,
   date: Date,
+  enrollments: Enrollment[],
   session: Session,
   groupOptions: string[],
   allStudents: Record<string, UpsignUser>,
@@ -33,6 +32,7 @@ type SessionCardProps = {
 const SessionCard = ({
   db,
   date,
+  enrollments,
   session,
   groupOptions,
   allStudents,
@@ -43,11 +43,6 @@ const SessionCard = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showLock, setShowLock] = useState<boolean>(false);
   const [hasClicked, setHasClicked] = useState<boolean>(false);
-  const [enrollments] = useFirebaseQuery<Enrollment>(
-    db,
-    `schools/${getSchoolId()}/sessions/${date.getFullYear()}/${date.toDateString()}-enrollments`,
-    where("session_id", "==", session.id)
-  );
 
   useEffect(() => {
     if (hasClicked) {

@@ -1,11 +1,13 @@
 import { Navigate, Outlet, useLoaderData, useNavigate, useOutletContext } from "@remix-run/react";
-import { useEffect, useState } from "react";
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { Attendance, RootContext, UpsignUser } from "~/types";
+import { where } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { Attendance, Enrollment, RootContext, UpsignUser } from "~/types";
 import { TeacherLayout } from "~/layouts";
-import { AttendanceFilter } from "~/components";
+import { AttendanceFilter, GoneMissing } from "~/components";
+import { useFirebaseQuery } from "~/hooks";
 import { getAllStudents, getDefaultDay, getGroupOptions, getNumberSessions } from "~/services";
-import { getDateString } from "~/utils";
+import { getDateString, getSchoolId } from "~/utils";
 
 export async function loader({
   params,
@@ -59,6 +61,30 @@ const Overview = () => {
   const [attendanceFilter, setAttendanceFilter] = useState<Attendance[]>([]);
   const [hour, setHour] = useState<number>(Number(useLoaderData<typeof loader>().hour));
 
+  const [enrollments, setCollectionString, setQueries] = useFirebaseQuery<Enrollment>(
+    db,
+    `schools/${getSchoolId()}/sessions/${selectedDate?.getFullYear()}/${selectedDate?.toDateString()}-enrollments`,
+    where("session", "==", hour)
+  );
+  const [enrollmentArray, setEnrollmentArray] = useState<Enrollment[]>([]);
+
+  useEffect(() => {
+    if (typeof enrollments === "object") {
+      setEnrollmentArray(Object.values(enrollments));
+    } else {
+      setEnrollmentArray([]);
+    }
+  }, [enrollments]);
+
+  useEffect(() => {
+    setCollectionString(
+      `schools/${getSchoolId()}/sessions/${selectedDate?.getFullYear()}/${selectedDate?.toDateString()}-enrollments`
+    );
+  }, [selectedDate]);
+  useEffect(() => {
+    setQueries([where("session", "==", hour)]);
+  }, [hour]);
+
   useEffect(() => {
     const fetchGroupOptions = async () => {
       const _options = await getGroupOptions(db, user?.uid);
@@ -110,8 +136,17 @@ const Overview = () => {
   return (
     <TeacherLayout>
       <div>
-        <div className="prose mb-4">
-          <h1>Session {hour}</h1>
+        <div className="flex flex-row justify-between">
+          <div className="prose mb-4 flex">
+            <h1>Session {hour}</h1>
+          </div>
+          {localStorage.getItem("show-missing-students") === "true" && hour &&
+            <GoneMissing
+              db={db}
+              date={selectedDate ?? new Date()}
+              hour={hour}
+              enrollments={enrollmentArray.filter(e => e.session === hour)}
+            />}
         </div>
 
         <div className="join w-full flex flex-row justify-center">
@@ -153,6 +188,7 @@ const Overview = () => {
           {selectedDate && <Outlet
             context={{
               db,
+              enrollments: enrollmentArray,
               selectedDate,
               groupFilter,
               groupOptions,

@@ -20,6 +20,7 @@ export async function loader({
 
 type ExpectedContext = {
   db: Firestore,
+  enrollments: Enrollment[],
   selectedDate: Date,
   groupOptions: string[],
   allStudents: Record<string, UpsignUser>,
@@ -31,6 +32,7 @@ const HourOverview = () => {
   const hour = Number(useLoaderData<typeof loader>().hour);
   const {
     db,
+    enrollments,
     selectedDate,
     allStudents,
     groupFilter,
@@ -103,6 +105,7 @@ const HourOverview = () => {
         />
         {sessions.map((s: Session) => <SessionCard
           db={db}
+          enrollments={enrollments.filter(e => e.session_id === s.id)}
           date={selectedDate}
           session={s}
           groupOptions={groupOptions}
