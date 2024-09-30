@@ -1,3 +1,4 @@
+// TODO: figure out why config button is behind session card on mobile
 import { Link } from '@remix-run/react';
 import { ReactNode } from 'react';
 import { NavBar } from '~/components';
