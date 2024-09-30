@@ -31,7 +31,7 @@ const Config = () => {
   const { db, user, userType } = useOutletContext() as RootContext;
   if (!menu) { return <Navigate to="/config/general" /> }
 
-  if (!userType || userType === "new") {
+  if (!userType || ["new", "student"].includes(userType)) {
     return <Navigate to="/" />
   }
 
