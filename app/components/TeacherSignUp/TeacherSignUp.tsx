@@ -1,3 +1,4 @@
+// TODO: Update session gettings to use useFirebaseQuery
 import { Session, UpsignUser } from "~/types";
 import { useState, useEffect } from "react";
 import { Firestore, collection, query, where, onSnapshot, doc } from "@firebase/firestore"
