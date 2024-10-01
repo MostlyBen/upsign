@@ -12,7 +12,7 @@ const addTeacherSession = async (
   if (schoolId === null) {
     schoolId = getSchoolId();
   }
-  console.log("user object:", user)
+
   const sessionsRef = collection(
     db,
     `schools/${schoolId}/sessions/${date.getFullYear()}/${date.toDateString()}`
@@ -24,6 +24,7 @@ const addTeacherSession = async (
     session,
     capacity: 30,
     number_enrolled: 0,
+    created_at: new Date(),
   };
 
   const docRef = await addDoc(sessionsRef, docObject);

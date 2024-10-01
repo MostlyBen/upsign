@@ -31,6 +31,7 @@ const getTeacherSessions = async (
   snapshot.forEach((doc: QueryDocumentSnapshot) => {
     teacherSessions.push({
       ...doc.data() as Session,
+      created_at: doc.data().created_at ? doc.data().created_at.toDate() : new Date(0),
       id: doc.id,
     });
   });
@@ -60,6 +61,7 @@ const getTeacherSessions = async (
         session: hour,
         capacity: 30,
         number_enrolled: 0,
+        created_at: new Date(),
       };
       // Create the doc
       await setDoc(sessionRef, docObject);
@@ -68,7 +70,6 @@ const getTeacherSessions = async (
     }
   }
 
-  // console.log("Sessions:", sortedSessions)
   return sortedSessions;
 };
 

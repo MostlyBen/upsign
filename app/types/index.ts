@@ -14,6 +14,7 @@ export type Session = {
   teacher: string | null,
   teacher_id?: string,
   title?: string,
+  created_at?: Date,
 }
 
 export type UpsignUser = {
