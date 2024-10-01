@@ -1,4 +1,3 @@
-// TODO: Send input on un-mount if different
 import { useState, useEffect, CSSProperties, ChangeEvent } from "react";
 
 interface DebounceInputProps {
@@ -22,6 +21,15 @@ const DebounceInput = ({ id, className, value, type, autoComplete, placeholder, 
     setInputValue(e.target.value);
     setChangeEvent(e);
   }
+
+  useEffect(() => {
+    // Send on componenet un-mount
+    return () => {
+      if (changeEvent) {
+        onChange(changeEvent);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

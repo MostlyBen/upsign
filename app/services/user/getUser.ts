@@ -12,10 +12,10 @@ const getUser = async (db: Firestore, uid: string, schoolId: string | null = nul
 
   const userRef = doc(db, `schools/${schoolId}/users/${uid}`);
   const userSnap = await getDoc(userRef);
-  
+
   if (userSnap.exists()) {
     const user = userSnap.data() as User;
-    return user;
+    return { uid: userSnap.id, ...user };
   } else {
     return null;
   }

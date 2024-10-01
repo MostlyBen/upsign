@@ -13,7 +13,7 @@ import {
   Schedule,
   StudentList,
 } from "~/components";
-import { User } from "firebase/auth";
+import { UpsignUser } from "~/types";
 
 export async function loader({
   params,
@@ -23,13 +23,13 @@ export async function loader({
 
 const ConfigMenu = () => {
   const menu = useLoaderData<typeof loader>().menu;
-  const { db, user } = useOutletContext() as { db: Firestore, user: User };
+  const { db, user } = useOutletContext() as { db: Firestore, user: UpsignUser };
 
   switch (menu) {
     case "editgroups":
       return <EditGroups db={db} />
     case "groups":
-      return <Groups db={db} userId={user.uid} />
+      return <Groups db={db} userId={user.uid as string} />
     case "newyear":
       return <NewYear db={db} />
     case "people":

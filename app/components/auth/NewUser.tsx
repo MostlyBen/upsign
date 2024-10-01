@@ -10,10 +10,15 @@ import {
 
 type NewUserProps = {
   db: Firestore,
-  user: User,
+  user: User | undefined,
 }
 
 const NewUser = ({ db, user }: NewUserProps) => {
+  if (!user) {
+    window.location.href = "/";
+    return <></>;
+  }
+
   const [teacherAllowed, setTeacherAllowed] = useState<boolean>(false);
   const schoolId = getSchoolId();
 

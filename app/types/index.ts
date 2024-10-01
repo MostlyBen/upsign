@@ -3,12 +3,6 @@ import { Firestore } from "firebase/firestore";
 
 export type UserType = "new" | "student" | "teacher";
 
-export type RootContext = {
-  db: Firestore,
-  user: User,
-  userType: UserType,
-}
-
 export type Session = {
   capacity: number,
   id?: string,
@@ -29,6 +23,13 @@ export type UpsignUser = {
   uid?: string,
   groups?: string[],
   nickname?: string,
+}
+
+export type RootContext = {
+  db: Firestore,
+  user: UpsignUser,
+  userType?: UserType,
+  authUser?: User,
 }
 
 export type Attendance = "present" | "tardy" | "absent" | "" | null;

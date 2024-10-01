@@ -1,12 +1,11 @@
 import { Firestore, addDoc, updateDoc, collection } from "firebase/firestore";
 import { getSchoolId } from "../../utils";
-import { Session } from "~/types";
-import { User } from "firebase/auth";
+import { Session, UpsignUser } from "~/types";
 
 const addTeacherSession = async (
   db: Firestore,
   date: Date,
-  user: User & { nickname: string },
+  user: UpsignUser,
   session: number,
   schoolId: string | null = null
 ): Promise<void> => {
@@ -20,7 +19,7 @@ const addTeacherSession = async (
   );
 
   const docObject: Session = {
-    teacher: user.nickname ?? user.displayName,
+    teacher: user.nickname ?? user.name,
     teacher_id: user.uid,
     session,
     capacity: 30,

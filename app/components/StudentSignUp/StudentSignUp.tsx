@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { onSnapshot, doc, query, where, collection, Firestore } from "@firebase/firestore"
-import { User } from "firebase/auth";
 
 import {
   getNumberSessions,
@@ -24,7 +23,7 @@ import StudentTopMessage from "./StudentTopMessage";
 
 type StudentSignupProps = {
   db: Firestore,
-  user: User,
+  user: UpsignUser,
 }
 
 const StudentSignUp = ({ db, user }: StudentSignupProps) => {

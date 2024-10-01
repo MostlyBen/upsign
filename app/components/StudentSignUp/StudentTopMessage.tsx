@@ -1,13 +1,13 @@
-import { User } from "firebase/auth";
+import { UpsignUser } from "~/types";
 
-const StudentTopMessage = ({ user }: { user: User & { nickname?: string } }) => {
+const StudentTopMessage = ({ user }: { user: UpsignUser }) => {
   return (
     <>
       <div className="prose">
         <h1 className="my-2 font-normal select-none">Hey there, {user
           ? user.nickname
             ? <b>{user.nickname.split(' ')[0]}</b>
-            : <b>{user.displayName?.split(' ')[0]}</b>
+            : <b>{user.name?.split(' ')[0]}</b>
           : ''}
         </h1>
         <blockquote className="top-message py-2 border-primary">

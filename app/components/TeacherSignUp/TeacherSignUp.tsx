@@ -1,5 +1,4 @@
 import { Session, UpsignUser } from "~/types";
-import { User } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { Firestore, collection, query, where, onSnapshot, doc } from "@firebase/firestore"
 
@@ -22,7 +21,7 @@ import {
 
 type TeacherSignUpProps = {
   db: Firestore,
-  user: User & { nickname?: string },
+  user: UpsignUser,
   groupOptions: string[]
 }
 
@@ -34,7 +33,7 @@ const renderHours = (
   sessionTimes: string[],
   sessionTitles: string[] | null | undefined,
   sessions: { [key: string]: Session[] },
-  user: User & { nickname?: string },
+  user: UpsignUser,
   groupOptions: string[]
 ) => {
   const hourArr = []
@@ -55,7 +54,7 @@ const renderHours = (
           sessionTimes={sessionTimes}
           sessionTitles={sessionTitles}
           sessions={sessions[String(hour)]}
-          user={{ name: user.displayName as string, type: "teacher", ...user } as UpsignUser}
+          user={user}
           groupOptions={groupOptions}
         />
       )
@@ -143,7 +142,7 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
       const q = query(collection(
         db,
         `schools/${schoolId}/sessions/${String(selectedDate.getFullYear())}/${String(selectedDate.toDateString())}`),
-        where("teacher", "==", user.displayName));
+        where("teacher_id", "==", user.uid));
       const unsubscribe = onSnapshot(q, async () => {
         await getTeacherSessions(db, selectedDate, user)
           .then(s => {

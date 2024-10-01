@@ -7,7 +7,7 @@ import { RootContext } from '~/types';
 import { TeacherSignUp, StudentSignUp, NewUser } from '../components';
 
 export default function Index() {
-  const { db, user, userType } = useOutletContext() as RootContext;
+  const { db, authUser, user, userType } = useOutletContext() as RootContext;
   const [groupOptions, setGroupOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +32,7 @@ export default function Index() {
           <Outlet context={{ db }} />
         </AnonLayout>
         : userType === "new"
-          ? <NewUser db={db} user={user} />
+          ? <NewUser db={db} user={authUser} />
           : userType === 'teacher'
             ? <TeacherLayout>
               <TeacherSignUp db={db} user={user} groupOptions={groupOptions} />

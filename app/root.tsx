@@ -2,25 +2,26 @@ import { useState, useEffect } from 'react';
 import { Outlet, Scripts, Links, Meta } from '@remix-run/react';
 import { User } from 'firebase/auth';
 import { auth, firestore } from '~/lib/firebase';
-import { getUserType } from './services';
+import { getUser, getUserType } from './services';
 
 import './index.css';
 
 export default function App() {
   const db = firestore;
-  const [user, setUser] = useState<User | null>(null);
+  const [authUser, setAuthUser] = useState<User | null>(null);
+  const [user, setUser] = useState<any>(null);
   const [userType, setUserType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // TODO: add user doc from db
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (_user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (_authUser) => {
       setLoading(true);
-      if (_user) {
-        setUser(_user);
-        const _userType = await getUserType(firestore, _user);
-        if (_userType) {
-          setUserType(_userType);
+      if (_authUser) {
+        setAuthUser(_authUser);
+        const _user = await getUser(firestore, _authUser.uid);
+        if (_user) {
+          setUserType(_user.type);
+          setUser(_user);
         } else { setUserType("new") }
       } else {
         setUserType("new");
@@ -50,7 +51,7 @@ export default function App() {
         <Links />
       </head>
       <body className="bg-base-200">
-        {!loading && userType && <Outlet context={{ db, user, userType }} />}
+        {!loading && userType && <Outlet context={{ db, user, authUser, userType }} />}
         <Scripts />
       </body>
     </html>

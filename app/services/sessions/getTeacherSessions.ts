@@ -1,14 +1,18 @@
 import { doc, setDoc, collection, query, where, getDocs, Firestore, QueryDocumentSnapshot } from "@firebase/firestore";
 import { getNumberSessions } from "../../services";
 import { getSchoolId } from "../../utils";
-import { User } from "firebase/auth";
-import { Session } from '~/types';
+import { Session, UpsignUser } from '~/types';
 
 interface SortedSessions {
   [hour: string]: Session[];
 }
 
-const getTeacherSessions = async (db: Firestore, date: Date, user: User & { nickname?: string }, schoolId: string | null = null): Promise<SortedSessions> => {
+const getTeacherSessions = async (
+  db: Firestore,
+  date: Date,
+  user: UpsignUser,
+  schoolId: string | null = null
+): Promise<SortedSessions> => {
   if (schoolId === null) {
     schoolId = getSchoolId();
   }
@@ -51,7 +55,7 @@ const getTeacherSessions = async (db: Firestore, date: Date, user: User & { nick
       // Empty session object
       const docObject: Session = {
         id: sessionId,
-        teacher: user.nickname ?? user.displayName ?? '',
+        teacher: user.nickname ?? user.name ?? '',
         teacher_id: user.uid,
         session: hour,
         capacity: 30,
@@ -69,3 +73,4 @@ const getTeacherSessions = async (db: Firestore, date: Date, user: User & { nick
 };
 
 export default getTeacherSessions;
+
