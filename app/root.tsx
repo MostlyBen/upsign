@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, Scripts, Links, Meta } from '@remix-run/react';
 import { User } from 'firebase/auth';
 import { auth, firestore } from '~/lib/firebase';
-import { getUser, getUserType } from './services';
+import { getUser } from './services';
 
 import './index.css';
 
