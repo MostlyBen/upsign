@@ -1,4 +1,3 @@
-// TODO: figure out why config button is behind session card on mobile
 import { Link } from '@remix-run/react';
 import { ReactNode } from 'react';
 import { NavBar } from '~/components';
@@ -24,6 +23,7 @@ export default function TeacherLayout({ children }: { children: ReactNode }) {
             minHeight: "3.5rem",
             right: "24px",
             bottom: "24px",
+            zIndex: 10000,
           }}
         >
           <Gear />
