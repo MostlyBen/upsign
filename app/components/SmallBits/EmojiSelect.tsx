@@ -1,3 +1,6 @@
+// TODO: Fix z-order of this
+// (selected emoji is above modal)
+// (react/remove button triggers onPointerOut)
 import EmojiPicker from 'emoji-picker-react';
 
 type EmojiSelectProps = {
