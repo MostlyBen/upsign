@@ -1,3 +1,4 @@
+// TODO: Add a lock to this list
 import { useState, useEffect } from "react";
 import { Firestore, where } from "@firebase/firestore";
 import { Session, Enrollment } from "~/types";
