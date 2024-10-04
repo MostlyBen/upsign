@@ -16,7 +16,7 @@ export const SignInButton = () => {
       signInWithRedirect(auth, provider);
     } catch (err: any) {
       console.error("Error:");
-      console.error(err?.code, err?.message, err?.email);
+      console.error(err);
     }
   };
 
