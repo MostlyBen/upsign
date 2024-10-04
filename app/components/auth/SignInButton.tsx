@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { GoogleAuthProvider, signInWithRedirect, signInWithPopup } from "firebase/auth";
 import { useAuth } from "../../../app/lib/firebase";
 
 export const SignInButton = () => {
@@ -13,7 +13,7 @@ export const SignInButton = () => {
     auth.languageCode = "en-US";
 
     try {
-      signInWithRedirect(auth, provider);
+      signInWithPopup(auth, provider);
     } catch (err: any) {
       console.error("Error:");
       console.error(err?.code, err?.message, err?.email);
