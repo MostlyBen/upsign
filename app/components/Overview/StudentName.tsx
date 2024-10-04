@@ -29,7 +29,7 @@ const StudentName = ({
   attendanceFilter,
   isSession,
 }: StudentNameProps) => {
-  if (!user) { return <div className="student-name mt-0">Deleted User ({enrollment?.name} ?? No name)</div> }
+  if (!user) { return <div className="student-name mt-0">Deleted User ({enrollment?.name ?? "No name"})</div> }
 
   const [isHovering, setIsHovering] = useState(false);
   const dragItem = useMemo(() => ({ user, enrollment, currentSession }), [user, enrollment, currentSession]);
