@@ -1,3 +1,5 @@
+// TODO: Show lock icon on this student list
+
 import { useState, useEffect, useRef, ChangeEvent } from "react";
 import DebounceInput from '../SmallBits/DebounceInput';
 import { Enrollment, Session } from "~/types";
