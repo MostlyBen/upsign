@@ -1,51 +1,54 @@
-import { Firestore } from "firebase/firestore";
 import { useState } from "react";
 
-type PreferencesProps = {
-  db: Firestore,
+type FeatureSwitchProps = {
+  category: string,
+  title: string,
+  id?: string,
 }
 
-const Preferences = ({ db }: PreferencesProps) => {
-  const [showMissing, setShowMissing] = useState<boolean>(localStorage.getItem("show-missing-students") === "true");
-  const [advFilters, setAdvFilters] = useState<boolean>(false);
+const features: FeatureSwitchProps[] = [
+  { category: "All Sessions", title: "Show missing students", id: "show-missing-students" },
+  { category: "Home", title: "Show other teacher's schedule", id: "show-other-schedule" },
+  { category: "Session Editor", title: "Advanced filters (coming soon)" },
+]
 
-  const handleSwitchShowMissing = () => {
-    localStorage.setItem("show-missing-students", String(!showMissing));
-    setShowMissing(!showMissing);
+const FeatureSwitch = ({ category, title, id }: FeatureSwitchProps) => {
+  const [checked, setChecked] =
+    useState<boolean>(id ? localStorage.getItem(id) === "true" : false);
+
+  const handleChange = () => {
+    if (!id) { return }
+    if (checked) {
+      localStorage.removeItem(id);
+    } else {
+      localStorage.setItem(id, "true");
+    }
+    setChecked(!checked);
   }
+
+  return (
+    <div className="flex flex-row align-middle gap-4 mb-4"
+      onClick={handleChange}
+    >
+      <input
+        className="toggle toggle-primary"
+        type="checkbox"
+        checked={checked}
+        disabled={typeof id === "undefined"}
+      />
+      <label className="relative" style={{ top: "-2px" }}>
+        <b>{category}</b> / {title}
+      </label>
+    </div>
+  )
+}
+
+const Preferences = () => {
 
   return (
     <div className="prose">
       <h2>Experimental Features</h2>
-
-      <div className="flex flex-row align-middle gap-4 mb-4"
-        onClick={handleSwitchShowMissing}
-      >
-        <input
-          className="toggle toggle-primary"
-          type="checkbox"
-          checked={showMissing}
-          readOnly
-        />
-        <label className="relative" style={{ top: "-2px" }}>
-          <b>All Sessions</b> / Show missing students
-        </label>
-      </div>
-
-      <div className="flex flex-row align-middle gap-4 mb-4"
-      >
-        <input
-          className="toggle toggle-primary disabled"
-          type="checkbox"
-          checked={advFilters}
-          disabled
-          readOnly
-        />
-        <label className="relative" style={{ top: "-2px" }}>
-          <b>Session Editor</b> / Advanced filters (coming soon)
-        </label>
-      </div>
-
+      {features.map(f => <FeatureSwitch key={f.id} {...f} />)}
     </div>
 
   )

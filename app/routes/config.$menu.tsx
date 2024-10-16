@@ -41,7 +41,7 @@ const ConfigMenu = () => {
     case "studentlist":
       return <StudentList db={db} />
     case "preferences":
-      return <Preferences db={db} />
+      return <Preferences />
     case "my_groups":
       return <EditMyGroups db={db} userId={user.uid as string} />
     default:
