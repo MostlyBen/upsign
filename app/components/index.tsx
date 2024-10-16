@@ -38,6 +38,7 @@ import Index from "./screens/Index";
 
 // small bits
 import EmojiSelect from "./SmallBits/EmojiSelect";
+import NameListName from "./SmallBits/NameListName";
 
 // student
 import StudentSignUp from "./StudentSignUp/StudentSignUp";
@@ -74,6 +75,7 @@ export {
   TeacherSignUp,
 
   EmojiSelect,
+  NameListName,
 
   StudentSignUp,
 }

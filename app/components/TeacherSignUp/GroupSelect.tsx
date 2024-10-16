@@ -37,14 +37,20 @@ const GroupSelect = ({
       onChange={handleRestrict}
       value={session.restricted_to}
     >
-      <option value="">All Students</option>
+      <option value="">{typeof session.restricted_to === "string"
+        ? session.restricted_to.startsWith("%t")
+          ? session.restricted_to.split("-")[2]
+          : "Custom Group"
+        : "All Students"}</option>
       {groupList.map((option) => {
         return (
           <option
             value={option}
             key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
           >
-            {option.startsWith("%t-") ? `${option.split("-")[2]} (your group)` : option}
+            {option.startsWith("%t-")
+              ? `${option.split("-")[2]} (your group)`
+              : option}
           </option>
         )
       })}

@@ -10,14 +10,14 @@ interface SortedSessions {
 const getTeacherSessions = async (
   db: Firestore,
   date: Date,
-  user: UpsignUser,
+  user: UpsignUser | string,
   schoolId: string | null = null
 ): Promise<SortedSessions> => {
   if (schoolId === null) {
     schoolId = getSchoolId();
   }
 
-  const teacherId = user.uid;
+  const teacherId = typeof user === "string" ? user : user.uid;
   const numberSessions = await getNumberSessions(db, date);
   const teacherSessions: Session[] = [];
   const sortedSessions: SortedSessions = {};

@@ -14,6 +14,7 @@ type HourSessionsParams = {
   sessions: Session[],
   user: UpsignUser,
   groupOptions: string[]
+  hideAdd?: boolean,
 }
 
 const HourSessions = ({
@@ -24,7 +25,8 @@ const HourSessions = ({
   sessionTitles,
   sessions,
   user,
-  groupOptions
+  groupOptions,
+  hideAdd,
 }: HourSessionsParams) => {
   const [sessionAdding, setSessionAdding] = useState<boolean>(false);
 
@@ -69,11 +71,11 @@ const HourSessions = ({
         )
       })}
 
-      <button
+      {!hideAdd && <button
         className="btn btn-ghost w-full print:hidden"
         onClick={handleAddSession}
         disabled={sessionAdding}
-      >+ Add Session</button>
+      >+ Add Session</button>}
     </div>
   )
 

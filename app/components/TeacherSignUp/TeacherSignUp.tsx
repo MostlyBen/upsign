@@ -5,6 +5,7 @@ import { Firestore, collection, query, where, onSnapshot, doc } from "@firebase/
 
 import TopMessage from "./TeacherTopMessage";
 import HourSessions from "./HourSessions";
+import TeacherSelect from "./TeacherSelect";
 
 import {
   getSessionTimes,
@@ -35,7 +36,8 @@ const renderHours = (
   sessionTitles: string[] | null | undefined,
   sessions: { [key: string]: Session[] },
   user: UpsignUser,
-  groupOptions: string[]
+  groupOptions: string[],
+  hideAdd?: boolean,
 ) => {
   const hourArr = []
   for (let i = 1; i < numberSessions + 1; i++) {
@@ -57,6 +59,7 @@ const renderHours = (
           sessions={sessions[String(hour)]}
           user={user}
           groupOptions={groupOptions}
+          hideAdd={hideAdd}
         />
       )
     })}
@@ -69,6 +72,7 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>();
   const [sessionTimes, setSessionTimes] = useState<string[]>([]);
   const [sessionTitles, setSessionTitles] = useState<string[] | null>();
+  const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
 
   const schoolId = getSchoolId()
 
@@ -112,9 +116,9 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
   const handleLoadSessions = async () => {
     if (!selectedDate) { return }
     setSessions(null);
-    await getTeacherSessions(db, selectedDate, user)
+    await getTeacherSessions(db, selectedDate, selectedTeacher ?? user)
       .then(s => {
-        setSessions(s);
+        // setSessions(s);
       })
   }
 
@@ -132,9 +136,6 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
   useEffect(() => {
     if (!selectedDate) {
       updateDefaultDay(db);
-    } else {
-      // Load teacher sessions
-      handleLoadSessions();
     }
   }, [db, selectedDate]);
 
@@ -145,7 +146,7 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
         `schools/${schoolId}/sessions/${String(selectedDate.getFullYear())}/${String(selectedDate.toDateString())}`),
         where("teacher_id", "==", user.uid));
       const unsubscribe = onSnapshot(q, async () => {
-        await getTeacherSessions(db, selectedDate, user)
+        await getTeacherSessions(db, selectedDate, selectedTeacher ?? user)
           .then(s => {
             setSessions(s)
           })
@@ -153,11 +154,15 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
 
       return () => unsubscribe()
     }
-  }, [db, selectedDate, numberSessions]);
+  }, [db, selectedDate, numberSessions, selectedTeacher]);
 
   return (
     <div className="signup-body">
-      <TopMessage user={user} />
+      {localStorage.getItem("show-other-schedule") === "true" &&
+        <TeacherSelect db={db} onSelect={(t: string | null) => setSelectedTeacher(t)} />
+      }
+      {!selectedTeacher && <TopMessage user={user} />}
+
       <input
         className="w-full p-4 bg-base-100 rounded-sm print:hidden"
         style={{ minWidth: "100%" }}
@@ -173,7 +178,17 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
 
       {sessions
         ? <div className="teacher-sessions">
-          {renderHours(db, selectedDate as Date, numberSessions, sessionTimes, sessionTitles, sessions, user, groupOptions)}
+          {renderHours(
+            db,
+            selectedDate as Date,
+            numberSessions,
+            sessionTimes,
+            sessionTitles,
+            sessions,
+            user,
+            groupOptions,
+            selectedTeacher !== null,
+          )}
         </div>
         : <div>Loading...</div>}
     </div>

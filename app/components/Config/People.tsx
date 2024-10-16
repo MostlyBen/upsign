@@ -1,37 +1,15 @@
-import { Firestore } from "firebase/firestore"
-import { useEffect, useState } from "react"
-import { Person, Trash } from "~/icons"
+import { Firestore } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { Person, Trash } from "~/icons";
 
-
+import { NameListName } from "~/components";
 import {
   getAllUsers,
   deleteUser,
   updateUser,
-} from "~/services"
-import { UpsignUser } from "~/types"
+} from "~/services";
+import { UpsignUser } from "~/types";
 
-type NameProps = {
-  user: UpsignUser,
-  selectUser: (arg0: string, arg1: boolean) => void,
-}
-const NamesListName = ({ user, selectUser }: NameProps) => {
-  const closeModal = (uid: string) => {
-    selectUser(uid, true);
-  }
-
-  return (
-    <button className="leading-6 btn btn-ghost block w-full text-left" onClick={() => closeModal(user.uid as string)}>
-      {/* Name */}
-      <span>{user.nickname ?? user.name}</span>
-      {/* Email */}
-      <span className="opacity-60 ml-2 font-light">{user.email}</span>
-      {/* User Type */}
-      <span style={{ color: "grey", float: "right" }}>
-        {user.type && user.type.charAt(0).toUpperCase() + user.type.slice(1)}
-      </span>
-    </button>
-  )
-}
 
 type PeopleProps = {
   db: Firestore,
@@ -161,7 +139,7 @@ const People = ({ db }: PeopleProps) => {
           <div className="overflow-y-auto" style={{ maxHeight: "80dvh" }}>
             <form method="dialog">
               {userList.map(user =>
-                (<NamesListName user={user} selectUser={updateSelectedUser} key={`user-name-${user.uid}`} />)
+                (<NameListName user={user} selectUser={updateSelectedUser} key={`user-name-${user.uid}`} />)
               )}
             </form>
           </div>
@@ -203,7 +181,7 @@ const People = ({ db }: PeopleProps) => {
                 (u.email && u.email.toLowerCase().includes(search.toLowerCase()))
               )
             }).map((user, index) => {
-              return <NamesListName key={`${user.name}-${index}`} user={user} selectUser={updateSelectedUser} />
+              return <NameListName key={`${user.name}-${index}`} user={user} selectUser={updateSelectedUser} />
             })}
           </div>
 
