@@ -125,7 +125,6 @@ const General = ({ db }: GeneralProps) => {
 
   const handleRemoveReaction = async (reaction: string) => {
     const newReactions = defaultReactions.filter(r => r !== reaction);
-    console.log("New reactions:", newReactions);
     setDefaultReactionsState(newReactions);
     await setDefaultReactions(db, newReactions);
   }

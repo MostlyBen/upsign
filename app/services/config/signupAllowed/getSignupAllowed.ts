@@ -6,14 +6,14 @@ interface SignupAllowedConfig {
 }
 
 const getSignupAllowed = async (
-  db: Firestore, 
-  schoolId: string | null = null, 
+  db: Firestore,
+  schoolId: string | null = null,
   selectedDate: Date | null = null
 ): Promise<boolean> => {
   if (schoolId === null) {
     schoolId = getSchoolId();
   }
-  
+
   const signupAllowedRef = doc(db, `schools/${schoolId}/config/student_signup`);
   const signupAllowedSnap = await getDoc(signupAllowedRef);
 
@@ -26,10 +26,9 @@ const getSignupAllowed = async (
       }
 
       if (selectedDate) {
-        console.log("Selected date:", selectedDate.toDateString());
         const dateActiveRef = doc(db, `schools/${schoolId}/config/student_signup/special_days/${selectedDate.toDateString()}`);
         const dateActiveSnap = await getDoc(dateActiveRef);
-        console.log("Day is active?", dateActiveSnap.exists() ? (dateActiveSnap.data() as SignupAllowedConfig).active : false);
+
         return dateActiveSnap.exists() ? (dateActiveSnap.data() as SignupAllowedConfig).active : false;
       }
 
@@ -37,11 +36,11 @@ const getSignupAllowed = async (
       return data.active;
 
     } else {
-      await setDoc(signupAllowedRef, {active: true});
+      await setDoc(signupAllowedRef, { active: true });
       return true;
     }
   } else {
-    await setDoc(signupAllowedRef, {active: true});
+    await setDoc(signupAllowedRef, { active: true });
     return true;
   }
 }
