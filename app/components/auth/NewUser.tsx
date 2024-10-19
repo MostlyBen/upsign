@@ -14,11 +14,6 @@ type NewUserProps = {
 }
 
 const NewUser = ({ db, user }: NewUserProps) => {
-  if (!user) {
-    window.location.href = "/";
-    return <></>;
-  }
-
   const [teacherAllowed, setTeacherAllowed] = useState<boolean>(false);
   const schoolId = getSchoolId();
 
@@ -35,6 +30,12 @@ const NewUser = ({ db, user }: NewUserProps) => {
   }, [db]);
 
   const setType = async (userType: "student" | "teacher") => {
+    if (!user) {
+      window.alert("Error: Could not retrieve your Google account");
+      window.location.href = "/";
+      return;
+    }
+
     if (!user.email) { throw new Error("Tried to register a user without an email") }
 
     const allow = await allowStudentRegister(db, user.email);
