@@ -3,6 +3,10 @@
     {
       "source": "/__/auth/:path*",
       "destination": "https://upsign-88bf7.firebaseapp.com/__/auth/:path*"
+    },
+    {
+      "source": "/__/firebase/init.json",
+      "destination": "https://upsign-88bf7.firebaseio.com/__/firebase/init.json"
     }
   ]
 }

@@ -6,14 +6,14 @@ export const SignInButton = () => {
   const auth = useAuth();
 
   const handleClick = () => {
-    console.log(auth);
+    console.log(JSON.stringify(auth));
     if (!auth) {
       return;
     }
     auth.languageCode = "en-US";
 
     try {
-      signInWithRedirect(auth, provider);
+      signInWithRedirect(auth, provider)
     } catch (err: any) {
       console.error("Error:");
       console.error(err);

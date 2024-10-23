@@ -27,7 +27,7 @@ export default function Index() {
 
   return (
     <>
-      {!user
+      {!authUser
         ? <AnonLayout>
           <Outlet context={{ db }} />
         </AnonLayout>
