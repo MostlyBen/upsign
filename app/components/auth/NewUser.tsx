@@ -48,6 +48,13 @@ const NewUser = ({ db, user }: NewUserProps) => {
     }
   }
 
+  const handleCancel = () => {
+    getAuth().signOut().then(() => {
+      window.location.assign('/');
+    });
+  };
+
+
   return (
     <div className="prose pt-32 w-screen" style={{ height: "100dvh" }}>
       <h1 className="w-screen text-center">What&apos;s your role at the school?</h1>
@@ -65,6 +72,14 @@ const NewUser = ({ db, user }: NewUserProps) => {
             onClick={() => setType("teacher")}
           >
             Teacher
+          </button>
+        </div>
+        <div className="flex flex-row justify-center mt-8">
+          <button
+            className="btn btn-ghost"
+            onClick={handleCancel}
+          >
+            Nevermind, log me out
           </button>
         </div>
       </div>
