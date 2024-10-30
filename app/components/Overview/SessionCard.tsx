@@ -115,8 +115,8 @@ const SessionCard = ({
 
 
           <h3 className="mt-0 mb-2 leading-6 overflow-x-hidden overflow-ellipsis">{session.title
-            /* Split at slashes and add a <wbr /> (word break opportunity) after each */
-            ? session.title.match(/[^/]+\/?/g)?.map((s, i) => <span key={i}>{s}<wbr /></span>)
+            /* Split at forward and back slashes and add a <wbr /> (word break opportunity) after each */
+            ? session.title.match(/[^/\\]+[/\\]?/g)?.map((s, i) => <span key={i}>{s}<wbr /></span>)
             : ""}</h3>
           {
             session.subtitle && <h4
