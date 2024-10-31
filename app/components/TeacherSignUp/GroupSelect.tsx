@@ -37,7 +37,7 @@ const GroupSelect = ({
       onChange={handleRestrict}
       value={session.restricted_to}
     >
-      <option value="">{session.restricted_to === "string" && session.restricted_to.length
+      <option value="">{typeof session.restricted_to === "string" && session.restricted_to.length
         ? session.restricted_to.startsWith("%t")
           ? session.restricted_to.split("-")[2]
           : "Custom Group"
