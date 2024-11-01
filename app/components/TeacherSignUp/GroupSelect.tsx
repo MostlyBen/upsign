@@ -6,7 +6,7 @@ type GroupSelectProps = {
   session: Session,
   date: Date,
   db: Firestore,
-  schoolId: string,
+  schoolId: string | null,
   groupList: string[],
 }
 

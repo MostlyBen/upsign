@@ -18,6 +18,7 @@ import {
 
 import AttendanceList from './AttendanceList';
 import GroupSelect from './GroupSelect';
+import GroupSelectAdvanced from './GroupSelectAdvanced';
 import { ChevronDown, ChevronRight, Trash } from "~/icons";
 import { getSessionEnrollments, removeTeacherSession } from "~/services";
 import { getSchoolId } from "~/utils";
@@ -45,6 +46,7 @@ const SessionEditor = ({
 }: SessionEditorProps) => {
 
   const groupList = useRef(groupOptions.length ? groupOptions : []);
+  const advancedGroupSelect = typeof window !== "undefined" && localStorage.getItem("advanced-group-select") === "true";
 
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [hasClicked, setHasClicked] = useState<boolean>(false);
@@ -424,7 +426,15 @@ const SessionEditor = ({
 
           {/* Restrict */}
           {schoolId && Array.isArray(groupList.current) &&
-            <GroupSelect
+            advancedGroupSelect
+            ? <GroupSelectAdvanced
+              session={session}
+              date={date}
+              db={db}
+              schoolId={schoolId}
+              groupList={groupList.current}
+            />
+            : <GroupSelect
               session={session}
               date={date}
               db={db}

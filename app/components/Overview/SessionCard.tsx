@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Firestore, where } from "firebase/firestore";
+import { Firestore } from "firebase/firestore";
 import { Attendance, Enrollment, Session, UpsignUser } from "~/types";
 import { updateEnrollment } from "~/services";
-import { getSchoolId } from "~/utils";
 import { useDroppable } from "@dnd-kit/core";
 
 import {
@@ -114,7 +113,7 @@ const SessionCard = ({
           ><ArrowsOut /></button>}
 
 
-          <h3 className="mt-0 mb-2 leading-6 overflow-x-hidden overflow-ellipsis">{session.title
+          <h3 className="mt-0 mb-2 leading-6 overflow-hidden overflow-ellipsis">{session.title
             /* Split at forward and back slashes and add a <wbr /> (word break opportunity) after each */
             ? session.title.match(/[^/\\]+[/\\]?/g)?.map((s, i) => <span key={i}>{s}<wbr /></span>)
             : ""}</h3>
