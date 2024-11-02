@@ -40,7 +40,9 @@ const SessionCardStudent = ({
 
       if (enrolled) {
         if (!session.id) { return }
-        unenrollFromSession(db, selectedDate, userDoc.uid, session.id)
+        unenrollFromSession(db, selectedDate, userDoc.uid, session.id).then(() => {
+          setIsEnabled(true);
+        }).catch(() => setIsEnabled(true));
       } else if ((session.number_enrolled ?? 0) < Number(session.capacity)) {
         enrollStudent(db, selectedDate, session, userDoc).then(() => {
           setIsEnabled(true);
@@ -50,7 +52,9 @@ const SessionCardStudent = ({
   }
 
   useEffect(() => {
-    setIsEnabled(true);
+    if (isEnrolled) {
+      setIsEnabled(true);
+    }
   }, [isEnrolled]);
 
   // When the number_enrolled or capacity updates
@@ -94,16 +98,23 @@ const SessionCardStudent = ({
       return true;
     }
 
-    let groupBlocking = true;
+    if (!session.restricted_to || session.restricted_to === "") {
+      return false;
+    }
 
+    if (!Array.isArray(userDoc.groups)) {
+      return true;
+    }
+
+    let groupBlocking = true;
     // If the session is restricted to an array of groups
     if (Array.isArray(session.restricted_to)) {
-      for (let i = 0; i <= session.restricted_to.length + 1; i++) {
-        if (Array.isArray(userDoc.groups)) {
-          if (userDoc.groups.includes(session.restricted_to[i])) {
-            groupBlocking = false;
-          }
-        }
+      if (session.restricted_to.length === 0) { return false }
+
+      if (session.advanced_restriction_type === "OR") {
+        groupBlocking = !session.restricted_to.some(g => userDoc.groups.includes(g));
+      } else {
+        groupBlocking = !session.restricted_to.every(g => userDoc.groups.includes(g));
       }
     } else {
       // If the session is restricted to something & it's not an empty string

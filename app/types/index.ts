@@ -8,6 +8,7 @@ export type Session = {
   id?: string,
   number_enrolled: number,
   restricted_to?: string | string[],
+  advanced_restriction_type?: "OR" | "AND",
   room?: string,
   session: number,
   subtitle?: string,
