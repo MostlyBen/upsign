@@ -112,16 +112,6 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
     }
   }, [db, selectedDate]);
 
-
-  const handleLoadSessions = async () => {
-    if (!selectedDate) { return }
-    setSessions(null);
-    await getTeacherSessions(db, selectedDate, selectedTeacher ?? user)
-      .then(s => {
-        // setSessions(s);
-      })
-  }
-
   const handleSelectDate = (date: Date) => {
     setSessions(null);
     setSelectedDate(date);
@@ -164,7 +154,7 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
       {!selectedTeacher && <TopMessage user={user} />}
 
       <input
-        className="w-full p-4 bg-base-100 rounded-sm print:hidden"
+        className="input w-full p-4 bg-base-100 print:hidden"
         style={{ minWidth: "100%" }}
         type="date"
         value={selectedDate
