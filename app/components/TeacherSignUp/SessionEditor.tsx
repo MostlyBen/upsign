@@ -286,8 +286,11 @@ const SessionEditor = ({
   if (collapsed) {
     return (
       <div
-        className="w-100 bg-base-100 card p-4 my-2"
-        style={{ zIndex: index }}
+        className="w-100 shadow-md bg-base-100 card p-4 my-2"
+        style={{
+          borderRadius: "var(--rounded-btn, 0.5rem)",
+          zIndex: index,
+        }}
       >
         <button
           className="absolute btn btn-ghost p-1 h-full collapse-btn-offset"
@@ -336,8 +339,11 @@ const SessionEditor = ({
           <Trash />
         </button>}
       <div
-        className="session-editor bg-base-100 card drop-shadow-md p-4 my-4 grid grid-cols-2 gap-4"
-        style={{ zIndex: index }}
+        className="session-editor bg-base-100 card shadow-md p-4 my-4 grid grid-cols-2 gap-4"
+        style={{
+          borderRadius: "var(--rounded-btn, 0.5rem)",
+          zIndex: index,
+        }}
       >
         {!isModal && <button
           className="absolute btn btn-ghost p-1 h-full collapse-btn-offset print:hidden"
