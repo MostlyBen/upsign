@@ -45,6 +45,8 @@ module.exports = {
       {
         retro: {
           ...require("daisyui/src/theming/themes").retro,
+          primary: "#A76D60",
+          secondary: "#808A9F",
         }
       },
       {
