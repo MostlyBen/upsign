@@ -36,6 +36,27 @@ module.exports = {
           secondary: "#BF7C00",
         }
       },
+      {
+        valentine: {
+          ...require("daisyui/src/theming/themes").valentine,
+          "base-100": "#fffdfe",
+        }
+      },
+      {
+        retro: {
+          ...require("daisyui/src/theming/themes").retro,
+        }
+      },
+      {
+        coffee: {
+          ...require("daisyui/src/theming/themes").coffee,
+        }
+      },
+      {
+        nord: {
+          ...require("daisyui/src/theming/themes").nord,
+        }
+      },
     ],
   }
 }

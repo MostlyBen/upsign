@@ -1,60 +1,19 @@
 import { useEffect, useState } from "react";
 
-const Sun = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round">
-      <circle cx="12" cy="12" r="5" />
-      <path
-        d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
-    </svg>
-
-  )
-}
-
-const Moon = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
-
-  )
-}
-
-type Themes = "light" | "dark"
+type Themes = "light" | "dark" | "coffee" | "nord" | "retro" | "valentine";
 
 const ThemeSelector = () => {
-  const [windowDark, setWindowDark] = useState<boolean>(true);
   const [theme, setTheme] = useState<Themes>("dark");
 
   useEffect(() => {
     if (typeof window === 'undefined') { return }
 
-    const _windowDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    setWindowDark(_windowDark);
+    const windowDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     if (window.localStorage.getItem("theme")) {
       setTheme(window.localStorage.getItem("theme") as Themes);
     } else {
-      setTheme(_windowDark ? "dark" : "light")
+      setTheme(windowDark ? "dark" : "light")
     }
   }, []);
 
@@ -64,18 +23,81 @@ const ThemeSelector = () => {
   }
 
   return (
-    <label className="flex cursor-pointer gap-2 mb-2" suppressHydrationWarning>
-      {windowDark ? <Moon /> : <Sun />}
-      <input
-        type="checkbox"
-        value={windowDark ? "light" : "dark"}
-        checked={theme === (windowDark ? "light" : "dark")
-        }
-        className="toggle theme-controller"
-        onChange={() => handleChangeTheme(theme === "light" ? "dark" : "light")}
-      />
-      {windowDark ? <Sun /> : <Moon />}
-    </label>
+    <div className="dropdown">
+      <div tabIndex={0} role="button" className="btn m-1">
+        Theme
+        <svg
+          width="12px"
+          height="12px"
+          className="inline-block h-2 w-2 fill-current opacity-60"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 2048 2048">
+          <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z" />
+        </svg>
+      </div>
+      <ul tabIndex={0} className="dropdown-content bg-base-300 rounded-box z-[1] w-52 p-2 shadow-2xl">
+        <li>
+          <input
+            type="radio"
+            name="theme-dropdown"
+            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+            aria-label="Light"
+            onClick={() => handleChangeTheme("light")}
+            checked={theme === "light"}
+            value="light" />
+        </li>
+        <li>
+          <input
+            type="radio"
+            name="theme-dropdown"
+            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+            aria-label="Dark"
+            onClick={() => handleChangeTheme("dark")}
+            checked={theme === "dark"}
+            value="dark" />
+        </li>
+        <li>
+          <input
+            type="radio"
+            name="theme-dropdown"
+            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+            aria-label="Coffee"
+            onClick={() => handleChangeTheme("coffee")}
+            checked={theme === "coffee"}
+            value="coffee" />
+        </li>
+        <li>
+          <input
+            type="radio"
+            name="theme-dropdown"
+            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+            aria-label="Nord"
+            onClick={() => handleChangeTheme("nord")}
+            checked={theme === "nord"}
+            value="nord" />
+        </li>
+        <li>
+          <input
+            type="radio"
+            name="theme-dropdown"
+            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+            aria-label="Retro"
+            onClick={() => handleChangeTheme("retro")}
+            checked={theme === "retro"}
+            value="retro" />
+        </li>
+        <li>
+          <input
+            type="radio"
+            name="theme-dropdown"
+            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+            aria-label="Valentine"
+            onClick={() => handleChangeTheme("valentine")}
+            checked={theme === "valentine"}
+            value="valentine" />
+        </li>
+      </ul>
+    </div >
   )
 }
 
