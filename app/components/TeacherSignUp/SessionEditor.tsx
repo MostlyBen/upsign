@@ -286,7 +286,7 @@ const SessionEditor = ({
   if (collapsed) {
     return (
       <div
-        className="w-100 session-editor bg-base-100 card drop-shadow-md p-4 my-2"
+        className="w-100 bg-base-100 card p-4 my-2"
         style={{ zIndex: index }}
       >
         <button

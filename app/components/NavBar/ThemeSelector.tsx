@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-type Themes = "light" | "dark" | "coffee" | "nord" | "retro" | "valentine";
+type Themes = "light" | "dark" | "nord" | "retro" | "valentine";
 
 const ThemeSelector = () => {
   const [theme, setTheme] = useState<Themes>("dark");
@@ -55,16 +55,6 @@ const ThemeSelector = () => {
             onClick={() => handleChangeTheme("dark")}
             checked={theme === "dark"}
             value="dark" />
-        </li>
-        <li>
-          <input
-            type="radio"
-            name="theme-dropdown"
-            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-            aria-label="Coffee"
-            onClick={() => handleChangeTheme("coffee")}
-            checked={theme === "coffee"}
-            value="coffee" />
         </li>
         <li>
           <input

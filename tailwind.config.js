@@ -48,11 +48,6 @@ module.exports = {
         }
       },
       {
-        coffee: {
-          ...require("daisyui/src/theming/themes").coffee,
-        }
-      },
-      {
         nord: {
           ...require("daisyui/src/theming/themes").nord,
         }
