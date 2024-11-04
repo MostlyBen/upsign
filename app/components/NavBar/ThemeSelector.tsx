@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-type Themes = "light" | "dark" | "nord" | "pastel" | "retro" | "valentine" | "thursday";
+type Themes = "light" | "dark" | "nord" | "retro" | "thursday" | "valentine";
 
 const ThemeSelector = () => {
   const [theme, setTheme] = useState<Themes>("dark");
@@ -61,17 +61,6 @@ const ThemeSelector = () => {
             type="radio"
             name="theme-dropdown"
             className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-            aria-label="Thursday"
-            onClick={() => handleChangeTheme("thursday")}
-            checked={theme === "thursday"}
-            value="thursday" />
-        </li>
-
-        <li>
-          <input
-            type="radio"
-            name="theme-dropdown"
-            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
             aria-label="Nord"
             onClick={() => handleChangeTheme("nord")}
             checked={theme === "nord"}
@@ -86,6 +75,16 @@ const ThemeSelector = () => {
             onClick={() => handleChangeTheme("retro")}
             checked={theme === "retro"}
             value="retro" />
+        </li>
+        <li>
+          <input
+            type="radio"
+            name="theme-dropdown"
+            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+            aria-label="Thursday"
+            onClick={() => handleChangeTheme("thursday")}
+            checked={theme === "thursday"}
+            value="thursday" />
         </li>
         <li>
           <input
