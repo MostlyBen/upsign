@@ -162,7 +162,7 @@ const StudentSignUp = ({ db, user }: StudentSignupProps) => {
     <div>
       <StudentTopMessage user={userDoc?.nickname ? { nickname: userDoc.nickname, ...user } : user} />
       <input
-        className="w-full p-4 bg-base-100 rounded-sm"
+        className="input w-full p-4 bg-base-100 print:hidden"
         style={{ minWidth: "100%" }}
         type="date"
         value={selectedDate

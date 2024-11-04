@@ -156,6 +156,9 @@ const SessionCardStudent = ({
             ? 'opacity-70 pointer-events-none'
             : ''}`}
       onClick={() => handleClick(isEnrolled)}
+      style={{
+        borderRadius: "var(--rounded-btn, 0.5rem)",
+      }}
     >
       <div className="w-full">
         {/* Title */}
