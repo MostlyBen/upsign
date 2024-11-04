@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 type Themes = "light" | "dark" | "nord" | "retro" | "thursday" | "valentine";
+const themes: Themes[] = ["light", "dark", "nord", "retro", "thursday", "valentine"];
 
 const ThemeSelector = () => {
   const [theme, setTheme] = useState<Themes>("dark");
@@ -36,66 +37,18 @@ const ThemeSelector = () => {
         </svg>
       </div>
       <ul tabIndex={0} className="dropdown-content bg-base-300 rounded-box z-[1] w-52 p-2 shadow-2xl">
-        <li>
-          <input
-            type="radio"
-            name="theme-dropdown"
-            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-            aria-label="Light"
-            onClick={() => handleChangeTheme("light")}
-            checked={theme === "light"}
-            value="light" />
-        </li>
-        <li>
-          <input
-            type="radio"
-            name="theme-dropdown"
-            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-            aria-label="Dark"
-            onClick={() => handleChangeTheme("dark")}
-            checked={theme === "dark"}
-            value="dark" />
-        </li>
-        <li>
-          <input
-            type="radio"
-            name="theme-dropdown"
-            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-            aria-label="Nord"
-            onClick={() => handleChangeTheme("nord")}
-            checked={theme === "nord"}
-            value="nord" />
-        </li>
-        <li>
-          <input
-            type="radio"
-            name="theme-dropdown"
-            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-            aria-label="Retro"
-            onClick={() => handleChangeTheme("retro")}
-            checked={theme === "retro"}
-            value="retro" />
-        </li>
-        <li>
-          <input
-            type="radio"
-            name="theme-dropdown"
-            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-            aria-label="Thursday"
-            onClick={() => handleChangeTheme("thursday")}
-            checked={theme === "thursday"}
-            value="thursday" />
-        </li>
-        <li>
-          <input
-            type="radio"
-            name="theme-dropdown"
-            className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-            aria-label="Valentine"
-            onClick={() => handleChangeTheme("valentine")}
-            checked={theme === "valentine"}
-            value="valentine" />
-        </li>
+        {themes.map(t =>
+          <li key={`theme-${t}`}>
+            <input
+              type="radio"
+              name="theme-dropdown"
+              className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+              aria-label={t.charAt(0).toUpperCase() + t.slice(1)}
+              onClick={() => handleChangeTheme(t)}
+              checked={theme === t}
+              value={t} />
+          </li>
+        )}
       </ul>
     </div >
   )
