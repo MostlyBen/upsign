@@ -52,6 +52,11 @@ module.exports = {
           ...require("daisyui/src/theming/themes").nord,
         }
       },
+      {
+        thursday: {
+          ...require("daisyui/src/theming/themes").autumn,
+        }
+      },
     ],
   }
 }

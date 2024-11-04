@@ -43,7 +43,7 @@ code {
 }
 
 hr {
-  border-color: var(--tw-prose-headings);
+  border-color: var(--tw-fg-color);
 }
 
 /* dirty fix for colors not showing up as expected */
