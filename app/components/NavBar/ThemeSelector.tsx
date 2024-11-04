@@ -24,8 +24,8 @@ const ThemeSelector = () => {
   }
 
   return (
-    <div className="dropdown">
-      <div tabIndex={0} role="button" className="btn m-1">
+    <details className="dropdown">
+      <summary tabIndex={0} role="button" className="btn m-1">
         Theme
         <svg
           width="12px"
@@ -35,7 +35,7 @@ const ThemeSelector = () => {
           viewBox="0 0 2048 2048">
           <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z" />
         </svg>
-      </div>
+      </summary>
       <ul tabIndex={0} className="dropdown-content bg-base-300 rounded-box z-[1] w-52 p-2 shadow-2xl">
         {themes.map(t =>
           <li key={`theme-${t}`}>
@@ -50,7 +50,7 @@ const ThemeSelector = () => {
           </li>
         )}
       </ul>
-    </div >
+    </details >
   )
 }
 
