@@ -44,6 +44,7 @@ code {
 
 hr {
   border-color: var(--tw-fg-color);
+  opacity: 0.5;
 }
 
 /* dirty fix for colors not showing up as expected */
