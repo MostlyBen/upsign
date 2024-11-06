@@ -37,11 +37,11 @@ const GroupSelect = ({
       onChange={handleRestrict}
       value={session.restricted_to}
     >
-      <option value="">{typeof session.restricted_to === "string"
-        ? session.restricted_to.startsWith("%t")
-          ? session.restricted_to.split("-")[2]
-          : "All Students"
-        : "All Students"}</option>
+      <option value="">All Students</option>
+
+      {typeof session.restricted_to === "string" && session.restricted_to.startsWith("%t") &&
+        <option value={session.restricted_to}>{session.restricted_to.split("-")[2]}</option>
+      }
 
       {Array.isArray(session.restricted_to) &&
         <option value={session.restricted_to}>{session.restricted_to.join(", ")}</option>
