@@ -46,6 +46,7 @@ const ThemeSelector = () => {
               aria-label={t.charAt(0).toUpperCase() + t.slice(1)}
               onClick={() => handleChangeTheme(t)}
               checked={theme === t}
+              readOnly
               value={t} />
           </li>
         )}

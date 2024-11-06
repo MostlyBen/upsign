@@ -34,6 +34,7 @@ const FeatureSwitch = ({ category, title, id }: FeatureSwitchProps) => {
         className="toggle toggle-primary"
         type="checkbox"
         checked={checked}
+        readOnly
         disabled={typeof id === "undefined"}
       />
       <label className="relative" style={{ top: "-2px" }}>

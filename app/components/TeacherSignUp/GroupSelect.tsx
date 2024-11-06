@@ -1,4 +1,4 @@
-import { doc, updateDoc, Firestore } from "firebase/firestore";
+import { doc, updateDoc, deleteField, Firestore } from "firebase/firestore";
 import { ChangeEvent } from "react";
 import { Session } from "~/types";
 
@@ -25,7 +25,7 @@ const GroupSelect = ({
         db,
         `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`
       ),
-      { restricted_to: group }
+      { restricted_to: group, advanced_restriction_type: deleteField() }
     );
     session.restricted_to = group;
   }
@@ -42,6 +42,11 @@ const GroupSelect = ({
           ? session.restricted_to.split("-")[2]
           : "All Students"
         : "All Students"}</option>
+
+      {Array.isArray(session.restricted_to) &&
+        <option value={session.restricted_to}>{session.restricted_to.join(", ")}</option>
+      }
+
       {groupList.map((option) => {
         return (
           <option

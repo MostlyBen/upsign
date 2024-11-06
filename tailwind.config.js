@@ -59,6 +59,11 @@ module.exports = {
           ...require("daisyui/src/theming/themes").autumn,
         }
       },
+      {
+        coffee: {
+          ...require("daisyui/src/theming/themes").coffee,
+        }
+      }
     ],
   }
 }
