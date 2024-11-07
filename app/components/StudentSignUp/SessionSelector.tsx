@@ -7,6 +7,11 @@ import {
   onSnapshot,
 } from "@firebase/firestore"
 
+import {
+  enrollStudent,
+  unenrollFromSession,
+} from "../../services"
+
 import SessionCardStudent from "./SessionCardStudent"
 import { Enrollment, Session, UpsignUser } from "~/types"
 
@@ -37,6 +42,7 @@ const SessionSelector = ({
   const [hourSessions, setHourSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [locked, setLocked] = useState<boolean>(false);
+  const [isEnabled, setIsEnabled] = useState<boolean>(true);
 
   // Get & subscribe to sessions for the hour
   useEffect(() => {
@@ -85,6 +91,34 @@ const SessionSelector = ({
   }, [db, selectedDate, userEnrollments]);
 
 
+  const handleClickSession = (session: Session, enrolled: boolean) => {
+    if (!userDoc.uid) { return }
+
+    const isFull = session.number_enrolled >= session.capacity;
+
+    if (signupAllowed && !locked && (!isFull || enrolled)) {
+      setIsEnabled(false)
+
+      if (enrolled) {
+        if (!session.id) {
+          setIsEnabled(true);
+          return
+        }
+
+        unenrollFromSession(db, selectedDate, userDoc.uid, session.id).then(() => {
+          setIsEnabled(true);
+        }).catch(() => setIsEnabled(true));
+      } else if ((session.number_enrolled ?? 0) < Number(session.capacity)) {
+        enrollStudent(db, selectedDate, session, userDoc).then(() => {
+          setIsEnabled(true);
+        }).catch(() => setIsEnabled(true));
+      } else {
+        setIsEnabled(true);
+      }
+    }
+  }
+
+
   if (loading) {
     return (
       <div className="session-selector-container row">
@@ -112,11 +146,11 @@ const SessionSelector = ({
 
       <div className="cards-container">
         {hourSessions.map(session => <SessionCardStudent
+          handleClick={handleClickSession}
+          isEnabled={isEnabled}
           key={`session-card-${session.id}`}
           session={session}
           userDoc={userDoc}
-          db={db}
-          selectedDate={selectedDate}
           signupAllowed={signupAllowed}
           userEnrollments={userEnrollments}
           locked={locked}

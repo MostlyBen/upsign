@@ -1,26 +1,22 @@
 import { useState, useEffect } from "react"
 import { Emoji } from 'emoji-picker-react'
 
-import {
-  enrollStudent,
-  unenrollFromSession,
-} from "../../services"
-import { Firestore } from "firebase/firestore"
 import { Enrollment, Session, UpsignUser } from "~/types"
 import { LockClosedMini } from "~/icons"
 
 type SessionCardStudentProps = {
-  db: Firestore,
-  selectedDate: Date,
+  handleClick: (session: Session, enrolled: boolean) => void,
+  isEnabled: boolean,
   session: Session,
   userDoc: UpsignUser,
   signupAllowed: boolean,
   userEnrollments: Enrollment[],
   locked?: boolean,
 }
+
 const SessionCardStudent = ({
-  db,
-  selectedDate,
+  handleClick,
+  isEnabled,
   session,
   userDoc,
   signupAllowed,
@@ -30,32 +26,6 @@ const SessionCardStudent = ({
   const [isFull, setIsFull] = useState<boolean>(false);
   const [isEnrolled, setIsEnrolled] = useState<boolean>(false);
   const [enrollmentFlag, setEnrollmentFlag] = useState<string | null>();
-  const [isEnabled, setIsEnabled] = useState<boolean>(true);
-
-  const handleClick = (enrolled: boolean) => {
-    if (!userDoc.uid) { return }
-
-    if (signupAllowed && !locked && (!isFull || isEnrolled)) {
-      setIsEnabled(false)
-
-      if (enrolled) {
-        if (!session.id) { return }
-        unenrollFromSession(db, selectedDate, userDoc.uid, session.id).then(() => {
-          setIsEnabled(true);
-        }).catch(() => setIsEnabled(true));
-      } else if ((session.number_enrolled ?? 0) < Number(session.capacity)) {
-        enrollStudent(db, selectedDate, session, userDoc).then(() => {
-          setIsEnabled(true);
-        }).catch(() => setIsEnabled(true));
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (isEnrolled) {
-      setIsEnabled(true);
-    }
-  }, [isEnrolled]);
 
   // When the number_enrolled or capacity updates
   useEffect(() => {
@@ -112,9 +82,9 @@ const SessionCardStudent = ({
       if (session.restricted_to.length === 0) { return false }
 
       if (session.advanced_restriction_type === "OR") {
-        groupBlocking = !session.restricted_to.some(g => userDoc.groups.includes(g));
+        groupBlocking = !session.restricted_to.some(g => userDoc.groups?.includes(g));
       } else {
-        groupBlocking = !session.restricted_to.every(g => userDoc.groups.includes(g));
+        groupBlocking = !session.restricted_to.every(g => userDoc.groups?.includes(g));
       }
     } else {
       // If the session is restricted to something & it's not an empty string
@@ -155,7 +125,7 @@ const SessionCardStudent = ({
           : 'border-base-100'} ${isFull && !isEnrolled || !isEnabled
             ? 'opacity-70 pointer-events-none'
             : ''}`}
-      onClick={() => handleClick(isEnrolled)}
+      onClick={() => handleClick(session, isEnrolled)}
       style={{
         borderRadius: "var(--rounded-btn, 0.5rem)",
       }}
@@ -181,10 +151,12 @@ const SessionCardStudent = ({
           <h2 className="opacity-80">{session.subtitle}</h2>}
         <hr style={{ margin: '1rem 0' }} />
         <h2>{session.teacher ?? 'No Teacher'}</h2>
-        <h2>{session.room ?? 'No Room'}</h2>
-        <span className="absolute right-4 bottom-4">
-          {session.number_enrolled ?? 0}/{session.capacity}
-        </span>
+        <div className="flex justify-between">
+          <h2>{session.room ?? 'No Room'}</h2>
+          <span>
+            {session.number_enrolled ?? 0}/{session.capacity}
+          </span>
+        </div>
       </div>
     </button>
   )
