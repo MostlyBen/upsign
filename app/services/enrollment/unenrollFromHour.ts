@@ -25,7 +25,7 @@ const unenrollFromHour = async (
   const quSnapshot = await getDocs(q);
 
   // Iterate through and delete any enrollment docs
-  const updates: {session: DocumentReference, enrollment: DocumentReference}[] = [];
+  const updates: { session: DocumentReference, enrollment: DocumentReference }[] = [];
   quSnapshot.forEach((snap) => {
     // Create a reference to the session the enrollment is for
     const enrData = snap.data();
@@ -39,11 +39,13 @@ const unenrollFromHour = async (
   try {
     const res = await runTransaction(db, async (transaction: Transaction) => {
       for (const u of updates) {
-        transaction.update(u.session, { number_enrolled: increment(-1) });
-        transaction.delete(u.enrollment);
+        if (u.enrollment) {
+          transaction.update(u.session, { number_enrolled: increment(-1) });
+          transaction.delete(u.enrollment);
+        }
       }
     });
-    
+
     return res;
 
   } catch (err) {
