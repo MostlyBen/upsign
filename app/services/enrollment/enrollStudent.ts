@@ -65,8 +65,10 @@ const enrollStudent = async (db: Firestore, date: Date, session: Session, user: 
       }
 
       for (const u of updates) {
-        transaction.update(u.session, { number_enrolled: increment(-1) })
-        transaction.delete(u.enrollment);
+        if (u.enrollment) {
+          transaction.update(u.session, { number_enrolled: increment(-1) })
+          transaction.delete(u.enrollment);
+        }
       }
 
       transaction.update(sessionRef, { number_enrolled: increment(1) });

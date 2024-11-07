@@ -43,6 +43,16 @@ module.exports = {
         }
       },
       {
+        verypink: {
+          ...require("daisyui/src/theming/themes").valentine,
+          "primary": "#967ee6",
+          "secondary": "#7c44c9",
+          "base-100": "#ff44c9",
+          "base-content": "#ffffff"
+        }
+      },
+
+      {
         retro: {
           ...require("daisyui/src/theming/themes").retro,
           primary: "#A76D60",

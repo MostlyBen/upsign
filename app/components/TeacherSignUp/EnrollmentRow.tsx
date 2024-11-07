@@ -37,6 +37,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }: EnrollmentRowProps) =>
   }
 
   const handleMouseLeave = () => {
+    if (reactionOpen) { return }
     setShowRemove(0);
   }
 
@@ -63,6 +64,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }: EnrollmentRowProps) =>
     }
 
     if (window.confirm(`Are you sure you want to remove ${name} from this session?`)) {
+      if (!session.id) { return }
       unenrollFromSession(db, date, String(uid), session.id)
     }
   }

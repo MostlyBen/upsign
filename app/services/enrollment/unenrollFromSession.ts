@@ -36,8 +36,8 @@ const unenrollFromSession = async (
 
   try {
     const res = await runTransaction(db, async (transaction: Transaction) => {
-      transaction.update(sessionRef, { number_enrolled: increment(-1) });
       for (const existingRef of existingEnrollments) {
+        transaction.update(sessionRef, { number_enrolled: increment(-1) });
         transaction.delete(existingRef);
       }
     });
@@ -49,3 +49,4 @@ const unenrollFromSession = async (
 }
 
 export default unenrollFromSession;
+
