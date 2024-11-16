@@ -26,6 +26,7 @@ type ExpectedContext = {
   allStudents: Record<string, UpsignUser>,
   groupFilter?: string,
   attendanceFilter?: string[],
+  user: UpsignUser,
 }
 
 const HourOverview = () => {
@@ -38,6 +39,7 @@ const HourOverview = () => {
     groupFilter,
     groupOptions,
     attendanceFilter,
+    user,
   } = useOutletContext() as ExpectedContext;
 
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -70,16 +72,16 @@ const HourOverview = () => {
   }, [db, selectedDate, hour]);
 
   const handleDragEnd = (e: DragEndEvent) => {
-    const { user, enrollment } = e.active?.data?.current as { user: UpsignUser, enrollment: Enrollment };
-    if (!e.over?.data?.current || !user || !e.active?.data?.current) { return }
+    const { user: student, enrollment } = e.active?.data?.current as { user: UpsignUser, enrollment: Enrollment };
+    if (!e.over?.data?.current || !student || !e.active?.data?.current) { return }
 
     if (e.over.data.current.type === "unsigned") {
       if (!e.active.data.current.currentSession) { return }
-      unenrollFromSession(db, selectedDate, user?.uid as string, enrollment.session_id as string);
+      unenrollFromSession(db, selectedDate, student?.uid as string, enrollment.session_id as string);
 
     } else if (e.over.data.current.type === "session") {
       if (e.over.data.current.session.id === e.active.data.current.currentSession?.id) { return }
-      enrollStudent(db, selectedDate, e.over.data.current.session, user, true);
+      enrollStudent(db, selectedDate, e.over.data.current.session, student, user, true);
     }
   }
 

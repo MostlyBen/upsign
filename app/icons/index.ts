@@ -18,6 +18,7 @@ import Person from "./Person";
 import Pin from "./Pin";
 import Trash from "./Trash";
 import Union from "./Union";
+import UserQuestion from "./UserQuestion";
 
 export {
   Add,
@@ -40,4 +41,5 @@ export {
   Pin,
   Trash,
   Union,
+  UserQuestion,
 }

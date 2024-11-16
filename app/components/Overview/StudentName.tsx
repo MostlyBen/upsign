@@ -6,7 +6,7 @@ import { Emoji } from 'emoji-picker-react';
 
 import { updateEnrollment } from '../../services';
 import { Attendance, Enrollment, Session, UpsignUser } from '~/types';
-import { LockClosedMicro, LockOpenMicro } from '~/icons';
+import { LockClosedMicro, LockOpenMicro, UserQuestion } from '~/icons';
 
 type StudentNameProps = {
   db: Firestore,
@@ -30,6 +30,7 @@ const StudentName = ({
   isSession,
 }: StudentNameProps) => {
   if (!user) { return <div className="student-name mt-0">Deleted User ({enrollment?.name ?? "No name"})</div> }
+  const showBlame = useMemo<boolean>(() => localStorage.getItem("blame-signup") === "true", []);
 
   const [isHovering, setIsHovering] = useState(false);
   const dragItem = useMemo(() => ({ user, enrollment, currentSession }), [user, enrollment, currentSession]);
@@ -94,14 +95,24 @@ const StudentName = ({
         </span>}
 
       {/* Name */}
-      <span className="mr-2">{user.nickname ?? user.name}</span>
+      <span className="mr-1">{user.nickname ?? user.name}</span>
+      {/* Blame Signup */}
+      {showBlame && currentSession && (
+        <div className="inline tooltip pr-1" data-tip={
+          `Signed up by: ${enrollment?.signed_up_by?.uid === enrollment?.uid
+            ? 'self'
+            : enrollment?.signed_up_by?.name ?? 'OLD APP VERSION'
+          }`}>
+          <UserQuestion />
+        </div>
+      )}
       {/* Emoji Flag */}
-      {enrollment?.flag && <div className="emoji-holder pr-2" style={{ display: 'inline-block', margin: '6px 0 0 0', height: '14px' }}>
+      {enrollment?.flag && <div className="emoji-holder pr-1" style={{ display: 'inline-block', margin: '6px 0 0 0', height: '14px' }}>
         <Emoji unified={enrollment.flag} size={16} />
       </div>}
       {/* Attendance */}
       {enrollment?.attendance
-        ? <span>|<span className="ml-2" style={{
+        ? <span>|<span className="ml-1" style={{
           fontWeight: "bold",
           color: enrollment.attendance === "present"
             ? "rgb(5, 150, 105)"

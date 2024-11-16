@@ -3,8 +3,15 @@ import { getSchoolId } from "../../utils";
 import { Enrollment, Session, UpsignUser } from "../../types";
 
 
-const enrollStudent = async (db: Firestore, date: Date, session: Session, user: UpsignUser, isTeacher?: boolean): Promise<void> => {
-  if (!session || !user || !user.uid) {
+const enrollStudent = async (
+  db: Firestore,
+  date: Date,
+  session: Session,
+  student: UpsignUser,
+  user: UpsignUser,
+  isTeacher?: boolean
+): Promise<void> => {
+  if (!session || !student || !student.uid) {
     console.log("Tried to enroll student without enough info");
     return;
   }
@@ -23,20 +30,21 @@ const enrollStudent = async (db: Firestore, date: Date, session: Session, user: 
   // Construct the payload
   const payload: Enrollment = {
     attendance: '',
-    name: user.name,
+    name: student.name,
     session: Number(session.session),
     session_id: session.id,
     teacher_id: session.teacher_id,
-    uid: user.uid,
+    uid: student.uid,
+    signed_up_by: { uid: user.uid, name: user.nickname ?? user.name },
   }
-  // Add the user's nickname to the enrollment
-  if (user.nickname) {
-    payload.nickname = user.nickname
+  // Add the student's nickname to the enrollment
+  if (student.nickname) {
+    payload.nickname = student.nickname
   }
 
-  // Query for any docs for this user already has this hour
+  // Query for any docs for this student already has this hour
   const q = query(enrCollectionRef,
-    where("uid", "==", user.uid),
+    where("uid", "==", student.uid),
     where("session", "==", Number(session.session))
   );
 

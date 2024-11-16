@@ -47,6 +47,10 @@ export type Enrollment = {
   flag?: string;
   locked?: boolean;
   nickname?: string;
+  signed_up_by?: {
+    uid: string,
+    name: string,
+  }
 }
 
 export type DefaultDayOption = "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "today" | "tomorrow";

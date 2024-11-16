@@ -109,7 +109,7 @@ const SessionSelector = ({
           setIsEnabled(true);
         }).catch(() => setIsEnabled(true));
       } else if ((session.number_enrolled ?? 0) < Number(session.capacity)) {
-        enrollStudent(db, selectedDate, session, userDoc).then(() => {
+        enrollStudent(db, selectedDate, session, userDoc, userDoc).then(() => {
           setIsEnabled(true);
         }).catch(() => setIsEnabled(true));
       } else {

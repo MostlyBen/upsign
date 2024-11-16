@@ -192,6 +192,7 @@ const Overview = () => {
               groupOptions,
               allStudents,
               attendanceFilter,
+              user,
             }}
           />}
         </div>
