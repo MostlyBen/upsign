@@ -35,7 +35,7 @@ const enrollStudent = async (
     session_id: session.id,
     teacher_id: session.teacher_id,
     uid: student.uid,
-    signed_up_by: { uid: user.uid, name: user.nickname ?? user.name },
+    signed_up_by: { uid: user.uid as string, name: user.nickname ?? user.name },
   }
   // Add the student's nickname to the enrollment
   if (student.nickname) {
