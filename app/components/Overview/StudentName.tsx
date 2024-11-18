@@ -115,10 +115,10 @@ const StudentName = ({
         ? <span>|<span className="ml-1" style={{
           fontWeight: "bold",
           color: enrollment.attendance === "present"
-            ? "rgb(5, 150, 105)"
+            ? "var(--present)"
             : enrollment.attendance === "tardy"
-              ? "#B48908"
-              : "#CB1A41"
+              ? "var(--tardy)"
+              : "var(--absent)"
         }}>
           {enrollment.attendance.charAt(0).toUpperCase() + enrollment.attendance.slice(1)}</span>
         </span>
