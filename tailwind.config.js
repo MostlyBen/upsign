@@ -27,7 +27,7 @@ module.exports = {
           primary: "#009688",
           secondary: "#DF9D24",
           "--chkfg": "white",
-          "--present": "rgb(5, 150, 105)",
+          "--present": "#059669",
           "--tardy": "#B48908",
           "--absent": "#CB1A41"
         }
@@ -37,9 +37,9 @@ module.exports = {
           ...require("daisyui/src/theming/themes").dark,
           primary: "#02796B",
           secondary: "#BF7C00",
-          "--present": "rgb(5, 150, 105)",
-          "--tardy": "#B48908",
-          "--absent": "#CB1A41"
+          "--present": "#128762",
+          "--tardy": "#AB830D",
+          "--absent": "#AD2946"
         }
       },
       {
