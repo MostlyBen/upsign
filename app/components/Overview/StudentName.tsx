@@ -17,6 +17,7 @@ type StudentNameProps = {
   attendanceFilter?: Attendance[],
   currentSession?: Session,
   isSession?: boolean,
+  showBlame?: boolean,
 }
 
 const StudentName = ({
@@ -28,9 +29,9 @@ const StudentName = ({
   groupFilter,
   attendanceFilter,
   isSession,
+  showBlame,
 }: StudentNameProps) => {
   if (!user) { return <div className="student-name mt-0">Deleted User ({enrollment?.name ?? "No name"})</div> }
-  const showBlame = useMemo<boolean>(() => localStorage.getItem("blame-signup") === "true", []);
 
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const dragItem = useMemo(() => ({ user, enrollment, currentSession }), [user, enrollment, currentSession]);
@@ -81,7 +82,7 @@ const StudentName = ({
       {...attributes}
     >
       {/* Lock */}
-      {((isSession && isHovering) || (isSession && enrollment?.locked)) &&
+      {isSession && (isHovering || enrollment?.locked) &&
         <span
           className={`material-icons cursor-pointer ${enrollment?.locked ? 'locked' : ''}`}
           onPointerDown={toggleLock}
@@ -98,15 +99,16 @@ const StudentName = ({
       <span className="mr-1">{user.nickname ?? user.name}</span>
 
       {/* Blame Signup */}
-      {showBlame && currentSession && (
-        <div className="inline tooltip pr-1" data-tip={
-          `Signed up by: ${enrollment?.signed_up_by?.uid === enrollment?.uid
+      {showBlame && (
+        <div className="inline pr-1 tooltip">
+          <UserQuestion />
+          <span className="tooltiptext">Signed up by: {enrollment?.signed_up_by?.uid === enrollment?.uid
             ? 'self'
             : enrollment?.signed_up_by?.name ?? 'OLD APP VERSION'
-          }`}>
-          <UserQuestion />
+          }</span>
         </div>
       )}
+
       {/* Emoji Flag */}
       {enrollment?.flag && <div className="emoji-holder pr-1" style={{ display: 'inline-block', margin: '6px 0 0 0', height: '14px' }}>
         <Emoji unified={enrollment.flag} size={16} />

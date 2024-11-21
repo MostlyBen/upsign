@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLoaderData, useOutletContext } from "@remix-run/react";
 import { Firestore, query, collection, onSnapshot } from "firebase/firestore";
 import { LoaderFunctionArgs } from "react-router";
@@ -44,6 +44,7 @@ const HourOverview = () => {
 
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const showBlame = useMemo(() => localStorage.getItem("blame-signup") === "true", []);
 
   useEffect(() => {
     setLoading(true);
@@ -115,6 +116,7 @@ const HourOverview = () => {
           attendanceFilter={attendanceFilter as Attendance[]}
           allStudents={allStudents}
           key={s.id}
+          showBlame={showBlame}
         />)}
       </div>
     </DndContext>

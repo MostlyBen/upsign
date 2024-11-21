@@ -26,6 +26,7 @@ type SessionCardProps = {
   allStudents: Record<string, UpsignUser>,
   groupFilter?: string,
   attendanceFilter?: Attendance[],
+  showBlame?: boolean,
 }
 
 const SessionCard = ({
@@ -36,7 +37,8 @@ const SessionCard = ({
   groupOptions,
   allStudents,
   groupFilter,
-  attendanceFilter
+  attendanceFilter,
+  showBlame,
 }: SessionCardProps) => {
   const [showOpen, setShowOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -106,7 +108,7 @@ const SessionCard = ({
         <div className={`card overview-card shadow-md p-6 mb-4 rounded-md ${isOver ? "bg-base-300" : "bg-base-100"}`}>
 
           {showOpen && <button
-            className="absolute top-4 right-4 z-10 bg-base-100"
+            className="absolute top-4 right-4 z-10"
             onPointerDown={() => setIsOpen(true)}
           ><ArrowsOut /></button>}
 
@@ -177,6 +179,7 @@ const SessionCard = ({
               groupFilter={groupFilter}
               attendanceFilter={attendanceFilter as Attendance[]}
               isSession
+              showBlame={showBlame}
             />)}
           </div>
 
