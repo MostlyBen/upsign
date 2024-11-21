@@ -60,16 +60,14 @@ const SessionCard = ({
 
   const handleLockAll = () => {
     let locked = true;
-    for (const k of Object.keys(enrollments)) {
-      const s = enrollments[k];
+    for (const s of enrollments) {
       if (!s.locked) {
         locked = false;
         break;
       }
     }
 
-    for (const k of Object.keys(enrollments)) {
-      const s = enrollments[k];
+    for (const s of enrollments) {
       if (!s.id) { throw new Error(`Something went wrong locking student ${s.name}`) }
       updateEnrollment(db, date, s.id, { locked: !locked })
     }
@@ -83,12 +81,12 @@ const SessionCard = ({
         date={date}
         groupOptions={groupOptions}
         enrollments={
-          Object.keys(enrollments)
+          enrollments
             .sort((a, b) => {
-              return (enrollments[a].nickname ?? enrollments[a].name) > (enrollments[b].nickname ?? enrollments[b].name)
+              return (a.nickname ?? a.name) > (b.nickname ?? b.name)
                 ? 1 : -1;
             })
-            .map(k => { return { id: k, ...enrollments[k] } })
+            .map(k => { return { id: k, ...k } as Enrollment })
         }
         onClose={() => setIsOpen(false)}
       />}
@@ -166,16 +164,16 @@ const SessionCard = ({
             <span>{session.number_enrolled}/{session.capacity}</span>
           </div>
           <div>
-            {Object.keys(enrollments).sort((a, b) => {
-              return (enrollments[a].nickname ?? enrollments[a].name) > (enrollments[b].nickname ?? enrollments[b].name)
+            {enrollments.sort((a, b) => {
+              return (a.nickname ?? a.name) > (b.nickname ?? b.name)
                 ? 1 : -1;
             }).map(k => <StudentName
-              key={enrollments[k].id}
+              key={k.id}
               db={db}
-              enrollment={enrollments[k]}
+              enrollment={k}
               date={date}
               currentSession={session}
-              user={allStudents[enrollments[k].uid as string]}
+              user={allStudents[k.uid as string]}
               groupFilter={groupFilter}
               attendanceFilter={attendanceFilter as Attendance[]}
               isSession
