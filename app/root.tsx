@@ -15,7 +15,6 @@ export default function App() {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (_authUser) => {
-      console.log("Auth State Changed:", _authUser)
       setLoading(true);
       if (_authUser) {
         setAuthUser(_authUser);

@@ -32,7 +32,7 @@ const StudentName = ({
   if (!user) { return <div className="student-name mt-0">Deleted User ({enrollment?.name ?? "No name"})</div> }
   const showBlame = useMemo<boolean>(() => localStorage.getItem("blame-signup") === "true", []);
 
-  const [isHovering, setIsHovering] = useState(false);
+  const [isHovering, setIsHovering] = useState<boolean>(false);
   const dragItem = useMemo(() => ({ user, enrollment, currentSession }), [user, enrollment, currentSession]);
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -42,7 +42,7 @@ const StudentName = ({
 
   const style = transform ? {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-    zIndex: 30,
+    zIndex: 3000,
   } : undefined;
 
   const toggleLock = async () => {
@@ -71,8 +71,8 @@ const StudentName = ({
     <div
       className="student-name mt-0 cursor-move touch-none w-fit"
       key={`enrollment-${user.uid}`}
-      onPointerEnter={() => setIsHovering(true)}
-      onPointerLeave={() => setIsHovering(false)}
+      onPointerOver={() => setIsHovering(true)}
+      onPointerOut={() => setIsHovering(false)}
       ref={setNodeRef}
       style={style
         ? { ...style, marginRight: ((isSession && isHovering) || (isSession && enrollment?.locked)) ? "-16px" : "" }
