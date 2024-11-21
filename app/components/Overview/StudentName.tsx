@@ -69,7 +69,7 @@ const StudentName = ({
 
   return (
     <div
-      className="student-name mt-0 cursor-move touch-none w-fit"
+      className="student-name mt-0 cursor-move touch-none w-fit relative"
       key={`enrollment-${user.uid}`}
       onPointerOver={() => setIsHovering(true)}
       onPointerOut={() => setIsHovering(false)}
