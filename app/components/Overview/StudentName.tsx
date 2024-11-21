@@ -96,6 +96,7 @@ const StudentName = ({
 
       {/* Name */}
       <span className="mr-1">{user.nickname ?? user.name}</span>
+
       {/* Blame Signup */}
       {showBlame && currentSession && (
         <div className="inline tooltip pr-1" data-tip={
