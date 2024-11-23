@@ -427,6 +427,7 @@ const SessionEditor = ({
               autoComplete="off"
               debounceTimeout={1200}
               placeholder="Capacity"
+              min={0}
             />
           </div>
 

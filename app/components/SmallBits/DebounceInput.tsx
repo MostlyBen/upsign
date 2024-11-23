@@ -12,9 +12,22 @@ interface DebounceInputProps {
   onBlur?: () => void;
   debounceTimeout: number;
   style?: CSSProperties;
+  min?: number;
 }
 
-const DebounceInput = ({ id, className, value, type, autoComplete, placeholder, onChange, onBlur, debounceTimeout, style }: DebounceInputProps) => {
+const DebounceInput = ({
+  id,
+  className,
+  value,
+  type,
+  autoComplete,
+  placeholder,
+  onChange,
+  onBlur,
+  debounceTimeout,
+  style,
+  min,
+}: DebounceInputProps) => {
   const [inputValue, setInputValue] = useState(value);
   const [changeEvent, setChangeEvent] = useState<ChangeEvent<HTMLInputElement> | null>(null);
 
@@ -56,6 +69,7 @@ const DebounceInput = ({ id, className, value, type, autoComplete, placeholder, 
       onChange={handleInputChange}
       onBlur={onBlur}
       style={style}
+      min={typeof min !== "undefined" ? `${min}` : undefined}
     />
   )
 }
