@@ -54,9 +54,11 @@ const SessionModal = ({
       <div
         className="h-fit w-fit m-auto px-6 md:py-12 md:px-32"
         id="modal-container"
-        style={{ maxHeight: "80dvh", overflowY: "auto" }}
       >
-        <div>
+        <div
+          className="overflow-y-auto h-full"
+          style={{ maxHeight: "80dvh" }}
+        >
           <SessionEditor
             db={db}
             session={session}
