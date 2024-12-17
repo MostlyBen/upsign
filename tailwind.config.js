@@ -19,6 +19,7 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('daisyui'),
   ],
+
   daisyui: {
     themes: [
       {
@@ -32,6 +33,7 @@ module.exports = {
           "--absent": "#CB1A41"
         }
       },
+
       {
         dark: {
           ...require("daisyui/src/theming/themes").dark,
@@ -42,6 +44,48 @@ module.exports = {
           "--absent": "#AD2946"
         }
       },
+
+      {
+        nocturne: {
+          "primary": "#7d5da3",
+          "secondary": "#ea9a97",
+          "accent": "#c4a7e7",
+          "base-100": "#232136",
+          "--present": "#5497a3",
+          "--tardy": "#d5a158",
+          "--absent": "#c63e64",
+        },
+      },
+
+      {
+        nord: {
+          ...require("daisyui/src/theming/themes").nord,
+          "--present": "#519872",
+          "--tardy": "#B7A200",
+          "--absent": "#912F40"
+        }
+      },
+
+      {
+        retro: {
+          ...require("daisyui/src/theming/themes").retro,
+          primary: "#A76D60",
+          secondary: "#808A9F",
+          "--present": "#3A7D44",
+          "--tardy": "#DEA92F",
+          "--absent": "#B03355"
+        }
+      },
+
+      {
+        thursday: {
+          ...require("daisyui/src/theming/themes").autumn,
+          "--present": "#157A6E",
+          "--tardy": "#9B7E46",
+          "--absent": "#8A0226"
+        }
+      },
+
       {
         valentine: {
           ...require("daisyui/src/theming/themes").valentine,
@@ -51,6 +95,7 @@ module.exports = {
           "--absent": "#881600"
         }
       },
+
       {
         verypink: {
           ...require("daisyui/src/theming/themes").valentine,
@@ -62,43 +107,6 @@ module.exports = {
           "--tardy": "#922613",
           "--absent": "#4D0F0F"
         }
-      },
-      {
-        retro: {
-          ...require("daisyui/src/theming/themes").retro,
-          primary: "#A76D60",
-          secondary: "#808A9F",
-          "--present": "#3A7D44",
-          "--tardy": "#DEA92F",
-          "--absent": "#B03355"
-        }
-      },
-      {
-        nord: {
-          ...require("daisyui/src/theming/themes").nord,
-          "--present": "#519872",
-          "--tardy": "#B7A200",
-          "--absent": "#912F40"
-        }
-      },
-      {
-        thursday: {
-          ...require("daisyui/src/theming/themes").autumn,
-          "--present": "#157A6E",
-          "--tardy": "#9B7E46",
-          "--absent": "#8A0226"
-        }
-      },
-      {
-        nocturne: {
-          "primary": "#7d5da3",
-          "secondary": "#ea9a97",
-          "accent": "#c4a7e7",
-          "base-100": "#232136",
-          "--present": "#5497a3",
-          "--tardy": "#d5a158",
-          "--absent": "#c63e64",
-        },
       },
     ],
   }
