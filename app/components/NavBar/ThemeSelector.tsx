@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-type Themes = "light" | "dark" | "nord" | "retro" | "thursday" | "valentine" | "verypink";
-const themes: Themes[] = ["light", "dark", "nord", "retro", "thursday", "valentine", "verypink"];
+type Themes = "light" | "dark" | "nord" | "retro" | "thursday" | "valentine" | "verypink" | "nocturne";
+const themes: Themes[] = ["light", "dark", "nocturne", "nord", "retro", "thursday", "valentine", "verypink"];
 
 const ThemeSelector = () => {
   const [theme, setTheme] = useState<Themes>("dark");

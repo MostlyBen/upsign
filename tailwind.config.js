@@ -63,7 +63,6 @@ module.exports = {
           "--absent": "#4D0F0F"
         }
       },
-
       {
         retro: {
           ...require("daisyui/src/theming/themes").retro,
@@ -89,6 +88,17 @@ module.exports = {
           "--tardy": "#9B7E46",
           "--absent": "#8A0226"
         }
+      },
+      {
+        nocturne: {
+          "primary": "#7d5da3",
+          "secondary": "#ea9a97",
+          "accent": "#c4a7e7",
+          "base-100": "#232136",
+          "--present": "#5497a3",
+          "--tardy": "#d5a158",
+          "--absent": "#c63e64",
+        },
       },
     ],
   }

@@ -1,9 +1,9 @@
 function buildThresholdList() {
-  let thresholds = [];
-  let numSteps = 100;
+  const thresholds = [];
+  const numSteps = 100;
 
-  for (let i=1.0; i<=numSteps; i++) {
-    let ratio = i/numSteps;
+  for (let i = 1.0; i <= numSteps; i++) {
+    const ratio = i / numSteps;
     thresholds.push(ratio);
   }
 
