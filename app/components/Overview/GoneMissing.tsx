@@ -1,7 +1,6 @@
 import { Firestore, getDocs, where, collection, query } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
-import { useFirebaseQuery } from "~/hooks";
-import { Enrollment, UpsignUser } from '~/types';
+import { Enrollment } from '~/types';
 import { getSchoolId } from "~/utils";
 
 
@@ -110,7 +109,7 @@ const GoneMissingModal = ({ db, date, hour, onClose, absentThisHour }: GoneMissi
           <h2>Gone Missing</h2>
           {loading && <div>Loading...</div>}
           {goneMissing && goneMissing.length
-            ? goneMissing.map(e => <div key={e.uid}>{e.name}</div>)
+            ? goneMissing.map(e => <div key={e.uid}>{e.nickname ?? e.name}</div>)
             : <div className="opacity-80">No students</div>
           }
         </div>
