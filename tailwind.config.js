@@ -108,6 +108,15 @@ module.exports = {
           "--absent": "#4D0F0F"
         }
       },
+      
+      {
+        sapphireDark: {
+          ...require("daisyui/src/theming/themes").night,
+          "--present": "#3EB2FF",
+          "--tardy": "#ab830d",
+          "--absent": "#BC0000"
+        }
+      },
     ],
   }
 }
