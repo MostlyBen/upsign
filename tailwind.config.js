@@ -78,6 +78,15 @@ module.exports = {
       },
 
       {
+        sapphiredark: {
+          ...require("daisyui/src/theming/themes").night,
+          "--present": "#3EB2FF",
+          "--tardy": "#ab830d",
+          "--absent": "#BC0000"
+        }
+      },
+
+      {
         thursday: {
           ...require("daisyui/src/theming/themes").autumn,
           "--present": "#157A6E",
@@ -109,14 +118,6 @@ module.exports = {
         }
       },
       
-      {
-        sapphiredark: {
-          ...require("daisyui/src/theming/themes").night,
-          "--present": "#3EB2FF",
-          "--tardy": "#ab830d",
-          "--absent": "#BC0000"
-        }
-      },
     ],
   }
 }
