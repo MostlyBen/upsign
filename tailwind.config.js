@@ -110,7 +110,7 @@ module.exports = {
       },
       
       {
-        sapphireDark: {
+        sapphiredark: {
           ...require("daisyui/src/theming/themes").night,
           "--present": "#3EB2FF",
           "--tardy": "#ab830d",
