@@ -62,6 +62,7 @@ const HourSessions = ({
             <SessionEditor
               session={s}
               db={db}
+              user={user}
               index={100 - parseInt(`${s.session}${i}`)}
               date={selectedDate}
               groupOptions={groupOptions}

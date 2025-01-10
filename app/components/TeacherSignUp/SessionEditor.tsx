@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, ChangeEvent } from "react";
 import DebounceInput from '../SmallBits/DebounceInput';
-import { Enrollment, Session } from "~/types";
+import { Enrollment, Session, UpsignUser } from "~/types";
 
 import {
   Firestore,
@@ -26,6 +26,7 @@ import { getSchoolId } from "~/utils";
 type SessionEditorProps = {
   db: Firestore,
   session: Session,
+  user: UpsignUser,
   date: Date,
   groupOptions: string[],
   isModal?: boolean,
@@ -37,6 +38,7 @@ type SessionEditorProps = {
 const SessionEditor = ({
   db,
   session,
+  user,
   date,
   groupOptions,
   hasMultipleSessions,
@@ -456,6 +458,7 @@ const SessionEditor = ({
           <div className="session-student-list-card">
             <AttendanceList
               db={db}
+              user={user}
               schoolId={schoolId}
               date={date}
               session={session}

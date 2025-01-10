@@ -1,5 +1,7 @@
 import { Firestore, doc, updateDoc } from "firebase/firestore";
+import { getAnalytics, logEvent } from "firebase/analytics";
 import { getSchoolId } from "../../utils";
+import { UpsignUser } from "~/types";
 
 interface EnrollmentPayload {
   [key: string]: any;
@@ -12,10 +14,19 @@ const updateEnrollment = async (
   date: Date,
   enrollmentId: string,
   payload: EnrollmentPayload,
-  schoolId: string | null = null
+  schoolId: string | null = null,
+  user: UpsignUser | null = null,
 ): Promise<void> => {
   if (schoolId === null) {
     schoolId = getSchoolId();
+  }
+
+  if (user) {
+    const analytics = getAnalytics();
+    logEvent(analytics, 'update_enrollment', {
+      payload,
+      user,
+    });
   }
 
   // Reference the enrollment doc

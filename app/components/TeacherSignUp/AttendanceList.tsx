@@ -1,20 +1,21 @@
 // TODO: Add a lock to this list
 import { useState, useEffect } from "react";
 import { Firestore, where } from "@firebase/firestore";
-import { Session, Enrollment } from "~/types";
+import { Session, Enrollment, UpsignUser } from "~/types";
 import EnrollmentRow from "./EnrollmentRow";
 import { useFirebaseQuery } from "~/hooks";
 
 
 interface AttendanceListProps {
   db: Firestore;
+  user: UpsignUser;
   schoolId: string | null;
   date: Date;
   session: Session;
   enrollmentsFromParent?: Enrollment[];
 }
 
-const AttendanceList = ({ db, schoolId, date, session, enrollmentsFromParent }: AttendanceListProps) => {
+const AttendanceList = ({ db, user, schoolId, date, session, enrollmentsFromParent }: AttendanceListProps) => {
   const [enrollments, setEnrollments] = useState<Enrollment[]>(enrollmentsFromParent ?? [])
   const [loading, setLoading] = useState<boolean>(true)
   const [_enrollments] = enrollmentsFromParent ? [null] : useFirebaseQuery<Enrollment>(
@@ -88,7 +89,7 @@ const AttendanceList = ({ db, schoolId, date, session, enrollmentsFromParent }: 
             <td />
           </tr>
           : enrollments.map(e => (
-            <EnrollmentRow db={db} date={date} session={session} enrollment={e} key={`row-${e.uid}`} />
+            <EnrollmentRow db={db} user={user} date={date} session={session} enrollment={e} key={`row-${e.uid}`} />
           ))
         }
       </tbody>

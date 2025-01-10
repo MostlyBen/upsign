@@ -8,17 +8,18 @@ import {
 } from "../../services";
 import { EmojiSelect } from "~/components";
 import { Close, FaceSmile } from "~/icons";
-import { Session, Enrollment, Attendance } from "~/types";
+import { Session, Enrollment, Attendance, UpsignUser } from "~/types";
 
 
 interface EnrollmentRowProps {
   db: Firestore,
+  user: UpsignUser,
   session: Session,
   enrollment: Enrollment,
   date: Date,
 }
 
-const EnrollmentRow = ({ db, session, enrollment, date }: EnrollmentRowProps) => {
+const EnrollmentRow = ({ db, user, session, enrollment, date }: EnrollmentRowProps) => {
   const [showRemove, setShowRemove] = useState<0 | 1>(0);
   const [reactionOpen, setReactionOpen] = useState<boolean>(false);
   const [reactions, setReactions] = useState<string[] | undefined>();
@@ -88,7 +89,7 @@ const EnrollmentRow = ({ db, session, enrollment, date }: EnrollmentRowProps) =>
 
     updateEnrollment(db, date, enrollment.id, {
       attendance: _value,
-    }).then(removeDim).catch(removeDim);
+    }, user).then(removeDim).catch(removeDim);
   }
 
   return (
