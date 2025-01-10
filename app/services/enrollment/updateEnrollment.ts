@@ -15,7 +15,7 @@ const updateEnrollment = async (
   enrollmentId: string,
   payload: EnrollmentPayload,
   schoolId: string | null = null,
-  user: UpsignUser | null = null,
+  user?: UpsignUser,
 ): Promise<void> => {
   if (schoolId === null) {
     schoolId = getSchoolId();

@@ -89,7 +89,10 @@ const EnrollmentRow = ({ db, user, session, enrollment, date }: EnrollmentRowPro
 
     updateEnrollment(db, date, enrollment.id, {
       attendance: _value,
-    }, user).then(removeDim).catch(removeDim);
+    },
+      null,
+      user
+    ).then(removeDim).catch(removeDim);
   }
 
   return (
