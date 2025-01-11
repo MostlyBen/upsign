@@ -24,8 +24,10 @@ const updateEnrollment = async (
   if (user) {
     const analytics = getAnalytics();
     logEvent(analytics, 'update_enrollment', {
-      payload,
-      user,
+      user_id: user.uid,
+      user_name: user.name,
+      target: payload.name,
+      value: payload.attendance,
     });
   }
 
