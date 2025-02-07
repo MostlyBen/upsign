@@ -13,8 +13,8 @@ export const SignInButton = () => {
     auth.languageCode = "en-US";
 
     try {
-      // signInWithRedirect(auth, provider)
-      signInWithPopup(auth, provider)
+      signInWithRedirect(auth, provider)
+      // signInWithPopup(auth, provider)
     } catch (err: any) {
       console.error("Error:");
       console.error(err);
