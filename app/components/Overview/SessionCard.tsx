@@ -20,6 +20,7 @@ import {
 type SessionCardProps = {
   db: Firestore,
   date: Date,
+  user: UpsignUser,
   enrollments: Enrollment[],
   session: Session,
   groupOptions: string[],
@@ -32,6 +33,7 @@ type SessionCardProps = {
 const SessionCard = ({
   db,
   date,
+  user,
   enrollments,
   session,
   groupOptions,
@@ -82,6 +84,8 @@ const SessionCard = ({
         session={session}
         date={date}
         groupOptions={groupOptions}
+        user={user}
+        allStudents={Object.values(allStudents)}
         enrollments={
           enrollments
             .sort((a, b) => {

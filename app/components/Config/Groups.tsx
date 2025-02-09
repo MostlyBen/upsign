@@ -92,11 +92,11 @@ const StudentGroups = ({ db, userId }: StudentGroupsProps) => {
         onChange={(e) => setSelectedGroup(e.target.value)}
         value={selectedGroup}
       >
-        {groupOptions.map(option => {
+        {groupOptions.map((option, index) => {
           return (
             <option
               value={option}
-              key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
+              key={`group-options-${option}-${index}`}
             >
               {option.startsWith("%t-") ? `${option.split("-")[2]} (your group)` : option}
             </option>
@@ -128,12 +128,12 @@ const StudentGroups = ({ db, userId }: StudentGroupsProps) => {
             value={filterGroup}
           >
             <option value="">All Students</option>
-            {groupOptions.map(option => {
+            {groupOptions.map((option, index) => {
               if (option === selectedGroup) { return <></> }
               return (
                 <option
                   value={option}
-                  key={`group-options-${option}-${Math.floor(Math.random() * 10000)}`}
+                  key={`group-options-${option}-${index}`}
                 >
                   {option.startsWith("%t-") ? `${option.split("-")[2]} (your group)` : option}
                 </option>
@@ -151,13 +151,13 @@ const StudentGroups = ({ db, userId }: StudentGroupsProps) => {
               ? `${selectedGroup.split("-")[2]}`
               : selectedGroup
             : "Group"}</h2>
-          {filteredStudents.filter(s => !s.groups?.includes(selectedGroup)).map(student => {
+          {filteredStudents.filter(s => !s.groups?.includes(selectedGroup)).map((student, index) => {
             return (
               <StudentName
                 db={db}
                 student={student}
                 selectedGroup={selectedGroup}
-                key={`student-${student.uid}`}
+                key={`student-${student.uid}-${index}`}
               />
             )
           })}
@@ -168,13 +168,13 @@ const StudentGroups = ({ db, userId }: StudentGroupsProps) => {
               ? `${selectedGroup.split("-")[2]}`
               : selectedGroup
             : "Group"}</h2>
-          {filteredStudents.filter(s => s.groups?.includes(selectedGroup)).map(student => {
+          {filteredStudents.filter(s => s.groups?.includes(selectedGroup)).map((student, index) => {
             return (
               <StudentName
                 db={db}
                 student={student}
                 selectedGroup={selectedGroup}
-                key={`student-${student.uid}`}
+                key={`student-${student.uid}-${index}`}
                 inGroup
               />
             )

@@ -4,6 +4,8 @@ import { Firestore, where } from "@firebase/firestore";
 import { Session, Enrollment, UpsignUser } from "~/types";
 import EnrollmentRow from "./EnrollmentRow";
 import { useFirebaseQuery } from "~/hooks";
+import { LockClosedMicro } from "~/icons";
+import { updateEnrollment } from "~/services";
 
 
 interface AttendanceListProps {
@@ -18,6 +20,7 @@ interface AttendanceListProps {
 const AttendanceList = ({ db, user, schoolId, date, session, enrollmentsFromParent }: AttendanceListProps) => {
   const [enrollments, setEnrollments] = useState<Enrollment[]>(enrollmentsFromParent ?? [])
   const [loading, setLoading] = useState<boolean>(true)
+  const [headHover, setHeadHover] = useState<boolean>(false);
   const [_enrollments] = enrollmentsFromParent ? [null] : useFirebaseQuery<Enrollment>(
     db,
     `schools/${schoolId}/sessions/${String(date.getFullYear())}/${date.toDateString()}-enrollments`,
@@ -51,6 +54,22 @@ const AttendanceList = ({ db, user, schoolId, date, session, enrollmentsFromPare
     }
   }, [enrollmentsFromParent]);
 
+  const handleLockAll = () => {
+    let locked = true;
+    for (const s of enrollments) {
+      if (!s.locked) {
+        locked = false;
+        break;
+      }
+    }
+
+    for (const s of enrollments) {
+      if (!s.id) { throw new Error(`Something went wrong locking student ${s.name}`) }
+      updateEnrollment(db, date, s.id, { locked: !locked })
+    }
+  }
+
+
   if (loading) {
     return (
       <div>
@@ -73,7 +92,23 @@ const AttendanceList = ({ db, user, schoolId, date, session, enrollmentsFromPare
     <table className="table">
       <thead>
         <tr>
-          <th style={{ textAlign: "left", padding: "0 0 0 1.5rem" }}>Name</th>
+          <th
+            onPointerOver={() => setHeadHover(true)}
+            onPointerOut={() => setHeadHover(false)}
+            style={{ textAlign: "left", padding: "0 0 0 1.5rem" }}
+          >
+            Name
+            <button
+              className="ml-1"
+              onClick={handleLockAll}
+              style={{
+                opacity: headHover ? 1 : 0,
+                pointerEvents: headHover ? 'auto' : 'none',
+              }}
+            >
+              <LockClosedMicro />
+            </button>
+          </th>
           <th className="p-1 text-center">Present</th>
           <th className="p-1 text-center">Tardy</th>
           <th className="p-1 text-center">Absent</th>

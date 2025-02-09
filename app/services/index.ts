@@ -21,8 +21,10 @@ import setDefaultReactions from "./data/setDefaultReactions";
 import setSchoolName from "./data/setSchoolName";
 
 // Enrollment
+import batchEnroll from "./enrollment/batchEnroll";
 import enrollStudent from "./enrollment/enrollStudent";
 import getHourEnrollments from "./enrollment/getHourEnrollments";
+import getIsLocked from "./enrollment/getIsLocked";
 import getSessionEnrollments from "./enrollment/getSessionEnrollments";
 import getStudentEnrollments from "./enrollment/getStudentEnrollments";
 import unenrollFromHour from "./enrollment/unenrollFromHour";
@@ -76,8 +78,10 @@ export {
   setDefaultReactions,
   setSchoolName,
   // Enrollment
+  batchEnroll,
   enrollStudent,
   getHourEnrollments,
+  getIsLocked,
   getSessionEnrollments,
   getStudentEnrollments,
   unenrollFromHour,

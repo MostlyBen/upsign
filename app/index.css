@@ -168,3 +168,8 @@ hr {
   border-style: solid;
   border-color: black transparent transparent transparent;
 }
+
+.no-focus-no-border:not(:focus-within) {
+  border-color: transparent !important;
+}
+

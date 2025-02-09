@@ -15,7 +15,7 @@ import {
   deleteField
 } from "@firebase/firestore";
 
-
+import AddStudents from './AddStudents';
 import AttendanceList from './AttendanceList';
 import GroupSelect from './GroupSelect';
 import GroupSelectAdvanced from './GroupSelectAdvanced';
@@ -33,6 +33,7 @@ type SessionEditorProps = {
   index?: number,
   hasMultipleSessions?: boolean,
   enrollmentsFromParent?: Enrollment[]
+  allStudents?: UpsignUser[]
 }
 
 const SessionEditor = ({
@@ -44,7 +45,8 @@ const SessionEditor = ({
   hasMultipleSessions,
   isModal,
   index,
-  enrollmentsFromParent
+  enrollmentsFromParent,
+  allStudents,
 }: SessionEditorProps) => {
 
   const groupList = useRef(groupOptions.length ? groupOptions : []);
@@ -157,17 +159,6 @@ const SessionEditor = ({
     return () => document.removeEventListener("mousedown", () => { setIsHovering(false); setHasClicked(false) });
   }, [hasClicked]);
 
-  // WARNING: This is a hacky way to update the number of enrolled students
-  // It breaks when users receive updates at different times. But it fixes the number if it was off for another reason.
-  //
-  // useEffect(() => {
-  //   if (!session.id) { return }
-  //
-  //   if (enrollments.length && (session.number_enrolled !== enrollments.length)) {
-  //     updateSession(db, date, session.id, { number_enrolled: enrollments.length });
-  //   }
-  // }, [enrollments])
-
 
   /* BUTTON HANDLERS */
   const clickOffListener = (e: MouseEvent) => {
@@ -202,7 +193,7 @@ const SessionEditor = ({
   /* CHANGE HANDLERS */
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement> | { target: { value: string } }) => {
     if (!e) { return }
-    setTitle(e.target.value);
+    setTitle(e.target.value ?? "");
 
     const title = String(e.target.value);
     updateDoc(
@@ -217,7 +208,7 @@ const SessionEditor = ({
 
   const handleChangeTeacher = (e: ChangeEvent<HTMLInputElement> | { target: { value: string } }) => {
     if (!e) { return }
-    setTeacher(e.target.value);
+    setTeacher(e.target.value ?? "");
 
     const teacher = String(e.target.value);
     updateDoc(
@@ -232,7 +223,7 @@ const SessionEditor = ({
 
   const handleChangeSubtitle = (e: ChangeEvent<HTMLInputElement> | { target: { value: string } }) => {
     if (!e) { return }
-    setSubtitle(e.target.value);
+    setSubtitle(e.target.value ?? "");
 
     const subtitle = String(e.target.value);
     if (subtitle === "undefined") {
@@ -257,7 +248,7 @@ const SessionEditor = ({
 
   const handleChangeRoom = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e) { return }
-    setRoom(e.target.value);
+    setRoom(e.target.value ?? "");
 
     const room = String(e.target.value);
     updateDoc(
@@ -454,7 +445,7 @@ const SessionEditor = ({
         </div>
 
         {/* Student Enrollment */}
-        <div className="col-span-2 md:col-span-1">
+        <div className="col-span-2 md:col-span-1 relative">
           <div className="session-student-list-card">
             <AttendanceList
               db={db}
@@ -464,6 +455,16 @@ const SessionEditor = ({
               session={session}
               enrollmentsFromParent={enrollments}
             />
+            {Array.isArray(allStudents) &&
+              <AddStudents
+                db={db}
+                session={session}
+                user={user}
+                date={date}
+                groupOptions={groupOptions}
+                allStudents={allStudents}
+              />
+            }
           </div>
         </div>
       </div>

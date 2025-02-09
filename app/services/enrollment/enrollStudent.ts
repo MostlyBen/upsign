@@ -11,6 +11,7 @@ const enrollStudent = async (
   user: UpsignUser,
   isTeacher?: boolean
 ): Promise<void> => {
+  console.log("Enrolling", student.name, "in", session.title);
   if (!session || !student || !student.uid) {
     console.log("Tried to enroll student without enough info");
     return;

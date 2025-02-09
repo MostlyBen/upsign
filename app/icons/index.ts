@@ -19,6 +19,7 @@ import Person from "./Person";
 import Pin from "./Pin";
 import Trash from "./Trash";
 import Union from "./Union";
+import UserGroup from "./UserGroup";
 import UserQuestion from "./UserQuestion";
 
 export {
@@ -42,5 +43,6 @@ export {
   Pin,
   Trash,
   Union,
+  UserGroup,
   UserQuestion,
 }

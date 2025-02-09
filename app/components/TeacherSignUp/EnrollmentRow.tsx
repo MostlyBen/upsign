@@ -7,7 +7,7 @@ import {
   updateEnrollment,
 } from "../../services";
 import { EmojiSelect } from "~/components";
-import { Close, FaceSmile } from "~/icons";
+import { Close, FaceSmile, LockOpenMicro, LockClosedMicro } from "~/icons";
 import { Session, Enrollment, Attendance, UpsignUser } from "~/types";
 
 
@@ -102,6 +102,22 @@ const EnrollmentRow = ({
     ).then(removeDim).catch(removeDim);
   }
 
+  const handleClickLock = () => {
+    if (!enrollment.id) { return }
+
+    const elem = document.getElementById(`enrollment-row-${session.id}-${enrollment.uid}`);
+    if (elem) {
+      elem.classList.add('dim');
+    }
+
+    updateEnrollment(db, date, enrollment.id, {
+      locked: !enrollment.locked,
+    },
+      null,
+      user
+    ).then(removeDim).catch(removeDim);
+  }
+
   return (
     <tr
       className="hover"
@@ -112,8 +128,17 @@ const EnrollmentRow = ({
     >
       <td
         className="enrollment-name-cell"
-        style={{ padding: "0 0 0 1.5rem", textAlign: "left" }}
+        style={{ padding: "0 0 0 0.5rem", textAlign: "left" }}
       >
+
+        <button
+          className="mr-1"
+          onClick={handleClickLock}
+          style={{ opacity: enrollment.locked ? 1 : showRemove, pointerEvents: showRemove ? 'auto' : 'none' }}
+        >
+          {enrollment.locked ? <LockClosedMicro /> : <LockOpenMicro />}
+        </button>
+
         <span className="mr-1">{enrollment.nickname ?? enrollment.name}</span>
 
         <EmojiSelect

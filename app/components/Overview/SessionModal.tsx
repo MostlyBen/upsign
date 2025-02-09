@@ -1,24 +1,28 @@
 import { Firestore } from "firebase/firestore";
 import { useEffect } from "react";
 import { SessionEditor } from "~/components";
-import { Enrollment, Session } from "~/types";
+import { Enrollment, Session, UpsignUser } from "~/types";
 
 type SessionModalProps = {
   db: Firestore,
   session: Session,
   date: Date,
+  user: UpsignUser,
   enrollments: Enrollment[],
   groupOptions: string[],
   onClose: () => void,
+  allStudents?: UpsignUser[],
 }
 
 const SessionModal = ({
   db,
   session,
   date,
+  user,
   enrollments,
   groupOptions,
   onClose,
+  allStudents,
 }: SessionModalProps) => {
 
   useEffect(() => {
@@ -63,8 +67,10 @@ const SessionModal = ({
             db={db}
             session={session}
             date={date}
+            user={user}
             enrollmentsFromParent={enrollments}
             groupOptions={groupOptions}
+            allStudents={allStudents}
             isModal
           />
         </div>

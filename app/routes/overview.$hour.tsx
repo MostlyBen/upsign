@@ -111,6 +111,7 @@ const HourOverview = () => {
           enrollments={enrollments.filter(e => e.session_id === s.id)}
           date={selectedDate}
           session={s}
+          user={user}
           groupOptions={groupOptions}
           groupFilter={groupFilter}
           attendanceFilter={attendanceFilter as Attendance[]}

@@ -37,6 +37,7 @@ import Page404 from "./screens/404";
 import Index from "./screens/Index";
 
 // small bits
+import ConfirmModal from "./SmallBits/ConfirmModal";
 import EmojiSelect from "./SmallBits/EmojiSelect";
 import NameListName from "./SmallBits/NameListName";
 
@@ -69,6 +70,7 @@ export {
   Page404,
   Index,
 
+  ConfirmModal,
   SessionCard,
   SessionModal,
   SessionEditor,

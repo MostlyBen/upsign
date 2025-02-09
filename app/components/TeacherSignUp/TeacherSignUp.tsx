@@ -13,6 +13,7 @@ import {
   getTeacherSessions,
   getSessionTitles,
   getDefaultDay,
+  getAllStudents,
 } from "../../services";
 
 import {
@@ -38,6 +39,7 @@ const renderHours = (
   user: UpsignUser,
   groupOptions: string[],
   hideAdd?: boolean,
+  allStudents?: UpsignUser[],
 ) => {
   const hourArr = []
   for (let i = 1; i < numberSessions + 1; i++) {
@@ -60,6 +62,7 @@ const renderHours = (
           user={user}
           groupOptions={groupOptions}
           hideAdd={hideAdd}
+          allStudents={allStudents}
         />
       )
     })}
@@ -73,6 +76,7 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
   const [sessionTimes, setSessionTimes] = useState<string[]>([]);
   const [sessionTitles, setSessionTitles] = useState<string[] | null>();
   const [selectedTeacher, setSelectedTeacher] = useState<string | null>(null);
+  const [allStudents, setAllStudents] = useState<UpsignUser[] | undefined>(undefined);
 
   const schoolId = getSchoolId()
 
@@ -91,10 +95,19 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
     setSessionTitles(newTitles as string[] | null)
   }
 
+  const updateAllStudents = async () => {
+    const _allStudents = await getAllStudents(db);
+    setAllStudents(Object.values(_allStudents) as UpsignUser[]);
+  }
+
+  useEffect(() => {
+    updateAllStudents();
+  }, [db]);
+
   // Initialize the observer
   // Checks when the DatePicker (".sticky-container") intersects with the navbar
   useEffect(() => {
-    observeTopIntersect()
+    observeTopIntersect();
   }, [sessions]);
 
   // Subscribe to updates for session number and times
@@ -178,6 +191,7 @@ const TeacherSignUp = ({ db, user, groupOptions }: TeacherSignUpProps) => {
             user,
             groupOptions,
             selectedTeacher !== null,
+            allStudents,
           )}
         </div>
         : <div>Loading...</div>}

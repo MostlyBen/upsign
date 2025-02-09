@@ -15,6 +15,7 @@ type HourSessionsParams = {
   user: UpsignUser,
   groupOptions: string[]
   hideAdd?: boolean,
+  allStudents?: UpsignUser[]
 }
 
 const HourSessions = ({
@@ -27,6 +28,7 @@ const HourSessions = ({
   user,
   groupOptions,
   hideAdd,
+  allStudents,
 }: HourSessionsParams) => {
   const [sessionAdding, setSessionAdding] = useState<boolean>(false);
 
@@ -67,6 +69,7 @@ const HourSessions = ({
               date={selectedDate}
               groupOptions={groupOptions}
               hasMultipleSessions={sessions.length > 1}
+              allStudents={allStudents}
             />
           </div>
         )
