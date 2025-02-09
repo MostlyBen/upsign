@@ -19,7 +19,9 @@ interface EnrollmentRowProps {
   date: Date,
 }
 
-const EnrollmentRow = ({ db, user, session, enrollment, date }: EnrollmentRowProps) => {
+const EnrollmentRow = ({
+  db, user, session, enrollment, date
+}: EnrollmentRowProps) => {
   const [showRemove, setShowRemove] = useState<0 | 1>(0);
   const [reactionOpen, setReactionOpen] = useState<boolean>(false);
   const [reactions, setReactions] = useState<string[] | undefined>();
@@ -32,6 +34,11 @@ const EnrollmentRow = ({ db, user, session, enrollment, date }: EnrollmentRowPro
     }
     updateReactions();
   }, [db]);
+
+  // Hide buttons when reaction box is closed
+  useEffect(() => {
+    if (!reactionOpen) { handleMouseLeave() }
+  }, [reactionOpen]);
 
   const handleMouseEnter = () => {
     setShowRemove(1);
@@ -124,6 +131,7 @@ const EnrollmentRow = ({ db, user, session, enrollment, date }: EnrollmentRowPro
             onClick={() => setReactionOpen(o => !o)}
             style={{
               opacity: showRemove,
+              pointerEvents: showRemove ? 'auto' : 'none',
               userSelect: 'none',
             }}
           >
@@ -136,6 +144,7 @@ const EnrollmentRow = ({ db, user, session, enrollment, date }: EnrollmentRowPro
           onClick={() => handleRemoveStudent(enrollment.uid, enrollment.name)}
           style={{
             opacity: showRemove,
+            pointerEvents: showRemove ? 'auto' : 'none',
             userSelect: 'none'
           }}
         >
