@@ -1,4 +1,15 @@
-import { getDocs, query, where, collection, Firestore, doc, increment, runTransaction, Transaction, DocumentReference } from "firebase/firestore";
+import {
+  getDocs,
+  query,
+  where,
+  collection,
+  Firestore,
+  doc,
+  increment,
+  runTransaction,
+  Transaction,
+  DocumentReference
+} from "firebase/firestore";
 import { getSchoolId } from "../../utils";
 import { Enrollment, Session, UpsignUser } from "../../types";
 
