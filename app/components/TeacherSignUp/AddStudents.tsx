@@ -139,7 +139,13 @@ const AddStudents = ({
               (u.name && u.name.toLowerCase().includes(search.toLowerCase()))
             )
           }).map((user, index) => {
-            return <div key={`user-${index}`}><UserName user={user} onClick={() => handleAddStudent(user)} /></div>
+            return (<div
+              key={`user-${index}`}>
+              <UserName
+                user={user}
+                onClick={() => handleAddStudent(user)}
+              />
+            </div>)
           })}
         </div>
       </div>
