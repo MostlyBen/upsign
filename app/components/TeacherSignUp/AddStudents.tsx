@@ -136,8 +136,7 @@ const AddStudents = ({
           {allStudents.filter(u => {
             return (
               (u.nickname && u.nickname.toLowerCase().includes(search.toLowerCase())) ||
-              (u.name && u.name.toLowerCase().includes(search.toLowerCase())) ||
-              (u.email && u.email.toLowerCase().includes(search.toLowerCase()))
+              (u.name && u.name.toLowerCase().includes(search.toLowerCase()))
             )
           }).map((user, index) => {
             return <div key={`user-${index}`}><UserName user={user} onClick={() => handleAddStudent(user)} /></div>
