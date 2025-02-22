@@ -56,19 +56,24 @@ const AddStudents = ({
   const [confirm, ConfirmModal] = useConfirmModal({ id: `confirm-modal-${session.id}` });
 
   const handleAddStudent = async (student: UpsignUser) => {
+    console.log("handleAddStudent", student, session);
     setSearchShown(false);
     setSearch("");
     if (!session.id) { return }
 
-    const isLocked = await getIsLocked(db, date, session.session, student);
-    if (isLocked) {
-      const userConfirm = await confirm(
-        `${student.nickname ?? student.name} is locked into ${isLocked.title} with ${isLocked.teacher}.`
-      );
-      if (!userConfirm) { return }
-    }
+    getIsLocked(db, date, session.session, student).then(isLocked => {
+      if (isLocked) {
+        const userConfirm = confirm(
+          `${student.nickname ?? student.name} is locked into ${isLocked.title} with ${isLocked.teacher}.`
+        );
+        if (!userConfirm) { return }
+      }
+      enrollStudent(db, date, session, student, user, true);
+    }).catch(err => {
+      console.error(err);
+      enrollStudent(db, date, session, student, user, true);
+    });
 
-    enrollStudent(db, date, session, student, user, true);
   }
 
   const handleAddGroup = (group: string) => {
@@ -110,7 +115,7 @@ const AddStudents = ({
               setTimeout(() => {
                 setSearchShown(false);
                 setSearch("");
-              }, 150);
+              }, 250);
             }}
             style={{
               fontSize: "0.875rem",
