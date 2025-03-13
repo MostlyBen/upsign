@@ -63,12 +63,16 @@ const AddStudents = ({
 
     getIsLocked(db, date, session.session, student).then(isLocked => {
       if (isLocked) {
-        const userConfirm = confirm(
-          `${student.nickname ?? student.name} is locked into ${isLocked.title} with ${isLocked.teacher}.`
-        );
-        if (!userConfirm) { return }
+        confirm(
+          `${student.nickname ?? student.name} is locked into ${isLocked.title} with ${isLocked.teacher}.`).then((userConfirm) => {
+            if (!userConfirm) {
+              return
+            }
+            enrollStudent(db, date, session, student, user, true);
+          });
+      } else {
+        enrollStudent(db, date, session, student, user, true);
       }
-      enrollStudent(db, date, session, student, user, true);
     }).catch(err => {
       console.error(err);
       enrollStudent(db, date, session, student, user, true);
