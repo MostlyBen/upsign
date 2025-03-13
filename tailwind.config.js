@@ -117,7 +117,7 @@ module.exports = {
           "--absent": "#4D0F0F"
         }
       },
-      
+
     ],
   }
 }
