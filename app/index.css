@@ -70,7 +70,11 @@ hr {
   --chkfg: #ffffff !important;
 }
 .btn-primary {
-  color: #ffffff;
+  color: var(--chkfg) !important;
+}
+
+.btn-primary:is(input[type="checkbox"]:checked), .btn:is(input[type="radio"]:checked) {
+  color: var(--chkfg) !important;
 }
 
 /* Don't do the auto-quotes in prose blockquotes */
@@ -171,5 +175,9 @@ hr {
 
 .no-focus-no-border:not(:focus-within) {
   border-color: transparent !important;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: var(--cal-icon-filter);
 }
 

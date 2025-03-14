@@ -25,7 +25,7 @@ const HourSelectBtn = ({
 
   return (
     <input
-      className="join-item btn grow checked:bg-primary checked:border-primary text-lg shadow-none"
+      className="join-item btn grow checked:btn-primary checked:border-primary text-lg shadow-none"
       onClick={() => onClick(value)}
       type="radio"
       name="hour"
