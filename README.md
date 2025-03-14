@@ -38,6 +38,8 @@ You can get all of the information for this by...
 - Scrolling down until you find the "SDK setup and configuration" section
 - (You may need to create an app first by clicking the "</>" icon)
 
+> Note: You **will** need to enable Google Authentication for your Firebase project and make sure your domain is an authorized domain.
+
 ### Configuring the Database
 There are a few documents that need to be in the Firestore database, more testing needs to be done to make sure they are automatically created.
 
