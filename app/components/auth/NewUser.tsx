@@ -5,7 +5,8 @@ import { getSchoolId } from "~/utils";
 
 import {
   setUserType,
-  allowStudentRegister
+  allowStudentRegister,
+  getTeacherRegisterAllowed,
 } from "~/services";
 
 type NewUserProps = {
@@ -23,6 +24,10 @@ const NewUser = ({ db, user }: NewUserProps) => {
       const active = doc.data()?.active;
       if (typeof active === "boolean") {
         setTeacherAllowed(active);
+      } else {
+        getTeacherRegisterAllowed(db, schoolId).then((res: boolean) => {
+          setTeacherAllowed(res);
+        });
       }
     });
 
