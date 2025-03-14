@@ -65,6 +65,12 @@ module.exports = {
           "--absent": "#912F40"
         }
       },
+      {
+        notsunemiku: {
+          ...require("daisyui/src/theming/themes").business,
+          
+        }
+      },
 
       {
         retro: {
