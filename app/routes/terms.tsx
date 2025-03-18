@@ -43,7 +43,7 @@ const Terms = () => {
       <p>We may revise these Terms of Service from time to time. The most current version will always be posted on this page. By continuing to use the service after those revisions become effective, you agree to be bound by the revised terms.</p>
 
       <h2>10. Governing Law</h2>
-      <p>These Terms shall be governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of law provisions.</p>
+      <p>These Terms shall be governed by and construed in accordance with the laws of the State of Michigan, without regard to its conflict of law provisions.</p>
 
       <h2>11. Contact Information</h2>
       <p>If you have any questions about these Terms, please contact us at <a href="mailto:ben@upsign.app">ben@upsign.app</a>.</p>
