@@ -65,6 +65,21 @@ module.exports = {
           "--absent": "#912F40"
         }
       },
+      
+      {
+        notsunemiku: {
+          ...require("daisyui/src/theming/themes").valentine,
+          "primary": "#86cecb",
+          "secondary": "#137a7f",
+          "base-100": "#373b3e",
+          "base-content": "#fff",
+          "--cal-icon-filter": "invert(1)",
+          "--chkfg": "#373b3e",
+          "--present": "#86cecb",
+          "--tardy": "#e8d880",
+          "--absent": "#e12885"
+        }
+      },
 
       {
         retro: {
