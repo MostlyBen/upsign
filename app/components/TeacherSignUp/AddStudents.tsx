@@ -111,7 +111,7 @@ const AddStudents = ({
             className="bg-base-100 w-full"
             placeholder="Add Student(s)"
             type="text"
-            id="user-name-box"
+            id={`search-${session.id}`}
             autoComplete="off"
             value={search}
             onChange={e => { setSearch(e.target.value); setSearchShown(true) }}

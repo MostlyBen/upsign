@@ -88,7 +88,7 @@ const TeacherSelect = ({ db, onSelect }: TeacherSelectProps) => {
             className="bg-base-100 w-full"
             placeholder="Name"
             type="text"
-            id="user-name-box"
+            id="teacher-search-box"
             autoComplete="off"
             onFocus={() => setSelectedUser(null)}
             value={search}
