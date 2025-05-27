@@ -1,5 +1,6 @@
 // Config
 import allowStudentRegister from "./config/allowStudentRegister";
+import getHourLabels from "./config/getHourLabels";
 import getDomainRestriction from "./config/domainRestriction/getDomainRestriction";
 import getNumberSessions from "./config/getNumberSessions";
 import getSessionTimes from "./config/getSessionTimes";
@@ -59,6 +60,7 @@ import updateUser from "./user/updateUser";
 export {
   // Config
   allowStudentRegister,
+  getHourLabels,
   getDomainRestriction,
   getNumberSessions,
   getSessionTimes,

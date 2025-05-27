@@ -6,7 +6,13 @@ import { Attendance, Enrollment, RootContext, UpsignUser } from "~/types";
 import { TeacherLayout } from "~/layouts";
 import { AttendanceFilter, GoneMissing } from "~/components";
 import { useFirebaseQuery } from "~/hooks";
-import { getAllStudents, getDefaultDay, getGroupOptions, getNumberSessions } from "~/services";
+import {
+  getAllStudents,
+  getDefaultDay,
+  getGroupOptions,
+  getNumberSessions,
+  getHourLabels
+} from "~/services";
 import { getDateString, getSchoolId } from "~/utils";
 
 export async function loader({
@@ -16,11 +22,12 @@ export async function loader({
 }
 
 const HourSelectBtn = ({
-  hour, value, onClick
+  hour, value, onClick, label,
 }: {
   hour: number,
   value: number,
   onClick: (arg0: number) => void,
+  label?: string,
 }) => {
 
   return (
@@ -29,16 +36,27 @@ const HourSelectBtn = ({
       onClick={() => onClick(value)}
       type="radio"
       name="hour"
-      aria-label={String(value)}
+      aria-label={label ?? String(value)}
       defaultChecked={hour === value}
     />
   )
 }
 
-const renderHourBtns = (num: number, hour: number, onClick: (arg0: number) => void) => {
+const renderHourBtns = (
+  num: number,
+  hour: number,
+  onClick: (arg0: number) => void,
+  hourLabels: string[] | null
+) => {
   const btnArr = [];
   for (let i = 1; i <= num; i++) {
-    btnArr.push(<HourSelectBtn key={`hour-${i}`} value={i} hour={hour} onClick={onClick} />);
+    btnArr.push(<HourSelectBtn
+      key={`hour-${i}`}
+      value={i}
+      hour={hour}
+      onClick={onClick}
+      label={hourLabels?.[i - 1] ?? undefined}
+    />);
   }
   return btnArr;
 }
@@ -53,6 +71,7 @@ const Overview = () => {
   }
 
   const [numberHours, setNumberHours] = useState<number>(7);
+  const [hourLabels, setHourLabels] = useState<string[] | null>(null);
   const [selectedDateString, setSelectedDateString] = useState<string | null>();
   const [selectedDate, setSelectedDate] = useState<Date | null>();
   const [groupOptions, setGroupOptions] = useState<string[]>([]);
@@ -114,9 +133,13 @@ const Overview = () => {
     const fetchNumberHours = async () => {
       if (!selectedDate) { return }
       // Getting the date is a pain, but this accounts for timezone
-      const _numberHours = await getNumberSessions(db, selectedDate);
+      const [_numberHours, _hourLabels] = await Promise.all([
+        getNumberSessions(db, selectedDate),
+        getHourLabels(db, selectedDate),
+      ]);
 
       setNumberHours(_numberHours);
+      setHourLabels(_hourLabels);
     }
 
     fetchNumberHours();
@@ -148,7 +171,7 @@ const Overview = () => {
         </div>
 
         <div className="join w-full flex flex-row justify-center">
-          {renderHourBtns(numberHours, hour, handleHourClick)}
+          {renderHourBtns(numberHours, hour, handleHourClick, hourLabels)}
         </div>
 
         <div className="flex flex-row gap-4 w-full">
