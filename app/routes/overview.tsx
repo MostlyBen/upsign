@@ -11,7 +11,8 @@ import {
   getDefaultDay,
   getGroupOptions,
   getNumberSessions,
-  getHourLabels
+  getHourLabels,
+  getSessionTitles,
 } from "~/services";
 import { getDateString, getSchoolId } from "~/utils";
 
@@ -72,6 +73,7 @@ const Overview = () => {
 
   const [numberHours, setNumberHours] = useState<number>(7);
   const [hourLabels, setHourLabels] = useState<string[] | null>(null);
+  const [sessionTitles, setSessionTitles] = useState<string[] | null>(null);
   const [selectedDateString, setSelectedDateString] = useState<string | null>();
   const [selectedDate, setSelectedDate] = useState<Date | null>();
   const [groupOptions, setGroupOptions] = useState<string[]>([]);
@@ -133,13 +135,15 @@ const Overview = () => {
     const fetchNumberHours = async () => {
       if (!selectedDate) { return }
       // Getting the date is a pain, but this accounts for timezone
-      const [_numberHours, _hourLabels] = await Promise.all([
+      const [_numberHours, _hourLabels, _sessionTitles] = await Promise.all([
         getNumberSessions(db, selectedDate),
         getHourLabels(db, selectedDate),
+        getSessionTitles(db, selectedDate),
       ]);
 
       setNumberHours(_numberHours);
       setHourLabels(_hourLabels);
+      setSessionTitles(typeof _sessionTitles === "number" ? null : _sessionTitles);
     }
 
     fetchNumberHours();
@@ -159,7 +163,7 @@ const Overview = () => {
       <div>
         <div className="flex flex-row justify-between">
           <div className="prose mb-4 flex">
-            <h1>Session {hour}</h1>
+            <h1>{sessionTitles?.[hour - 1] ?? `Session ${hour}`}</h1>
           </div>
           {localStorage.getItem("show-missing-students") === "true" && hour &&
             <GoneMissing
