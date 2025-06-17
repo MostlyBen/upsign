@@ -181,3 +181,6 @@ hr {
     filter: var(--cal-icon-filter);
 }
 
+.card {
+  border-radius: var(--rounded-card);
+}

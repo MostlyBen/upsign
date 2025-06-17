@@ -95,9 +95,17 @@ module.exports = {
       {
         sapphiredark: {
           ...require("daisyui/src/theming/themes").night,
+          primary: "#3893E8",
+          secondary: "#d7ebe9",
+          "base-100": "#282828",
+          "base-200": "#121212",
+          "accent": "#3893E8",
+          "base-content": "#ffffff",
           "--present": "#3EB2FF",
-          "--tardy": "#ab830d",
-          "--absent": "#BC0000"
+          "--tardy": "#ffbf00",
+          "--absent": "#ff0000",
+          "--rounded-card": "2rem !important",
+          "--rounded-btn": "2rem !important",
         }
       },
 
