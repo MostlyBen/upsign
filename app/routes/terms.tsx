@@ -16,6 +16,9 @@ const Terms = () => {
       <p>3.1. You must use your Google account to sign in to our service.</p>
       <p>3.2. You are responsible for maintaining the confidentiality of your account and password.</p>
       <p>3.3. You agree to notify us immediately of any unauthorized use of your account.</p>
+      <p>3.4. By logging in to https://upsign.app, you agree to the storing of your email and name on UpSign&apos;s server.</p>
+      <p>3.5. No one that does not log in through your portal, or is part of the UpSign team, will have access to any of that data.</p>
+      <p>3.6. UpSign will delete any data upon request to <a href="mailto:ben@upsign.app">ben@upsign.app</a>.</p>
 
       <h2>4. User Conduct</h2>
       <p>You agree not to:</p>
@@ -27,7 +30,7 @@ const Terms = () => {
       </ul>
 
       <h2>5. Intellectual Property</h2>
-      <p>5.1. This is an open-source project. The source code is available under the terms of the [specific open-source license].</p>
+      <p>5.1. This is an open-source project. The source code is available under the terms of the MIT Open Source License.</p>
       <p>5.2. While using this service, you may not copy, modify, distribute, sell, or lease any part of our services or included software, nor may you reverse engineer or attempt to extract the source code of that software, unless laws prohibit those restrictions or you have our written permission.</p>
 
       <h2>6. Disclaimer of Warranties</h2>
