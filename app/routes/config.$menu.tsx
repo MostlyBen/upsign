@@ -30,8 +30,8 @@ const ConfigMenu = () => {
       return <EditGroups db={db} />
     case "groups":
       return <Groups db={db} userId={user.uid as string} />
-    case "newyear":
-      return <NewYear db={db} />
+    // case "newyear":
+    // return <NewYear db={db} />
     case "people":
       return <People db={db} />
     case "registrations":

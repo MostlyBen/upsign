@@ -17,8 +17,8 @@ const schoolMenus: { title: string, id: string }[] = [
   { title: "People", id: "people" },
   { title: "Groups", id: "groups" },
   { title: "Edit Groups", id: "editgroups" },
-  // {title: "New Year", id: "newyear"},
-  // {title: "Student List", id: "studentlist"},
+  // { title: "New Year", id: "newyear" },
+  // { title: "Student List", id: "studentlist" },
 ]
 
 const personalMenus: { title: string, id: string }[] = [
