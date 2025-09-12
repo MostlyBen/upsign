@@ -72,17 +72,17 @@ const Config = () => {
 
           <div className="w-full"
             style={{
-              height: "calc(100dvh - 10rem)",
-              maxHeight: "calc(100dvh - 10rem)",
+              height: "calc(100dvh - 160px)",
+              maxHeight: "calc(100dvh - 160px)",
               maxWidth: "720px",
               marginTop: "32px",
             }}
           >
             <div
-              className="p-8 grow bg-base-100 card rounded-lg overflow-y-auto"
+              className="px-8 pt-8 grow bg-base-100 card rounded-lg overflow-y-auto"
               style={{
-                height: "calc(100dvh - 16rem)",
-                maxHeight: "calc(100dvh - 16rem)",
+                height: "calc(100dvh - 256px)",
+                maxHeight: "calc(100dvh - 256px)",
               }}
             >
               <Outlet
