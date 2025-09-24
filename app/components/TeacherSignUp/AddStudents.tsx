@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Firestore } from "@firebase/firestore";
-import { useConfirmModal } from "~/hooks";
+import { useConfirmModal, useEmailPaste } from "~/hooks";
 import { UpsignUser, Session } from "~/types";
 import { Person, UserGroup } from "~/icons";
 import { batchEnroll, enrollStudent, getIsLocked } from "~/services";
@@ -99,6 +99,35 @@ const AddStudents = ({
     });
   }
 
+  const handleAddEmails = useCallback((emails: string[]) => {
+    setEnrolling(true);
+    setSearchShown(false);
+    setSearch("");
+
+    if (!session.id) { return }
+
+    const groupStudents = allStudents.filter(u => {
+      return emails.includes(u.email);
+    });
+
+    const emailsNotFound = emails.filter(e => {
+      return !groupStudents.find(u => u.email === e);
+    });
+
+    if (emailsNotFound.length > 0) {
+      console.error(`The following emails were not found: ${emailsNotFound.join(", ")}`);
+      window.alert(`The following emails were not found: ${emailsNotFound.join(", ")}`);
+    }
+
+    batchEnroll(db, date, session, groupStudents, user, confirm).then((res) => {
+      setEnrolling(false);
+      if (!res.success) {
+        console.error(res.error);
+      }
+    });
+  }, [allStudents]);
+
+  const { onPaste } = useEmailPaste({ onEmails: handleAddEmails });
 
   return (
     <>
@@ -115,7 +144,7 @@ const AddStudents = ({
             autoComplete="off"
             value={search}
             onChange={e => { setSearch(e.target.value); setSearchShown(true) }}
-            onPaste={e => { console.log("paste:", e) }}
+            onPaste={onPaste}
             onBlur={() => {
               setTimeout(() => {
                 setSearchShown(false);
