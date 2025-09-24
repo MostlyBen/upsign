@@ -111,7 +111,7 @@ const AddStudents = ({
     });
 
     const emailsNotFound = emails.filter(e => {
-      return !groupStudents.find(u => u.email === e);
+      return !groupStudents.find(u => u.email.toLowerCase() === e.toLowerCase());
     });
 
     if (emailsNotFound.length > 0) {
