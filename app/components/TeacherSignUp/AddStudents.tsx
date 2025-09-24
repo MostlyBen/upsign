@@ -115,11 +115,12 @@ const AddStudents = ({
             autoComplete="off"
             value={search}
             onChange={e => { setSearch(e.target.value); setSearchShown(true) }}
+            onPaste={e => { console.log("paste:", e) }}
             onBlur={() => {
               setTimeout(() => {
                 setSearchShown(false);
                 setSearch("");
-              }, 250);
+              }, 500);
             }}
             style={{
               fontSize: "0.875rem",
