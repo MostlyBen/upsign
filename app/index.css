@@ -181,6 +181,17 @@ hr {
     filter: var(--cal-icon-filter);
 }
 
+@keyframes slideUp {
+    0% {
+        transform: translateY(1.5rem);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 .signup-progress {
   position: fixed;
   bottom: 0;
@@ -188,6 +199,7 @@ hr {
   right: 0;
   height: 1rem;
   border-radius: 0 !important;
+  animation: slideUp 0.25s ease-out;
 }
 
 .signup-progress::-webkit-progress-value {
