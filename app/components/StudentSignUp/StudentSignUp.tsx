@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { onSnapshot, doc, query, where, collection, Firestore } from "@firebase/firestore"
+import ProgressBar from './ProgressBar'
 
 import {
   getNumberSessions,
@@ -185,6 +186,12 @@ const StudentSignUp = ({ db, user }: StudentSignupProps) => {
         schoolId={schoolId as string}
         userEnrollments={userEnrollments}
       />)}
+
+      <ProgressBar percent={userEnrollments.length > 0
+        ? (userEnrollments.length / numberSessions)
+        : 0}
+      />
+
     </div>
   )
 

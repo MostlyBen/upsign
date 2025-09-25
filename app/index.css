@@ -181,3 +181,23 @@ hr {
     filter: var(--cal-icon-filter);
 }
 
+.signup-progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1rem;
+  border-radius: 0 !important;
+}
+
+.signup-progress::-webkit-progress-value {
+  border-radius: 0 !important;
+}
+
+.signup-progress::-webkit-progress-bar {
+  border-radius: 0 !important;
+}
+
+.signup-progress::-moz-progress-bar {
+  border-radius: 0 !important;
+}
