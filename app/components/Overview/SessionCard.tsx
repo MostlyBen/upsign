@@ -77,6 +77,25 @@ const SessionCard = ({
     }
   }
 
+  if ((groupFilter || attendanceFilter) && enrollments.filter(e => {
+    let show = true;
+    if (groupFilter) {
+      const student = allStudents[e.uid as string];
+      if (!student) { return false }
+      if (!Array.isArray(student.groups)) { return false }
+      if (!["All Students", ""].includes(groupFilter) && !student.groups.includes(groupFilter)) {
+        show = false;
+      }
+    }
+    if (attendanceFilter) {
+      if (e.attendance && !attendanceFilter.includes(e.attendance)) {
+        show = false;
+      }
+    }
+    return show;
+  }).length === 0) {
+    return <></>
+  }
   return (
     <>
       {isOpen && <SessionModal
