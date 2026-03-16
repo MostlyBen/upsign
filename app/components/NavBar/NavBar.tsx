@@ -29,15 +29,23 @@ const Menu = () => {
   )
 }
 
+const Spacer = () => {
+  return <div className="h-6 w-px mx-4 bg-base-300" />
+}
+
 const TeacherLinks = () => {
   return (
     <div className="flex felx-row gap-4 text-xl">
+       <Spacer />
       <Link
         to="/"
       >Home</Link>
+      
+      <Spacer />
       <Link
         to="/overview/1"
-      >All Sessions</Link>
+      > 
+      All Sessions</Link>
     </div>
   )
 }
@@ -55,7 +63,7 @@ const NavBar = ({ userType, schoolName }: NavBarProps) => {
   }
 
   useEffect(() => {
-    const handleClick = (e) => {
+    const handleClick = (e: MouseEvent) => {
       const menuEl = document.getElementById('navbar-left-menu');
       const btnEl = document.getElementById('navbar-left-menu-btn');
 
@@ -64,7 +72,9 @@ const NavBar = ({ userType, schoolName }: NavBarProps) => {
         return;
       }
 
-      if (!menuEl.contains(e.target) && !btnEl.contains(e.target)) {
+      const target = e.target as HTMLElement| null;
+
+      if (!menuEl.contains(target) && !btnEl.contains(target)) {
         setShowMenu(false);
       }
     }

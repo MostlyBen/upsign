@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Outlet, Scripts, Links, Meta } from '@remix-run/react';
+import { Outlet, Scripts, Links, Meta, useRouteError, isRouteErrorResponse } from '@remix-run/react';
 import { User } from 'firebase/auth';
 import { auth, firestore } from '~/lib/firebase';
 import { getUser } from './services';
 
 import './index.css';
+import { Page404 } from './components';
 
 export default function App() {
   const db = firestore;
@@ -57,3 +58,26 @@ export default function App() {
     </html>
   );
 }
+
+// Catch error status
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  // Head makes sure tailwind is still applied
+  if(isRouteErrorResponse(error) && error.status === 404 ) {
+    return (      
+      <html lang="en">
+        <head>
+          <title>404 - Page Not Found</title>
+          <Meta />
+          <Links />
+        </head>
+        <body >
+          <Page404 />
+          <Scripts />
+        </body>
+      </html>
+    )
+  }
+}
+
