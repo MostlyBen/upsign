@@ -77,7 +77,6 @@ const SessionCard = ({
     }
   }
 
-  console.log("Group filter:", groupFilter)
   if (((groupFilter && !["All Students", ""].includes((groupFilter))) ||
     attendanceFilter) && enrollments.filter(e => {
       let show = true;
