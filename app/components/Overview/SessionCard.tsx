@@ -77,24 +77,25 @@ const SessionCard = ({
     }
   }
 
-  if (((groupFilter && !["All Students", ""].includes((groupFilter))) ||
-    attendanceFilter) && enrollments.filter(e => {
-      let show = true;
-      if (groupFilter && !["All Students", ""].includes(groupFilter)) {
-        const student = allStudents[e.uid as string];
-        if (!student) { return false }
-        if (!Array.isArray(student.groups)) { return false }
-        if (!["All Students", ""].includes(groupFilter) && !student.groups.includes(groupFilter)) {
-          show = false;
-        }
+  if (((groupFilter && groupFilter.length > 0) ||
+    (attendanceFilter && attendanceFilter.length > 0 && attendanceFilter.length < 3)
+  ) && enrollments.filter(e => {
+    let show = true;
+    if (groupFilter && groupFilter.length > 0) {
+      const student = allStudents[e.uid as string];
+      if (!student) { return false }
+      if (!Array.isArray(student.groups)) { return false }
+      if (!["All Students", ""].includes(groupFilter) && !student.groups.includes(groupFilter)) {
+        show = false;
       }
-      if (attendanceFilter) {
-        if (e.attendance && !attendanceFilter.includes(e.attendance)) {
-          show = false;
-        }
+    }
+    if (attendanceFilter) {
+      if (e.attendance && !attendanceFilter.includes(e.attendance)) {
+        show = false;
       }
-      return show;
-    }).length === 0) {
+    }
+    return show;
+  }).length === 0) {
     return <></>
   }
   return (
