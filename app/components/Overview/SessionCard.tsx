@@ -1,3 +1,4 @@
+// TODO: Show card if a group filter matches the session's group
 import { useEffect, useState } from "react";
 import { Firestore } from "firebase/firestore";
 import { Attendance, Enrollment, Session, UpsignUser } from "~/types";
