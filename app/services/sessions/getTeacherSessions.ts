@@ -36,9 +36,11 @@ const getTeacherSessions = async (
   if (typeof user === "string") {
     const schoolId = getSchoolId();
     _user = await getDoc(doc(db, `schools/${schoolId}/users/${user}`)).then(doc => doc.data() as UpsignUser);
+    _user.uid = user;
   } else {
     _user = user;
   }
+  console.log(_user);
 
   const dayRef = collection(
     db,
