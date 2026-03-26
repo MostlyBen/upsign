@@ -1,4 +1,14 @@
-import { doc, setDoc, collection, query, where, getDocs, Firestore, QueryDocumentSnapshot } from "@firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  Firestore,
+  QueryDocumentSnapshot,
+} from "@firebase/firestore";
 import { getNumberSessions } from "../../services";
 import { getSchoolId } from "../../utils";
 import { Session, UpsignUser } from '~/types';
@@ -21,6 +31,14 @@ const getTeacherSessions = async (
   const numberSessions = await getNumberSessions(db, date);
   const teacherSessions: Session[] = [];
   const sortedSessions: SortedSessions = {};
+
+  let _user: UpsignUser;
+  if (typeof user === "string") {
+    const schoolId = getSchoolId();
+    _user = await getDoc(doc(db, `schools/${schoolId}/users/${user}`)).then(doc => doc.data() as UpsignUser);
+  } else {
+    _user = user;
+  }
 
   const dayRef = collection(
     db,
@@ -56,8 +74,8 @@ const getTeacherSessions = async (
       // Empty session object
       const docObject: Session = {
         id: sessionId,
-        teacher: user.nickname ?? user.name ?? '',
-        teacher_id: user.uid,
+        teacher: _user.nickname ?? _user.name ?? '',
+        teacher_id: _user.uid,
         session: hour,
         capacity: 30,
         number_enrolled: 0,
