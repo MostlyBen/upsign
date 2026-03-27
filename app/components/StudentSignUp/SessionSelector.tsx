@@ -134,15 +134,15 @@ const SessionSelector = ({
   return (
     <div>
 
-      <div className="prose">
-        <h2 className="mt-4 mb-2">
+      <div className="prose sticky top-0 z-10 bg-base-200 px-2 mx-[-0.5rem]">
+        <h2 className="mt-2 pt-2 mb-2">
           {sessionTitle ?? `Session ${hour}`}
           <span className="ml-2 font-light opacity-80">
             {sessionTime ?? ''}
           </span>
         </h2>
+        <hr className="mb-4" />
       </div>
-      <hr className="mb-4" />
 
       <div className="cards-container">
         {hourSessions.map(session => <SessionCardStudent

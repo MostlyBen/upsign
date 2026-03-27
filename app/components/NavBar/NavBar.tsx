@@ -55,7 +55,7 @@ const NavBar = ({ userType, schoolName }: NavBarProps) => {
   }
 
   useEffect(() => {
-    const handleClick = (e) => {
+    const handleClick = (e: any) => {
       const menuEl = document.getElementById('navbar-left-menu');
       const btnEl = document.getElementById('navbar-left-menu-btn');
 
@@ -88,7 +88,9 @@ const NavBar = ({ userType, schoolName }: NavBarProps) => {
         <Menu />
       </div>
       <div
-        className="navbar px-4 bg-base-100 fixed drop-shadow-xl print:hidden"
+        className={`navbar px-4 bg-base-100 drop-shadow-xl print:hidden ${userType === 'teacher'
+          ? "fixed"
+          : ""}`}
         style={{ zIndex: 10000 }}
       >
         <div role="button" onClick={handleClickShow} id="navbar-left-menu-btn">
