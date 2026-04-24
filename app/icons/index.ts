@@ -8,6 +8,7 @@ import ChevronLeft from "./ChevronLeft";
 import ChevronRight from "./ChevronRight";
 import Close from "./Close";
 import FaceSmile from "./FaceSmile";
+import ForkSpoon from "./ForkSpoon"
 import Funnel from "./Funnel";
 import Gear from "./Gear";
 import Intersect from "./Intersect";
@@ -32,6 +33,7 @@ export {
   ChevronRight,
   Close,
   FaceSmile,
+  ForkSpoon,
   Funnel,
   Gear,
   Intersect,

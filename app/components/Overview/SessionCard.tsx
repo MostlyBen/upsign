@@ -12,6 +12,7 @@ import {
 
 import {
   ArrowsOut,
+  ForkSpoon,
   LockClosedMicro,
   Person,
   Pin,
@@ -162,6 +163,17 @@ const SessionCard = ({
           <div className="flex flex-row items-center">
             <Pin />
             <span className="ml-2 h-full my-1" style={{ lineHeight: 1.2 }}>{session.room ?? "No Room"}</span>
+          </div>
+
+          <div className="flex flex-row items-center">
+            {
+              session.lunch ? (
+                <>
+                  <ForkSpoon />
+                  <span className="ml-2 h-full my-1" style={{ lineHeight: 1.2 }}>{session.lunch}</span>
+                </>
+              ) : ""
+            }
           </div>
 
           <hr className="my-2" />

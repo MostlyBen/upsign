@@ -61,6 +61,7 @@ const SessionEditor = ({
   const [teacher, setTeacher] = useState(session.teacher ?? "");
   const [savedTeacher, setSavedTeacher] = useState(session.teacher ?? "");
   const [subtitle, setSubtitle] = useState(session.subtitle ?? "");
+  const [lunch, setLunch ] = useState(session.lunch ?? "");
   const [savedSubtitle, setSavedSubtitle] = useState(session.subtitle ?? "");
   const [room, setRoom] = useState(session.room ?? "");
   const [capacity, setCapacity] = useState(session.capacity ?? 0);
@@ -246,6 +247,31 @@ const SessionEditor = ({
     }
   }
 
+  const handleChangeLunch = (e: ChangeEvent<HTMLInputElement> | { target: { value: string } }) => {
+    if (!e) { return }
+    setSubtitle(e.target.value ?? "");
+
+    const lunch = String(e.target.value);
+    if (lunch === "undefined") {
+      updateDoc(
+        doc(
+          db,
+          `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`
+        ),
+        { lunch: deleteField() }
+      );
+    } else {
+      updateDoc(
+        doc(
+          db,
+          `schools/${schoolId}/sessions/${String(date.getFullYear())}/${String(date.toDateString())}/${session.id}`
+        ),
+        { lunch }
+      );
+      session.lunch = lunch;
+    }
+  };
+
   const handleChangeRoom = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e) { return }
     setRoom(e.target.value ?? "");
@@ -374,6 +400,19 @@ const SessionEditor = ({
                 placeholder="Subtitle"
                 debounceTimeout={1200}
                 onBlur={handleBlurSubtitle}
+                style={{ marginBottom: '0', height: '2.5rem' }}
+              />
+            </div>
+            <div className="mb-2">
+              <DebounceInput
+                className="block w-full input input-bordered"
+                id={`session-lunch-${session.id}`}
+                type="text"
+                value={lunch}
+                onChange={handleChangeLunch}
+                autoComplete="off"
+                placeholder="Lunch"
+                debounceTimeout={1200}
                 style={{ marginBottom: '0', height: '2.5rem' }}
               />
             </div>
