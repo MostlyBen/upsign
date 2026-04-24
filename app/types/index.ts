@@ -12,6 +12,7 @@ export type Session = {
   room?: string,
   session: number,
   subtitle?: string,
+  lunch?: string,
   teacher: string | null,
   teacher_id?: string,
   title?: string,
