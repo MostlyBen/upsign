@@ -190,21 +190,17 @@ const SessionCard = ({
               >
                 <LockClosedMicro />
               </button>
+              {enableAsEmail && <button
+                className="cursor-pointer relative"
+                onClick={() => setAsEmail(!asEmail)}
+                style={{
+                  display: showLock ? "" : "none",
+                  top: "-2px",
+                }}
+              >@</button>}
             </span>
             <span>{session.number_enrolled}/{session.capacity}</span>
           </div>
-          {enableAsEmail && <div className="flex flex-row align-middle gap-4 my-2">
-            <input
-              className="toggle toggle-primary"
-              type="checkbox"
-              checked={asEmail}
-              onChange={() => setAsEmail(!asEmail)}
-            />
-            <label className="relative" style={{ top: "-2px" }}>
-              Show emails
-            </label>
-
-          </div>}
           <div>
             {enrollments.sort((a, b) => {
               return (a.nickname ?? a.name) > (b.nickname ?? b.name)
