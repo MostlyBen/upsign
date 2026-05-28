@@ -1,5 +1,5 @@
 // TODO: Show card if a group filter matches the session's group
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Firestore } from "firebase/firestore";
 import { Attendance, Enrollment, Session, UpsignUser } from "~/types";
 import { updateEnrollment } from "~/services";
@@ -47,6 +47,8 @@ const SessionCard = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showLock, setShowLock] = useState<boolean>(false);
   const [hasClicked, setHasClicked] = useState<boolean>(false);
+  const [asEmail, setAsEmail] = useState<boolean>(false);
+  const enableAsEmail = useMemo(() => localStorage.getItem("list-as-email") === "true", []);
 
   useEffect(() => {
     if (hasClicked) {
@@ -191,6 +193,18 @@ const SessionCard = ({
             </span>
             <span>{session.number_enrolled}/{session.capacity}</span>
           </div>
+          {enableAsEmail && <div className="flex flex-row align-middle gap-4 my-2">
+            <input
+              className="toggle toggle-primary"
+              type="checkbox"
+              checked={asEmail}
+              onChange={() => setAsEmail(!asEmail)}
+            />
+            <label className="relative" style={{ top: "-2px" }}>
+              Show emails
+            </label>
+
+          </div>}
           <div>
             {enrollments.sort((a, b) => {
               return (a.nickname ?? a.name) > (b.nickname ?? b.name)
@@ -206,6 +220,7 @@ const SessionCard = ({
               attendanceFilter={attendanceFilter as Attendance[]}
               isSession
               showBlame={showBlame}
+              asEmail={asEmail}
             />)}
           </div>
 

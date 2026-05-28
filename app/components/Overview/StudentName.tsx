@@ -18,6 +18,7 @@ type StudentNameProps = {
   currentSession?: Session,
   isSession?: boolean,
   showBlame?: boolean,
+  asEmail?: boolean,
 }
 
 const StudentName = ({
@@ -30,6 +31,7 @@ const StudentName = ({
   attendanceFilter,
   isSession,
   showBlame,
+  asEmail,
 }: StudentNameProps) => {
   if (!user) { return <div className="student-name mt-0">Unknown User ({enrollment?.name ?? "No name"})</div> }
 
@@ -96,7 +98,7 @@ const StudentName = ({
         </span>}
 
       {/* Name */}
-      <span className="mr-1">{user.nickname ?? user.name}</span>
+      <span className="mr-1">{asEmail ? `${user.email}` : user.nickname ?? user.name}</span>
 
       {/* Blame Signup */}
       {showBlame && (

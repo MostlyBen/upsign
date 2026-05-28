@@ -9,6 +9,7 @@ type FeatureSwitchProps = {
 const features: FeatureSwitchProps[] = [
   { category: "All Sessions", title: "Show missing students", id: "show-missing-students" },
   { category: "All Sessions", title: "Show who signed a student up", id: "blame-signup" },
+  { category: "AllSessions", title: "Show list as emails", id: "list-as-email" },
   { category: "Home", title: "Show other teacher's schedule", id: "show-other-schedule" },
   { category: "Session Editor", title: "Advanced filters", id: "advanced-group-select" },
 ]
